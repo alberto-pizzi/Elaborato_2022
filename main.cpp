@@ -1,11 +1,15 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <math.h>
+#include <iostream>
 
-#include "GameCharacter.h"
+#include "Game.h"
+#include "MenuState.h"
 
 int main() {
-    std::cout << "Hello world" << std::endl;
+    Game game;
+    game.pushState(new MenuState(&game));
+    game.gameLoop();
+
     return 0;
 }

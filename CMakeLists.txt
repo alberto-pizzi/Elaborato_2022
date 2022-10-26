@@ -3,7 +3,7 @@ project(Elaborato)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Elaborato main.cpp GameCharacter.cpp GameCharacter.h)
+add_executable(Elaborato main.cpp GameCharacter.cpp GameCharacter.h Game.cpp Game.h GameState.h GameState.cpp MenuState.cpp MenuState.h PlayState.cpp PlayState.h TextureManager.cpp TextureManager.h)
 #SMFL
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR C:/SFML/lib/cmake/SFML) #SFML Directory
