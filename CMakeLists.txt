@@ -2,17 +2,27 @@ cmake_minimum_required(VERSION 3.20)
 project(Elaborato)
 
 set(CMAKE_CXX_STANDARD 11)
-
 add_executable(Elaborato main.cpp GameCharacter.cpp GameCharacter.h Game.cpp Game.h GameState.h GameState.cpp MenuState.cpp MenuState.h PlayState.cpp PlayState.h TextureManager.cpp TextureManager.h)
-#SMFL
-set(SFML_STATIC_LIBRARIES TRUE)
-set(SFML_DIR C:/SFML/lib/cmake/SFML) #SFML Directory
-find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
-include_directories(C:/SFML/include) #SFML Directory
-target_link_libraries(Elaborato sfml-system sfml-window sfml-graphics sfml-audio)
-
+#SFML
+if (WIN32)
+    set(SFML_STATIC_LIBRARIES TRUE)
+    set(SFML_DIR C:/SFML/lib/cmake/SFML) #SFML Windows Directory
+    find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
+    if (SFML_FOUND)
+        include_directories(${SFML_INCLUDE_DIRS})
+        target_link_libraries(Elaborato sfml-system sfml-window sfml-audio sfml-graphics sfml-network)
+    endif()
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set (MACOSX TRUE)
+    if (false)
+        set(SFML_DIR /usr/local/Cellar/sfml/) #SFML Macos Directory
+    endif ()
+    find_package (SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+    if (SFML_FOUND)
+        include_directories(${SFML_INCLUDE_DIRS})
+        target_link_libraries (Elaborato sfml-system sfml-window sfml-audio sfml-graphics sfml-network)
+    endif()
+endif()
 #Google Test
+file(COPY "./res" DESTINATION ${CMAKE_BINARY_DIR})
 add_subdirectory(test)
-set(SOURCE_FILES GameCharacter.cpp GameCharacter.h)
-add_library(core ${SOURCE_FILES})
-target_link_libraries(Elaborato core)
