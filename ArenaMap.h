@@ -7,14 +7,17 @@
 
 #include <memory>
 #include <fstream>
+#include <sstream>
+#include <string>
 
 #include "PosEntity.h"
 
+//WARNING: this values need to be updated when the overall tile size is changed (in XML)
+const int maxColumnTiles = 90;
+const int maxRowTiles = 45;
+
 class ArenaMap {
-protected:
-    int maxWidth;
-    int maxHeight;
-    std::unique_ptr<PosEntity> posEntity;
+
 private:
     std::ifstream readFile;
 
@@ -30,9 +33,21 @@ private:
         bool isTraversable();
     };
 
+protected:
+    //TODO insert game view
+    int maxWidth;
+    int maxHeight;
+    std::unique_ptr<PosEntity> posEntity;
+    Tile tile[maxRowTiles][maxColumnTiles]; //FIXME try to use STL
 public:
     //TODO implement methods
     void createMap(int map);
+
+    int nLayers(std::ifstream &file);
+
+    int layerLine(std::ifstream &file);
+
+    void fromXMLtoMatrix(std::ifstream &file);
 };
 
 
