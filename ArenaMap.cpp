@@ -18,12 +18,9 @@ void ArenaMap::createMap(int map) {
     };
     switch (map) {
         case desert:
-            readFile.open(""); //FIXME add file
-            if (layerLine(readFile) == 0) {
-                //TODO error message (no layers found) / exceptions
-            } else {
-                //TODO write code
-            }
+            readFile.open("res/maps/desertMap.xml"); //FIXME add exception for correct reading
+            //TODO implement it (here and in PlayState)
+            fromXMLtoTilesMatrix(readFile, layerLine(readFile, "principal_floor"));
             readFile.close();
             break;
     }
@@ -31,7 +28,6 @@ void ArenaMap::createMap(int map) {
 }
 
 int ArenaMap::layerLine(std::ifstream &file, std::string layerName) {
-    //FIXME implement tagID for fast research
     int countLayers = 0;
     std::string tag = "name=";
     std::string searchTag = tag + '"' + layerName + '"';
@@ -47,13 +43,19 @@ int ArenaMap::layerLine(std::ifstream &file, std::string layerName) {
             break;
     }
     //this method return the first line to start reading map
-    return countLayers + 1;
+    return countLayers;
 }
 
-void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file) {
-    //FIXME implement skipping loop and fix this method for xml formatting (spaces...)
-    int i = 0;
+void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int lastLineSkipped) {
+    int i = 0, skipCount = 0;
     std::string line, number;
+    //restart reading
+    file.clear();
+    file.seekg(std::ios::beg);
+    //start reading
+    while ((getline(file, line)) && (skipCount < lastLineSkipped)) {
+        skipCount++;
+    }
     while ((getline(file, line)) && (i < maxRowTiles)) {
         std::stringstream ss(line);
         for (int j = 0; j < maxColumnTiles; j++) {

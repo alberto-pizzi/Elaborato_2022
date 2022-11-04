@@ -13,6 +13,7 @@
 #include "PosEntity.h"
 
 //WARNING: this values need to be updated when the overall tile size is changed (in XML)
+//FIXME remove const and implement a method for read width and height from xml (using STL for matrix)
 const int maxColumnTiles = 90;
 const int maxRowTiles = 45;
 
@@ -38,14 +39,14 @@ protected:
     int maxWidth;
     int maxHeight;
     std::unique_ptr<PosEntity> posEntity;
-    Tile tile[maxRowTiles][maxColumnTiles]; //FIXME try to use STL
+    Tile tile[maxRowTiles][maxColumnTiles];
 public:
     //TODO implement methods
     void createMap(int map);
 
     int layerLine(std::ifstream &file, std::string layerName);
 
-    void fromXMLtoTilesMatrix(std::ifstream &file);
+    void fromXMLtoTilesMatrix(std::ifstream &file, int lastLineSkipped);
 };
 
 
