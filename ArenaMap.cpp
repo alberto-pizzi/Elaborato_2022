@@ -19,8 +19,8 @@ void ArenaMap::createMap(int map) {
     switch (map) {
         case desert:
             readFile.open(""); //FIXME add file
-            if (nLayers(readFile) == 0) {
-                //TODO error message (no layers found)
+            if (layerLine(readFile) == 0) {
+                //TODO error message (no layers found) / exceptions
             } else {
                 //TODO write code
             }
@@ -30,14 +30,28 @@ void ArenaMap::createMap(int map) {
 
 }
 
-int ArenaMap::nLayers(std::ifstream &file) {
-    int count = 0;
-    std::string tag = "</layer>";
-    //TODO implement it
+int ArenaMap::layerLine(std::ifstream &file, std::string layerName) {
+    //FIXME implement tagID for fast research
+    int countLayers = 0;
+    std::string tag = "name=";
+    std::string searchTag = tag + '"' + layerName + '"';
+    std::string line;
+    //restart reading
+    file.clear();
+    file.seekg(std::ios::beg);
+    //start reading
+    while (!file.eof()) {
+        countLayers++;
+        getline(file, line);
+        if (line.find(searchTag, 0) != std::string::npos)
+            break;
+    }
+    //this method return the first line to start reading map
+    return countLayers + 1;
 }
 
-void ArenaMap::fromXMLtoMatrix(std::ifstream &file) {
-    //FIXME check if file was been reading correctly
+void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file) {
+    //FIXME implement skipping loop and fix this method for xml formatting (spaces...)
     int i = 0;
     std::string line, number;
     while ((getline(file, line)) && (i < maxRowTiles)) {
@@ -50,6 +64,3 @@ void ArenaMap::fromXMLtoMatrix(std::ifstream &file) {
     }
 }
 
-int ArenaMap::layerLine(std::ifstream &file) {
-
-}

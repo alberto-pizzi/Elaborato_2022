@@ -43,11 +43,9 @@ public:
     //TODO implement methods
     void createMap(int map);
 
-    int nLayers(std::ifstream &file);
+    int layerLine(std::ifstream &file, std::string layerName);
 
-    int layerLine(std::ifstream &file);
-
-    void fromXMLtoMatrix(std::ifstream &file);
+    void fromXMLtoTilesMatrix(std::ifstream &file);
 };
 
 
