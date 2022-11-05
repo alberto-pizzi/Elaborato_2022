@@ -7,6 +7,7 @@
 void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
+    this->game->window.draw(this->arenaMap->drawMap());
 
 }
 
@@ -54,13 +55,10 @@ PlayState::PlayState(Game *game) {
 }
 
 void PlayState::whichMap() {
-    //FIXME add other maps
-    //for adding other maps, you must update enum/nMap/createMap
-    enum maps {
-        desert = 0,
-    };
+    //FIXME add other maps (90x45 tiles)
+    //WARNING: for adding other maps, you must update nMap/createMap and enum in ArenaMap.h
     int nMap = 1;
-    srand(time(NULL));
+    srand(time(nullptr));
     int map = rand() % nMap;
 
     this->arenaMap->createMap(map);

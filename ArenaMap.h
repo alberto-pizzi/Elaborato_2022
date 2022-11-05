@@ -15,34 +15,37 @@
 #include <SFML/System.hpp>
 
 #include "PosEntity.h"
+#include "TextureManager.h"
 
 enum maps {
-    desert = 0
+    desert = 0,
 };
 
 class ArenaMap {
 private:
     std::ifstream readFile;
+    TextureManager texmgr;
 
     class Tile {
     public:
         bool walkable;
-        int posTileX;
-        int posTileY;
+        sf::Vector2f posTile;
         int tileNumber;
         int layer;
-        sf::Texture texture;
-        sf::Sprite sprite;
+        sf::Texture tileTexture;
+        sf::Sprite tileSprite;
 
-        explicit Tile(int tile, int layerNumber, int map);
+        explicit Tile(int tile, int layerNumber, int map, TextureManager texManager);
 
         bool isWalkable(int tile, int layerNumber, int chosenMap);
+
+        void addTexturesToTiles();
     };
 
 protected:
     //TODO insert game view
-    int maxRowTiles = tilemapDimensions(readFile, 'h');
-    int maxColumnTiles = tilemapDimensions(readFile, 'w');
+    int maxRowTiles = tileMapDimensions(readFile, 'h');
+    int maxColumnTiles = tileMapDimensions(readFile, 'w');
     std::unique_ptr<PosEntity> posEntity;
     std::vector<Tile> tiles; //matrix in the form of a vector
     //WARNING: update this array and enum for adding other maps
@@ -52,15 +55,20 @@ protected:
 public:
     void createMap(int chosenMap);
 
-    int layerLine(std::ifstream &file, std::string layerName);
+    int layerStartVectorIndex(int layerNumber);
 
-    int countLayers(std::ifstream &file);
+    int totalLayers(std::ifstream &file);
 
     void fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap);
 
-    int tilemapDimensions(std::ifstream &file, char whichDim);
+    int tileMapDimensions(std::ifstream &file, char whichDim);
 
-    void drawMap();
+    void loadTextures(int chosenMap);
+
+    void fromMatrixToLayerMap(int layerNumber);
+
+    sf::Sprite drawMap(); //TODO implement it
+
 };
 
 

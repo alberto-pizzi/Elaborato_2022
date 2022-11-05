@@ -9,23 +9,16 @@
 #include <string>
 #include <map>
 
-//FIXME change array implementation to solve error OpenGL
 class TextureManager {
 private:
-
     // Array of textures used
     std::map<std::string, sf::Texture> textures;
-
 public:
     TextureManager();
 
-    // Add a texture from a file
-    void loadTexture(const std::string &name, const std::string &filename);
+    void loadTexture(std::string name, std::string fileName);
 
-    // Translate an id into a reference
-    sf::Texture &getTextureRef(const std::string &texture);
-
-
+    sf::Texture &getTextureRef(std::string name);
 };
 
 

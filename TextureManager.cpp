@@ -5,19 +5,17 @@
 #include "TextureManager.h"
 
 
-void TextureManager::loadTexture(const std::string &name, const std::string &filename) {
+void TextureManager::loadTexture(std::string name, std::string fileName) {
     // Load the texture
     sf::Texture tex;
-    tex.loadFromFile(filename);
+    tex.loadFromFile(fileName);
 
     // Add it to the list of textures
     this->textures[name] = tex;
 }
 
-sf::Texture &TextureManager::getTextureRef(const std::string &texture) {
-    return this->textures.at(texture);
+sf::Texture &TextureManager::getTextureRef(std::string name) {
+    return this->textures[name];
 }
 
-TextureManager::TextureManager() {
-
-}
+TextureManager::TextureManager() = default;

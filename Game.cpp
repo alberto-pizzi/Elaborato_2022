@@ -45,16 +45,17 @@ void Game::gameLoop() {
 }
 
 Game::Game() {
-    this->loadTextures();
+    sf::Context context; //it is used to fix an error on OpenGL()
 
+    this->loadTextures();
     this->window.create(sf::VideoMode(1280, 720), "Game_window");
     this->window.setFramerateLimit(60);
-
     this->background.setTexture(this->texmgr.getTextureRef("background"));
 }
 
 Game::~Game() {
-    while (!this->states.empty()) popState();
+    while (!this->states.empty())
+        popState();
 }
 
 void Game::loadTextures() {

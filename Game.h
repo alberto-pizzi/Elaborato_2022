@@ -17,7 +17,6 @@ class GameState;
 class Game {
 private:
     void loadTextures();
-
 public:
     Game();
 
