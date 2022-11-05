@@ -7,8 +7,8 @@
 void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
-    this->game->window.draw(this->arenaMap->drawMap());
-
+    //this->game->window.draw(this->arenaMap->drawMap());
+    this->arenaMap->drawMap(this->game->window, 2);
 }
 
 void PlayState::update(float dt) {

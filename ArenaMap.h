@@ -38,8 +38,6 @@ private:
         explicit Tile(int tile, int layerNumber, int map, TextureManager texManager);
 
         bool isWalkable(int tile, int layerNumber, int chosenMap);
-
-        void addTexturesToTiles();
     };
 
 protected:
@@ -59,15 +57,17 @@ public:
 
     int totalLayers(std::ifstream &file);
 
-    void fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap);
+    void fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap);
 
     int tileMapDimensions(std::ifstream &file, char whichDim);
 
     void loadTextures(int chosenMap);
 
-    void fromMatrixToLayerMap(int layerNumber);
+    void fromMatrixToLayerMapPos(int layerNumber);
 
-    sf::Sprite drawMap(); //TODO implement it
+    void addTexturesToTiles(int layerNumber);
+
+    void drawMap(sf::RenderWindow &window, int layerNumber);
 
 };
 

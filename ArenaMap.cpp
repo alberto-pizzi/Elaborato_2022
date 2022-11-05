@@ -28,7 +28,6 @@ ArenaMap::Tile::Tile(int tile, int layerNumber, int map, TextureManager texManag
     this->layer = layerNumber;
     this->walkable = isWalkable(tile, layerNumber, map);
     this->tileSprite.setTexture(texManager.getTextureRef("desert"));
-    addTexturesToTiles();
 }
 
 void ArenaMap::createMap(int chosenMap) {
@@ -37,9 +36,12 @@ void ArenaMap::createMap(int chosenMap) {
         case desert:
             readFile.open(this->map[desert]); //FIXME add exception for correct reading
             //TODO implement it (here and in PlayState)
-            fromXMLtoTilesMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
+            fromXMLtoTilesToMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
+            for (int i = 0; i < totalLayers(readFile); i++) {
+                fromMatrixToLayerMapPos(i);
+                addTexturesToTiles(i);
+            }
             readFile.close();
-            drawMap();
             break;
     }
 
@@ -59,7 +61,7 @@ int ArenaMap::layerStartVectorIndex(int layerNumber) {
         return vectorIndex;
 }
 
-void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap) {
+void ArenaMap::fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap) {
     int i = 0;
     std::string line, number;
     int totLayers = totalLayers(readFile);
@@ -125,33 +127,41 @@ void ArenaMap::loadTextures(int chosenMap) {
     }
 }
 
-sf::Sprite ArenaMap::drawMap() {
+void ArenaMap::drawMap(sf::RenderWindow &window, int layerNumber) {
+    int startIndex = layerStartVectorIndex(layerNumber);
 
+    for (int i = startIndex; i < maxRowTiles * layerNumber; i++) {
+        for (int j = startIndex; j < maxColumnTiles * layerNumber; j++) {
+            window.draw(tiles[i * maxColumnTiles + j].tileSprite);
+        }
+    }
 }
 
-void ArenaMap::fromMatrixToLayerMap(int layerNumber) {
+void ArenaMap::fromMatrixToLayerMapPos(int layerNumber) {
     float pixel = 32, countX, countY = 0;
     int startIndex = layerStartVectorIndex(layerNumber);
 
-    for (int i = startIndex; i < maxRowTiles; i++) {
+    for (int i = startIndex; i < maxRowTiles * layerNumber; i++) {
         countX = 0;
-        for (int j = startIndex; j < maxColumnTiles; j++) {
+        for (int j = startIndex; j < maxColumnTiles * layerNumber; j++) {
             countX++;
             tiles[i * maxColumnTiles + j].posTile.x = countX * pixel * (float) tiles[i * maxColumnTiles + j].tileNumber;
         }
-
         countY++;
         tiles[i * maxColumnTiles].posTile.y = countY * pixel * (float) tiles[i * maxColumnTiles].tileNumber;
     }
 
-
 }
 
-void ArenaMap::Tile::addTexturesToTiles() { //FIXME call this after fromMatrixToLayerMap
+void ArenaMap::addTexturesToTiles(int layerNumber) {
+    int startIndex = layerStartVectorIndex(layerNumber);
     int pixel = 32;
 
-    tileSprite.setTexture(tileTexture);
-    tileSprite.setTextureRect(sf::IntRect((int) posTile.x, (int) posTile.y, pixel, pixel));
-
+    for (int i = startIndex; i < maxRowTiles * maxColumnTiles * layerNumber; i++) {
+        tiles[i].tileSprite.setTexture(tiles[i].tileTexture);
+        tiles[i].tileSprite.setTextureRect(
+                sf::IntRect((int) tiles[i].posTile.x, (int) tiles[i].posTile.y, pixel, pixel));
+        tiles[i].tileSprite.setPosition(tiles[i].posTile);
+    }
 }
 
