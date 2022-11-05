@@ -9,44 +9,43 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 
 #include "PosEntity.h"
 
-//WARNING: this values need to be updated when the overall tile size is changed (in XML)
-//FIXME remove const and implement a method for read width and height from xml (using STL for matrix)
-const int maxColumnTiles = 90;
-const int maxRowTiles = 45;
-
 class ArenaMap {
-
 private:
     std::ifstream readFile;
 
     class Tile {
     public:
-        Tile(bool walkable);
-
+        explicit Tile(int tile);
         bool walkable;
         int posTileX;
         int posTileY;
+        int tileNumber;
 
         //TODO implement it
-        bool isTraversable();
+        bool isTraversable(int tile);
     };
 
 protected:
     //TODO insert game view
-    int maxWidth;
-    int maxHeight;
+    int maxRowTiles = tilemapDimensions(readFile, 'h');
+    int maxColumnTiles = tilemapDimensions(readFile, 'w');
     std::unique_ptr<PosEntity> posEntity;
-    Tile tile[maxRowTiles][maxColumnTiles];
+    std::vector<Tile> tiles; //matrix in the form of a vector
 public:
-    //TODO implement methods
     void createMap(int map);
 
     int layerLine(std::ifstream &file, std::string layerName);
 
-    void fromXMLtoTilesMatrix(std::ifstream &file, int lastLineSkipped);
+    void fromXMLtoTilesMatrix(std::ifstream &file, int lastLineSkipped, int maxColumnTiles, int maxRowTiles);
+
+    int tilemapDimensions(std::ifstream &file, char whichDim);
 };
 
 
