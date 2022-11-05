@@ -4,17 +4,33 @@
 
 #include "ArenaMap.h"
 
-bool ArenaMap::Tile::isTraversable(int tile) {
-    std::vector<int> walkableTiles;
-
-
+bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int map) {
+    //FIXME improve it (remove all enum and implement a map manager or similar)
+    enum maps {
+        desert = 0,
+    };
+    switch (map) {
+        case desert:
+            if ((layerNumber == 2) && (tile != 0)) {
+                for (int i = 41; i <= 288; i++) {
+                    if (tile == i)
+                        return true;
+                    else if (i == 48)
+                        i = 200;
+                    else if (i == 248)
+                        i = 280;
+                }
+            }
+            break;
+    }
     return false;
 }
 
-ArenaMap::Tile::Tile(int tile) {
+ArenaMap::Tile::Tile(int tile, int layerNumber, int map) {
+    //TODO initialize other attributes
     this->tileNumber = tile;
-
-
+    this->layer = layerNumber;
+    this->walkable = isWalkable(tile, layerNumber, map);
 }
 
 void ArenaMap::createMap(int map) {
@@ -25,7 +41,7 @@ void ArenaMap::createMap(int map) {
         case desert:
             readFile.open("res/maps/desertMap.xml"); //FIXME add exception for correct reading
             //TODO implement it (here and in PlayState)
-            fromXMLtoTilesMatrix(readFile, layerLine(readFile, "principal_floor"), maxRowTiles, maxColumnTiles);
+            fromXMLtoTilesMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
 
             readFile.close();
             break;
@@ -52,23 +68,23 @@ int ArenaMap::layerLine(std::ifstream &file, std::string layerName) {
     return countLayers;
 }
 
-void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int lastLineSkipped, int maxColumnTiles, int maxRowTiles) {
-    int i = 0, skipCount = 0;
+void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int map) {
+    int i = 0;
     std::string line, number;
+    int totalLayers = countLayers(readFile);
     //restart reading
     file.clear();
     file.seekg(std::ios::beg);
     //start reading
-    while ((getline(file, line)) && (skipCount < lastLineSkipped)) {
-        skipCount++;
-    }
-    while ((getline(file, line)) && (i < maxRowTiles)) {
-        std::stringstream ss(line);
-        for (int j = 0; j < maxColumnTiles; j++) {
-            getline(ss, number, ',');
-            tiles.emplace_back(stoi(number));
+    for (int countLayer = 0; countLayer < totalLayers; countLayer++) {
+        while ((getline(file, line)) && (i < maxI)) {
+            std::stringstream ss(line);
+            for (int j = 0; j < maxJ; j++) {
+                getline(ss, number, ',');
+                tiles.emplace_back(stoi(number), countLayer + 1, map);
+            }
+            i++;
         }
-        i++;
     }
 }
 
@@ -91,5 +107,21 @@ int ArenaMap::tilemapDimensions(std::ifstream &file, char whichDim) {
         }
     }
     return dimension;
+}
+
+int ArenaMap::countLayers(std::ifstream &file) {
+    int count = 0;
+    std::string searchTag = "</layer>";
+    std::string line;
+    //restart reading
+    file.clear();
+    file.seekg(std::ios::beg);
+    //start reading
+    while (!file.eof()) {
+        getline(file, line);
+        if (line.find(searchTag, 0) != std::string::npos)
+            count++;
+    }
+    return count;
 }
 

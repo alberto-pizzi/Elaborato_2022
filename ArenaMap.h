@@ -22,14 +22,15 @@ private:
 
     class Tile {
     public:
-        explicit Tile(int tile);
         bool walkable;
         int posTileX;
         int posTileY;
         int tileNumber;
+        int layer;
 
-        //TODO implement it
-        bool isTraversable(int tile);
+        explicit Tile(int tile, int layerNumber, int map);
+
+        bool isWalkable(int tile, int layerNumber, int map);
     };
 
 protected:
@@ -43,7 +44,9 @@ public:
 
     int layerLine(std::ifstream &file, std::string layerName);
 
-    void fromXMLtoTilesMatrix(std::ifstream &file, int lastLineSkipped, int maxColumnTiles, int maxRowTiles);
+    int countLayers(std::ifstream &file);
+
+    void fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int map);
 
     int tilemapDimensions(std::ifstream &file, char whichDim);
 };
