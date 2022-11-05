@@ -4,12 +4,8 @@
 
 #include "ArenaMap.h"
 
-bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int map) {
-    //FIXME improve it (remove all enum and implement a map manager or similar)
-    enum maps {
-        desert = 0,
-    };
-    switch (map) {
+bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
+    switch (chosenMap) {
         case desert:
             if ((layerNumber == 2) && (tile != 0)) {
                 for (int i = 41; i <= 288; i++) {
@@ -33,13 +29,11 @@ ArenaMap::Tile::Tile(int tile, int layerNumber, int map) {
     this->walkable = isWalkable(tile, layerNumber, map);
 }
 
-void ArenaMap::createMap(int map) {
-    enum maps {
-        desert = 0
-    };
-    switch (map) {
+void ArenaMap::createMap(int chosenMap) {
+
+    switch (chosenMap) {
         case desert:
-            readFile.open("res/maps/desertMap.xml"); //FIXME add exception for correct reading
+            readFile.open(this->map[desert]); //FIXME add exception for correct reading
             //TODO implement it (here and in PlayState)
             fromXMLtoTilesMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
 
@@ -68,7 +62,7 @@ int ArenaMap::layerLine(std::ifstream &file, std::string layerName) {
     return countLayers;
 }
 
-void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int map) {
+void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap) {
     int i = 0;
     std::string line, number;
     int totalLayers = countLayers(readFile);
@@ -81,7 +75,7 @@ void ArenaMap::fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int
             std::stringstream ss(line);
             for (int j = 0; j < maxJ; j++) {
                 getline(ss, number, ',');
-                tiles.emplace_back(stoi(number), countLayer + 1, map);
+                tiles.emplace_back(stoi(number), countLayer + 1, chosenMap);
             }
             i++;
         }
@@ -123,5 +117,11 @@ int ArenaMap::countLayers(std::ifstream &file) {
             count++;
     }
     return count;
+}
+
+void ArenaMap::drawMap() {
+    int pixel = 32;
+
+
 }
 

@@ -16,6 +16,10 @@
 
 #include "PosEntity.h"
 
+enum maps {
+    desert = 0
+};
+
 class ArenaMap {
 private:
     std::ifstream readFile;
@@ -27,10 +31,12 @@ private:
         int posTileY;
         int tileNumber;
         int layer;
+        sf::Texture texture;
+        sf::Sprite sprite;
 
         explicit Tile(int tile, int layerNumber, int map);
 
-        bool isWalkable(int tile, int layerNumber, int map);
+        bool isWalkable(int tile, int layerNumber, int chosenMap);
     };
 
 protected:
@@ -39,16 +45,22 @@ protected:
     int maxColumnTiles = tilemapDimensions(readFile, 'w');
     std::unique_ptr<PosEntity> posEntity;
     std::vector<Tile> tiles; //matrix in the form of a vector
+    //WARNING: update this array and enum for adding other maps
+    std::string map[1] = {
+            "res/maps/desertMap.xml"
+    };
 public:
-    void createMap(int map);
+    void createMap(int chosenMap);
 
     int layerLine(std::ifstream &file, std::string layerName);
 
     int countLayers(std::ifstream &file);
 
-    void fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int map);
+    void fromXMLtoTilesMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap);
 
     int tilemapDimensions(std::ifstream &file, char whichDim);
+
+    void drawMap();
 };
 
 
