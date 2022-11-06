@@ -24,12 +24,12 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
 
 ArenaMap::Tile::Tile(int tile, int layerNumber, int map, TextureManager texManager) {
     //TODO initialize other attributes
-    std::cout << "Sono il costruttore Tile" << std::endl;
+    //std::cout << "Sono il costruttore Tile" << std::endl;
     this->tileNumber = tile;
     this->layer = layerNumber;
     //this->walkable = isWalkable(tile, layerNumber, map);
     this->walkable = true;
-    this->tileSprite.setTexture(texManager.getTextureRef("desert"));
+    //this->tileSprite.setTexture(texManager.getTextureRef("desert"));
 }
 
 void ArenaMap::loadMap(int chosenMap) {
@@ -37,16 +37,12 @@ void ArenaMap::loadMap(int chosenMap) {
 
     std::cout << "sono in case desert" << std::endl;
     //readFile.open(this->mapList[desert]); //FIXME add exception for correct reading
-    readFile.open(this->mapList[chosenMap], std::ios::in | std::ios::binary);
-    if (!readFile)
-        std::cerr << "errore file" << std::endl;
-    else {
-        std::cout << "apertura corretta" << std::endl;
-        fromXMLtoTilesToMatrix(readFile, maxColumnTiles, maxRowTiles, desert);
-        std::cout << "PRESTAMPA" << std::endl;
-        stampa(6);
-    }
-    readFile.close();
+
+    std::cout << "apertura corretta" << std::endl;
+    fromXMLtoTilesToMatrix(maxColumnTiles, maxRowTiles, chosenMap);
+    std::cout << "PRESTAMPA" << std::endl;
+    stampa(6);
+
     //TODO implement it (here and in PlayState)
 /*
             for (int i = 0; i < totalLayers(readFile); i++) {
@@ -69,37 +65,45 @@ ArenaMap::ArenaMap(int chosenMap) {
 
 }
 
-void ArenaMap::fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap) {
+void ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
     int i = 0, openingLines = 6, closingLines = 4;
-    //int totLayers = totalLayers(readFile);
-    int totLayers = 6;
-    bool beginFile = true;
-    std::string line, number;
-    //load textures' map
-    loadTextures(chosenMap);
-    //restart reading
-    file.clear();
-    file.seekg(std::ios::beg);
-    //skip initial XML lines
-    if (beginFile) {
-        for (int skipLines = 0; skipLines < openingLines; skipLines++)
-            getline(file, line);
-        beginFile = false;
-    }
-    //start reading
-    for (int countLayer = 0; countLayer < totLayers; countLayer++) {
-        while ((getline(file, line)) && (i < maxI)) {
-            std::stringstream ss(line);
-            for (int j = 0; j < maxJ; j++) {
-                getline(ss, number, ',');
-                tiles.emplace_back(
-                        Tile(std::stoi(number), countLayer + 1, chosenMap, texmgr)); //FIXME fix vector filling
-            }
-            i++;
+
+    std::ifstream file;
+    file.open(this->mapList[chosenMap]);
+    if (!file) {
+        //TODO Error message
+    } else {
+        //int totLayers = totalLayers(readFile);
+        int totLayers = 6;
+        bool beginFile = true;
+        std::string line, number;
+        //load textures' map
+        loadTextures(chosenMap);
+        //restart reading
+        file.clear();
+        file.seekg(std::ios::beg);
+        //skip initial XML lines
+        if (beginFile) {
+            for (int skipLines = 0; skipLines < openingLines; skipLines++)
+                getline(file, line);
+            beginFile = false;
         }
-        i = 0;
-        for (int skipLines = 0; skipLines < (closingLines - 1); skipLines++)
-            getline(file, line);
+        //start reading
+        for (int countLayer = 0; countLayer < totLayers; countLayer++) {
+            while ((getline(file, line)) && (i < maxI)) {
+                std::stringstream ss(line);
+                for (int j = 0; j < maxJ; j++) {
+                    getline(ss, number, ',');
+                    tiles.emplace_back(
+                            Tile(std::stoi(number), countLayer + 1, chosenMap, texmgr)); //FIXME fix vector filling
+                }
+                i++;
+            }
+            i = 0;
+            for (int skipLines = 0; skipLines < (closingLines - 1); skipLines++)
+                getline(file, line);
+        }
+        file.close();
     }
 }
 
@@ -134,5 +138,7 @@ void ArenaMap::stampa(int totLayers) {
         }
         std::cout << std::endl;
     }
+
+    std::cout << "TOTALE: " << tiles.size() << std::endl;
 }
 

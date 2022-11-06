@@ -61,7 +61,7 @@ public:
 
     virtual ~ArenaMap();
 
-    void fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap);
+    void fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap);
 
     int totalLayers(std::ifstream &file);
 
