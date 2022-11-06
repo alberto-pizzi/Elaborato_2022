@@ -5,6 +5,7 @@
 #ifndef ELABORATO_ARENAMAP_H
 #define ELABORATO_ARENAMAP_H
 
+#include <iostream>
 #include <memory>
 #include <fstream>
 #include <sstream>
@@ -25,6 +26,7 @@ class ArenaMap {
 private:
     std::ifstream readFile;
     TextureManager texmgr;
+    sf::Texture tileSheet;
 
     class Tile {
     public:
@@ -32,7 +34,7 @@ private:
         sf::Vector2f posTile;
         int tileNumber;
         int layer;
-        sf::Texture tileTexture;
+
         sf::Sprite tileSprite;
 
         explicit Tile(int tile, int layerNumber, int map, TextureManager texManager);
@@ -42,32 +44,31 @@ private:
 
 protected:
     //TODO insert game view
-    int maxRowTiles = tileMapDimensions(readFile, 'h');
-    int maxColumnTiles = tileMapDimensions(readFile, 'w');
-    std::unique_ptr<PosEntity> posEntity;
+    int maxRowTiles = 45; //FIXME replace with method
+    int maxColumnTiles = 90;
+    int totalTiles = maxRowTiles * maxColumnTiles;
     std::vector<Tile> tiles; //matrix in the form of a vector
     //WARNING: update this array and enum for adding other maps
-    std::string map[1] = {
-            "res/maps/desertMap.xml"
+    std::string mapList[1] = {
+            "res/maps/desertMap.xml",
     };
 public:
-    void createMap(int chosenMap);
+    void loadMap(int chosenMap);
 
-    int layerStartVectorIndex(int layerNumber);
+    ArenaMap();
 
-    int totalLayers(std::ifstream &file);
+    explicit ArenaMap(int chosenMap);
+
+    virtual ~ArenaMap();
 
     void fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap);
 
-    int tileMapDimensions(std::ifstream &file, char whichDim);
+    int totalLayers(std::ifstream &file);
 
     void loadTextures(int chosenMap);
 
-    void fromMatrixToLayerMapPos(int layerNumber);
+    void stampa();
 
-    void addTexturesToTiles(int layerNumber);
-
-    void drawMap(sf::RenderWindow &window, int layerNumber);
 
 };
 

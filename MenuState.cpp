@@ -30,6 +30,7 @@ void MenuState::handleInput() {
     sf::Event event;
 
     while (this->game->window.pollEvent(event)) {
+
         switch (event.type) {
             // Close the window
             case sf::Event::Closed:
@@ -61,13 +62,13 @@ void MenuState::handleInput() {
                 }
                 break;
             }
-            default:
-                break;
+                // default:
+                //break;
         }
     }
 }
 
-void MenuState::loadgame() {
+void MenuState::loadPlay() {
     this->game->pushState(new PlayState(this->game));
 }
 
@@ -135,10 +136,11 @@ void MenuState::moveDown() {
 void MenuState::select() {
     switch (nButtonSelected) {
         case Play:
-            this->loadgame();
+            this->loadPlay();
             break;
         case Stats:
             //TODO implement stats state
+            std::cout << "sono stats" << std::endl;
             break;
         case Exit:
             this->game->window.close();

@@ -13,7 +13,7 @@ class MenuState : public GameState {
 private:
     sf::View view;
 
-    void loadgame();
+    void loadPlay();
 
     int nButtonSelected;
     sf::Font font;

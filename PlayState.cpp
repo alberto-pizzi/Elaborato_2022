@@ -6,13 +6,14 @@
 
 void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
-    //this->game->window.draw(this->game->background);
+    this->game->window.draw(this->game->background);
     //this->game->window.draw(this->arenaMap->drawMap());
-    this->arenaMap->drawMap(this->game->window, 2);
+    //this->arenaMap->drawMap(this->game->window, 2);
 }
 
 void PlayState::update(float dt) {
 //TODO insert game implementation
+    std::cout << "sono update" << std::endl;
 }
 
 void PlayState::handleInput() {
@@ -36,7 +37,9 @@ void PlayState::handleInput() {
                         float(event.size.height) / float(this->game->background.getTexture()->getSize().y));
                 break;
             }
-            default:
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
+                    this->game->window.close();
                 break;
         }
     }
@@ -52,14 +55,21 @@ PlayState::PlayState(Game *game) {
     pos *= 0.5f;
     this->guiView.setCenter(pos);
     this->gameView.setCenter(pos);
+    //random mapList
+    std::cout << "Sono playstate" << std::endl;
+
+    this->whichMap();
+
 }
 
 void PlayState::whichMap() {
     //FIXME add other maps (90x45 tiles)
-    //WARNING: for adding other maps, you must update nMap/createMap and enum in ArenaMap.h
+    //WARNING: for adding other maps, you must update nMap/loadMap and enum in ArenaMap.h
     int nMap = 1;
-    srand(time(nullptr));
+    srand(time(NULL));
     int map = rand() % nMap;
 
-    this->arenaMap->createMap(map);
+    //create mapList
+
+    arenaMap = new ArenaMap(map);
 }

@@ -24,45 +24,51 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
 
 ArenaMap::Tile::Tile(int tile, int layerNumber, int map, TextureManager texManager) {
     //TODO initialize other attributes
+    std::cout << "Sono il costruttore Tile" << std::endl;
     this->tileNumber = tile;
     this->layer = layerNumber;
     this->walkable = isWalkable(tile, layerNumber, map);
     this->tileSprite.setTexture(texManager.getTextureRef("desert"));
 }
 
-void ArenaMap::createMap(int chosenMap) {
+void ArenaMap::loadMap(int chosenMap) {
 
-    switch (chosenMap) {
-        case desert:
-            readFile.open(this->map[desert]); //FIXME add exception for correct reading
-            //TODO implement it (here and in PlayState)
-            fromXMLtoTilesToMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
+
+    std::cout << "sono in case desert" << std::endl;
+    //readFile.open(this->mapList[desert]); //FIXME add exception for correct reading
+    readFile.open(this->mapList[chosenMap], std::ios::in | std::ios::binary);
+    if (!readFile)
+        std::cerr << "errore file" << std::endl;
+    else {
+        std::cout << "apertura corretta" << std::endl;
+        fromXMLtoTilesToMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
+        stampa();
+    }
+    readFile.close();
+    //TODO implement it (here and in PlayState)
+/*
             for (int i = 0; i < totalLayers(readFile); i++) {
                 fromMatrixToLayerMapPos(i);
                 addTexturesToTiles(i);
             }
-            readFile.close();
-            break;
-    }
-
+*/
 }
 
-int ArenaMap::layerStartVectorIndex(int layerNumber) {
-    int vectorIndex = 0;
-    for (int i = 0; i < tiles.size(); i++) {
-        vectorIndex++;
-        if (maxColumnTiles * maxRowTiles * (layerNumber - 1))
-            break;
-    }
-    if (vectorIndex <= 1) { //vector index = 0
-        vectorIndex = 0;
-        return vectorIndex;
-    } else
-        return vectorIndex;
+ArenaMap::~ArenaMap() {
+}
+
+ArenaMap::ArenaMap() {
+    std::cout << "Sono il costruttore mappa" << std::endl;
+}
+
+ArenaMap::ArenaMap(int chosenMap) {
+    std::cout << "Sono il costruttore mappa con parametro" << std::endl;
+    loadMap(chosenMap);
+
 }
 
 void ArenaMap::fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap) {
-    int i = 0;
+    int i = 0, p;
     std::string line, number;
     int totLayers = totalLayers(readFile);
     loadTextures(chosenMap);
@@ -75,32 +81,12 @@ void ArenaMap::fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, i
             std::stringstream ss(line);
             for (int j = 0; j < maxJ; j++) {
                 getline(ss, number, ',');
-                tiles.emplace_back(stoi(number), countLayer + 1, chosenMap, texmgr);
+                tiles.emplace_back(
+                        Tile(std::stoi(number), countLayer + 1, chosenMap, texmgr)); //FIXME fix vector filling
             }
             i++;
         }
     }
-}
-
-int ArenaMap::tileMapDimensions(std::ifstream &file, char whichDim) {
-    int dimension = 0;
-    std::string searchTag, line;
-    if (whichDim == 'w')
-        searchTag = "width=";
-    else if (whichDim == 'h')
-        searchTag = "height=";
-    //restart reading
-    file.clear();
-    file.seekg(std::ios::beg);
-    //start reading
-    while (!file.eof()) {
-        getline(file, line, '"');
-        if (line.find(searchTag, 0) != std::string::npos) {
-            file >> dimension;
-            break;
-        }
-    }
-    return dimension;
 }
 
 int ArenaMap::totalLayers(std::ifstream &file) {
@@ -122,46 +108,17 @@ int ArenaMap::totalLayers(std::ifstream &file) {
 void ArenaMap::loadTextures(int chosenMap) {
     switch (chosenMap) {
         case desert:
-            texmgr.loadTexture("desert", "res/textures/desertTiles32x32.jpg");
+            texmgr.loadTexture("desert", "res/textures/desertTiles32x32.png");
             break;
     }
 }
 
-void ArenaMap::drawMap(sf::RenderWindow &window, int layerNumber) {
-    int startIndex = layerStartVectorIndex(layerNumber);
-
-    for (int i = startIndex; i < maxRowTiles * layerNumber; i++) {
-        for (int j = startIndex; j < maxColumnTiles * layerNumber; j++) {
-            window.draw(tiles[i * maxColumnTiles + j].tileSprite);
+void ArenaMap::stampa() {
+    for (int i = 0; i < maxRowTiles; i++) {
+        for (int j = 0, countX = 0; countX < maxColumnTiles; j++, countX++) {
+            std::cout << tiles[i * maxColumnTiles + j].tileNumber << " ";
         }
-    }
-}
-
-void ArenaMap::fromMatrixToLayerMapPos(int layerNumber) {
-    float pixel = 32, countX, countY = 0;
-    int startIndex = layerStartVectorIndex(layerNumber);
-
-    for (int i = startIndex; i < maxRowTiles * layerNumber; i++) {
-        countX = 0;
-        for (int j = startIndex; j < maxColumnTiles * layerNumber; j++) {
-            countX++;
-            tiles[i * maxColumnTiles + j].posTile.x = countX * pixel * (float) tiles[i * maxColumnTiles + j].tileNumber;
-        }
-        countY++;
-        tiles[i * maxColumnTiles].posTile.y = countY * pixel * (float) tiles[i * maxColumnTiles].tileNumber;
-    }
-
-}
-
-void ArenaMap::addTexturesToTiles(int layerNumber) {
-    int startIndex = layerStartVectorIndex(layerNumber);
-    int pixel = 32;
-
-    for (int i = startIndex; i < maxRowTiles * maxColumnTiles * layerNumber; i++) {
-        tiles[i].tileSprite.setTexture(tiles[i].tileTexture);
-        tiles[i].tileSprite.setTextureRect(
-                sf::IntRect((int) tiles[i].posTile.x, (int) tiles[i].posTile.y, pixel, pixel));
-        tiles[i].tileSprite.setPosition(tiles[i].posTile);
+        std::cout << std::endl;
     }
 }
 
