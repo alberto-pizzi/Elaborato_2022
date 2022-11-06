@@ -27,7 +27,8 @@ ArenaMap::Tile::Tile(int tile, int layerNumber, int map, TextureManager texManag
     std::cout << "Sono il costruttore Tile" << std::endl;
     this->tileNumber = tile;
     this->layer = layerNumber;
-    this->walkable = isWalkable(tile, layerNumber, map);
+    //this->walkable = isWalkable(tile, layerNumber, map);
+    this->walkable = true;
     this->tileSprite.setTexture(texManager.getTextureRef("desert"));
 }
 
@@ -42,6 +43,7 @@ void ArenaMap::loadMap(int chosenMap) {
     else {
         std::cout << "apertura corretta" << std::endl;
         fromXMLtoTilesToMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
+        std::cout << "PRESTAMPA" << std::endl;
         stampa();
     }
     readFile.close();
@@ -68,13 +70,22 @@ ArenaMap::ArenaMap(int chosenMap) {
 }
 
 void ArenaMap::fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, int chosenMap) {
-    int i = 0, p;
+    int i = 0, openingLines = 6, closingLines = 4;
+    //int totLayers = totalLayers(readFile);
+    int totLayers = 6;
+    bool beginFile = true;
     std::string line, number;
-    int totLayers = totalLayers(readFile);
+    //load textures' map
     loadTextures(chosenMap);
     //restart reading
     file.clear();
     file.seekg(std::ios::beg);
+    //skip initial XML lines
+    if (beginFile) {
+        for (int skipLines = 0; skipLines < openingLines; skipLines++)
+            getline(file, line);
+        beginFile = false;
+    }
     //start reading
     for (int countLayer = 0; countLayer < totLayers; countLayer++) {
         while ((getline(file, line)) && (i < maxI)) {
@@ -86,6 +97,9 @@ void ArenaMap::fromXMLtoTilesToMatrix(std::ifstream &file, int maxJ, int maxI, i
             }
             i++;
         }
+        i = 0;
+        for (int skipLines = 0; skipLines < (closingLines - 1); skipLines++)
+            getline(file, line);
     }
 }
 
