@@ -29,19 +29,23 @@ ArenaMap::Tile::Tile(int tile, int layerNumber, int map, TextureManager texManag
     this->layer = layerNumber;
     //this->walkable = isWalkable(tile, layerNumber, map);
     this->walkable = true;
-    //this->tileSprite.setTexture(texManager.getTextureRef("desert"));
+    this->tileSprite.setTexture(texManager.getTextureRef("desert"));
+    //this->tileSprite.setTextureRect(sf::IntRect())
 }
 
-void ArenaMap::loadMap(int chosenMap) {
+bool ArenaMap::loadMap(int chosenMap) {
 
 
     std::cout << "sono in case desert" << std::endl;
-    //readFile.open(this->mapList[desert]); //FIXME add exception for correct reading
 
     std::cout << "apertura corretta" << std::endl;
-    fromXMLtoTilesToMatrix(maxColumnTiles, maxRowTiles, chosenMap);
-    std::cout << "PRESTAMPA" << std::endl;
-    stampa(6);
+    if (fromXMLtoTilesToMatrix(maxColumnTiles, maxRowTiles, chosenMap)) { //FIXME add exception for correct reading
+        std::cout << "PRESTAMPA" << std::endl; //TODO remove cout
+        stampa(this->mapList[chosenMap].totLayers);
+        return true;
+    } else
+        return false;
+
 
     //TODO implement it (here and in PlayState)
 /*
@@ -55,26 +59,21 @@ void ArenaMap::loadMap(int chosenMap) {
 ArenaMap::~ArenaMap() {
 }
 
-ArenaMap::ArenaMap() {
-    std::cout << "Sono il costruttore mappa" << std::endl;
-}
-
 ArenaMap::ArenaMap(int chosenMap) {
     std::cout << "Sono il costruttore mappa con parametro" << std::endl;
-    loadMap(chosenMap);
+    if (!loadMap(chosenMap))
+        std::cerr << "Error during opening file" << std::endl;
 
 }
 
-void ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
+bool ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
     int i = 0, openingLines = 6, closingLines = 4;
-
     std::ifstream file;
-    file.open(this->mapList[chosenMap]);
+    file.open(this->mapList[chosenMap].namefile);
     if (!file) {
-        //TODO Error message
+        return false;
     } else {
-        //int totLayers = totalLayers(readFile);
-        int totLayers = 6;
+        int totLayers = this->mapList[chosenMap].totLayers;
         bool beginFile = true;
         std::string line, number;
         //load textures' map
@@ -104,23 +103,8 @@ void ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
                 getline(file, line);
         }
         file.close();
+        return true;
     }
-}
-
-int ArenaMap::totalLayers(std::ifstream &file) {
-    int count = 0;
-    std::string searchTag = "</layer>";
-    std::string line;
-    //restart reading
-    file.clear();
-    file.seekg(std::ios::beg);
-    //start reading
-    while (!file.eof()) {
-        getline(file, line);
-        if (line.find(searchTag, 0) != std::string::npos)
-            count++;
-    }
-    return count;
 }
 
 void ArenaMap::loadTextures(int chosenMap) {

@@ -48,22 +48,22 @@ protected:
     int maxColumnTiles = 90;
     int totalTiles = maxRowTiles * maxColumnTiles;
     std::vector<Tile> tiles; //matrix in the form of a vector
-    //WARNING: update this array and enum for adding other maps
-    std::string mapList[1] = {
-            "res/maps/desertMap.xml",
+    //WARNING: update this array and enum for adding other map
+    struct map {
+        std::string namefile;
+        int totLayers;
+    };
+    map mapList[1] = {
+            {"res/map/desertMap.xml", 6},
     };
 public:
-    void loadMap(int chosenMap);
-
-    ArenaMap();
-
     explicit ArenaMap(int chosenMap);
 
     virtual ~ArenaMap();
 
-    void fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap);
+    bool loadMap(int chosenMap);
 
-    int totalLayers(std::ifstream &file);
+    bool fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap);
 
     void loadTextures(int chosenMap);
 

@@ -63,8 +63,8 @@ PlayState::PlayState(Game *game) {
 }
 
 void PlayState::whichMap() {
-    //FIXME add other maps (90x45 tiles)
-    //WARNING: for adding other maps, you must update nMap/loadMap and enum in ArenaMap.h
+    //FIXME add other map (90x45 tiles)
+    //WARNING: for adding other map, you must update nMap/loadMap and enum in ArenaMap.h
     int nMap = 1;
     srand(time(NULL));
     int map = rand() % nMap;
