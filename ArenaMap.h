@@ -67,7 +67,7 @@ public:
 
     void loadTextures(int chosenMap);
 
-    void stampa();
+    void stampa(int totLayers);
 
 
 };

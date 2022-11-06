@@ -42,9 +42,9 @@ void ArenaMap::loadMap(int chosenMap) {
         std::cerr << "errore file" << std::endl;
     else {
         std::cout << "apertura corretta" << std::endl;
-        fromXMLtoTilesToMatrix(readFile, maxRowTiles, maxColumnTiles, desert);
+        fromXMLtoTilesToMatrix(readFile, maxColumnTiles, maxRowTiles, desert);
         std::cout << "PRESTAMPA" << std::endl;
-        stampa();
+        stampa(6);
     }
     readFile.close();
     //TODO implement it (here and in PlayState)
@@ -127,9 +127,9 @@ void ArenaMap::loadTextures(int chosenMap) {
     }
 }
 
-void ArenaMap::stampa() {
-    for (int i = 0; i < maxRowTiles; i++) {
-        for (int j = 0, countX = 0; countX < maxColumnTiles; j++, countX++) {
+void ArenaMap::stampa(int totLayers) {
+    for (int i = 0; i < maxRowTiles * totLayers; i++) {
+        for (int j = 0, countX = 0; countX < maxColumnTiles * totLayers; j++, countX++) {
             std::cout << tiles[i * maxColumnTiles + j].tileNumber << " ";
         }
         std::cout << std::endl;
