@@ -22,65 +22,59 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
     return false;
 }
 
-ArenaMap::Tile::Tile(int tile, int layerNumber, int map, TextureManager texManager) {
-    //TODO initialize other attributes
-    //std::cout << "Sono il costruttore Tile" << std::endl;
+ArenaMap::Tile::Tile(int tile, int map, int layerNumber, TextureManager texManager, int width, int height, int posX,
+                     int posY) { //FIXME check useless parameters
+
+    int count = 0;
+    bool found = false;
     this->tileNumber = tile;
-    this->layer = layerNumber;
-    //this->walkable = isWalkable(tile, layerNumber, map);
-    this->walkable = true;
+    this->walkable = true;  //TODO remove it
     this->tileSprite.setTexture(texManager.getTextureRef("desert"));
-    //this->tileSprite.setTextureRect(sf::IntRect())
+    for (int i = 0; (i < height / 32) && (!found); i++) {
+        for (int j = 0; (j < width / 32) && (!found); j++) {
+            if (this->tileNumber == count) {
+                this->tileSprite.setTextureRect(sf::IntRect(i * 32, j * 32, 32, 32));
+                this->tileSprite.setPosition(sf::Vector2f((float) posX, (float) posY));
+                found = true;
+            }
+            count++;
+        }
+    }
+
 }
 
 bool ArenaMap::loadMap(int chosenMap) {
-
-
-    std::cout << "sono in case desert" << std::endl;
-
-    std::cout << "apertura corretta" << std::endl;
     if (fromXMLtoTilesToMatrix(maxColumnTiles, maxRowTiles, chosenMap)) { //FIXME add exception for correct reading
-        std::cout << "PRESTAMPA" << std::endl; //TODO remove cout
-        stampa(this->mapList[chosenMap].totLayers);
+        print3DVector(this->mapList[chosenMap].totLayers);
+
         return true;
     } else
         return false;
-
-
-    //TODO implement it (here and in PlayState)
-/*
-            for (int i = 0; i < totalLayers(readFile); i++) {
-                fromMatrixToLayerMapPos(i);
-                addTexturesToTiles(i);
-            }
-*/
 }
 
 ArenaMap::~ArenaMap() {
 }
 
 ArenaMap::ArenaMap(int chosenMap) {
-    std::cout << "Sono il costruttore mappa con parametro" << std::endl;
-    if (!loadMap(chosenMap))
+    if (!loadMap(chosenMap)) //FIXME add exception
         std::cerr << "Error during opening file" << std::endl;
 
 }
 
 bool ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
     int i = 0, openingLines = 6, closingLines = 4;
+    int width = this->mapList[chosenMap].width;
+    int height = this->mapList[chosenMap].height;
     std::ifstream file;
-    file.open(this->mapList[chosenMap].namefile);
+    file.open(this->mapList[chosenMap].nameFile);
     if (!file) {
         return false;
     } else {
         int totLayers = this->mapList[chosenMap].totLayers;
         bool beginFile = true;
         std::string line, number;
-        //load textures' map
+        //load textures' Map
         loadTextures(chosenMap);
-        //restart reading
-        file.clear();
-        file.seekg(std::ios::beg);
         //skip initial XML lines
         if (beginFile) {
             for (int skipLines = 0; skipLines < openingLines; skipLines++)
@@ -89,15 +83,20 @@ bool ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
         }
         //start reading
         for (int countLayer = 0; countLayer < totLayers; countLayer++) {
+            std::vector<std::vector<Tile>> rows;
             while ((getline(file, line)) && (i < maxI)) {
+                std::vector<Tile> colums;
                 std::stringstream ss(line);
                 for (int j = 0; j < maxJ; j++) {
                     getline(ss, number, ',');
-                    tiles.emplace_back(
-                            Tile(std::stoi(number), countLayer + 1, chosenMap, texmgr)); //FIXME fix vector filling
+                    colums.emplace_back(
+                            Tile(std::stoi(number), chosenMap, countLayer + 1, texmgr, width, height, i,
+                                 j)); //TODO add progress bar (better with threads)
                 }
                 i++;
+                rows.emplace_back(colums);
             }
+            layers.emplace_back(rows);
             i = 0;
             for (int skipLines = 0; skipLines < (closingLines - 1); skipLines++)
                 getline(file, line);
@@ -115,14 +114,31 @@ void ArenaMap::loadTextures(int chosenMap) {
     }
 }
 
-void ArenaMap::stampa(int totLayers) {
-    for (int i = 0; i < maxRowTiles * totLayers; i++) {
-        for (int j = 0, countX = 0; countX < maxColumnTiles * totLayers; j++, countX++) {
-            std::cout << tiles[i * maxColumnTiles + j].tileNumber << " ";
+void ArenaMap::print3DVector(int totLayers) {
+    int count = 0;
+    for (int l = 0; l < totLayers; l++) {
+        for (int i = 0; i < maxRowTiles; i++) {
+            for (int j = 0; j < maxColumnTiles; j++) {
+                std::cout << layers[l][i][j].tileNumber << " ";
+                count++;
+            }
+            std::cout << std::endl;
         }
+        std::cout << std::endl;
         std::cout << std::endl;
     }
 
-    std::cout << "TOTALE: " << tiles.size() << std::endl;
+    std::cout << "TOTAL: " << layers.size() * layers[0].size() * layers[0][0].size() << std::endl;
 }
+
+void ArenaMap::drawMap(sf::RenderWindow &window) {
+    for (int i = 0; i < maxRowTiles; i++) {
+        for (int j = 0; j < maxColumnTiles; j++) {
+            window.draw(this->layers[1][i][j].tileSprite);
+            window.display();
+        }
+    }
+}
+
+
 

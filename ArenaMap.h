@@ -18,7 +18,7 @@
 #include "PosEntity.h"
 #include "TextureManager.h"
 
-enum maps {
+enum mapNumber {
     desert = 0,
 };
 
@@ -27,34 +27,36 @@ private:
     std::ifstream readFile;
     TextureManager texmgr;
     sf::Texture tileSheet;
-
+public:
     class Tile {
     public:
         bool walkable;
         sf::Vector2f posTile;
         int tileNumber;
-        int layer;
 
         sf::Sprite tileSprite;
 
-        explicit Tile(int tile, int layerNumber, int map, TextureManager texManager);
+        explicit Tile(int tile, int map, int layerNumber, TextureManager texManager, int width, int height, int posX,
+                      int posY);
 
         bool isWalkable(int tile, int layerNumber, int chosenMap);
     };
 
 protected:
+    struct Map {
+        std::string nameFile;
+        int totLayers;
+        int width;
+        int height;
+    };
+
     //TODO insert game view
     int maxRowTiles = 45; //FIXME replace with method
     int maxColumnTiles = 90;
-    int totalTiles = maxRowTiles * maxColumnTiles;
-    std::vector<Tile> tiles; //matrix in the form of a vector
-    //WARNING: update this array and enum for adding other map
-    struct map {
-        std::string namefile;
-        int totLayers;
-    };
-    map mapList[1] = {
-            {"res/map/desertMap.xml", 6},
+    std::vector<std::vector<std::vector<Tile>>> layers;
+    //WARNING: update this struct array and enum for adding other Map
+    Map mapList[1] = {
+            {"res/maps/desertMap.xml", 6, 1280, 832},
     };
 public:
     explicit ArenaMap(int chosenMap);
@@ -67,9 +69,9 @@ public:
 
     void loadTextures(int chosenMap);
 
-    void stampa(int totLayers);
+    void print3DVector(int totLayers); //TODO remove it (only for debug)
 
-
+    void drawMap(sf::RenderWindow &window);
 };
 
 

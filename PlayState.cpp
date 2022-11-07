@@ -6,14 +6,15 @@
 
 void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
-    this->game->window.draw(this->game->background);
+    //this->game->window.draw(this->game->background);
+    this->arenaMap->drawMap(this->game->window); //FIXME not draw (check up all linked methods)
     //this->game->window.draw(this->arenaMap->drawMap());
     //this->arenaMap->drawMap(this->game->window, 2);
 }
 
 void PlayState::update(float dt) {
 //TODO insert game implementation
-    std::cout << "sono update" << std::endl;
+    std::cout << "updating" << std::endl; //FIXME remove it (only for debug)
 }
 
 void PlayState::handleInput() {
@@ -63,8 +64,8 @@ PlayState::PlayState(Game *game) {
 }
 
 void PlayState::whichMap() {
-    //FIXME add other map (90x45 tiles)
-    //WARNING: for adding other map, you must update nMap/loadMap and enum in ArenaMap.h
+    //FIXME add other Map (90x45 tiles)
+    //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
     int nMap = 1;
     srand(time(NULL));
     int map = rand() % nMap;
