@@ -14,7 +14,7 @@ void PlayState::draw(float dt) {
 
 void PlayState::update(float dt) {
 //TODO insert game implementation
-    std::cout << "updating" << std::endl; //FIXME remove it (only for debug)
+    std::cout << "updating" << std::endl; //TODO remove it (only for debug)
 }
 
 void PlayState::handleInput() {
@@ -57,14 +57,13 @@ PlayState::PlayState(Game *game) {
     this->guiView.setCenter(pos);
     this->gameView.setCenter(pos);
     //random mapList
-    std::cout << "Sono playstate" << std::endl;
+    std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
 
     this->whichMap();
 
 }
 
 void PlayState::whichMap() {
-    //FIXME add other Map (90x45 tiles)
     //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
     int nMap = 1;
     srand(time(NULL));

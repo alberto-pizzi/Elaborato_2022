@@ -24,10 +24,8 @@ enum mapNumber {
 
 class ArenaMap {
 private:
-    std::ifstream readFile;
     TextureManager texmgr;
-    sf::Texture tileSheet;
-public:
+
     class Tile {
     public:
         bool walkable;
@@ -36,27 +34,27 @@ public:
 
         sf::Sprite tileSprite;
 
-        explicit Tile(int tile, int map, int layerNumber, TextureManager texManager, int width, int height, int posX,
+        explicit Tile(int tile, const std::string &nameMap, TextureManager texManager, int width, int height, int posX,
                       int posY);
 
-        bool isWalkable(int tile, int layerNumber, int chosenMap);
+        bool isWalkable(int tile, int layerNumber, int chosenMap); //FIXME
     };
 
 protected:
-    struct Map {
-        std::string nameFile;
-        int totLayers;
-        int width;
-        int height;
-    };
-
     //TODO insert game view
-    int maxRowTiles = 45; //FIXME replace with method
-    int maxColumnTiles = 90;
-    std::vector<std::vector<std::vector<Tile>>> layers;
+    int maxColumnTiles{};
+    int maxRowTiles{};
+    int tileSizeX{};
+    int tileSizeY{};
+    int totalLayers{};
+    int widthFile{};
+    int heightFile{};
+    std::string nameFile;
+    std::string nameMap;
+    std::vector<std::vector<std::vector<Tile>>> tileMap;
     //WARNING: update this struct array and enum for adding other Map
-    Map mapList[1] = {
-            {"res/maps/desertMap.xml", 6, 1280, 832},
+    std::string mapList[1] = {
+            "res/maps/desertMap.txt",
     };
 public:
     explicit ArenaMap(int chosenMap);
@@ -65,11 +63,9 @@ public:
 
     bool loadMap(int chosenMap);
 
-    bool fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap);
+    bool loadMapFile(int maxJ, int maxI, int chosenMap);
 
-    void loadTextures(int chosenMap);
-
-    void print3DVector(int totLayers); //TODO remove it (only for debug)
+    void print3DVector(); //TODO remove it (only for debug)
 
     void drawMap(sf::RenderWindow &window);
 };

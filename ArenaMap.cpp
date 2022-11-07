@@ -22,7 +22,7 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
     return false;
 }
 
-ArenaMap::Tile::Tile(int tile, int map, int layerNumber, TextureManager texManager, int width, int height, int posX,
+ArenaMap::Tile::Tile(int tile, const std::string &nameMap, TextureManager texManager, int width, int height, int posX,
                      int posY) { //FIXME check useless parameters
 
     int count = 0;
@@ -44,8 +44,8 @@ ArenaMap::Tile::Tile(int tile, int map, int layerNumber, TextureManager texManag
 }
 
 bool ArenaMap::loadMap(int chosenMap) {
-    if (fromXMLtoTilesToMatrix(maxColumnTiles, maxRowTiles, chosenMap)) { //FIXME add exception for correct reading
-        print3DVector(this->mapList[chosenMap].totLayers);
+    if (loadMapFile(maxColumnTiles, maxRowTiles, chosenMap)) { //FIXME add exception for correct reading
+        print3DVector();
 
         return true;
     } else
@@ -61,65 +61,61 @@ ArenaMap::ArenaMap(int chosenMap) {
 
 }
 
-bool ArenaMap::fromXMLtoTilesToMatrix(int maxJ, int maxI, int chosenMap) {
-    int i = 0, openingLines = 6, closingLines = 4;
-    int width = this->mapList[chosenMap].width;
-    int height = this->mapList[chosenMap].height;
+bool ArenaMap::loadMapFile(int maxJ, int maxI, int chosenMap) {
     std::ifstream file;
-    file.open(this->mapList[chosenMap].nameFile);
+    file.open(this->mapList[chosenMap]);
     if (!file) {
         return false;
     } else {
-        int totLayers = this->mapList[chosenMap].totLayers;
-        bool beginFile = true;
-        std::string line, number;
+        std::string name;
+        int tileNumber;
+
+        /*
+        ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
+
+        -Max tiles for column (in tiles)
+        -Max tiles for row (in tiles)
+        -Tile width size (in pixel)
+        -Tile height size (in pixel)
+        -Total layers
+        -Total number of texture files (used by the map)
+        -relative directory of file texture
+        -width file (in pixel)
+        -height file (in pixel)
+
+         */
+
+        //take tilemap data from file
+        file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
+             >> this->totalLayers >> this->nameFile >> this->widthFile >> this->heightFile;
         //load textures' Map
-        loadTextures(chosenMap);
-        //skip initial XML lines
-        if (beginFile) {
-            for (int skipLines = 0; skipLines < openingLines; skipLines++)
-                getline(file, line);
-            beginFile = false;
-        }
+        texmgr.loadTexture(this->nameMap, this->nameFile);
         //start reading
-        for (int countLayer = 0; countLayer < totLayers; countLayer++) {
+        for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
             std::vector<std::vector<Tile>> rows;
-            while ((getline(file, line)) && (i < maxI)) {
-                std::vector<Tile> colums;
-                std::stringstream ss(line);
-                for (int j = 0; j < maxJ; j++) {
-                    getline(ss, number, ',');
-                    colums.emplace_back(
-                            Tile(std::stoi(number), chosenMap, countLayer + 1, texmgr, width, height, i,
-                                 j)); //TODO add progress bar (better with threads)
+            for (int row = 0; row < this->maxRowTiles; row++) {
+                std::vector<Tile> columns;
+                for (int column = 0; column < this->maxColumnTiles; column++) {
+                    file >> tileNumber;
+                    columns.emplace_back(
+                            Tile(tileNumber, this->nameMap, texmgr, this->widthFile, this->heightFile, row,
+                                 column)); //TODO add progress bar (better with threads)
                 }
-                i++;
-                rows.emplace_back(colums);
+                rows.emplace_back(columns);
             }
-            layers.emplace_back(rows);
-            i = 0;
-            for (int skipLines = 0; skipLines < (closingLines - 1); skipLines++)
-                getline(file, line);
+            tileMap.emplace_back(rows);
         }
         file.close();
         return true;
     }
 }
 
-void ArenaMap::loadTextures(int chosenMap) {
-    switch (chosenMap) {
-        case desert:
-            texmgr.loadTexture("desert", "res/textures/desertTiles32x32.png");
-            break;
-    }
-}
-
-void ArenaMap::print3DVector(int totLayers) {
+void ArenaMap::print3DVector() {
     int count = 0;
-    for (int l = 0; l < totLayers; l++) {
-        for (int i = 0; i < maxRowTiles; i++) {
-            for (int j = 0; j < maxColumnTiles; j++) {
-                std::cout << layers[l][i][j].tileNumber << " ";
+    for (int l = 0; l < this->totalLayers; l++) {
+        for (int i = 0; i < this->maxRowTiles; i++) {
+            for (int j = 0; j < this->maxColumnTiles; j++) {
+                std::cout << tileMap[l][i][j].tileNumber << " ";
                 count++;
             }
             std::cout << std::endl;
@@ -128,13 +124,13 @@ void ArenaMap::print3DVector(int totLayers) {
         std::cout << std::endl;
     }
 
-    std::cout << "TOTAL: " << layers.size() * layers[0].size() * layers[0][0].size() << std::endl;
+    std::cout << "TOTAL: " << tileMap.size() * tileMap[0].size() * tileMap[0][0].size() << std::endl;
 }
 
 void ArenaMap::drawMap(sf::RenderWindow &window) {
-    for (int i = 0; i < maxRowTiles; i++) {
-        for (int j = 0; j < maxColumnTiles; j++) {
-            window.draw(this->layers[1][i][j].tileSprite);
+    for (int i = 0; i < this->maxRowTiles; i++) {
+        for (int j = 0; j < this->maxColumnTiles; j++) {
+            window.draw(this->tileMap[0][i][j].tileSprite);
             window.display();
         }
     }
