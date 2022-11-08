@@ -8,8 +8,6 @@ void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
     this->arenaMap->drawMap(this->game->window); //FIXME not draw (check up all linked methods)
-    //this->game->window.draw(this->arenaMap->drawMap());
-    //this->arenaMap->drawMap(this->game->window, 2);
 }
 
 void PlayState::update(float dt) {
@@ -56,11 +54,9 @@ PlayState::PlayState(Game *game) {
     pos *= 0.5f;
     this->guiView.setCenter(pos);
     this->gameView.setCenter(pos);
-    //random mapList
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
-
+    //random mapList
     this->whichMap();
-
 }
 
 void PlayState::whichMap() {

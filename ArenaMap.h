@@ -31,27 +31,29 @@ private:
         bool walkable;
         sf::Vector2f posTile;
         int tileNumber;
+        int layer;
 
         sf::Sprite tileSprite;
 
-        explicit Tile(int tile, const std::string &nameMap, TextureManager texManager, int width, int height, int posX,
-                      int posY);
+        Tile(int tile, const std::string &nameMap, int width, int height, int posX, int posY,
+             const sf::Texture &texture,
+             int layer);
 
         bool isWalkable(int tile, int layerNumber, int chosenMap); //FIXME
     };
 
 protected:
     //TODO insert game view
-    int maxColumnTiles{};
-    int maxRowTiles{};
-    int tileSizeX{};
-    int tileSizeY{};
-    int totalLayers{};
-    int widthFile{};
-    int heightFile{};
+    int maxColumnTiles;
+    int maxRowTiles;
+    int tileSizeX;
+    int tileSizeY;
+    int totalLayers;
+    int widthFile;
+    int heightFile;
     std::string nameFile;
     std::string nameMap;
-    std::vector<std::vector<std::vector<Tile>>> tileMap;
+    std::vector<Tile *> tileMap;
     //WARNING: update this struct array and enum for adding other Map
     std::string mapList[1] = {
             "res/maps/desertMap.txt",

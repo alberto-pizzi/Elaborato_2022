@@ -16,8 +16,6 @@ private:
 
     sf::View gameView;
     sf::View guiView;
-    //std::unique_ptr<ArenaMap> arenaMap;
-
     ArenaMap *arenaMap;
     //TODO add pause menu method - MenuState.cpp (load game)
 

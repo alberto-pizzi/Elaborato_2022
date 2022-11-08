@@ -22,14 +22,17 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
     return false;
 }
 
-ArenaMap::Tile::Tile(int tile, const std::string &nameMap, TextureManager texManager, int width, int height, int posX,
-                     int posY) { //FIXME check useless parameters
+ArenaMap::Tile::Tile(int tile, const std::string &nameMap, int width, int height, int posX, int posY,
+                     const sf::Texture &texture,
+                     int layer) { //FIXME check useless parameters
 
     int count = 0;
     bool found = false;
     this->tileNumber = tile;
     this->walkable = true;  //TODO remove it
-    this->tileSprite.setTexture(texManager.getTextureRef("desert"));
+    this->layer = layer + 1;
+    this->tileSprite.setTexture(texture);
+
     for (int i = 0; (i < height / 32) && (!found); i++) {
         for (int j = 0; (j < width / 32) && (!found); j++) {
             if (this->tileNumber == count) {
@@ -41,11 +44,14 @@ ArenaMap::Tile::Tile(int tile, const std::string &nameMap, TextureManager texMan
         }
     }
 
+
 }
 
 bool ArenaMap::loadMap(int chosenMap) {
     if (loadMapFile(maxColumnTiles, maxRowTiles, chosenMap)) { //FIXME add exception for correct reading
-        print3DVector();
+
+        std::cout << "FATTO" << std::endl;
+        //print3DVector();
 
         return true;
     } else
@@ -69,9 +75,9 @@ bool ArenaMap::loadMapFile(int maxJ, int maxI, int chosenMap) {
     } else {
         std::string name;
         int tileNumber;
-
         /*
-        ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
+
+         ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
 
         -Max tiles for column (in tiles)
         -Max tiles for row (in tiles)
@@ -91,31 +97,31 @@ bool ArenaMap::loadMapFile(int maxJ, int maxI, int chosenMap) {
         //load textures' Map
         texmgr.loadTexture(this->nameMap, this->nameFile);
         //start reading
+        tileMap.reserve(this->totalLayers * this->maxColumnTiles * this->maxRowTiles);
         for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
-            std::vector<std::vector<Tile>> rows;
             for (int row = 0; row < this->maxRowTiles; row++) {
-                std::vector<Tile> columns;
                 for (int column = 0; column < this->maxColumnTiles; column++) {
                     file >> tileNumber;
-                    columns.emplace_back(
-                            Tile(tileNumber, this->nameMap, texmgr, this->widthFile, this->heightFile, row,
-                                 column)); //TODO add progress bar (better with threads)
+                    tileMap.emplace_back(
+                            new Tile(tileNumber, this->nameMap, this->widthFile, this->heightFile, row,
+                                     column, this->texmgr.getTextureRef(this->nameMap),
+                                     countLayer)); //TODO add progress bar (better with threads)
+
                 }
-                rows.emplace_back(columns);
             }
-            tileMap.emplace_back(rows);
         }
         file.close();
         return true;
     }
 }
 
+/*
 void ArenaMap::print3DVector() {
     int count = 0;
     for (int l = 0; l < this->totalLayers; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
-                std::cout << tileMap[l][i][j].tileNumber << " ";
+                std::cout << tileMap[l][i][j]->tileNumber << " ";
                 count++;
             }
             std::cout << std::endl;
@@ -126,12 +132,12 @@ void ArenaMap::print3DVector() {
 
     std::cout << "TOTAL: " << tileMap.size() * tileMap[0].size() * tileMap[0][0].size() << std::endl;
 }
+*/
 
 void ArenaMap::drawMap(sf::RenderWindow &window) {
     for (int i = 0; i < this->maxRowTiles; i++) {
         for (int j = 0; j < this->maxColumnTiles; j++) {
-            window.draw(this->tileMap[0][i][j].tileSprite);
-            window.display();
+            window.draw(this->tileMap[i * this->maxColumnTiles + j]->tileSprite);
         }
     }
 }
