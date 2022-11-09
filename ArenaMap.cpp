@@ -107,7 +107,7 @@ bool ArenaMap::loadMapFile(int chosenMap) {
                                      countLayer, this->tileSizeX, this->tileSizeY, chosenMap));
 
                 }
-                rows.push_back(columns);
+                rows.emplace_back(columns);
             }
             tileMap.emplace_back(rows);
         }
