@@ -24,7 +24,7 @@ enum mapNumber {
 
 class ArenaMap {
 private:
-    TextureManager texmgr;
+    TextureManager textureManager;
 
     class Tile {
     public:
@@ -32,18 +32,15 @@ private:
         sf::Vector2f posTile;
         int tileNumber;
         int layer;
-
         sf::Sprite tileSprite;
 
-        Tile(int tile, const std::string &nameMap, int width, int height, int posX, int posY,
-             const sf::Texture &texture,
-             int layer);
+        Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
+             int tileSizeX, int tileSizeY, int chosenMap);
 
-        bool isWalkable(int tile, int layerNumber, int chosenMap); //FIXME
+        bool isWalkable(int tile, int layerNumber, int chosenMap); //FIXME improve it (optimization)
     };
 
 protected:
-    //TODO insert game view
     int maxColumnTiles;
     int maxRowTiles;
     int tileSizeX;
@@ -53,21 +50,24 @@ protected:
     int heightFile;
     std::string nameFile;
     std::string nameMap;
-    std::vector<Tile *> tileMap;
+    std::vector<std::vector<std::vector<Tile *>>> tileMap;
+    sf::View playerView;
     //WARNING: update this struct array and enum for adding other Map
     std::string mapList[1] = {
             "res/maps/desertMap.txt",
     };
 public:
-    explicit ArenaMap(int chosenMap);
+    explicit ArenaMap(int chosenMap, sf::RenderWindow &window);
 
     virtual ~ArenaMap();
 
-    bool loadMap(int chosenMap);
+    bool loadMap(int chosenMap, sf::RenderWindow &window);
 
-    bool loadMapFile(int maxJ, int maxI, int chosenMap);
+    bool loadMapFile(int chosenMap);
 
-    void print3DVector(); //TODO remove it (only for debug)
+    void startingMap(sf::RenderWindow &window); //TODO finish and implement it
+
+    void loadTextures();
 
     void drawMap(sf::RenderWindow &window);
 };

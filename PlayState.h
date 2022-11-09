@@ -22,11 +22,11 @@ private:
 public:
     explicit PlayState(Game *game);
 
-    virtual void draw(float dt);
+    void draw(float dt) override;
 
-    virtual void update(float dt);
+    void update(float dt) override;
 
-    virtual void handleInput();
+    void handleInput() override;
 
     void whichMap();
 };

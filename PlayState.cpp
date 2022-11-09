@@ -7,7 +7,7 @@
 void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
-    this->arenaMap->drawMap(this->game->window); //FIXME not draw (check up all linked methods)
+    this->arenaMap->drawMap(this->game->window);
 }
 
 void PlayState::update(float dt) {
@@ -64,8 +64,6 @@ void PlayState::whichMap() {
     int nMap = 1;
     srand(time(NULL));
     int map = rand() % nMap;
-
-    //create mapList
-
-    arenaMap = new ArenaMap(map);
+    //create map
+    arenaMap = new ArenaMap(map, this->game->window);
 }

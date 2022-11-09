@@ -50,7 +50,7 @@ Game::Game() {
     this->loadTextures();
     this->window.create(sf::VideoMode(1280, 720), "Game_window");
     this->window.setFramerateLimit(60);
-    this->background.setTexture(this->texmgr.getTextureRef("background"));
+    this->background.setTexture(this->textureManager.getTextureRef("background"));
 }
 
 Game::~Game() {
@@ -59,6 +59,6 @@ Game::~Game() {
 }
 
 void Game::loadTextures() {
-    texmgr.loadTexture("background", "res/textures/main_menu_background.jpg");
+    textureManager.loadTexture("background", "res/textures/main_menu_background.jpg");
 
 }

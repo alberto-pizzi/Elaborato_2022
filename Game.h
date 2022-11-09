@@ -24,7 +24,7 @@ public:
 
     std::stack<GameState *> states;
     sf::RenderWindow window;
-    TextureManager texmgr;
+    TextureManager textureManager;
     sf::Sprite background;
 
     void pushState(GameState *state);

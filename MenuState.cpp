@@ -89,7 +89,8 @@ MenuState::MenuState(Game *game) {
         mainMenu[Play].setString("Play");
         mainMenu[Play].setCharacterSize(50);
         mainMenu[Play].setPosition(
-                sf::Vector2f(this->game->window.getSize().x / 2 - 50, this->game->window.getSize().y / 2 - 50));
+                sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
+                             static_cast<float>(this->game->window.getSize().y) / 2 - 50));
 
         //stats
         mainMenu[Stats].setFont(font);
@@ -97,7 +98,8 @@ MenuState::MenuState(Game *game) {
         mainMenu[Stats].setString("Stats");
         mainMenu[Stats].setCharacterSize(50);
         mainMenu[Stats].setPosition(
-                sf::Vector2f(this->game->window.getSize().x / 2 - 50, (this->game->window.getSize().y / 2 - 50) * 1.5));
+                sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
+                             (static_cast<float>(this->game->window.getSize().y) / 2 - 50) * 1.5));
 
         //exit
         mainMenu[Exit].setFont(font);
@@ -105,7 +107,8 @@ MenuState::MenuState(Game *game) {
         mainMenu[Exit].setString("Exit");
         mainMenu[Exit].setCharacterSize(50);
         mainMenu[Exit].setPosition(
-                sf::Vector2f(this->game->window.getSize().x / 2 - 50, (this->game->window.getSize().y / 2 - 50) * 2));
+                sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
+                             (static_cast<float>(this->game->window.getSize().y) / 2 - 50) * 2));
 
         //if you add more buttons, you must update "nButtons" in the header file
 

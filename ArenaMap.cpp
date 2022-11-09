@@ -22,36 +22,29 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
     return false;
 }
 
-ArenaMap::Tile::Tile(int tile, const std::string &nameMap, int width, int height, int posX, int posY,
-                     const sf::Texture &texture,
-                     int layer) { //FIXME check useless parameters
-
-    int count = 0;
-    bool found = false;
+ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
+                     int tileSizeX, int tileSizeY, int chosenMap) {
+    int tileTexturePosX, tileTexturePosY;
     this->tileNumber = tile;
-    this->walkable = true;  //TODO remove it
+    this->walkable = isWalkable(tile, layer + 1, chosenMap);
     this->layer = layer + 1;
     this->tileSprite.setTexture(texture);
-
-    for (int i = 0; (i < height / 32) && (!found); i++) {
-        for (int j = 0; (j < width / 32) && (!found); j++) {
-            if (this->tileNumber == count) {
-                this->tileSprite.setTextureRect(sf::IntRect(i * 32, j * 32, 32, 32));
-                this->tileSprite.setPosition(sf::Vector2f((float) posX, (float) posY));
-                found = true;
-            }
-            count++;
-        }
-    }
-
-
+    tileTexturePosX = (tile % (widthTex / tileSizeX)) - 1;
+    tileTexturePosY = tile / (widthTex / tileSizeY);
+    if (tileTexturePosX < 0)
+        tileTexturePosX = 0;
+    if (tileTexturePosY < 0)
+        tileTexturePosY = 0;
+    this->tileSprite.setTextureRect(
+            sf::IntRect(tileTexturePosX * tileSizeX, tileTexturePosY * tileSizeY, tileSizeX, tileSizeY));
+    this->tileSprite.setPosition(
+            sf::Vector2f(static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)));
 }
 
-bool ArenaMap::loadMap(int chosenMap) {
-    if (loadMapFile(maxColumnTiles, maxRowTiles, chosenMap)) { //FIXME add exception for correct reading
+bool ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window) {
+    if (loadMapFile(chosenMap)) { //FIXME add exception for incorrect reading
+        startingMap(window);
 
-        std::cout << "FATTO" << std::endl;
-        //print3DVector();
 
         return true;
     } else
@@ -61,20 +54,20 @@ bool ArenaMap::loadMap(int chosenMap) {
 ArenaMap::~ArenaMap() {
 }
 
-ArenaMap::ArenaMap(int chosenMap) {
-    if (!loadMap(chosenMap)) //FIXME add exception
+ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window) {
+    if (!loadMap(chosenMap, window)) //FIXME add exception
         std::cerr << "Error during opening file" << std::endl;
 
 }
 
-bool ArenaMap::loadMapFile(int maxJ, int maxI, int chosenMap) {
+bool ArenaMap::loadMapFile(int chosenMap) {
     std::ifstream file;
     file.open(this->mapList[chosenMap]);
     if (!file) {
         return false;
     } else {
         std::string name;
-        int tileNumber;
+        int nTile;
         /*
 
          ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
@@ -94,52 +87,54 @@ bool ArenaMap::loadMapFile(int maxJ, int maxI, int chosenMap) {
         //take tilemap data from file
         file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
              >> this->totalLayers >> this->nameFile >> this->widthFile >> this->heightFile;
+
         //load textures' Map
-        texmgr.loadTexture(this->nameMap, this->nameFile);
+        loadTextures();
+
         //start reading
-        tileMap.reserve(this->totalLayers * this->maxColumnTiles * this->maxRowTiles);
+        tileMap.reserve(this->totalLayers);
         for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
+            std::vector<std::vector<Tile *>> rows;
+            rows.reserve(this->maxRowTiles);
             for (int row = 0; row < this->maxRowTiles; row++) {
+                std::vector<Tile *> columns;
+                columns.reserve(this->maxColumnTiles);
                 for (int column = 0; column < this->maxColumnTiles; column++) {
-                    file >> tileNumber;
-                    tileMap.emplace_back(
-                            new Tile(tileNumber, this->nameMap, this->widthFile, this->heightFile, row,
-                                     column, this->texmgr.getTextureRef(this->nameMap),
-                                     countLayer)); //TODO add progress bar (better with threads)
+                    file >> nTile;
+                    columns.emplace_back(
+                            new Tile(nTile, this->widthFile, row,
+                                     column, this->textureManager.getTextureRef(this->nameMap),
+                                     countLayer, this->tileSizeX, this->tileSizeY, chosenMap));
 
                 }
+                rows.push_back(columns);
             }
+            tileMap.emplace_back(rows);
         }
         file.close();
         return true;
     }
 }
 
-/*
-void ArenaMap::print3DVector() {
-    int count = 0;
+void ArenaMap::drawMap(sf::RenderWindow &window) {
     for (int l = 0; l < this->totalLayers; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
-                std::cout << tileMap[l][i][j]->tileNumber << " ";
-                count++;
+                window.draw(this->tileMap[l][i][j]->tileSprite);
             }
-            std::cout << std::endl;
         }
-        std::cout << std::endl;
-        std::cout << std::endl;
     }
-
-    std::cout << "TOTAL: " << tileMap.size() * tileMap[0].size() * tileMap[0][0].size() << std::endl;
 }
-*/
 
-void ArenaMap::drawMap(sf::RenderWindow &window) {
-    for (int i = 0; i < this->maxRowTiles; i++) {
-        for (int j = 0; j < this->maxColumnTiles; j++) {
-            window.draw(this->tileMap[i * this->maxColumnTiles + j]->tileSprite);
-        }
-    }
+void ArenaMap::startingMap(sf::RenderWindow &window) {
+    this->playerView.reset(
+            sf::FloatRect(static_cast<float>(10 * this->tileSizeX), static_cast<float>(10 * this->tileSizeX),
+                          static_cast<float>(30 * this->tileSizeX), static_cast<float>(20 * this->tileSizeY)));
+    window.setView(this->playerView);
+}
+
+void ArenaMap::loadTextures() {
+    textureManager.loadTexture(this->nameMap, this->nameFile);
 }
 
 
