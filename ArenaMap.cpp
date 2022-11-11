@@ -41,48 +41,45 @@ ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Textu
             sf::Vector2f(static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)));
 }
 
-bool ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window) {
-    if (loadMapFile(chosenMap)) { //FIXME add exception for incorrect reading
-        startingMap(window);
+void ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window) {
+    loadMapFile(chosenMap);
+    startingMap(window);
 
-
-        return true;
-    } else
-        return false;
 }
 
 ArenaMap::~ArenaMap() {
 }
 
 ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window) {
-    if (!loadMap(chosenMap, window)) //FIXME add exception
-        std::cerr << "Error during opening file" << std::endl;
-
+    loadMap(chosenMap, window);
 }
 
-bool ArenaMap::loadMapFile(int chosenMap) {
+void ArenaMap::loadMapFile(int chosenMap) {
     std::ifstream file;
-    file.open(this->mapList[chosenMap]);
-    if (!file) {
-        return false;
-    } else {
-        std::string name;
-        int nTile;
-        /*
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        file.open(this->mapList[chosenMap]);
+    }
+    catch (std::ios_base::failure &e) {
+        throw GameException("Error opening file map", this->mapList[chosenMap], false);
+    }
+    std::string name;
+    int nTile;
+    /*
 
-         ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
+     ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
 
-        -Max tiles for column (in tiles)
-        -Max tiles for row (in tiles)
-        -Tile width size (in pixel)
-        -Tile height size (in pixel)
-        -Total layers
-        -Total number of texture files (used by the map)
-        -relative directory of file texture
-        -width file (in pixel)
-        -height file (in pixel)
+    -Max tiles for column (in tiles)
+    -Max tiles for row (in tiles)
+    -Tile width size (in pixel)
+    -Tile height size (in pixel)
+    -Total layers
+    -Total number of texture files (used by the map)
+    -relative directory of file texture
+    -width file (in pixel)
+    -height file (in pixel)
 
-         */
+     */
 
         //take tilemap data from file
         file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
@@ -112,8 +109,6 @@ bool ArenaMap::loadMapFile(int chosenMap) {
             tileMap.emplace_back(rows);
         }
         file.close();
-        return true;
-    }
 }
 
 void ArenaMap::drawMap(sf::RenderWindow &window) {

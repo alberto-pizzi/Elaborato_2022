@@ -6,6 +6,7 @@
 #define ELABORATO_MENUSTATE_H
 
 #include "GameState.h"
+#include "GameException.h"
 
 const int nButtons = 3;
 

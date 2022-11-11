@@ -3,12 +3,17 @@
 //
 
 #include "TextureManager.h"
-
+#include "GameException.h"
 
 void TextureManager::loadTexture(std::string name, std::string fileName) {
     // Load the texture
     sf::Texture tex;
-    tex.loadFromFile(fileName);
+    try {
+        if (!tex.loadFromFile(fileName))
+            throw GameException("Error opening texture file", fileName, false);
+    } catch (GameException &e) {
+        exit(1); //close all
+    }
 
     // Add it to the list of textures
     this->textures[name] = tex;

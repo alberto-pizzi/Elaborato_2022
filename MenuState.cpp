@@ -79,18 +79,20 @@ MenuState::MenuState(Game *game) {
     this->view.setSize(pos);
     pos *= 0.5f;
     this->view.setCenter(pos);
+    std::string fontFile = "res/fonts/kirbyss.ttf";
+    try {
+        if (!font.loadFromFile(fontFile))
+            throw GameException("Error opening font file", fontFile, false);
+    } catch (GameException &e) {}
 
-    if (!font.loadFromFile("res/fonts/kirbyss.ttf"))
-        std::cerr << "Error during opening file" << std::endl;
-    else {
-        //play
-        mainMenu[Play].setFont(font);
-        mainMenu[Play].setFillColor(sf::Color(102, 0, 0));
-        mainMenu[Play].setString("Play");
-        mainMenu[Play].setCharacterSize(50);
-        mainMenu[Play].setPosition(
-                sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                             static_cast<float>(this->game->window.getSize().y) / 2 - 50));
+    //play
+    mainMenu[Play].setFont(font);
+    mainMenu[Play].setFillColor(sf::Color(102, 0, 0));
+    mainMenu[Play].setString("Play");
+    mainMenu[Play].setCharacterSize(50);
+    mainMenu[Play].setPosition(
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
+                         static_cast<float>(this->game->window.getSize().y) / 2 - 50));
 
         //stats
         mainMenu[Stats].setFont(font);
@@ -113,7 +115,7 @@ MenuState::MenuState(Game *game) {
         //if you add more buttons, you must update "nButtons" in the header file
 
         nButtonSelected = Play;
-    }
+
 }
 
 void MenuState::moveUp() {

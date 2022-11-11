@@ -17,6 +17,7 @@
 
 #include "PosEntity.h"
 #include "TextureManager.h"
+#include "GameException.h"
 
 enum mapNumber {
     desert = 0,
@@ -61,9 +62,9 @@ public:
 
     virtual ~ArenaMap();
 
-    bool loadMap(int chosenMap, sf::RenderWindow &window);
+    void loadMap(int chosenMap, sf::RenderWindow &window);
 
-    bool loadMapFile(int chosenMap);
+    void loadMapFile(int chosenMap);
 
     void startingMap(sf::RenderWindow &window); //TODO finish and implement it
 
