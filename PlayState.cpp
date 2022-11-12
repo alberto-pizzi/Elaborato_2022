@@ -60,8 +60,6 @@ PlayState::PlayState(Game *game) {
 }
 
 void PlayState::whichMap() {
-    //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
-    int nMap = 1;
     srand(time(NULL));
     int map = rand() % nMap;
     //create map

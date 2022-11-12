@@ -3,8 +3,6 @@
 //
 #include "GameState.h"
 
-GameState::GameState() {
-
-}
+GameState::GameState() = default;
 
 GameState::~GameState() = default;

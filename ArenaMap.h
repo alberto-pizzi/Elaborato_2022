@@ -52,6 +52,7 @@ protected:
     std::string nameFile;
     std::string nameMap;
     std::vector<std::vector<std::vector<Tile *>>> tileMap;
+protected:
     sf::View playerView;
     //WARNING: update this struct array and enum for adding other Map
     std::string mapList[1] = {

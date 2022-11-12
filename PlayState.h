@@ -11,6 +11,9 @@
 #include "GameState.h"
 #include "ArenaMap.h"
 
+//WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
+const int nMap = 1;
+
 class PlayState : public GameState {
 private:
 
