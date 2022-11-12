@@ -8,11 +8,9 @@
 
 class PosEntity {
 protected:
-    float posX;
-    float posY;
+    sf::Vector2f pos;
 public:
-    //TODO insert arguments and implement it
-    virtual void move() = 0;
+    virtual void move(sf::Vector2f pos) = 0;
 };
 
 

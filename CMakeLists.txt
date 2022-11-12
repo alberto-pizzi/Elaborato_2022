@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(Elaborato)
 
 set(CMAKE_CXX_STANDARD 11)
-add_executable(Elaborato main.cpp GameCharacter.cpp GameCharacter.h Game.cpp Game.h GameState.h GameState.cpp MenuState.cpp MenuState.h PlayState.cpp PlayState.h TextureManager.cpp TextureManager.h ArenaMap.cpp ArenaMap.h PosEntity.h GameException.cpp GameException.h)
+add_executable(Elaborato main.cpp GameCharacter.cpp GameCharacter.h Game.cpp Game.h GameState.h GameState.cpp MenuState.cpp MenuState.h PlayState.cpp PlayState.h TextureManager.cpp TextureManager.h ArenaMap.cpp ArenaMap.h PosEntity.h GameException.cpp GameException.h Spawner.cpp Spawner.h Bonus.cpp Bonus.h Mike.cpp Mike.h)
 #SFML
 if (WIN32)
     set(SFML_STATIC_LIBRARIES TRUE)

@@ -7,27 +7,20 @@
 bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
     switch (chosenMap) {
         case desert:
-            if ((layerNumber == 2) && (tile != 0)) {
-                for (int i = 41; i <= 288; i++) {
-                    if (tile == i)
-                        return true;
-                    else if (i == 48)
-                        i = 200;
-                    else if (i == 248)
-                        i = 280;
-                }
-            }
+            if ((layerNumber == 5) && (tile != 0)) //solid elements layer
+                return false;
+            else
+                return true;
+
             break;
     }
     return false;
 }
 
 ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
-                     int tileSizeX, int tileSizeY, int chosenMap) {
+                     int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer + 1) {
     int tileTexturePosX, tileTexturePosY;
-    this->tileNumber = tile;
     this->walkable = isWalkable(tile, layer + 1, chosenMap);
-    this->layer = layer + 1;
     this->tileSprite.setTexture(texture);
     tileTexturePosX = (tile % (widthTex / tileSizeX)) - 1;
     tileTexturePosY = tile / (widthTex / tileSizeY);
@@ -126,6 +119,8 @@ void ArenaMap::startingMap(sf::RenderWindow &window) {
             sf::FloatRect(static_cast<float>(10 * this->tileSizeX), static_cast<float>(10 * this->tileSizeX),
                           static_cast<float>(30 * this->tileSizeX), static_cast<float>(20 * this->tileSizeY)));
     window.setView(this->playerView);
+
+
 }
 
 void ArenaMap::loadTextures() {

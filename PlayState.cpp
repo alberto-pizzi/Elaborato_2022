@@ -42,8 +42,6 @@ void PlayState::handleInput() {
                 break;
         }
     }
-
-
 }
 
 PlayState::PlayState(Game *game) {
@@ -57,6 +55,7 @@ PlayState::PlayState(Game *game) {
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
     //random mapList
     this->whichMap();
+    //spawner->spawnMike();
 }
 
 void PlayState::whichMap() {
