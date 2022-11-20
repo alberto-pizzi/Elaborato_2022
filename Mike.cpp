@@ -15,6 +15,13 @@ bool Mike::isKillStreak(GameCharacter &character) {
 Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int streak) : GameCharacter(hp, speed,
                                                                                                          points, coins,
                                                                                                          armor,
-                                                                                                         bubble) {
+                                                                                                         bubble),
+                                                                                           killStreak(streak) {
+    character.setFillColor(sf::Color::Green); //TODO remove it (for debug)
+    character.setPosition(sf::Vector2f(23 * 32, 20 * 32));
 
+}
+
+void Mike::drawEntity(sf::RenderWindow &window) {
+    window.draw(character); //TODO remove it (for debug)
 }

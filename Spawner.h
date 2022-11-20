@@ -11,11 +11,9 @@
 
 #include "GameCharacter.h"
 #include "Bonus.h"
-#include "Mike.h"
 
 class Spawner {
 private:
-    std::unique_ptr<Mike> mike;
     std::vector<std::unique_ptr<GameCharacter>> enemies;
     std::vector<std::unique_ptr<Bonus>> bonuses;
     std::vector<std::unique_ptr<GameCharacter>> bosses;
@@ -25,10 +23,6 @@ public:
     const std::vector<std::unique_ptr<Bonus>> &getBonuses() const;
 
     const std::vector<std::unique_ptr<GameCharacter>> &getBosses() const;
-
-    void spawnMike();
-
-
 };
 
 

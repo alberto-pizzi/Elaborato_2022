@@ -16,8 +16,3 @@ const std::vector<std::unique_ptr<GameCharacter>> &Spawner::getBosses() const {
     return bosses;
 }
 
-void Spawner::spawnMike() {
-    mike = std::unique_ptr<Mike>(new Mike());
-
-
-}

@@ -32,6 +32,8 @@ public:
 
     bool isLegalFight(const GameCharacter &enemy) const;
 
+    virtual void drawEntity(sf::RenderWindow &window) = 0;
+
 };
 
 

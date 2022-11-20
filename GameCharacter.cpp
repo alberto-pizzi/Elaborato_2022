@@ -23,7 +23,6 @@ GameCharacter::GameCharacter(int hp, int speed, int points, int coins, int armor
                                                                                                  bubble(bubble) {
     //TODO remove it (for debug)
     character.setSize(sf::Vector2f(32, 32));
-    character.setPosition(sf::Vector2f(23 * 32, 20 * 32));
     character.setFillColor(sf::Color::Blue);
 
 

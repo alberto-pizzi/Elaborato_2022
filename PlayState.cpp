@@ -8,6 +8,7 @@ void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
     this->arenaMap->drawMap(this->game->window);
+    this->mike->drawEntity(this->game->window);
 }
 
 void PlayState::update(float dt) {
@@ -55,7 +56,6 @@ PlayState::PlayState(Game *game) {
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
     //random mapList
     this->whichMap();
-    //spawner->spawnMike();
 }
 
 void PlayState::whichMap() {
@@ -63,4 +63,5 @@ void PlayState::whichMap() {
     int map = rand() % nMap;
     //create map
     arenaMap = new ArenaMap(map, this->game->window);
+    mike = std::unique_ptr<Mike>(new Mike());
 }

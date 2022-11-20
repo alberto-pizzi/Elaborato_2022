@@ -11,6 +11,8 @@ protected:
     sf::Vector2f pos;
 public:
     virtual void move(sf::Vector2f pos) = 0;
+
+    virtual void drawEntity(sf::RenderWindow &window) = 0;
 };
 
 

@@ -17,6 +17,8 @@ public:
 
     bool isKillStreak(GameCharacter &character);
 
+    void drawEntity(sf::RenderWindow &window) override;
+
 };
 
 

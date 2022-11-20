@@ -11,6 +11,7 @@
 #include "GameState.h"
 #include "ArenaMap.h"
 #include "Spawner.h"
+#include "Mike.h"
 
 //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
@@ -23,6 +24,7 @@ private:
     ArenaMap *arenaMap;
     //TODO add pause menu method - MenuState.cpp (load game)
     std::unique_ptr<Spawner> spawner;
+    std::unique_ptr<Mike> mike;
 
 public:
     explicit PlayState(Game *game);

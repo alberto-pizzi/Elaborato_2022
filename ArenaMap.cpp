@@ -120,6 +120,9 @@ void ArenaMap::startingMap(sf::RenderWindow &window) {
                           static_cast<float>(30 * this->tileSizeX), static_cast<float>(20 * this->tileSizeY)));
     window.setView(this->playerView);
 
+    //TODO insert mike spawner
+
+
 
 }
 
