@@ -34,17 +34,16 @@ ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Textu
             sf::Vector2f(static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)));
 }
 
-void ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window) {
+void ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
     loadMapFile(chosenMap);
-    startingMap(window);
-
+    startingMap(window, mike);
 }
 
 ArenaMap::~ArenaMap() {
 }
 
-ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window) {
-    loadMap(chosenMap, window);
+ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
+    loadMap(chosenMap, window, mike);
 }
 
 void ArenaMap::loadMapFile(int chosenMap) {
@@ -114,14 +113,14 @@ void ArenaMap::drawMap(sf::RenderWindow &window) {
     }
 }
 
-void ArenaMap::startingMap(sf::RenderWindow &window) {
+void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
     this->playerView.reset(
             sf::FloatRect(static_cast<float>(10 * this->tileSizeX), static_cast<float>(10 * this->tileSizeX),
                           static_cast<float>(30 * this->tileSizeX), static_cast<float>(20 * this->tileSizeY)));
     window.setView(this->playerView);
 
     //TODO insert mike spawner
-
+    mike = std::unique_ptr<Mike>(new Mike());
 
 
 }

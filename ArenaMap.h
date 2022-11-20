@@ -18,6 +18,7 @@
 #include "PosEntity.h"
 #include "TextureManager.h"
 #include "GameException.h"
+#include "Mike.h"
 
 enum mapNumber {
     desert = 0,
@@ -59,15 +60,15 @@ protected:
     };
     std::unique_ptr<PosEntity> entity;
 public:
-    explicit ArenaMap(int chosenMap, sf::RenderWindow &window);
+    explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
 
     virtual ~ArenaMap();
 
-    void loadMap(int chosenMap, sf::RenderWindow &window);
+    void loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
 
     void loadMapFile(int chosenMap);
 
-    void startingMap(sf::RenderWindow &window); //TODO finish and implement it
+    void startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike); //TODO finish and implement it
 
     void loadTextures();
 

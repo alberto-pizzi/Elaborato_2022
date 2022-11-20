@@ -62,6 +62,5 @@ void PlayState::whichMap() {
     srand(time(NULL));
     int map = rand() % nMap;
     //create map
-    arenaMap = new ArenaMap(map, this->game->window);
-    mike = std::unique_ptr<Mike>(new Mike());
+    arenaMap = new ArenaMap(map, this->game->window, mike);
 }

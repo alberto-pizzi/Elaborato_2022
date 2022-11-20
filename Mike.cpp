@@ -19,6 +19,7 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
                                                                                            killStreak(streak) {
     character.setFillColor(sf::Color::Green); //TODO remove it (for debug)
     character.setPosition(sf::Vector2f(23 * 32, 20 * 32));
+    pos = {23 * 32, 20 * 32}; //update coordinates in PosEntity
 
 }
 
