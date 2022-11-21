@@ -17,6 +17,8 @@ void PlayState::update(float dt) {
 }
 
 void PlayState::handleInput() {
+
+    auto frame_time = frame_clock.restart();
     sf::Event event;
 
     while (this->game->window.pollEvent(event)) {
@@ -38,11 +40,40 @@ void PlayState::handleInput() {
                 break;
             }
             case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Escape)
-                    this->game->window.close();
+                key_states[UP] = key_states[UP] || (event.key.code == sf::Keyboard::W);
+                key_states[DOWN] = key_states[DOWN] || (event.key.code == sf::Keyboard::S);
+                key_states[LEFT] = key_states[LEFT] || (event.key.code == sf::Keyboard::A);
+                key_states[RIGHT] = key_states[RIGHT] || (event.key.code == sf::Keyboard::D);
                 break;
+            case sf::Event::KeyReleased:
+                if (event.key.code == sf::Keyboard::W)
+                    key_states[UP] = false;
+                else if (event.key.code == sf::Keyboard::S)
+                    key_states[DOWN] = false;
+                else if (event.key.code == sf::Keyboard::A)
+                    key_states[LEFT] = false;
+                else if (event.key.code == sf::Keyboard::D)
+                    key_states[RIGHT] = false;
+                break;
+
         }
     }
+    if ((key_states[LEFT] && key_states[RIGHT]) || (!key_states[LEFT] && !key_states[RIGHT]))
+        direction_vector.x = 0.f;
+    else if (key_states[LEFT])
+        direction_vector.x = -1.f;
+    else if (key_states[RIGHT])
+        direction_vector.x = 1.f;
+    if ((key_states[UP] && key_states[DOWN]) || (!key_states[UP] && !key_states[DOWN]))
+        direction_vector.y = 0.f;
+    else if (key_states[UP])
+        direction_vector.y = -1.f;
+    else if (key_states[DOWN])
+        direction_vector.y = 1.f;
+
+    if (arenaMap->isLegalMove(direction_vector, *mike))
+        mike->moveMike(normalize(direction_vector) * mikeSpeed * frame_time.asSeconds());
+
 }
 
 PlayState::PlayState(Game *game) {
@@ -63,4 +94,15 @@ void PlayState::whichMap() {
     int map = rand() % nMap;
     //create map
     arenaMap = new ArenaMap(map, this->game->window, mike);
+}
+
+sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
+    constexpr auto units_in_last_place = 2;
+    auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
+    // Prevent division by zero
+    if (norm <= std::numeric_limits<float>::epsilon() * norm * units_in_last_place
+        || norm < std::numeric_limits<float>::min()) {
+        return sf::Vector2f{};
+    }
+    return vector / norm;
 }

@@ -18,10 +18,12 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
 }
 
 ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
-                     int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer + 1) {
+                     int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer + 1), cellRow(posX),
+                                                                    cellColumn(posY) {
     int tileTexturePosX, tileTexturePosY;
     this->walkable = isWalkable(tile, layer + 1, chosenMap);
     this->tileSprite.setTexture(texture);
+    posTile = {static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)};
     tileTexturePosX = (tile % (widthTex / tileSizeX)) - 1;
     tileTexturePosY = tile / (widthTex / tileSizeY);
     if (tileTexturePosX < 0)
@@ -119,7 +121,6 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
                           static_cast<float>(30 * this->tileSizeX), static_cast<float>(20 * this->tileSizeY)));
     window.setView(this->playerView);
 
-    //TODO insert mike spawner
     mike = std::unique_ptr<Mike>(new Mike());
 
 
@@ -127,6 +128,17 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
 
 void ArenaMap::loadTextures() {
     textureManager.loadTexture(this->nameMap, this->nameFile);
+}
+
+bool ArenaMap::isLegalMove(const sf::Vector2f &offset, const PosEntity &character) {
+    sf::Vector2f oldPos = character.getPos();
+    sf::Vector2i tilePos = {static_cast<int>(character.getPos().x / tileSizeX),
+                            static_cast<int>(character.getPos().y / tileSizeY)};
+    sf::Vector2f newPos = oldPos + offset;
+    //if ((newPos.x < tileMap[1][tilePos.y][tilePos.x]->posTile.x) && (newPos.y < tileMap[1][tilePos.y][tilePos.x]->posTile.y))
+    if (tileMap[1][tilePos.y][tilePos.x]->walkable && (tileMap[1][tilePos.y][tilePos.x]->layer == 2))
+        return true;
+    return false;
 }
 
 

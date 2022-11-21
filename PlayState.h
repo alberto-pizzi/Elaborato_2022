@@ -7,6 +7,8 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
+#include <limits>
 
 #include "GameState.h"
 #include "ArenaMap.h"
@@ -15,6 +17,13 @@
 
 //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
+
+enum Directions {
+    LEFT = 0,
+    RIGHT = 1,
+    UP = 2,
+    DOWN = 3,
+};
 
 class PlayState : public GameState {
 private:
@@ -25,7 +34,10 @@ private:
     //TODO add pause menu method - MenuState.cpp (load game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
-
+    bool key_states[4] = {false, false, false, false};
+    float mikeSpeed = 250.f;
+    sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
+    sf::Clock frame_clock;
 public:
     explicit PlayState(Game *game);
 
@@ -36,6 +48,8 @@ public:
     void handleInput() override;
 
     void whichMap();
+
+    sf::Vector2f normalize(sf::Vector2f vector);
 };
 
 #endif //ELABORATO_PLAYSTATE_H

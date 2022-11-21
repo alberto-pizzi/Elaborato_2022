@@ -15,6 +15,8 @@ public:
                   int streak = 0); //FIXME change speed and check hp
     void move(sf::Vector2f pos) override;
 
+    void moveMike(const sf::Vector2f &offset);
+
     bool isKillStreak(GameCharacter &character);
 
     void drawEntity(sf::RenderWindow &window) override;

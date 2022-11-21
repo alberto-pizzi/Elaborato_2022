@@ -26,3 +26,8 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
 void Mike::drawEntity(sf::RenderWindow &window) {
     window.draw(character); //TODO remove it (for debug)
 }
+
+void Mike::moveMike(const sf::Vector2f &offset) {
+    character.setPosition(character.getPosition() + offset);
+    pos += offset;
+}

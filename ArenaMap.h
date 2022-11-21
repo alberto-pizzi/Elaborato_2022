@@ -34,6 +34,8 @@ private:
         sf::Vector2f posTile;
         int tileNumber;
         int layer;
+        int cellColumn;
+        int cellRow;
         sf::Sprite tileSprite;
 
         Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
@@ -73,6 +75,8 @@ public:
     void loadTextures();
 
     void drawMap(sf::RenderWindow &window);
+
+    bool isLegalMove(const sf::Vector2f &offset, const PosEntity &character); //FIXME it has bug
 };
 
 
