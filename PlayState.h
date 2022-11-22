@@ -17,6 +17,7 @@
 
 //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
+static int countInput = 0;
 
 enum Directions {
     LEFT = 0,
@@ -38,6 +39,7 @@ private:
     float mikeSpeed = 250.f;
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
+
 public:
     explicit PlayState(Game *game);
 

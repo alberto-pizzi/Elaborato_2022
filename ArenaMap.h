@@ -32,13 +32,13 @@ private:
     enum Collisions {
         LEFT = 0,
         RIGHT = 1,
-        TOP = 2,
-        BOTTOM = 3,
+        UP = 2,
+        DOWN = 3,
     };
 
     class Tile {
     public:
-        bool walkable;
+        bool passable;
         sf::Vector2f posTile;
         int tileNumber;
         int layer;
@@ -63,13 +63,14 @@ protected:
     std::string nameFile;
     std::string nameMap;
     std::vector<std::vector<std::vector<Tile *>>> tileMap;
-    sf::View playerView;
     //WARNING: update this struct array and enum for adding other Map
     std::string mapList[1] = {
             "res/maps/desertMap.txt",
     };
     std::unique_ptr<PosEntity> entity;
 public:
+    sf::View playerView;
+
     explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
 
     virtual ~ArenaMap();
@@ -86,7 +87,7 @@ public:
 
     void drawSolidLayers(sf::RenderWindow &window);
 
-    bool isLegalMove(const sf::Vector2f &offset, GameCharacter &character); //FIXME it has bug
+    bool isLegalMove(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]); //FIXME it has bug
 };
 
 

@@ -26,7 +26,7 @@ ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Textu
                      int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer + 1), cellRow(posX),
                                                                     cellColumn(posY) {
     int tileTexturePosX, tileTexturePosY;
-    this->walkable = isWalkable(tile, layer + 1, chosenMap);
+    this->passable = isWalkable(tile, layer + 1, chosenMap);
     this->tileSprite.setTexture(texture);
     posTile = {static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)};
     tileTexturePosX = (tile % (widthTex / tileSizeX)) - 1;
@@ -127,16 +127,18 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
             sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
                           static_cast<float>(0 * this->tileSizeX), //FIXME 10x10
                           static_cast<float>(40 * this->tileSizeX), static_cast<float>(23 * this->tileSizeY)));
-    window.setView(this->playerView);
 
     mike = std::unique_ptr<Mike>(new Mike());
+
+    this->playerView.setCenter(mike->getPos());
+    window.setView(this->playerView);
 }
 
 void ArenaMap::loadTextures() {
     textureManager.loadTexture(this->nameMap, this->nameFile);
 }
 
-bool ArenaMap::isLegalMove(const sf::Vector2f &offset, GameCharacter &character) {
+bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {
     bool isLegal[4] = {false, false, false, false};
     sf::Vector2f oldPos = character.getPos();
     sf::Vector2f newPos = oldPos + offset;
@@ -144,41 +146,40 @@ bool ArenaMap::isLegalMove(const sf::Vector2f &offset, GameCharacter &character)
                                   static_cast<int>(oldPos.y / (float) tileSizeY)};
     sf::Vector2i newTilePos = {static_cast<int>(newPos.x / (float) tileSizeX),
                                static_cast<int>(newPos.y / (float) tileSizeY)};
+    sf::Vector2f characterCenter = {character.getPos().x - static_cast<float>(tileSizeX) / 2,
+                                    character.getPos().y - static_cast<float>(tileSizeY) / 2};
 
-    //FIXME a lot of bugs
-    if ((tileMap[4][actualTilePos.y][actualTilePos.x]->walkable) &&
-        (newPos.x < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.x + static_cast<float>(tileSizeX)) &&
-        (newPos.y < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.y + static_cast<float>(tileSizeY))) {
-        return true;
-    } else if ((tileMap[4][newTilePos.y][newTilePos.x]->walkable)) {
-        return true;
-    } else if ((!tileMap[4][newTilePos.y][newTilePos.x]->walkable)) {
-        //left collision
-        if (oldPos.x + static_cast<float>(tileSizeX) < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.x)
-            isLegal[LEFT] = true;
-        else if (offset.x <= 0)
-            isLegal[LEFT] = true;
-        //top collision
-        if (oldPos.y + static_cast<float>(tileSizeY) < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.y)
-            isLegal[TOP] = true;
-        else if (offset.y <= 0)
-            isLegal[TOP] = true;
-        //right collision
-        if (oldPos.x > tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.x + static_cast<float>(tileSizeX))
-            isLegal[RIGHT] = true;
-        else if (offset.x >= 0)
-            isLegal[RIGHT] = true;
-        //bottom collision
-        if (oldPos.y > tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.y + static_cast<float>(tileSizeX))
-            isLegal[BOTTOM] = true;
-        else if (offset.y >= 0)
-            isLegal[BOTTOM] = true;
+    //left tile collision
+    if ((!tileMap[4][newTilePos.y][static_cast<int>((characterCenter.x + 5) / (float) tileSizeX)]->passable)) {
+        if (character.getCharacter().getGlobalBounds().intersects(
+                tileMap[4][newTilePos.y][static_cast<int>((characterCenter.x + (float) tileSizeX - 1) /
+                                                          (float) tileSizeX)]->tileSprite.getGlobalBounds()))
+            if (offset.x > 0)
+                offset.x = 0;
+    }
+        //right tile collision
+    else if (!tileMap[4][newTilePos.y][newTilePos.x]->passable) {
+        if (offset.x < 0)
+            offset.x = 0;
+    }
+    //top tile collision
+    if (!tileMap[4][static_cast<int>((oldPos.y - 16 + (float) tileSizeY) /
+                                     (float) tileSizeY)][newTilePos.x]->passable) {
+        if (offset.y > 0)
+            offset.y = 0;
     }
 
-    if (isLegal[LEFT] || isLegal[TOP] || isLegal[RIGHT] || isLegal[BOTTOM])
-        return true;
-    else
+        //bottom tile collision
+    else if (!tileMap[4][newTilePos.y][newTilePos.x]->passable) {
+        if (offset.y < 0)
+            offset.y = 0;
+    }
+
+    if ((offset.x == 0) && (offset.y == 0))
         return false;
+    else
+        return true;
+
 
 }
 

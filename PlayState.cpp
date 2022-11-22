@@ -24,6 +24,8 @@ void PlayState::handleInput() {
     auto frame_time = frame_clock.restart();
     sf::Event event;
     sf::Vector2f normalizedVector;
+    if (countInput == 7)
+        countInput = 0;
 
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -76,21 +78,25 @@ void PlayState::handleInput() {
         direction_vector.y = 1.f;
 
     normalizedVector = normalize(direction_vector);
-    if (arenaMap->isLegalMove(direction_vector, *mike))
+    if (arenaMap->isLegalMove(normalizedVector, *mike, key_states)) {
         mike->moveMike(normalizedVector * mikeSpeed * frame_time.asSeconds());
+        arenaMap->playerView.setCenter(mike->getPos());
+        this->game->window.setView(arenaMap->playerView);
+    }
+
 
 }
 
 PlayState::PlayState(Game *game) {
     this->game = game;
-
+/*
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->guiView.setSize(pos);
     this->gameView.setSize(pos);
     pos *= 0.5f;
     this->guiView.setCenter(pos);
     this->gameView.setCenter(pos);
-
+*/
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
     //random mapList
     this->whichMap();

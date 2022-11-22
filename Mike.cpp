@@ -20,7 +20,7 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
     //spawning mike
     character.setFillColor(sf::Color::Green); //TODO remove it (for debug)
     character.setPosition(sf::Vector2f(5 * 32, 5 * 32)); //FIXME 23x20
-    pos = {5 * 32, 5 * 32}; //update coordinates in PosEntity
+    pos = {(5 * 32) + 16, (5 * 32) + 16}; //this updates coordinates in PosEntity
 
 }
 
