@@ -10,6 +10,10 @@ class PosEntity {
 protected:
     sf::Vector2f pos;
 public:
+    void setPos(const sf::Vector2f &p) {
+        this->pos = p;
+    }
+
     const sf::Vector2f &getPos() const {
         return pos;
     }

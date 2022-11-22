@@ -9,17 +9,21 @@ void PlayState::draw(float dt) {
     //this->game->window.draw(this->game->background);
     this->arenaMap->drawMap(this->game->window);
     this->mike->drawEntity(this->game->window);
+
+    this->arenaMap->drawSolidLayers(
+            this->game->window); //WARNING: this calling draw solid layers, so it must be THE LAST ONE to be rendered
 }
 
 void PlayState::update(float dt) {
 //TODO insert game implementation
-    std::cout << "updating" << std::endl; //TODO remove it (only for debug)
+    //::cout << "updating" << std::endl; //TODO remove it (only for debug)
 }
 
 void PlayState::handleInput() {
 
     auto frame_time = frame_clock.restart();
     sf::Event event;
+    sf::Vector2f normalizedVector;
 
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -71,19 +75,22 @@ void PlayState::handleInput() {
     else if (key_states[DOWN])
         direction_vector.y = 1.f;
 
+    normalizedVector = normalize(direction_vector);
     if (arenaMap->isLegalMove(direction_vector, *mike))
-        mike->moveMike(normalize(direction_vector) * mikeSpeed * frame_time.asSeconds());
+        mike->moveMike(normalizedVector * mikeSpeed * frame_time.asSeconds());
 
 }
 
 PlayState::PlayState(Game *game) {
     this->game = game;
+
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->guiView.setSize(pos);
     this->gameView.setSize(pos);
     pos *= 0.5f;
     this->guiView.setCenter(pos);
     this->gameView.setCenter(pos);
+
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
     //random mapList
     this->whichMap();

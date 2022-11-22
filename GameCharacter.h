@@ -22,6 +22,8 @@ protected:
     int coins;
     sf::RectangleShape character; //TODO remove it (for debug)
 public:
+    const sf::RectangleShape &getCharacter() const;
+
     GameCharacter(int hp, int speed, int points, int coins = 0, int armor = 0, bool bubble = false);
 
     void move(sf::Vector2f pos) override = 0;

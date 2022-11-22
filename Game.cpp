@@ -48,7 +48,7 @@ Game::Game() {
     sf::Context context; //it is used to fix an error on OpenGL()
 
     this->loadTextures();
-    this->window.create(sf::VideoMode(1280, 720), "Game_window");
+    this->window.create(sf::VideoMode(1280, 736), "Game_window");
     this->window.setFramerateLimit(60);
     this->background.setTexture(this->textureManager.getTextureRef("background"));
 }

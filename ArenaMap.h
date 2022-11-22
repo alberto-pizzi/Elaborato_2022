@@ -19,6 +19,7 @@
 #include "TextureManager.h"
 #include "GameException.h"
 #include "Mike.h"
+#include "GameCharacter.h"
 
 enum mapNumber {
     desert = 0,
@@ -27,6 +28,13 @@ enum mapNumber {
 class ArenaMap {
 private:
     TextureManager textureManager;
+
+    enum Collisions {
+        LEFT = 0,
+        RIGHT = 1,
+        TOP = 2,
+        BOTTOM = 3,
+    };
 
     class Tile {
     public:
@@ -76,7 +84,9 @@ public:
 
     void drawMap(sf::RenderWindow &window);
 
-    bool isLegalMove(const sf::Vector2f &offset, const PosEntity &character); //FIXME it has bug
+    void drawSolidLayers(sf::RenderWindow &window);
+
+    bool isLegalMove(const sf::Vector2f &offset, GameCharacter &character); //FIXME it has bug
 };
 
 

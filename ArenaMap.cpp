@@ -9,6 +9,11 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
         case desert:
             if ((layerNumber == 5) && (tile != 0)) //solid elements layer
                 return false;
+            else if ((layerNumber == 2) && (tile == 0)) //map limits
+                return false;
+            else if (((tile >= 41) && (tile <= 44)) || ((tile >= 201) && (tile <= 215)) ||
+                     ((tile >= 241) && (tile <= 255)) || ((tile >= 281) && (tile <= 288)))
+                return false;
             else
                 return true;
 
@@ -107,6 +112,8 @@ void ArenaMap::loadMapFile(int chosenMap) {
 
 void ArenaMap::drawMap(sf::RenderWindow &window) {
     for (int l = 0; l < this->totalLayers; l++) {
+        if ((l == 2) || (l == 3)) //3d layers
+            continue;
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
                 window.draw(this->tileMap[l][i][j]->tileSprite);
@@ -117,28 +124,72 @@ void ArenaMap::drawMap(sf::RenderWindow &window) {
 
 void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
     this->playerView.reset(
-            sf::FloatRect(static_cast<float>(10 * this->tileSizeX), static_cast<float>(10 * this->tileSizeX),
-                          static_cast<float>(30 * this->tileSizeX), static_cast<float>(20 * this->tileSizeY)));
+            sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
+                          static_cast<float>(0 * this->tileSizeX), //FIXME 10x10
+                          static_cast<float>(40 * this->tileSizeX), static_cast<float>(23 * this->tileSizeY)));
     window.setView(this->playerView);
 
     mike = std::unique_ptr<Mike>(new Mike());
-
-
 }
 
 void ArenaMap::loadTextures() {
     textureManager.loadTexture(this->nameMap, this->nameFile);
 }
 
-bool ArenaMap::isLegalMove(const sf::Vector2f &offset, const PosEntity &character) {
+bool ArenaMap::isLegalMove(const sf::Vector2f &offset, GameCharacter &character) {
+    bool isLegal[4] = {false, false, false, false};
     sf::Vector2f oldPos = character.getPos();
-    sf::Vector2i tilePos = {static_cast<int>(character.getPos().x / tileSizeX),
-                            static_cast<int>(character.getPos().y / tileSizeY)};
     sf::Vector2f newPos = oldPos + offset;
-    //if ((newPos.x < tileMap[1][tilePos.y][tilePos.x]->posTile.x) && (newPos.y < tileMap[1][tilePos.y][tilePos.x]->posTile.y))
-    if (tileMap[1][tilePos.y][tilePos.x]->walkable && (tileMap[1][tilePos.y][tilePos.x]->layer == 2))
+    sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
+                                  static_cast<int>(oldPos.y / (float) tileSizeY)};
+    sf::Vector2i newTilePos = {static_cast<int>(newPos.x / (float) tileSizeX),
+                               static_cast<int>(newPos.y / (float) tileSizeY)};
+
+    //FIXME a lot of bugs
+    if ((tileMap[4][actualTilePos.y][actualTilePos.x]->walkable) &&
+        (newPos.x < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.x + static_cast<float>(tileSizeX)) &&
+        (newPos.y < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.y + static_cast<float>(tileSizeY))) {
         return true;
-    return false;
+    } else if ((tileMap[4][newTilePos.y][newTilePos.x]->walkable)) {
+        return true;
+    } else if ((!tileMap[4][newTilePos.y][newTilePos.x]->walkable)) {
+        //left collision
+        if (oldPos.x + static_cast<float>(tileSizeX) < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.x)
+            isLegal[LEFT] = true;
+        else if (offset.x <= 0)
+            isLegal[LEFT] = true;
+        //top collision
+        if (oldPos.y + static_cast<float>(tileSizeY) < tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.y)
+            isLegal[TOP] = true;
+        else if (offset.y <= 0)
+            isLegal[TOP] = true;
+        //right collision
+        if (oldPos.x > tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.x + static_cast<float>(tileSizeX))
+            isLegal[RIGHT] = true;
+        else if (offset.x >= 0)
+            isLegal[RIGHT] = true;
+        //bottom collision
+        if (oldPos.y > tileMap[4][actualTilePos.y][actualTilePos.x]->posTile.y + static_cast<float>(tileSizeX))
+            isLegal[BOTTOM] = true;
+        else if (offset.y >= 0)
+            isLegal[BOTTOM] = true;
+    }
+
+    if (isLegal[LEFT] || isLegal[TOP] || isLegal[RIGHT] || isLegal[BOTTOM])
+        return true;
+    else
+        return false;
+
+}
+
+void ArenaMap::drawSolidLayers(sf::RenderWindow &window) {
+    for (int l = 2; l <= 3; l++) {
+        for (int i = 0; i < this->maxRowTiles; i++) {
+            for (int j = 0; j < this->maxColumnTiles; j++) {
+                window.draw(this->tileMap[l][i][j]->tileSprite);
+            }
+        }
+    }
 }
 
 

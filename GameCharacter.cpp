@@ -27,3 +27,7 @@ GameCharacter::GameCharacter(int hp, int speed, int points, int coins, int armor
 
 
 }
+
+const sf::RectangleShape &GameCharacter::getCharacter() const {
+    return character;
+}
