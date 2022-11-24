@@ -24,9 +24,8 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
     }
 
     sprite.setTexture(texture);
-
     sprite.setPosition(sf::Vector2f(5 * 32, 5 * 32));
-
+    sprite.setScale(sf::Vector2f(1.5, 1.5));
     pos = {(5 * 32) + 16, (5 * 32) + 16}; //this updates coordinates in PosEntity
 
     //mike's frame position (in pixel)
@@ -37,7 +36,6 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
 
     sprite.setTextureRect(currentAnimation.getCurrentRect());
     goDown.reserve(3);
-
     goDown = {
             {0 * 32, 0 * 32, 32, 32},
             {1 * 32, 0 * 32, 32, 32},
@@ -75,15 +73,20 @@ void Mike::drawEntity(sf::RenderWindow &window) {
 void Mike::move(const sf::Vector2f &offset, float dt) {
     float frameDuration = 0.5f;
 
-    if (offset.x > 0)
-        currentAnimation.setAnimation(goRight, frameDuration, RIGHT);
-    else if (offset.x < 0)
-        currentAnimation.setAnimation(goLeft, frameDuration, LEFT);
-
-    if (offset.y > 0)
+    if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)))
         currentAnimation.setAnimation(goDown, frameDuration, DOWN);
-    else if (offset.y < 0)
+    else if (((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
         currentAnimation.setAnimation(goUp, frameDuration, UP);
+    else {
+        if (offset.x > 0)
+            currentAnimation.setAnimation(goRight, frameDuration, RIGHT);
+        else if (offset.x < 0)
+            currentAnimation.setAnimation(goLeft, frameDuration, LEFT);
+        if (offset.y > 0)
+            currentAnimation.setAnimation(goDown, frameDuration, DOWN);
+        else if (offset.y < 0)
+            currentAnimation.setAnimation(goUp, frameDuration, UP);
+    }
 
     sprite.setPosition(sprite.getPosition() + offset);
     pos += offset;

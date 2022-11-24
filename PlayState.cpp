@@ -47,32 +47,32 @@ void PlayState::handleInput() {
     }
 
     for (int i = 0; i < 4; i++)
-        key_states[i] = false;
+        keyStates[i] = false;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        key_states[UP] = true;
+        keyStates[UP] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        key_states[DOWN] = true;
+        keyStates[DOWN] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        key_states[LEFT] = true;
+        keyStates[LEFT] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        key_states[RIGHT] = true;
+        keyStates[RIGHT] = true;
 
-    if ((key_states[LEFT] && key_states[RIGHT]) || (!key_states[LEFT] && !key_states[RIGHT]))
+    if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
         direction_vector.x = 0.f;
-    else if (key_states[LEFT])
+    else if (keyStates[LEFT])
         direction_vector.x = -1.f;
-    else if (key_states[RIGHT])
+    else if (keyStates[RIGHT])
         direction_vector.x = 1.f;
-    if ((key_states[UP] && key_states[DOWN]) || (!key_states[UP] && !key_states[DOWN]))
+    if ((keyStates[UP] && keyStates[DOWN]) || (!keyStates[UP] && !keyStates[DOWN]))
         direction_vector.y = 0.f;
-    else if (key_states[UP])
+    else if (keyStates[UP])
         direction_vector.y = -1.f;
-    else if (key_states[DOWN])
+    else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
     normalizedVector = normalize(direction_vector);
-    if (arenaMap->isLegalMove(normalizedVector, *mike, key_states)) {
+    if (arenaMap->isLegalMove(normalizedVector, *mike, keyStates)) {
         mike->move(normalizedVector * mikeSpeed * frame_time.asSeconds(), frame_time.asSeconds());
         arenaMap->playerView.setCenter(mike->getPos());
         this->game->window.setView(arenaMap->playerView);

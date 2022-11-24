@@ -30,11 +30,10 @@ private:
     //TODO add pause menu method - MenuState.cpp (load game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
-    bool key_states[4] = {false, false, false, false};
+    bool keyStates[4] = {false, false, false, false};
     float mikeSpeed = 250.f;
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
-    bool isMoving = false;
 
 public:
     explicit PlayState(Game *game);
