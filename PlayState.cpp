@@ -20,12 +20,10 @@ void PlayState::update(float dt) {
 }
 
 void PlayState::handleInput() {
-
     auto frame_time = frame_clock.restart();
     sf::Event event;
     sf::Vector2f normalizedVector;
-    if (countInput == 7)
-        countInput = 0;
+
 
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -45,25 +43,21 @@ void PlayState::handleInput() {
                         float(event.size.height) / float(this->game->background.getTexture()->getSize().y));
                 break;
             }
-            case sf::Event::KeyPressed:
-                key_states[UP] = key_states[UP] || (event.key.code == sf::Keyboard::W);
-                key_states[DOWN] = key_states[DOWN] || (event.key.code == sf::Keyboard::S);
-                key_states[LEFT] = key_states[LEFT] || (event.key.code == sf::Keyboard::A);
-                key_states[RIGHT] = key_states[RIGHT] || (event.key.code == sf::Keyboard::D);
-                break;
-            case sf::Event::KeyReleased:
-                if (event.key.code == sf::Keyboard::W)
-                    key_states[UP] = false;
-                else if (event.key.code == sf::Keyboard::S)
-                    key_states[DOWN] = false;
-                else if (event.key.code == sf::Keyboard::A)
-                    key_states[LEFT] = false;
-                else if (event.key.code == sf::Keyboard::D)
-                    key_states[RIGHT] = false;
-                break;
-
         }
     }
+
+    for (int i = 0; i < 4; i++)
+        key_states[i] = false;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        key_states[UP] = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        key_states[DOWN] = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        key_states[LEFT] = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        key_states[RIGHT] = true;
+
     if ((key_states[LEFT] && key_states[RIGHT]) || (!key_states[LEFT] && !key_states[RIGHT]))
         direction_vector.x = 0.f;
     else if (key_states[LEFT])
@@ -79,12 +73,11 @@ void PlayState::handleInput() {
 
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isLegalMove(normalizedVector, *mike, key_states)) {
-        mike->moveMike(normalizedVector * mikeSpeed * frame_time.asSeconds());
+        mike->move(normalizedVector * mikeSpeed * frame_time.asSeconds(), frame_time.asSeconds());
         arenaMap->playerView.setCenter(mike->getPos());
         this->game->window.setView(arenaMap->playerView);
+        mike->currentAnimation.update(frame_time.asSeconds());
     }
-
-
 }
 
 PlayState::PlayState(Game *game) {

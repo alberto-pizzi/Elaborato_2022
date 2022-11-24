@@ -11,6 +11,7 @@
 #include <SFML/System.hpp>
 
 #include "PosEntity.h"
+#include "Animation.h"
 
 class GameCharacter : public PosEntity {
 protected:
@@ -21,12 +22,20 @@ protected:
     int points;
     int coins;
     sf::RectangleShape character; //TODO remove it (for debug)
+
+    std::vector<sf::IntRect> goRight;
+    std::vector<sf::IntRect> goLeft;
+    std::vector<sf::IntRect> goDown;
+    std::vector<sf::IntRect> goUp;
+    std::vector<sf::IntRect> idle;
+
+
 public:
     const sf::RectangleShape &getCharacter() const;
 
     GameCharacter(int hp, int speed, int points, int coins = 0, int armor = 0, bool bubble = false);
 
-    void move(sf::Vector2f pos) override = 0;
+    void move(const sf::Vector2f &offset, float dt) override = 0;
 
     int receiveDamage(int damagePoints, bool armor);
 
@@ -35,6 +44,7 @@ public:
     bool isLegalFight(const GameCharacter &enemy) const;
 
     virtual void drawEntity(sf::RenderWindow &window) = 0;
+
 
 };
 

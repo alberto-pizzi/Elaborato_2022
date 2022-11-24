@@ -24,10 +24,9 @@ GameCharacter::GameCharacter(int hp, int speed, int points, int coins, int armor
     //TODO remove it (for debug)
     character.setSize(sf::Vector2f(32, 32));
     character.setFillColor(sf::Color::Blue);
-
-
 }
 
 const sf::RectangleShape &GameCharacter::getCharacter() const {
     return character;
 }
+
