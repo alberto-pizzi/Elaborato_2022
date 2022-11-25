@@ -71,12 +71,14 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
+
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isLegalMove(normalizedVector, *mike, keyStates)) {
         mike->move(normalizedVector * mikeSpeed * frame_time.asSeconds(), frame_time.asSeconds());
         arenaMap->playerView.setCenter(mike->getPos());
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
+        //std::cout<<"PosizioneX: "<<mike->getPos().x<<" PosizioneY: "<<mike->getPos().y<<std::endl;
     }
 }
 

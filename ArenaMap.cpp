@@ -11,8 +11,9 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
                 return false;
             else if ((layerNumber == 2) && (tile == 0)) //map limits
                 return false;
-            else if (((tile >= 41) && (tile <= 44)) || ((tile >= 201) && (tile <= 215)) ||
-                     ((tile >= 241) && (tile <= 255)) || ((tile >= 281) && (tile <= 288)))
+            else if (((tile >= 41) && (tile <= 48)) || ((tile >= 201) && (tile <= 215)) ||
+                     ((tile >= 241) && (tile <= 255)) || ((tile >= 281) && (tile <= 295)) ||
+                     ((tile >= 85) && (tile <= 88)))
                 return false;
             else
                 return true;
@@ -139,41 +140,76 @@ void ArenaMap::loadTextures() {
 }
 
 bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {
-    bool isLegal[4] = {false, false, false, false};
-    sf::Vector2f oldPos = character.getPos();
-    sf::Vector2f newPos = oldPos + offset;
+    //bool isLegal[4] = {false, false, false, false};
+    sf::Vector2f oldPos = character.getPos(); //posizone centrata (da PosEntity)
+    //sf::Vector2f newPos = oldPos + offset;
     sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
                                   static_cast<int>(oldPos.y / (float) tileSizeY)};
-    sf::Vector2i newTilePos = {static_cast<int>(newPos.x / (float) tileSizeX),
-                               static_cast<int>(newPos.y / (float) tileSizeY)};
-    sf::Vector2f characterCenter = {character.getPos().x - static_cast<float>(tileSizeX) / 2,
-                                    character.getPos().y - static_cast<float>(tileSizeY) / 2};
+    int playerSideInTileContact[4] = {
+            static_cast<int>(character.getSprite().getGlobalBounds().left / (float) tileSizeX), //LEFT side
+            static_cast<int>(
+                    (character.getSprite().getGlobalBounds().left + character.getSprite().getGlobalBounds().width) /
+                    (float) tileSizeX), //RIGHT side
+            static_cast<int>(character.getSprite().getGlobalBounds().top / (float) tileSizeX), //UP side
+            static_cast<int>(
+                    (character.getSprite().getGlobalBounds().top + character.getSprite().getGlobalBounds().height) /
+                    (float) tileSizeY), //DOWN side
+    };
+    sf::FloatRect tolerance;
+
 
     //left tile collision
-    if ((!tileMap[4][newTilePos.y][static_cast<int>((characterCenter.x + 5) / (float) tileSizeX)]->passable)) {
-        if (character.getCharacter().getGlobalBounds().intersects(
-                tileMap[4][newTilePos.y][static_cast<int>((characterCenter.x + (float) tileSizeX - 1) /
-                                                          (float) tileSizeX)]->tileSprite.getGlobalBounds()))
-            if (offset.x > 0)
-                offset.x = 0;
+    if ((offset.x > 0) && (((!tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
+                            (character.getSprite().getGlobalBounds().intersects(
+                                    tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
+                                    tolerance))) ||
+                           ((!tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
+                            (character.getSprite().getGlobalBounds().intersects(
+                                    tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
+                                    tolerance)))) && (tolerance.width > 16)) {
+        offset.x = 0;
+        std::cout << "Collisione Left" << std::endl;
     }
+
         //right tile collision
-    else if (!tileMap[4][newTilePos.y][newTilePos.x]->passable) {
-        if (offset.x < 0)
-            offset.x = 0;
+    else if ((offset.x < 0) && (((!tileMap[4][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
+                                 (character.getSprite().getGlobalBounds().intersects(
+                                         tileMap[4][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
+                                         tolerance))) ||
+                                ((!tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
+                                 (character.getSprite().getGlobalBounds().intersects(
+                                         tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
+                                         tolerance)))) && (tolerance.width > 16)) {
+        offset.x = 0;
+        std::cout << "Collisione Right" << std::endl;
     }
+
     //top tile collision
-    if (!tileMap[4][static_cast<int>((oldPos.y - 16 + (float) tileSizeY) /
-                                     (float) tileSizeY)][newTilePos.x]->passable) {
-        if (offset.y > 0)
-            offset.y = 0;
+    if ((offset.y > 0) && (((!tileMap[4][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
+                            (character.getSprite().getGlobalBounds().intersects(
+                                    tileMap[4][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                    tolerance))) ||
+                           ((!tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
+                            (character.getSprite().getGlobalBounds().intersects(
+                                    tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                    tolerance)))) && (tolerance.height >= 0) && (tolerance.width >= 0)) {
+        offset.y = 0;
+        std::cout << "Collisione Top" << std::endl;
     }
 
         //bottom tile collision
-    else if (!tileMap[4][newTilePos.y][newTilePos.x]->passable) {
-        if (offset.y < 0)
-            offset.y = 0;
+    else if ((offset.y < 0) && (((!tileMap[4][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
+                                 (character.getSprite().getGlobalBounds().intersects(
+                                         tileMap[4][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                         tolerance))) ||
+                                ((!tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
+                                 (character.getSprite().getGlobalBounds().intersects(
+                                         tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                         tolerance)))) && (tolerance.height > 28)) {
+        offset.y = 0;
+        std::cout << "Collisione Bottom" << std::endl;
     }
+
 
     if ((offset.x == 0) && (offset.y == 0))
         return false;

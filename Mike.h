@@ -18,8 +18,7 @@ enum Directions {
 class Mike : public GameCharacter {
 private:
     int killStreak;
-    sf::Texture texture;
-    sf::Sprite sprite;
+
 
 public:
     Animation currentAnimation{idle, 10.0f};

@@ -21,7 +21,10 @@ protected:
     bool bubble;
     int points;
     int coins;
-    sf::RectangleShape character; //TODO remove it (for debug)
+
+
+    sf::Texture texture;
+    sf::Sprite sprite;
 
     std::vector<sf::IntRect> goRight;
     std::vector<sf::IntRect> goLeft;
@@ -31,7 +34,8 @@ protected:
 
 
 public:
-    const sf::RectangleShape &getCharacter() const;
+
+    const sf::Sprite &getSprite() const;
 
     GameCharacter(int hp, int speed, int points, int coins = 0, int armor = 0, bool bubble = false);
 

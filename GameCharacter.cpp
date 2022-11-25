@@ -21,12 +21,11 @@ GameCharacter::GameCharacter(int hp, int speed, int points, int coins, int armor
                                                                                                  coins(coins),
                                                                                                  armor(armor),
                                                                                                  bubble(bubble) {
-    //TODO remove it (for debug)
-    character.setSize(sf::Vector2f(32, 32));
-    character.setFillColor(sf::Color::Blue);
+
 }
 
-const sf::RectangleShape &GameCharacter::getCharacter() const {
-    return character;
+
+const sf::Sprite &GameCharacter::getSprite() const {
+    return sprite;
 }
 
