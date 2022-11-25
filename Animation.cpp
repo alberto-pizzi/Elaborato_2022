@@ -25,7 +25,7 @@ Animation::Animation(std::vector<sf::IntRect> &frames, float duration)
     reset();
 }
 
-void Animation::setAnimation(std::vector<sf::IntRect> &frames, float duration, int direction) {
+void Animation::setMovementAnimation(std::vector<sf::IntRect> &frames, float duration, int direction) {
     this->frames = frames;
     this->frameTime = duration / static_cast<float>(frames.size());
     if (oldDirection != direction)

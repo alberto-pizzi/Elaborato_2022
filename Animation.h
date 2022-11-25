@@ -11,13 +11,13 @@
 #include <SFML/System.hpp>
 #include <vector>
 
-static int oldDirection = 5;
+static int oldDirection = 5; //casual number (not 0 <= number < 4)
 
 class Animation {
 public:
     Animation(std::vector<sf::IntRect> &frames, float duration);
 
-    void setAnimation(std::vector<sf::IntRect> &frames, float duration, int direction);
+    void setMovementAnimation(std::vector<sf::IntRect> &frames, float duration, int direction);
 
     void reset();
 

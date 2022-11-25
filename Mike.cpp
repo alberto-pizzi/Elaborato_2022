@@ -15,7 +15,7 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
                                                                                                          bubble),
                                                                                            killStreak(streak) {
     //spawning mike
-    std::string fileName = "res/textures/character.png";
+    std::string fileName = "res/textures/mike.png";
     try {
         if (!texture.loadFromFile(fileName))
             throw GameException("Error opening Mike texture file", fileName, false);
@@ -73,19 +73,20 @@ void Mike::drawEntity(sf::RenderWindow &window) {
 void Mike::move(const sf::Vector2f &offset, float dt) {
     float frameDuration = 0.5f;
 
-    if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)))
-        currentAnimation.setAnimation(goDown, frameDuration, DOWN);
+    if (((offset.y > 0) && (offset.x > 0)) ||
+        ((offset.y > 0) && (offset.x < 0))) //correct animation for diagonal movements
+        currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
     else if (((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
-        currentAnimation.setAnimation(goUp, frameDuration, UP);
+        currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
     else {
         if (offset.x > 0)
-            currentAnimation.setAnimation(goRight, frameDuration, RIGHT);
+            currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
         else if (offset.x < 0)
-            currentAnimation.setAnimation(goLeft, frameDuration, LEFT);
+            currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
         if (offset.y > 0)
-            currentAnimation.setAnimation(goDown, frameDuration, DOWN);
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
         else if (offset.y < 0)
-            currentAnimation.setAnimation(goUp, frameDuration, UP);
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
     }
 
     sprite.setPosition(sprite.getPosition() + offset);
