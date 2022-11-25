@@ -83,9 +83,9 @@ public:
 
     void loadTextures();
 
-    void drawMap(sf::RenderWindow &window);
+    void drawFloorAndSolids(sf::RenderWindow &window);
 
-    void drawSolidLayers(sf::RenderWindow &window);
+    void draw3DLayers(sf::RenderWindow &window);
 
     bool isLegalMove(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]); //FIXME it has bug
 };

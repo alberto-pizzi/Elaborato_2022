@@ -111,7 +111,7 @@ void ArenaMap::loadMapFile(int chosenMap) {
         file.close();
 }
 
-void ArenaMap::drawMap(sf::RenderWindow &window) {
+void ArenaMap::drawFloorAndSolids(sf::RenderWindow &window) {
     for (int l = 0; l < this->totalLayers; l++) {
         if ((l == 2) || (l == 3)) //3d layers
             continue;
@@ -168,7 +168,6 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                                     tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
                                     tolerance)))) && (tolerance.width > 16)) {
         offset.x = 0;
-        std::cout << "Collisione Left" << std::endl;
     }
 
         //right tile collision
@@ -181,7 +180,6 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                                          tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
                                          tolerance)))) && (tolerance.width > 16)) {
         offset.x = 0;
-        std::cout << "Collisione Right" << std::endl;
     }
 
     //top tile collision
@@ -194,7 +192,6 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                                     tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                     tolerance)))) && (tolerance.height >= 0) && (tolerance.width >= 0)) {
         offset.y = 0;
-        std::cout << "Collisione Top" << std::endl;
     }
 
         //bottom tile collision
@@ -207,7 +204,6 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                                          tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                          tolerance)))) && (tolerance.height > 28)) {
         offset.y = 0;
-        std::cout << "Collisione Bottom" << std::endl;
     }
 
 
@@ -219,7 +215,7 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
 
 }
 
-void ArenaMap::drawSolidLayers(sf::RenderWindow &window) {
+void ArenaMap::draw3DLayers(sf::RenderWindow &window) {
     for (int l = 2; l <= 3; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {

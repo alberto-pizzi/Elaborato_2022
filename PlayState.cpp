@@ -7,11 +7,11 @@
 void PlayState::draw(float dt) {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
-    this->arenaMap->drawMap(this->game->window);
+    this->arenaMap->drawFloorAndSolids(this->game->window);
     this->mike->drawEntity(this->game->window);
 
-    this->arenaMap->drawSolidLayers(
-            this->game->window); //WARNING: this calling draw solid layers, so it must be THE LAST ONE to be rendered
+    this->arenaMap->draw3DLayers(
+            this->game->window); //WARNING: this calling draw 3d and design layers, so it must be THE LAST ONE to be rendered
 }
 
 void PlayState::update(float dt) {
