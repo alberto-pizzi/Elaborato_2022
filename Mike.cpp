@@ -9,11 +9,12 @@ bool Mike::isKillStreak(GameCharacter &character) {
     return false;
 }
 
-Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int streak) : GameCharacter(hp, speed,
-                                                                                                         points, coins,
-                                                                                                         armor,
-                                                                                                         bubble),
-                                                                                           killStreak(streak) {
+Mike::Mike(int hp, float speed, int points, int coins, int armor, bool bubble, int streak) : GameCharacter(hp, speed,
+                                                                                                           points,
+                                                                                                           coins,
+                                                                                                           armor,
+                                                                                                           bubble),
+                                                                                             killStreak(streak) {
     //spawning mike
     std::string fileName = "res/textures/mike.png";
     try {
@@ -25,7 +26,6 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
 
     sprite.setTexture(texture);
     sprite.setPosition(sf::Vector2f(5 * 32, 5 * 32));
-    //sprite.setScale(sf::Vector2f(1.5, 1.5));
     pos = {(5 * 32) + 16, (5 * 32) + 16}; //this updates coordinates in PosEntity, (+16 for center of sprite)
 
 
@@ -73,13 +73,17 @@ void Mike::drawEntity(sf::RenderWindow &window) {
 
 void Mike::move(const sf::Vector2f &offset, float dt) {
     float frameDuration = 0.5f;
+    float newSpeed = this->speed;
+    sf::Vector2f effectiveOffset;
 
     if (((offset.y > 0) && (offset.x > 0)) ||
-        ((offset.y > 0) && (offset.x < 0))) //correct animation for diagonal movements
+        ((offset.y > 0) && (offset.x < 0))) { //correct animation for diagonal movements
         currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
-    else if (((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
+        newSpeed /= std::sqrt(2.f);
+    } else if (((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0))) {
         currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
-    else {
+        newSpeed /= std::sqrt(2.f);
+    } else {
         if (offset.x > 0)
             currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
         else if (offset.x < 0)
@@ -90,7 +94,8 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
             currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
     }
 
-    sprite.setPosition(sprite.getPosition() + offset);
-    pos += offset;
+    effectiveOffset = offset * newSpeed * dt;
+    sprite.setPosition(sprite.getPosition() + effectiveOffset);
+    pos += effectiveOffset;
 }
 

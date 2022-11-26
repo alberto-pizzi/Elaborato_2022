@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <math.h>
 
 #include "PosEntity.h"
 #include "Animation.h"
@@ -17,7 +18,7 @@ class GameCharacter : public PosEntity {
 protected:
     int HP;
     int armor;
-    int speed;
+    float speed;
     bool bubble;
     int points;
     int coins;
@@ -37,7 +38,7 @@ public:
 
     const sf::Sprite &getSprite() const;
 
-    GameCharacter(int hp, int speed, int points, int coins = 0, int armor = 0, bool bubble = false);
+    GameCharacter(int hp, float speed, int points, int coins = 0, int armor = 0, bool bubble = false);
 
     void move(const sf::Vector2f &offset, float dt) override = 0;
 

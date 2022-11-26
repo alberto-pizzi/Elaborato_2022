@@ -154,15 +154,6 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                     (float) tileSizeY), //DOWN side
     };
     sf::FloatRect tolerance;
-/*
-    if ((!tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) && (offset.x > 0) && ((character.getSprite().getGlobalBounds().top >= tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().top) ||
-            (character.getSprite().getGlobalBounds().top+character.getSprite().getGlobalBounds().height <= tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().top+
-                                                                                                                  tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().height)) &&
-            ((character.getSprite().getGlobalBounds().left + character.getSprite().getGlobalBounds().width  >= tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().left)))
-
-        offset.x = 0;
-
-*/
 
     //left tile collision
     if ((offset.x > 0) && (((!tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&

@@ -74,7 +74,7 @@ void PlayState::handleInput() {
 
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isLegalMove(normalizedVector, *mike, keyStates)) {
-        mike->move(normalizedVector * mikeSpeed * frame_time.asSeconds(), frame_time.asSeconds());
+        mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(mike->getPos());
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());

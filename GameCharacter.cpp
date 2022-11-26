@@ -16,11 +16,11 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
     return false;
 }
 
-GameCharacter::GameCharacter(int hp, int speed, int points, int coins, int armor, bool bubble) : HP(hp), speed(speed),
-                                                                                                 points(points),
-                                                                                                 coins(coins),
-                                                                                                 armor(armor),
-                                                                                                 bubble(bubble) {
+GameCharacter::GameCharacter(int hp, float speed, int points, int coins, int armor, bool bubble) : HP(hp), speed(speed),
+                                                                                                   points(points),
+                                                                                                   coins(coins),
+                                                                                                   armor(armor),
+                                                                                                   bubble(bubble) {
 
 }
 
