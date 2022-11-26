@@ -87,7 +87,8 @@ public:
 
     void drawSolidsAnd3DLayers(sf::RenderWindow &window);
 
-    bool isLegalMove(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]); //FIXME it has bug
+    bool
+    isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]); //FIXME it has bug
 };
 
 

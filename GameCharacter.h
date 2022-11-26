@@ -13,6 +13,7 @@
 
 #include "PosEntity.h"
 #include "Animation.h"
+#include "TextureManager.h"
 
 class GameCharacter : public PosEntity {
 protected:
@@ -23,8 +24,7 @@ protected:
     int points;
     int coins;
 
-
-    sf::Texture texture;
+    TextureManager textureManager;
     sf::Sprite sprite;
 
     std::vector<sf::IntRect> goRight;

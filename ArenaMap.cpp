@@ -137,7 +137,7 @@ void ArenaMap::loadTextures() {
     textureManager.loadTexture(this->nameMap, this->nameFile);
 }
 
-bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {
+bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {
     //bool isLegal[4] = {false, false, false, false};
     sf::Vector2f oldPos = character.getPos(); //posizone centrata (da PosEntity)
     //sf::Vector2f newPos = oldPos + offset;

@@ -17,14 +17,10 @@ Mike::Mike(int hp, float speed, int points, int coins, int armor, bool bubble, i
                                                                                              killStreak(streak) {
     //spawning mike
     std::string fileName = "res/textures/mike.png";
-    try {
-        if (!texture.loadFromFile(fileName))
-            throw GameException("Error opening Mike texture file", fileName, false);
-    } catch (GameException &e) {
-        exit(1); //close all
-    }
 
-    sprite.setTexture(texture);
+    textureManager.loadTexture("mike", fileName);
+
+    sprite.setTexture(textureManager.getTextureRef("mike"));
     sprite.setPosition(sf::Vector2f(5 * 32, 5 * 32));
     pos = {(5 * 32) + 16, (5 * 32) + 16}; //this updates coordinates in PosEntity, (+16 for center of sprite)
 
