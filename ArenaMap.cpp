@@ -111,10 +111,8 @@ void ArenaMap::loadMapFile(int chosenMap) {
         file.close();
 }
 
-void ArenaMap::drawFloorAndSolids(sf::RenderWindow &window) {
-    for (int l = 0; l < this->totalLayers; l++) {
-        if ((l == 2) || (l == 3)) //3d layers
-            continue;
+void ArenaMap::drawFloorAndDesignElements(sf::RenderWindow &window) {
+    for (int l = 0; l <= 2; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
                 window.draw(this->tileMap[l][i][j]->tileSprite);
@@ -146,7 +144,7 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
     sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
                                   static_cast<int>(oldPos.y / (float) tileSizeY)};
     int playerSideInTileContact[4] = {
-            static_cast<int>(character.getSprite().getGlobalBounds().left / (float) tileSizeX), //LEFT side
+            static_cast<int>(((character.getSprite().getGlobalBounds().left)) / (float) tileSizeX), //LEFT side
             static_cast<int>(
                     (character.getSprite().getGlobalBounds().left + character.getSprite().getGlobalBounds().width) /
                     (float) tileSizeX), //RIGHT side
@@ -156,7 +154,15 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                     (float) tileSizeY), //DOWN side
     };
     sf::FloatRect tolerance;
+/*
+    if ((!tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) && (offset.x > 0) && ((character.getSprite().getGlobalBounds().top >= tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().top) ||
+            (character.getSprite().getGlobalBounds().top+character.getSprite().getGlobalBounds().height <= tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().top+
+                                                                                                                  tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().height)) &&
+            ((character.getSprite().getGlobalBounds().left + character.getSprite().getGlobalBounds().width  >= tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds().left)))
 
+        offset.x = 0;
+
+*/
 
     //left tile collision
     if ((offset.x > 0) && (((!tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
@@ -166,7 +172,7 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                            ((!tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
                             (character.getSprite().getGlobalBounds().intersects(
                                     tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
-                                    tolerance)))) && (tolerance.width > 16)) {
+                                    tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.x = 0;
     }
 
@@ -178,7 +184,7 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                                 ((!tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
                                  (character.getSprite().getGlobalBounds().intersects(
                                          tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
-                                         tolerance)))) && (tolerance.width > 16)) {
+                                         tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.x = 0;
     }
 
@@ -190,7 +196,7 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                            ((!tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
                             (character.getSprite().getGlobalBounds().intersects(
                                     tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
-                                    tolerance)))) && (tolerance.height >= 0) && (tolerance.width >= 0)) {
+                                    tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.y = 0;
     }
 
@@ -202,7 +208,7 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
                                 ((!tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
                                  (character.getSprite().getGlobalBounds().intersects(
                                          tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
-                                         tolerance)))) && (tolerance.height > 28)) {
+                                         tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.y = 0;
     }
 
@@ -215,8 +221,8 @@ bool ArenaMap::isLegalMove(sf::Vector2f &offset, const GameCharacter &character,
 
 }
 
-void ArenaMap::draw3DLayers(sf::RenderWindow &window) {
-    for (int l = 2; l <= 3; l++) {
+void ArenaMap::drawSolidsAnd3DLayers(sf::RenderWindow &window) {
+    for (int l = 3; l < this->totalLayers; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
                 window.draw(this->tileMap[l][i][j]->tileSprite);

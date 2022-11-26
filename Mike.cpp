@@ -25,7 +25,7 @@ Mike::Mike(int hp, int speed, int points, int coins, int armor, bool bubble, int
 
     sprite.setTexture(texture);
     sprite.setPosition(sf::Vector2f(5 * 32, 5 * 32));
-    sprite.setScale(sf::Vector2f(1.5, 1.5));
+    //sprite.setScale(sf::Vector2f(1.5, 1.5));
     pos = {(5 * 32) + 16, (5 * 32) + 16}; //this updates coordinates in PosEntity, (+16 for center of sprite)
 
 
