@@ -127,7 +127,11 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
                           static_cast<float>(0 * this->tileSizeX), //FIXME 10x10
                           static_cast<float>(40 * this->tileSizeX), static_cast<float>(23 * this->tileSizeY)));
 
-    mike = std::unique_ptr<Mike>(new Mike());
+
+
+    //casual spawning
+    sf::Vector2i spawnTile = randomPassableTile();
+    mike = std::unique_ptr<Mike>(new Mike(spawnTile.x, spawnTile.y));
 
     this->playerView.setCenter(mike->getPos());
     window.setView(this->playerView);
@@ -221,6 +225,23 @@ void ArenaMap::drawSolidsAnd3DLayers(sf::RenderWindow &window) {
         }
     }
 }
+
+sf::Vector2i ArenaMap::randomPassableTile() {
+    srand(time(NULL));
+    int tileSpawnX, tileSpawnY;
+
+    //casual tile position
+    do {
+        tileSpawnX = rand() % this->maxColumnTiles;
+        tileSpawnY = rand() % this->maxRowTiles;
+
+    } while (!tileMap[1][tileSpawnY][tileSpawnX]->passable);
+
+    return sf::Vector2i(tileSpawnX, tileSpawnY);
+
+}
+
+
 
 
 

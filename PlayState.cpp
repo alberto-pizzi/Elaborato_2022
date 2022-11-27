@@ -12,6 +12,8 @@ void PlayState::draw(float dt) {
 
     this->arenaMap->drawSolidsAnd3DLayers(
             this->game->window); //WARNING: this calling draw 3d and design layers, so it must be THE LAST ONE to be rendered
+
+    this->game->window.draw(viewfinderSprite); //draw viewfinder
 }
 
 void PlayState::update(float dt) {
@@ -58,6 +60,10 @@ void PlayState::handleInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         keyStates[RIGHT] = true;
 
+    sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
+    sf::Vector2f worldPos = this->game->window.mapPixelToCoords(localPosition);
+    viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - 16, worldPos.y - 16)); // -16 for center
+
     if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
         direction_vector.x = 0.f;
     else if (keyStates[LEFT])
@@ -84,33 +90,28 @@ void PlayState::handleInput() {
 
 PlayState::PlayState(Game *game) {
     this->game = game;
-/*
-    sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
-    this->guiView.setSize(pos);
-    this->gameView.setSize(pos);
-    pos *= 0.5f;
-    this->guiView.setCenter(pos);
-    this->gameView.setCenter(pos);
-*/
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
     //random mapList
     this->whichMap();
+
+    std::string fileName = "res/textures/viewfinder.png";
+    textureManager.loadTexture("viewfinder", fileName);
+    viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
 }
 
 void PlayState::whichMap() {
     srand(time(NULL));
     int map = rand() % nMap;
+
     //create map
     arenaMap = new ArenaMap(map, this->game->window, mike);
 }
 
 sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
-    constexpr auto units_in_last_place = 2;
     auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
     // Prevent division by zero
-    if (norm <= std::numeric_limits<float>::epsilon() * norm * units_in_last_place
-        || norm < std::numeric_limits<float>::min()) {
+    if (norm == 0)
         return sf::Vector2f{};
-    }
-    return vector / norm;
+    else
+        return vector / norm;
 }

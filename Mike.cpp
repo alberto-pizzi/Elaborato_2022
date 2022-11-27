@@ -9,29 +9,36 @@ bool Mike::isKillStreak(GameCharacter &character) {
     return false;
 }
 
-Mike::Mike(int hp, float speed, int points, int coins, int armor, bool bubble, int streak) : GameCharacter(hp, speed,
-                                                                                                           points,
-                                                                                                           coins,
-                                                                                                           armor,
-                                                                                                           bubble),
-                                                                                             killStreak(streak) {
-    //spawning mike
+Mike::Mike(int spawnTileX, int spawnTileY, int hp, float speed, int points, int coins, int armor, bool bubble,
+           int streak) : GameCharacter(hp, speed,
+                                       points,
+                                       coins,
+                                       armor,
+                                       bubble),
+                         killStreak(streak) {
+
     std::string fileName = "res/textures/mike.png";
-
     textureManager.loadTexture("mike", fileName);
-
     sprite.setTexture(textureManager.getTextureRef("mike"));
-    sprite.setPosition(sf::Vector2f(5 * 32, 5 * 32));
-    pos = {(5 * 32) + 16, (5 * 32) + 16}; //this updates coordinates in PosEntity, (+16 for center of sprite)
-
-
     //mike's frame position (in pixel)
     idle.reserve(1);
     idle = {
             {0 * 32, 0 * 32, 32, 32},
     };
 
+    //spawning mike
     sprite.setTextureRect(currentAnimation.getCurrentRect());
+    sf::Vector2i spriteDimensions = {sprite.getTextureRect().width, sprite.getTextureRect().height};
+    sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
+                                 static_cast<float>(sprite.getTextureRect().height) / 2};
+    sprite.setPosition(sf::Vector2f(static_cast<float>(spawnTileX * spriteDimensions.x),
+                                    static_cast<float>(spawnTileY * spriteDimensions.y)));
+    pos = {(static_cast<float>(spawnTileX * spriteDimensions.x)) + spriteCenter.x,
+           (static_cast<float>(spawnTileY * spriteDimensions.y)) +
+           spriteCenter.y}; //this updates coordinates in PosEntity, (+16 for center of sprite) //TODO insert it in unit testing
+
+
+    //WARNING: work here to edit frames
     goDown.reserve(3);
     goDown = {
             {0 * 32, 0 * 32, 32, 32},
@@ -64,7 +71,6 @@ Mike::Mike(int hp, float speed, int points, int coins, int armor, bool bubble, i
 void Mike::drawEntity(sf::RenderWindow &window) {
     sprite.setTextureRect(currentAnimation.getCurrentRect());
     window.draw(sprite);
-
 }
 
 void Mike::move(const sf::Vector2f &offset, float dt) {

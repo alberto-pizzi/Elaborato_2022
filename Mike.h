@@ -23,7 +23,8 @@ private:
 public:
     Animation currentAnimation{idle, 10.0f};
 
-    explicit Mike(int hp = 20, float speed = 250.f, int points = 0, int coins = 0, int armor = 0, bool bubble = false,
+    explicit Mike(int spawnTileX, int spawnTileY, int hp = 20, float speed = 250.f, int points = 0, int coins = 0,
+                  int armor = 0, bool bubble = false,
                   int streak = 0); //FIXME check hp
     void move(const sf::Vector2f &offset, float dt) override;
 

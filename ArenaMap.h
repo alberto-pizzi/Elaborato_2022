@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -89,6 +91,8 @@ public:
 
     bool
     isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]); //FIXME it has bug
+
+    sf::Vector2i randomPassableTile();
 };
 
 

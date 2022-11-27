@@ -21,6 +21,9 @@ GameCharacter::GameCharacter(int hp, float speed, int points, int coins, int arm
                                                                                                    coins(coins),
                                                                                                    armor(armor),
                                                                                                    bubble(bubble) {
+    //sprite.setPosition(sf::Vector2f(5 * 32, 5 * 32));
+    //pos = {(5 * 32) + 16, (5 * 32) + 16};
+
 
 }
 
