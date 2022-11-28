@@ -80,12 +80,14 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
 
     if (((offset.y > 0) && (offset.x > 0)) ||
         ((offset.y > 0) && (offset.x < 0))) { //correct animation for diagonal movements
-        currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+        //currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
         newSpeed /= std::sqrt(2.f);
     } else if (((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0))) {
-        currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+        //currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
         newSpeed /= std::sqrt(2.f);
-    } else {
+    }
+    /*
+    else {
         if (offset.x > 0)
             currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
         else if (offset.x < 0)
@@ -95,10 +97,35 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
         else if (offset.y < 0)
             currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
     }
+     */
+
 
     effectiveOffset = offset * newSpeed * dt;
     sprite.setPosition(sprite.getPosition() + effectiveOffset);
     pos += effectiveOffset;
+}
+
+void Mike::directionInput(const sf::Vector2f &viewfinderPos) {
+    sf::Vector2f origin = this->pos;
+    sf::Vector2f translation = viewfinderPos - origin;
+    float frameDuration = 0.5f;
+
+    if (viewfinderPos.x >= origin.x) {
+        //if ((viewfinderPos.y < viewfinderPos.x) && ( (viewfinderPos.y - origin.y) > - (viewfinderPos.x - origin.x) ) )
+        if ((translation.y < translation.x) && (translation.y > -(translation.x)))
+            currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
+        else if (viewfinderPos.y >= origin.y)
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+        else if (viewfinderPos.y < origin.y)
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+    } else if (viewfinderPos.x < origin.x) {
+        if ((translation.y > translation.x) && (translation.y < -(translation.x)))
+            currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
+        else if (viewfinderPos.y >= origin.y)
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+        else
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+    }
 }
 
 Mike::~Mike() = default;;

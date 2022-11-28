@@ -77,7 +77,7 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-
+    mike->directionInput(worldPos);
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike, keyStates)) {
         mike->move(normalizedVector, frame_time.asSeconds());
@@ -85,6 +85,7 @@ void PlayState::handleInput() {
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
     }
+
 }
 
 PlayState::PlayState(Game *game) {

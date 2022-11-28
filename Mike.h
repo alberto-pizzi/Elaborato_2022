@@ -34,6 +34,8 @@ public:
 
     void drawEntity(sf::RenderWindow &window) override;
 
+    void directionInput(const sf::Vector2f &viewfinderPos);
+
 };
 
 
