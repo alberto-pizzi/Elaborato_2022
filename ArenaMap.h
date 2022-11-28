@@ -51,7 +51,7 @@ private:
         Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
              int tileSizeX, int tileSizeY, int chosenMap);
 
-        bool isWalkable(int tile, int layerNumber, int chosenMap); //FIXME improve it (optimization)
+        bool isWalkable(int tile, int layerNumber, int chosenMap);
     };
 
 protected:
@@ -60,10 +60,6 @@ protected:
     int tileSizeX;
     int tileSizeY;
     int totalLayers;
-public:
-
-
-protected:
     int widthFile;
     int heightFile;
     std::string nameFile;
@@ -96,7 +92,7 @@ public:
     void drawSolidsAnd3DLayers(sf::RenderWindow &window);
 
     bool
-    isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]); //FIXME it has bug
+    isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]);
 
     sf::Vector2i randomPassableTile();
 };

@@ -84,7 +84,7 @@ void ArenaMap::loadMapFile(int chosenMap) {
         //take tilemap data from file
         file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
              >> this->totalLayers >> this->nameFile >> this->widthFile >> this->heightFile;
-        //load textures' Map
+        //loadTextures textures' Map
         loadTextures();
 
         //start reading
@@ -141,9 +141,7 @@ void ArenaMap::loadTextures() {
 }
 
 bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {
-    //bool isLegal[4] = {false, false, false, false};
     sf::Vector2f oldPos = character.getPos(); //centered position (from PosEntity)
-    //sf::Vector2f newPos = oldPos + offset;
     sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
                                   static_cast<int>(oldPos.y / (float) tileSizeY)};
     int playerSideInTileContact[4] = {

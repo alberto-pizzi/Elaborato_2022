@@ -27,7 +27,7 @@ private:
     sf::View guiView;
     ArenaMap *arenaMap;
 private:
-    //TODO add pause menu method - MenuState.cpp (load game)
+    //TODO add pause menu method - MenuState.cpp (loadTextures game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
     bool keyStates[4] = {false, false, false, false};

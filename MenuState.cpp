@@ -23,7 +23,6 @@ void MenuState::draw(float dt) {
 }
 
 void MenuState::update(float dt) {
-    //TODO insert menu implementation
 }
 
 void MenuState::handleInput() {
@@ -73,7 +72,7 @@ void MenuState::loadPlay() {
 }
 
 MenuState::MenuState(Game *game) {
-    //TODO improve menu design (and check this code)
+    //TODO improve menu design
     this->game = game;
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->view.setSize(pos);
