@@ -32,3 +32,5 @@ const sf::Sprite &GameCharacter::getSprite() const {
     return sprite;
 }
 
+GameCharacter::~GameCharacter() = default;
+

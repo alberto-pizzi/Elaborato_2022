@@ -21,6 +21,8 @@ public:
     virtual void move(const sf::Vector2f &offset, float dt) = 0;
 
     virtual void drawEntity(sf::RenderWindow &window) = 0;
+
+    virtual ~PosEntity() = default;
 };
 
 

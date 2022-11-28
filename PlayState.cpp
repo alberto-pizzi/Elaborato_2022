@@ -84,7 +84,6 @@ void PlayState::handleInput() {
         arenaMap->playerView.setCenter(mike->getPos());
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
-        //std::cout<<"PosizioneX: "<<mike->getPos().x<<" PosizioneY: "<<mike->getPos().y<<std::endl;
     }
 }
 
@@ -109,7 +108,7 @@ void PlayState::whichMap() {
 
 sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
     auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
-    // Prevent division by zero
+    //Prevent division by zero
     if (norm == 0)
         return sf::Vector2f{};
     else

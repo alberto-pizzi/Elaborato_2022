@@ -129,7 +129,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
 
 
 
-    //casual spawning
+    //random spawn
     sf::Vector2i spawnTile = randomPassableTile();
     mike = std::unique_ptr<Mike>(new Mike(spawnTile.x, spawnTile.y));
 

@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include <math.h>
+#include <cmath>
 
 #include "PosEntity.h"
 #include "Animation.h"
@@ -39,6 +39,8 @@ public:
     const sf::Sprite &getSprite() const;
 
     GameCharacter(int hp, float speed, int points, int coins = 0, int armor = 0, bool bubble = false);
+
+    virtual ~GameCharacter();
 
     void move(const sf::Vector2f &offset, float dt) override = 0;
 

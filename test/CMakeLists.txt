@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
+project(runTests)
 
 add_subdirectory(./lib/googletest)
 set(gtest_SOURCE_DIR, ./lib/googletest/)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-set(TEST_SOURCE_FILES runAllTests.cpp)
+set(TEST_SOURCE_FILES runAllTests.cpp GameCharacterTest.cpp ../GameCharacter.cpp ../GameCharacter.h ../Game.cpp ../Game.h ../GameState.h ../GameState.cpp ../MenuState.cpp ../MenuState.h ../PlayState.cpp ../PlayState.h ../TextureManager.cpp ../TextureManager.h ../ArenaMap.cpp ../ArenaMap.h ../PosEntity.h ../GameException.cpp ../GameException.h ../Spawner.cpp ../Spawner.h ../Bonus.cpp ../Bonus.h ../Mike.cpp ../Mike.h ../Animation.cpp ../Animation.h)
 add_executable(runTests ${TEST_SOURCE_FILES})
 
 if (WIN32)

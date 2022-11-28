@@ -101,3 +101,5 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
     pos += effectiveOffset;
 }
 
+Mike::~Mike() = default;;
+
