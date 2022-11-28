@@ -17,8 +17,8 @@ void PlayState::draw(float dt) {
 }
 
 void PlayState::update(float dt) {
-//TODO insert game implementation
-    //::cout << "updating" << std::endl; //TODO remove it (only for debug)
+    //TODO insert game implementation
+    //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
 }
 
 void PlayState::handleInput() {

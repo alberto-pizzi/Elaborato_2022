@@ -48,6 +48,10 @@ void ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<
 }
 
 ArenaMap::~ArenaMap() {
+    for (int l = this->totalLayers - 1; l >= 0; l--)
+        for (int i = this->maxRowTiles - 1; i >= 0; i--)
+            for (int j = this->maxColumnTiles - 1; j >= 0; j--)
+                delete this->tileMap[l][i][j];
 }
 
 ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
