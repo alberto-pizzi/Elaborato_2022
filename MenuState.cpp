@@ -112,7 +112,7 @@ MenuState::MenuState(Game *game) {
                 sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
                              (static_cast<float>(this->game->window.getSize().y) / 2 - 50) * 2));
 
-        //if you add more buttons, you must update "nButtons" in the header file
+        //if you add more buttons, you must update "nButtons" in the header file and unit testing
 
         nButtonSelected = Play;
 
@@ -145,7 +145,7 @@ void MenuState::select() {
             break;
         case Stats:
             //TODO implement stats state
-            std::cout << "sono stats" << std::endl;
+            std::cout << "i'm stats" << std::endl;
             break;
         case Exit:
             this->game->window.close();

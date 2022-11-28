@@ -48,7 +48,7 @@ void PlayState::handleInput() {
         }
     }
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++) //set no input in all keyStates
         keyStates[i] = false;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -90,20 +90,19 @@ void PlayState::handleInput() {
 PlayState::PlayState(Game *game) {
     this->game = game;
     std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
-    //random mapList
-    this->whichMap();
+
+    //create random map
+    arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike);
 
     std::string fileName = "res/textures/viewfinder.png";
     textureManager.loadTexture("viewfinder", fileName);
     viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
 }
 
-void PlayState::whichMap() {
+int PlayState::whichMap() {
     srand(time(NULL));
     int map = rand() % nMap;
-
-    //create map
-    arenaMap = new ArenaMap(map, this->game->window, mike);
+    return map;
 }
 
 sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
@@ -113,4 +112,8 @@ sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
         return sf::Vector2f{};
     else
         return vector / norm;
+}
+
+ArenaMap *PlayState::getArenaMap() const {
+    return arenaMap;
 }

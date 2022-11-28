@@ -26,6 +26,7 @@ private:
     sf::View gameView;
     sf::View guiView;
     ArenaMap *arenaMap;
+private:
     //TODO add pause menu method - MenuState.cpp (load game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
@@ -33,12 +34,13 @@ private:
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
 
-    sf::Texture viewfinderTex;
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;
 
 public:
     explicit PlayState(Game *game);
+
+    ArenaMap *getArenaMap() const;
 
     void draw(float dt) override;
 
@@ -46,7 +48,7 @@ public:
 
     void handleInput() override;
 
-    void whichMap();
+    int whichMap();
 
     sf::Vector2f normalize(sf::Vector2f vector);
 };

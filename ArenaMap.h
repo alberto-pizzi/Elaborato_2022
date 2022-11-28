@@ -60,6 +60,10 @@ protected:
     int tileSizeX;
     int tileSizeY;
     int totalLayers;
+public:
+
+
+protected:
     int widthFile;
     int heightFile;
     std::string nameFile;
@@ -76,6 +80,8 @@ public:
     explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
 
     virtual ~ArenaMap();
+
+    int getTotalLayers() const;
 
     void loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
 
