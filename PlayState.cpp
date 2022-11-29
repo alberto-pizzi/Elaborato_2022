@@ -14,11 +14,15 @@ void PlayState::draw(float dt) {
             this->game->window); //WARNING: this calling draw 3d and design layers, so it must be THE LAST ONE to be rendered
 
     this->game->window.draw(viewfinderSprite); //draw viewfinder
+
+    gui.drawGui(this->game->window);
+
 }
 
 void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
+    gui.updateHealthBar(mike->getHp());
 }
 
 void PlayState::handleInput() {
@@ -98,6 +102,8 @@ PlayState::PlayState(Game *game) {
     std::string fileName = "res/textures/viewfinder.png";
     textureManager.loadTexture("viewfinder", fileName);
     viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
+
+
 }
 
 int PlayState::whichMap() {

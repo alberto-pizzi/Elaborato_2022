@@ -19,7 +19,7 @@ Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int h
 
     //std::string fileName = "res/textures/mike.png";
     //textureManager.loadTexture("mike", fileName);
-    //sprite.setTexture(textureManager.getTextureRef("mike"));
+    //healthBar.setTexture(textureManager.getTextureRef("mike"));
     //mike's frame position (in pixel)
     idle.reserve(1);
     idle = {
@@ -35,7 +35,7 @@ Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int h
                                     static_cast<float>(spawnTileY * spriteDimensions.y)));
     pos = {(static_cast<float>(spawnTileX * spriteDimensions.x)) + spriteCenter.x,
            (static_cast<float>(spawnTileY * spriteDimensions.y)) +
-           spriteCenter.y}; //this updates coordinates in PosEntity, (+16 for center of sprite)
+           spriteCenter.y}; //this updates coordinates in PosEntity, (+16 for center of healthBar)
 
 
     //WARNING: work here to edit frames

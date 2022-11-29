@@ -49,6 +49,29 @@ public:
 
     virtual void drawEntity(sf::RenderWindow &window) = 0;
 
+    int getHp() const;
+
+    int getArmor() const;
+
+    bool isBubble() const;
+
+    int getPoints() const;
+
+    int getCoins() const;
+
+    int getSpeed() const;
+
+    void setHp(int hp);
+
+    void setArmor(int armor);
+
+    void setSpeed(float speed);
+
+    void setBubble(bool bubble);
+
+    void setPoints(int points);
+
+    void setCoins(int coins);
 
 };
 

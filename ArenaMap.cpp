@@ -144,6 +144,7 @@ void ArenaMap::loadTextures() {
     textureManager.loadTexture(this->nameMap, this->nameFile); //map texture
 
     textureManager.loadTexture("mike", "res/textures/mike.png");
+
     //...
 }
 
@@ -241,7 +242,7 @@ sf::Vector2i ArenaMap::randomPassableTile() {
 
     } while (!tileMap[1][tileSpawnY][tileSpawnX]->passable);
 
-    return sf::Vector2i(tileSpawnX, tileSpawnY);
+    return {tileSpawnX, tileSpawnY};
 
 }
 

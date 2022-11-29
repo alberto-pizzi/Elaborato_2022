@@ -14,6 +14,7 @@
 #include "Spawner.h"
 #include "Mike.h"
 #include "TextureManager.h"
+#include "Gui.h"
 
 //WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
@@ -26,7 +27,6 @@ private:
     sf::View gameView;
     sf::View guiView;
     ArenaMap *arenaMap;
-private:
     //TODO add pause menu method - MenuState.cpp (loadTextures game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
@@ -36,6 +36,8 @@ private:
 
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;
+
+    Gui gui;
 
 public:
     explicit PlayState(Game *game);
