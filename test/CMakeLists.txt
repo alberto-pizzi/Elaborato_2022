@@ -5,7 +5,7 @@ add_subdirectory(./lib/googletest)
 set(gtest_SOURCE_DIR, ./lib/googletest/)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-set(TEST_SOURCE_FILES runAllTests.cpp GameCharacterTest.cpp ../GameCharacter.cpp ../GameCharacter.h ../Game.cpp ../Game.h ../GameState.h ../GameState.cpp ../MenuState.cpp ../MenuState.h ../PlayState.cpp ../PlayState.h ../TextureManager.cpp ../TextureManager.h ../ArenaMap.cpp ../ArenaMap.h ../PosEntity.h ../GameException.cpp ../GameException.h ../Spawner.cpp ../Spawner.h ../Bonus.cpp ../Bonus.h ../Mike.cpp ../Mike.h ../Animation.cpp ../Animation.h MenuTest.cpp)
+set(TEST_SOURCE_FILES runAllTests.cpp GameCharacterTest.cpp ../GameCharacter.cpp ../GameCharacter.h ../Game.cpp ../Game.h ../GameState.h ../GameState.cpp ../MenuState.cpp ../MenuState.h ../PlayState.cpp ../PlayState.h ../TextureManager.cpp ../TextureManager.h ../ArenaMap.cpp ../ArenaMap.h ../PosEntity.h ../GameException.cpp ../GameException.h ../Spawner.cpp ../Spawner.h ../Bonus.cpp ../Bonus.h ../Mike.cpp ../Mike.h ../Animation.cpp ../Animation.h MenuTest.cpp ../Gui.h ../Gui.cpp)
 add_executable(runTests ${TEST_SOURCE_FILES})
 
 if (WIN32)
@@ -28,4 +28,5 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif ()
 endif ()
 
+file(COPY "../res" DESTINATION "${CMAKE_BINARY_DIR}/test/")
 target_link_libraries(runTests gtest gtest_main)
