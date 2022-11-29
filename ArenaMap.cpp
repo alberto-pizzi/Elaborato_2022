@@ -134,14 +134,17 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
 
     //random spawn
     sf::Vector2i spawnTile = randomPassableTile();
-    mike = std::unique_ptr<Mike>(new Mike(spawnTile.x, spawnTile.y));
+    mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile.x, spawnTile.y));
 
     this->playerView.setCenter(mike->getPos());
     window.setView(this->playerView);
 }
 
 void ArenaMap::loadTextures() {
-    textureManager.loadTexture(this->nameMap, this->nameFile);
+    textureManager.loadTexture(this->nameMap, this->nameFile); //map texture
+
+    textureManager.loadTexture("mike", "res/textures/mike.png");
+    //...
 }
 
 bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {

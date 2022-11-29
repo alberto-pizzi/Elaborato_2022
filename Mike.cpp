@@ -9,17 +9,17 @@ bool Mike::isKillStreak(GameCharacter &character) {
     return false;
 }
 
-Mike::Mike(int spawnTileX, int spawnTileY, int hp, float speed, int points, int coins, int armor, bool bubble,
-           int streak) : GameCharacter(hp, speed,
-                                       points,
-                                       coins,
-                                       armor,
-                                       bubble),
-                         killStreak(streak) {
+Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int hp, float speed, int points, int coins,
+           int armor, bool bubble, int streak) : GameCharacter(mikeTexture, hp, speed,
+                                                               points,
+                                                               coins,
+                                                               armor,
+                                                               bubble),
+                                                 killStreak(streak) {
 
-    std::string fileName = "res/textures/mike.png";
-    textureManager.loadTexture("mike", fileName);
-    sprite.setTexture(textureManager.getTextureRef("mike"));
+    //std::string fileName = "res/textures/mike.png";
+    //textureManager.loadTexture("mike", fileName);
+    //sprite.setTexture(textureManager.getTextureRef("mike"));
     //mike's frame position (in pixel)
     idle.reserve(1);
     idle = {

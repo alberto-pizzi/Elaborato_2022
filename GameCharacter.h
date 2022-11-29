@@ -23,22 +23,19 @@ protected:
     bool bubble;
     int points;
     int coins;
-
-    TextureManager textureManager;
+    sf::Texture texture;
     sf::Sprite sprite;
-
     std::vector<sf::IntRect> goRight;
     std::vector<sf::IntRect> goLeft;
     std::vector<sf::IntRect> goDown;
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
-
-
 public:
 
     const sf::Sprite &getSprite() const;
 
-    GameCharacter(int hp, float speed, int points, int coins = 0, int armor = 0, bool bubble = false);
+    GameCharacter(const sf::Texture &tex, int hp, float speed, int points, int coins = 0, int armor = 0,
+                  bool bubble = false);
 
     virtual ~GameCharacter();
 

@@ -29,7 +29,7 @@ enum mapNumber {
 
 class ArenaMap {
 private:
-    TextureManager textureManager;
+
 
     enum Collisions {
         LEFT = 0,
@@ -71,6 +71,7 @@ protected:
     };
     std::unique_ptr<PosEntity> entity;
 public:
+    TextureManager textureManager;
     sf::View playerView;
 
     explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
