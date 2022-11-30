@@ -70,6 +70,7 @@ protected:
             "res/maps/desertMap.txt",
     };
     std::unique_ptr<PosEntity> entity;
+    sf::Vector2i tileView = {40, 23};
 public:
     TextureManager textureManager;
     sf::View playerView;
@@ -96,6 +97,10 @@ public:
     isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]);
 
     sf::Vector2i randomPassableTile();
+
+    sf::Vector2f
+    legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
+                    const sf::Vector2f &oldCenter);
 };
 
 

@@ -128,15 +128,56 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     this->playerView.reset(
             sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
                           static_cast<float>(0 * this->tileSizeX), //FIXME 10x10
-                          static_cast<float>(40 * this->tileSizeX), static_cast<float>(23 * this->tileSizeY)));
-
-
+                          static_cast<float>(this->tileView.x * this->tileSizeX),
+                          static_cast<float>(this->tileView.y * this->tileSizeY)));
 
     //random spawn
     sf::Vector2i spawnTile = randomPassableTile();
-    mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile.x, spawnTile.y));
+    sf::Vector2f firstViewCenter;
+    bool legalFirstCenter = false;
 
-    this->playerView.setCenter(mike->getPos());
+
+    mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile.x, spawnTile.y));
+    firstViewCenter = mike->getPos();
+    sf::Vector2f distanceFromWindowCenter = {
+            (static_cast<float>(window.getSize().x) / 2) + (mike->getSprite().getGlobalBounds().width / 2),
+            (static_cast<float>(window.getSize().y) / 2) + (mike->getSprite().getGlobalBounds().height / 2)};
+
+    do {
+        //check if view is inside the  map limits
+        if (((firstViewCenter.x - distanceFromWindowCenter.x >= 0) &&
+             (firstViewCenter.y - distanceFromWindowCenter.y >= 0)) &&
+            ((firstViewCenter.x + distanceFromWindowCenter.x <=
+              static_cast<float>(maxColumnTiles * tileSizeX)) &&
+             (firstViewCenter.y + distanceFromWindowCenter.y <= static_cast<float>(maxRowTiles * tileSizeY))))
+
+            legalFirstCenter = true;
+        else {
+            //check if view is inside map (horizontally)
+            if ((firstViewCenter.x - distanceFromWindowCenter.x < 0) ||
+                (firstViewCenter.x + distanceFromWindowCenter.x > static_cast<float>(maxColumnTiles * tileSizeX))) {
+                if (firstViewCenter.x - distanceFromWindowCenter.x < 0)
+                    firstViewCenter.x++;
+                else if (firstViewCenter.x + distanceFromWindowCenter.x >
+                         static_cast<float>(maxColumnTiles * tileSizeX))
+                    firstViewCenter.x--;
+            }
+            //check if view is inside map (vertically)
+            if ((firstViewCenter.y - distanceFromWindowCenter.y < 0) ||
+                (firstViewCenter.y + distanceFromWindowCenter.y > static_cast<float>(maxRowTiles * tileSizeY))) {
+                if (firstViewCenter.y - distanceFromWindowCenter.y < 0)
+                    firstViewCenter.y++;
+                else if (firstViewCenter.y + distanceFromWindowCenter.y >
+                         static_cast<float>(maxColumnTiles * tileSizeX))
+                    firstViewCenter.y--;
+
+            }
+        }
+    } while (!legalFirstCenter);
+
+    this->playerView.setCenter(legalViewCenter(mike->getPos(), window.getSize(),
+                                               {mike->getSprite().getGlobalBounds().width,
+                                                mike->getSprite().getGlobalBounds().height}, firstViewCenter));
     window.setView(this->playerView);
 }
 
@@ -248,6 +289,26 @@ sf::Vector2i ArenaMap::randomPassableTile() {
 
 int ArenaMap::getTotalLayers() const {
     return totalLayers;
+}
+
+sf::Vector2f
+ArenaMap::legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
+                          const sf::Vector2f &oldCenter) {
+    sf::Vector2f distanceFromWindowCenter = {(static_cast<float>(windowSize.x) / 2) + (characterSize.x / 2),
+                                             (static_cast<float>(windowSize.y) / 2) + (characterSize.y / 2)};
+    sf::Vector2f newCenter = oldCenter;
+    if (((pos.x - distanceFromWindowCenter.x >= 0) && (pos.y - distanceFromWindowCenter.y >= 0)) &&
+        ((pos.x + distanceFromWindowCenter.x <=
+          static_cast<float>(maxColumnTiles * tileSizeX)) &&
+         (pos.y + distanceFromWindowCenter.y <= static_cast<float>(maxRowTiles * tileSizeY))))
+        newCenter = pos;
+    else if ((pos.x - distanceFromWindowCenter.x > 0) &&
+             (pos.x + distanceFromWindowCenter.x < static_cast<float>(maxColumnTiles * tileSizeX)))
+        newCenter = {pos.x, oldCenter.y};
+    else if ((pos.y - distanceFromWindowCenter.y > 0) &&
+             (pos.y + distanceFromWindowCenter.y < static_cast<float>(maxRowTiles * tileSizeY)))
+        newCenter = {oldCenter.x, pos.y};
+    return newCenter;
 }
 
 

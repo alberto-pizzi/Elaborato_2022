@@ -16,16 +16,18 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
     return false;
 }
 
-GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, int points, int coins, int armor, bool bubble)
+GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
+                             int coins,
+                             int armor, bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
           armor(armor),
           bubble(bubble), texture(tex) {
-    //healthBar.setPosition(sf::Vector2f(5 * 32, 5 * 32));
-    //pos = {(5 * 32) + 16, (5 * 32) + 16};
     sprite.setTexture(texture);
-
+    pos = {(static_cast<float>(tilePosition.x) * sprite.getGlobalBounds().width) + sprite.getGlobalBounds().width / 2,
+           (static_cast<float>(tilePosition.y) * sprite.getGlobalBounds().height) +
+           sprite.getGlobalBounds().height / 2};
 
 }
 

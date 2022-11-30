@@ -34,8 +34,9 @@ public:
 
     const sf::Sprite &getSprite() const;
 
-    GameCharacter(const sf::Texture &tex, int hp, float speed, int points, int coins = 0, int armor = 0,
-                  bool bubble = false);
+    GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
+                  int coins = 0,
+                  int armor = 0, bool bubble = false);
 
     virtual ~GameCharacter();
 

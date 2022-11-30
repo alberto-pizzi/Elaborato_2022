@@ -11,15 +11,11 @@ bool Mike::isKillStreak(GameCharacter &character) {
 
 Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int hp, float speed, int points, int coins,
            int armor, bool bubble, int streak) : GameCharacter(mikeTexture, hp, speed,
-                                                               points,
+                                                               points, {spawnTileX, spawnTileY},
                                                                coins,
                                                                armor,
                                                                bubble),
                                                  killStreak(streak) {
-
-    //std::string fileName = "res/textures/mike.png";
-    //textureManager.loadTexture("mike", fileName);
-    //healthBar.setTexture(textureManager.getTextureRef("mike"));
     //mike's frame position (in pixel)
     idle.reserve(1);
     idle = {
@@ -28,6 +24,7 @@ Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int h
 
     //spawning mike
     sprite.setTextureRect(currentAnimation.getCurrentRect());
+
     sf::Vector2i spriteDimensions = {sprite.getTextureRect().width, sprite.getTextureRect().height};
     sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
                                  static_cast<float>(sprite.getTextureRect().height) / 2};
@@ -36,6 +33,7 @@ Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int h
     pos = {(static_cast<float>(spawnTileX * spriteDimensions.x)) + spriteCenter.x,
            (static_cast<float>(spawnTileY * spriteDimensions.y)) +
            spriteCenter.y}; //this updates coordinates in PosEntity, (+16 for center of healthBar)
+
 
 
     //WARNING: work here to edit frames

@@ -66,7 +66,8 @@ void PlayState::handleInput() {
 
     sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
     sf::Vector2f worldPos = this->game->window.mapPixelToCoords(localPosition);
-    viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - 16, worldPos.y - 16)); // -16 for center
+    viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
+                                              worldPos.y - viewfinderSprite.getGlobalBounds().height / 2));
 
     if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
         direction_vector.x = 0.f;
@@ -85,7 +86,11 @@ void PlayState::handleInput() {
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike, keyStates)) {
         mike->move(normalizedVector, frame_time.asSeconds());
-        arenaMap->playerView.setCenter(mike->getPos());
+        arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getPos(), this->game->window.getSize(),
+                                                                 {mike->getSprite().getGlobalBounds().width,
+                                                                  mike->getSprite().getGlobalBounds().height},
+                                                                 arenaMap->playerView.getCenter()));
+        std::cout << "X: " << mike->getPos().x << " Y: " << mike->getPos().y << std::endl;
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
     }

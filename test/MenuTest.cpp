@@ -11,7 +11,7 @@ TEST (PlayState, MapCheck) {
     PlayState *play;
     play = new PlayState(&game);
     ASSERT_LE(play->whichMap(), nMap); //check if number of maps is correct
-    EXPECT_LE(play->getArenaMap()->getTotalLayers(), 6); //check if layers are <=6
+    EXPECT_EQ(play->getArenaMap()->getTotalLayers(), 6); //check if layers are <=6
     delete play;
 }
 
