@@ -136,8 +136,8 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     sf::Vector2f firstViewCenter;
     bool legalFirstCenter = false;
 
-
     mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile.x, spawnTile.y));
+
     firstViewCenter = mike->getPos();
     sf::Vector2f distanceFromWindowCenter = {
             (static_cast<float>(window.getSize().x) / 2) + (mike->getSprite().getGlobalBounds().width / 2),

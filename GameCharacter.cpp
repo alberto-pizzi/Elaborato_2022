@@ -24,10 +24,16 @@ GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, int po
           coins(coins),
           armor(armor),
           bubble(bubble), texture(tex) {
-    sprite.setTexture(texture);
-    pos = {(static_cast<float>(tilePosition.x) * sprite.getGlobalBounds().width) + sprite.getGlobalBounds().width / 2,
-           (static_cast<float>(tilePosition.y) * sprite.getGlobalBounds().height) +
-           sprite.getGlobalBounds().height / 2};
+    this->sprite.setTexture(texture);
+
+    sf::Vector2i spriteDimensions = {this->sprite.getTextureRect().width, this->sprite.getTextureRect().height};
+    sf::Vector2f spriteCenter = {static_cast<float>(this->sprite.getTextureRect().width) / 2,
+                                 static_cast<float>(this->sprite.getTextureRect().height) / 2};
+    this->sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * spriteDimensions.x),
+                                          static_cast<float>(tilePosition.y * spriteDimensions.y)));
+    this->pos = {(static_cast<float>(tilePosition.x * spriteDimensions.x)) + spriteCenter.x,
+                 (static_cast<float>(tilePosition.y * spriteDimensions.y)) +
+                 spriteCenter.y};
 
 }
 

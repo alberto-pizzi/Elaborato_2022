@@ -90,7 +90,6 @@ void PlayState::handleInput() {
                                                                  {mike->getSprite().getGlobalBounds().width,
                                                                   mike->getSprite().getGlobalBounds().height},
                                                                  arenaMap->playerView.getCenter()));
-        std::cout << "X: " << mike->getPos().x << " Y: " << mike->getPos().y << std::endl;
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
     }

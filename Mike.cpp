@@ -22,19 +22,8 @@ Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int h
             {0 * 32, 0 * 32, 32, 32},
     };
 
-    //spawning mike
+    //start animation
     sprite.setTextureRect(currentAnimation.getCurrentRect());
-
-    sf::Vector2i spriteDimensions = {sprite.getTextureRect().width, sprite.getTextureRect().height};
-    sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
-                                 static_cast<float>(sprite.getTextureRect().height) / 2};
-    sprite.setPosition(sf::Vector2f(static_cast<float>(spawnTileX * spriteDimensions.x),
-                                    static_cast<float>(spawnTileY * spriteDimensions.y)));
-    pos = {(static_cast<float>(spawnTileX * spriteDimensions.x)) + spriteCenter.x,
-           (static_cast<float>(spawnTileY * spriteDimensions.y)) +
-           spriteCenter.y}; //this updates coordinates in PosEntity, (+16 for center of healthBar)
-
-
 
     //WARNING: work here to edit frames
     goDown.reserve(3);
