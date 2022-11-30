@@ -69,6 +69,7 @@ void ArenaMap::loadMapFile(int chosenMap) {
     }
     std::string name;
     int nTile;
+
     /*
 
      ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
@@ -136,12 +137,16 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     sf::Vector2f firstViewCenter;
     bool legalFirstCenter = false;
 
-    mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile.x, spawnTile.y));
 
+    mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile, {tileSizeX, tileSizeY},
+                                          {32, 32},
+                                          true));
     firstViewCenter = mike->getPos();
     sf::Vector2f distanceFromWindowCenter = {
-            (static_cast<float>(window.getSize().x) / 2) + (mike->getSprite().getGlobalBounds().width / 2),
-            (static_cast<float>(window.getSize().y) / 2) + (mike->getSprite().getGlobalBounds().height / 2)};
+            (static_cast<float>(window.getSize().x) / 2) +
+            static_cast<float>(mike->getSprite().getTextureRect().width) / 2,
+            (static_cast<float>(window.getSize().y) / 2) +
+            static_cast<float>(mike->getSprite().getTextureRect().height) / 2};
 
     do {
         //check if view is inside the  map limits
@@ -174,6 +179,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
             }
         }
     } while (!legalFirstCenter);
+
 
     this->playerView.setCenter(legalViewCenter(mike->getPos(), window.getSize(),
                                                {mike->getSprite().getGlobalBounds().width,

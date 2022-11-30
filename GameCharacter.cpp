@@ -17,23 +17,38 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
 }
 
 GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
-                             int coins,
-                             int armor, bool bubble)
+                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated, int coins,
+                             int armor,
+                             bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
           armor(armor),
-          bubble(bubble), texture(tex) {
-    this->sprite.setTexture(texture);
+          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin) {
 
-    sf::Vector2i spriteDimensions = {this->sprite.getTextureRect().width, this->sprite.getTextureRect().height};
-    sf::Vector2f spriteCenter = {static_cast<float>(this->sprite.getTextureRect().width) / 2,
-                                 static_cast<float>(this->sprite.getTextureRect().height) / 2};
-    this->sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * spriteDimensions.x),
-                                          static_cast<float>(tilePosition.y * spriteDimensions.y)));
-    this->pos = {(static_cast<float>(tilePosition.x * spriteDimensions.x)) + spriteCenter.x,
-                 (static_cast<float>(tilePosition.y * spriteDimensions.y)) +
-                 spriteCenter.y};
+    sprite.setTexture(texture);
+
+    //mike's frame position (in pixel)
+    idle.reserve(1);
+    idle = {
+            {0 * this->fileTextureRectSkinSize.x, 0 * this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x,
+             this->fileTextureRectSkinSize.y},
+    };
+    if (animated)
+        sprite.setTextureRect(currentAnimation.getCurrentRect());
+    else
+        sprite.setTextureRect({0, 0, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y});
+
+    sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
+                                 static_cast<float>(sprite.getTextureRect().height) / 2};
+
+    sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * tileSize.x),
+                                    static_cast<float>(tilePosition.y * tileSize.y)));
+
+    pos = {(static_cast<float>(tilePosition.x * tileSize.x)) + spriteCenter.x,
+           (static_cast<float>(tilePosition.y * tileSize.y)) +
+           spriteCenter.y}; //this updates coordinates in PosEntity
+
 
 }
 

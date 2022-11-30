@@ -30,12 +30,14 @@ protected:
     std::vector<sf::IntRect> goDown;
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
+    sf::Vector2i fileTextureRectSkinSize;
 public:
+    Animation currentAnimation{idle, 10.0f};
 
     const sf::Sprite &getSprite() const;
 
     GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
-                  int coins = 0,
+                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated = true, int coins = 0,
                   int armor = 0, bool bubble = false);
 
     virtual ~GameCharacter();
