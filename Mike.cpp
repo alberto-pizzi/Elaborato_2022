@@ -9,61 +9,59 @@ bool Mike::isKillStreak(GameCharacter &character) {
     return false;
 }
 
-Mike::Mike(const sf::Texture &mikeTexture, int spawnTileX, int spawnTileY, int hp, float speed, int points, int coins,
-           int armor, bool bubble, int streak) : GameCharacter(mikeTexture, hp, speed,
-                                                               points, {spawnTileX, spawnTileY},
-                                                               coins,
-                                                               armor,
-                                                               bubble),
-                                                 killStreak(streak) {
-    //mike's frame position (in pixel)
-    idle.reserve(1);
-    idle = {
-            {0 * 32, 0 * 32, 32, 32},
-    };
-
-    //spawning mike
-    sprite.setTextureRect(currentAnimation.getCurrentRect());
-
-    sf::Vector2i spriteDimensions = {sprite.getTextureRect().width, sprite.getTextureRect().height};
-    sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
-                                 static_cast<float>(sprite.getTextureRect().height) / 2};
-    sprite.setPosition(sf::Vector2f(static_cast<float>(spawnTileX * spriteDimensions.x),
-                                    static_cast<float>(spawnTileY * spriteDimensions.y)));
-    pos = {(static_cast<float>(spawnTileX * spriteDimensions.x)) + spriteCenter.x,
-           (static_cast<float>(spawnTileY * spriteDimensions.y)) +
-           spriteCenter.y}; //this updates coordinates in PosEntity, (+16 for center of healthBar)
+Mike::Mike(const sf::Texture &mikeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
+           const sf::Vector2i &rectSkin, bool animated, int hp, float speed, int points, int coins, int armor,
+           bool bubble, int streak) : GameCharacter(mikeTexture, hp,
+                                                    speed,
+                                                    points, spawnTile,
+                                                    tileSize, rectSkin, animated,
+                                                    coins,
+                                                    armor,
+                                                    bubble),
+                                      killStreak(streak) {
 
 
-
-    //WARNING: work here to edit frames
+//WARNING: work here to edit frames
     goDown.reserve(3);
     goDown = {
-            {0 * 32, 0 * 32, 32, 32},
-            {1 * 32, 0 * 32, 32, 32},
-            {2 * 32, 0 * 32, 32, 32},
+            {0 * this->fileTextureRectSkinSize.x, 0 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 0 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 0 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
     goLeft.reserve(3);
     goLeft = {
-            {0 * 32, 1 * 32, 32, 32},
-            {1 * 32, 1 * 32, 32, 32},
-            {2 * 32, 1 * 32, 32, 32},
+            {0 * this->fileTextureRectSkinSize.x, 1 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 1 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 1 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
     goRight.reserve(3);
     goRight = {
-            {0 * 32, 2 * 32, 32, 32},
-            {1 * 32, 2 * 32, 32, 32},
-            {2 * 32, 2 * 32, 32, 32},
+            {0 * this->fileTextureRectSkinSize.x, 2 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 2 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 2 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
     goUp.reserve(3);
     goUp = {
-            {0 * 32, 3 * 32, 32, 32},
-            {1 * 32, 3 * 32, 32, 32},
-            {2 * 32, 3 * 32, 32, 32},
+            {0 * this->fileTextureRectSkinSize.x, 3 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 3 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 3 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
+
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {

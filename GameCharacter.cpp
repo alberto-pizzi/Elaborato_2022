@@ -17,17 +17,38 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
 }
 
 GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
-                             int coins,
-                             int armor, bool bubble)
+                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated, int coins,
+                             int armor,
+                             bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
           armor(armor),
-          bubble(bubble), texture(tex) {
+          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin) {
+
     sprite.setTexture(texture);
-    pos = {(static_cast<float>(tilePosition.x) * sprite.getGlobalBounds().width) + sprite.getGlobalBounds().width / 2,
-           (static_cast<float>(tilePosition.y) * sprite.getGlobalBounds().height) +
-           sprite.getGlobalBounds().height / 2};
+
+    //mike's frame position (in pixel)
+    idle.reserve(1);
+    idle = {
+            {0 * this->fileTextureRectSkinSize.x, 0 * this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x,
+             this->fileTextureRectSkinSize.y},
+    };
+    if (animated)
+        sprite.setTextureRect(currentAnimation.getCurrentRect());
+    else
+        sprite.setTextureRect({0, 0, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y});
+
+    sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
+                                 static_cast<float>(sprite.getTextureRect().height) / 2};
+
+    sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * tileSize.x),
+                                    static_cast<float>(tilePosition.y * tileSize.y)));
+
+    pos = {(static_cast<float>(tilePosition.x * tileSize.x)) + spriteCenter.x,
+           (static_cast<float>(tilePosition.y * tileSize.y)) +
+           spriteCenter.y}; //this updates coordinates in PosEntity
+
 
 }
 
