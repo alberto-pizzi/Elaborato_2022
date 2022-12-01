@@ -25,7 +25,8 @@ public:
 
     explicit Mike(const sf::Texture &mikeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
                   const sf::Vector2i &rectSkin, bool animated = true, int hp = 20, float speed = 250.f, int points = 0,
-                  int coins = 0, int armor = 0, bool bubble = false, int streak = 0); //FIXME check hp
+                  int coins = 0, int armor = 0, bool bubble = false, int streak = 0);
+
     virtual ~Mike();
 
     void move(const sf::Vector2f &offset, float dt) override;

@@ -128,7 +128,7 @@ void ArenaMap::drawFloorAndDesignElements(sf::RenderWindow &window) {
 void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
     this->playerView.reset(
             sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
-                          static_cast<float>(0 * this->tileSizeX), //FIXME 10x10
+                          static_cast<float>(0 * this->tileSizeX),
                           static_cast<float>(this->tileView.x * this->tileSizeX),
                           static_cast<float>(this->tileView.y * this->tileSizeY)));
 

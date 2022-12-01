@@ -76,6 +76,15 @@ public:
 
     void setCoins(int coins);
 
+    const std::vector<sf::IntRect> &getGoRight() const;
+
+    const std::vector<sf::IntRect> &getGoLeft() const;
+
+    const std::vector<sf::IntRect> &getGoDown() const;
+
+    const std::vector<sf::IntRect> &getGoUp() const;
+
+
 };
 
 

@@ -85,7 +85,7 @@ public:
 
     void loadMapFile(int chosenMap);
 
-    void startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike); //TODO finish and implement it
+    void startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
 
     void loadTextures();
 

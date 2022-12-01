@@ -18,6 +18,8 @@ private:
 
     TextureManager texManager;
     sf::Sprite healthBar;
+public:
+    const sf::Sprite &getHealthBar() const;
 
 public:
     Gui();

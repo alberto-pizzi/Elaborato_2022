@@ -105,5 +105,21 @@ int GameCharacter::getSpeed() const {
     return speed;
 }
 
+const std::vector<sf::IntRect> &GameCharacter::getGoRight() const {
+    return goRight;
+}
+
+const std::vector<sf::IntRect> &GameCharacter::getGoLeft() const {
+    return goLeft;
+}
+
+const std::vector<sf::IntRect> &GameCharacter::getGoDown() const {
+    return goDown;
+}
+
+const std::vector<sf::IntRect> &GameCharacter::getGoUp() const {
+    return goUp;
+}
+
 GameCharacter::~GameCharacter() = default;
 

@@ -31,3 +31,7 @@ void Gui::updateHealthBar(int hp) {
 TextureManager Gui::getTexManager() {
     return texManager;
 }
+
+const sf::Sprite &Gui::getHealthBar() const {
+    return healthBar;
+}
