@@ -22,6 +22,8 @@ void PlayState::draw(float dt) {
 void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
+    //update Gui
+    gui.updatePoints(mike->getPoints());
     gui.updateHealthBar(mike->getHp());
 }
 

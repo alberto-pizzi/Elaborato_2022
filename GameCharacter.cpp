@@ -16,8 +16,10 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
     return false;
 }
 
-GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
-                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated, int coins,
+GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points,
+                             const sf::Vector2i &tilePosition,
+                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated,
+                             unsigned int coins,
                              int armor,
                              bool bubble)
         : HP(hp), speed(speed),

@@ -21,8 +21,8 @@ protected:
     int armor;
     float speed;
     bool bubble;
-    int points;
-    int coins;
+    unsigned int points;
+    unsigned int coins;
     sf::Texture texture;
     sf::Sprite sprite;
     std::vector<sf::IntRect> goRight;
@@ -36,8 +36,9 @@ public:
 
     const sf::Sprite &getSprite() const;
 
-    GameCharacter(const sf::Texture &tex, int hp, float speed, int points, const sf::Vector2i &tilePosition,
-                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated = true, int coins = 0,
+    GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
+                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated = true,
+                  unsigned int coins = 0,
                   int armor = 0, bool bubble = false);
 
     virtual ~GameCharacter();

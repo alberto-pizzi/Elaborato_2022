@@ -10,7 +10,8 @@ bool Mike::isKillStreak(GameCharacter &character) {
 }
 
 Mike::Mike(const sf::Texture &mikeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
-           const sf::Vector2i &rectSkin, bool animated, int hp, float speed, int points, int coins, int armor,
+           const sf::Vector2i &rectSkin, bool animated, int hp, float speed, unsigned int points, unsigned int coins,
+           int armor,
            bool bubble, int streak) : GameCharacter(mikeTexture, hp,
                                                     speed,
                                                     points, spawnTile,

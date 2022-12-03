@@ -78,10 +78,10 @@ MenuState::MenuState(Game *game) {
     this->view.setSize(pos);
     pos *= 0.5f;
     this->view.setCenter(pos);
-    std::string fontFile = "res/fonts/kirbyss.ttf";
+    std::string fontFile = "res/fonts/bloody.ttf";
     try {
         if (!font.loadFromFile(fontFile))
-            throw GameException("Error opening font file", fontFile, false);
+            throw GameException("Error opening numbersOrTitlesFont file", fontFile, false);
     } catch (GameException &e) {}
 
     //play
