@@ -15,7 +15,7 @@ void PlayState::draw(float dt) {
 
     this->game->window.draw(viewfinderSprite); //draw viewfinder
 
-    gui.drawGui(this->game->window);
+    mike->gui.drawGui(this->game->window);
 
 }
 
@@ -23,8 +23,8 @@ void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //update Gui
-    gui.updatePoints(mike->getPoints());
-    gui.updateHealthBar(mike->getHp());
+    mike->gui.updatePoints(mike->getPoints());
+    mike->gui.updateHealthBar(mike->getHp());
 }
 
 void PlayState::handleInput() {
@@ -109,7 +109,7 @@ PlayState::PlayState(Game *game) {
     textureManager.loadTexture("viewfinder", fileName);
     viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
 
-
+    this->round = 1;
 }
 
 int PlayState::whichMap() {
@@ -129,4 +129,8 @@ sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
 
 ArenaMap *PlayState::getArenaMap() const {
     return arenaMap;
+}
+
+PlayState::~PlayState() {
+    delete arenaMap;
 }

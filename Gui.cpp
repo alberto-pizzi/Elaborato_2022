@@ -22,6 +22,13 @@ Gui::Gui() {
     pointsIndicator.setFont(textFont);
     pointsIndicator.setCharacterSize(textFontSize);
     pointsIndicator.setFillColor(sf::Color::White);
+
+    roundIndicator.setFont(numbersOrTitlesFont);
+    roundIndicator.setCharacterSize(titleFontSize);
+    roundIndicator.setFillColor(sf::Color(102, 0, 0));
+
+    this->pointsDisplayed = "0000000000";
+    this->roundDisplayed = "1";
 }
 
 void Gui::loadTextures() {
@@ -37,10 +44,16 @@ void Gui::drawGui(sf::RenderWindow &window) {
 
     //draw PointsIndicator
     int posXPoints = abs(window.getSize().x / 2 - textFontSize * (totalDigits / 2 - 1));
-    sf::Vector2f worldPosPoints = window.mapPixelToCoords({posXPoints, 16});
+    sf::Vector2f worldPosPoints = window.mapPixelToCoords({posXPoints, 16}); //"16" is a distance from window limits
     pointsIndicator.setPosition(worldPosPoints);
     pointsIndicator.setString(pointsDisplayed);
     window.draw(pointsIndicator);
+
+    //draw RoundIndicator
+    sf::Vector2f worldPosRound = window.mapPixelToCoords({16, 16}); //"16" is a distance from window limits
+    roundIndicator.setPosition(worldPosRound);
+    roundIndicator.setString(roundDisplayed);
+    window.draw(roundIndicator);
 
 }
 
@@ -76,5 +89,10 @@ void Gui::updatePoints(unsigned int points) {
 
 const std::string &Gui::getPointsDisplayed() const {
     return pointsDisplayed;
+}
+
+void Gui::updateRound(int round) {
+    std::string roundString = std::to_string(round);
+    this->roundDisplayed = roundString;
 }
 

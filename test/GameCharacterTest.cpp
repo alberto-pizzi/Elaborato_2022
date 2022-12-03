@@ -44,18 +44,33 @@ TEST_F(GameCharacterFixture, TestDirectionMouseInput) {
 }
 
 TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikeHP) {
-    Gui gui;
 
     //Mike HP must be equal to Gui HP
-    EXPECT_EQ(20, mike->getHp());
-    gui.updateHealthBar(20);
-    EXPECT_EQ(5 * 32, gui.getHealthBar().getTextureRect().width);
+    ASSERT_EQ(20, mike->getHp());
+    mike->gui.updateHealthBar(20);
+    EXPECT_EQ(5 * 32, mike->gui.getHealthBar().getTextureRect().width);
     mike->setHp(19);
-    gui.updateHealthBar(19);
-    unsigned int previousValue = gui.getHealthBar().getTextureRect().width;
-    EXPECT_LT(gui.getHealthBar().getTextureRect().width, 5 * 32);
+    mike->gui.updateHealthBar(19);
+    unsigned int previousValue = mike->gui.getHealthBar().getTextureRect().width;
+    EXPECT_LT(mike->gui.getHealthBar().getTextureRect().width, 5 * 32);
     mike->setHp(18);
-    gui.updateHealthBar(18);
-    EXPECT_LT(gui.getHealthBar().getTextureRect().width, previousValue);
+    mike->gui.updateHealthBar(18);
+    EXPECT_LT(mike->gui.getHealthBar().getTextureRect().width, previousValue);
+}
+
+TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikePoints) {
+    std::string stringPoints;
+    //Mike points must be equal to Gui Points
+    ASSERT_EQ("0000000000", mike->gui.getPointsDisplayed());
+
+    mike->setPoints(600);
+    stringPoints = "00000000" + std::to_string(mike->getPoints());
+    mike->gui.updatePoints(600);
+    EXPECT_EQ(stringPoints, mike->gui.getPointsDisplayed());
+
+    mike->setPoints(999999999);
+    stringPoints = "0" + std::to_string(mike->getPoints());
+    mike->gui.updatePoints(999999999);
+    EXPECT_EQ(stringPoints, mike->gui.getPointsDisplayed());
 }
 

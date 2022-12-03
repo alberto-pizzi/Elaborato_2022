@@ -23,8 +23,11 @@ private:
     sf::Font numbersOrTitlesFont;
     sf::Font textFont;
     sf::Text pointsIndicator;
+    sf::Text roundIndicator;
     int textFontSize = 24;
-    std::string pointsDisplayed = "0000000000";
+    int titleFontSize = 24;
+    std::string pointsDisplayed;
+    std::string roundDisplayed;
     const int totalDigits = 10;
 public:
     Gui();
@@ -38,6 +41,8 @@ public:
     void updateHealthBar(int hp);
 
     void updateArmor(int armor);
+
+    void updateRound(int round);
 
     void updatePoints(unsigned int points);
 
