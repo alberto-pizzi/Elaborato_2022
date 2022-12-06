@@ -29,6 +29,7 @@ private:
     std::string pointsDisplayed;
     std::string roundDisplayed;
     const int totalDigits = 10;
+    sf::Vector2i distanceFromWindowLimits = {16, 16};
 public:
     Gui();
 

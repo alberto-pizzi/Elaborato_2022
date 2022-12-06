@@ -71,7 +71,6 @@ void ArenaMap::loadMapFile(int chosenMap) {
     int nTile;
 
     /*
-
      ----WARNING: any file map must have this scheme and you must use ONLY one tileSheet per map----
 
     -Max tiles for column (in tiles)
@@ -83,7 +82,6 @@ void ArenaMap::loadMapFile(int chosenMap) {
     -relative directory of file texture
     -width file (in pixel)
     -height file (in pixel)
-
      */
 
         //take tilemap data from file
@@ -148,8 +146,8 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
             (static_cast<float>(window.getSize().y) / 2) +
             static_cast<float>(mike->getSprite().getTextureRect().height) / 2};
 
+    //check if view is inside the  map limits
     do {
-        //check if view is inside the  map limits
         if (((firstViewCenter.x - distanceFromWindowCenter.x >= 0) &&
              (firstViewCenter.y - distanceFromWindowCenter.y >= 0)) &&
             ((firstViewCenter.x + distanceFromWindowCenter.x <=
@@ -179,7 +177,6 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
             }
         }
     } while (!legalFirstCenter);
-
 
     this->playerView.setCenter(legalViewCenter(mike->getPos(), window.getSize(),
                                                {mike->getSprite().getGlobalBounds().width,
@@ -259,13 +256,10 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.y = 0;
     }
 
-
     if ((offset.x == 0) && (offset.y == 0))
         return false;
     else
         return true;
-
-
 }
 
 void ArenaMap::drawSolidsAnd3DLayers(sf::RenderWindow &window) {
@@ -290,7 +284,6 @@ sf::Vector2i ArenaMap::randomPassableTile() {
     } while (!tileMap[1][tileSpawnY][tileSpawnX]->passable);
 
     return {tileSpawnX, tileSpawnY};
-
 }
 
 int ArenaMap::getTotalLayers() const {
@@ -303,6 +296,7 @@ ArenaMap::legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSiz
     sf::Vector2f distanceFromWindowCenter = {(static_cast<float>(windowSize.x) / 2) + (characterSize.x / 2),
                                              (static_cast<float>(windowSize.y) / 2) + (characterSize.y / 2)};
     sf::Vector2f newCenter = oldCenter;
+
     if (((pos.x - distanceFromWindowCenter.x >= 0) && (pos.y - distanceFromWindowCenter.y >= 0)) &&
         ((pos.x + distanceFromWindowCenter.x <=
           static_cast<float>(maxColumnTiles * tileSizeX)) &&

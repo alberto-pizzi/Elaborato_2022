@@ -20,9 +20,8 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Vector2i &spawnTile, const 
                                                     armor,
                                                     bubble),
                                       killStreak(streak) {
-
     //this->sprite.setScale(sf::Vector2f(1.5,1.5));
-//WARNING: work here to edit frames
+    //WARNING: work here to edit frames
     goDown.reserve(3);
     goDown = {
             {0 * this->fileTextureRectSkinSize.x, 0 *
@@ -73,10 +72,12 @@ void Mike::drawEntity(sf::RenderWindow &window) {
 void Mike::move(const sf::Vector2f &offset, float dt) {
     float newSpeed = this->speed;
     sf::Vector2f effectiveOffset;
+
     //set diagonal speed
     if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)) ||
         ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
         newSpeed /= std::sqrt(2.f);
+
     effectiveOffset = offset * newSpeed * dt;
     sprite.setPosition(sprite.getPosition() + effectiveOffset);
     pos += effectiveOffset;
@@ -87,6 +88,7 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos) {
     sf::Vector2f origin = this->pos;
     sf::Vector2f translation = viewfinderPos - origin;
     float frameDuration = 0.5f;
+
     //when mouse exceeds bisects (+- 45°) of all quadrants, Mike changes body direction
     if (viewfinderPos.x >= origin.x) {
         if ((translation.y < translation.x) && (translation.y > -(translation.x)))

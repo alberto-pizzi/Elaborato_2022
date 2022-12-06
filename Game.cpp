@@ -60,5 +60,4 @@ Game::~Game() {
 
 void Game::loadTextures() {
     textureManager.loadTexture("background", "res/textures/main_menu_background.jpg");
-
 }

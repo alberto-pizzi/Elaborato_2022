@@ -6,7 +6,7 @@
 #include "PlayState.h"
 
 enum NameButton {
-    //this numbers are related with nButtons
+    //these numbers are related with nButtons
     Play = 0,
     Stats = 1,
     Exit = 2,
@@ -14,12 +14,10 @@ enum NameButton {
 
 void MenuState::draw(float dt) {
     this->game->window.setView(this->view);
-
-    this->game->window.clear(sf::Color::Black); //remove it
+    this->game->window.clear();
     this->game->window.draw(this->game->background);
     for (int i = 0; i < nButtons; i++)
         this->game->window.draw(mainMenu[i]);
-
 }
 
 void MenuState::update(float dt) {
@@ -38,14 +36,12 @@ void MenuState::handleInput() {
                 // Resize the window
                 //FIXME check sizing in menu state (and background)
             case sf::Event::Resized:
-
                 this->view.setSize(event.size.width, event.size.height);
                 this->game->background.setPosition(this->game->window.mapPixelToCoords(sf::Vector2i(0, 0), this->view));
                 this->game->background.setScale(
                         float(event.size.width) / float(this->game->background.getTexture()->getSize().x),
                         float(event.size.height) / float(this->game->background.getTexture()->getSize().y));
                 break;
-
             case sf::Event::KeyPressed: {
                 //Take input
                 switch (event.key.code) {
@@ -61,8 +57,6 @@ void MenuState::handleInput() {
                 }
                 break;
             }
-                // default:
-                //break;
         }
     }
 }
@@ -88,33 +82,32 @@ MenuState::MenuState(Game *game) {
     mainMenu[Play].setFont(font);
     mainMenu[Play].setFillColor(sf::Color(102, 0, 0));
     mainMenu[Play].setString("Play");
-    mainMenu[Play].setCharacterSize(50);
+    mainMenu[Play].setCharacterSize(fontSize);
     mainMenu[Play].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                         static_cast<float>(this->game->window.getSize().y) / 2 - 50));
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
+                         static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
 
-        //stats
-        mainMenu[Stats].setFont(font);
-        mainMenu[Stats].setFillColor(sf::Color::White);
-        mainMenu[Stats].setString("Stats");
-        mainMenu[Stats].setCharacterSize(50);
-        mainMenu[Stats].setPosition(
-                sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                             (static_cast<float>(this->game->window.getSize().y) / 2 - 50) * 1.5));
+    //stats
+    mainMenu[Stats].setFont(font);
+    mainMenu[Stats].setFillColor(sf::Color::White);
+    mainMenu[Stats].setString("Stats");
+    mainMenu[Stats].setCharacterSize(50);
+    mainMenu[Stats].setPosition(
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
+                         (static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)) *
+                         1.5));
 
-        //exit
-        mainMenu[Exit].setFont(font);
-        mainMenu[Exit].setFillColor(sf::Color::White);
-        mainMenu[Exit].setString("Exit");
-        mainMenu[Exit].setCharacterSize(50);
-        mainMenu[Exit].setPosition(
-                sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                             (static_cast<float>(this->game->window.getSize().y) / 2 - 50) * 2));
+    //exit
+    mainMenu[Exit].setFont(font);
+    mainMenu[Exit].setFillColor(sf::Color::White);
+    mainMenu[Exit].setString("Exit");
+    mainMenu[Exit].setCharacterSize(50);
+    mainMenu[Exit].setPosition(sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
+                                            (static_cast<float>(this->game->window.getSize().y) / 2 -
+                                             static_cast<float>(fontSize)) * 2));
+    //if you add more buttons, you must update "nButtons" in the header file and unit testing
 
-        //if you add more buttons, you must update "nButtons" in the header file and unit testing
-
-        nButtonSelected = Play;
-
+    nButtonSelected = Play;
 }
 
 void MenuState::moveUp() {

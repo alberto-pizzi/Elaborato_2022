@@ -16,18 +16,20 @@ Gui::Gui() {
             throw GameException("Error opening numbersOrTitlesFont file", numberOrTitlesFontFile, false);
         if (!textFont.loadFromFile(textFontFile))
             throw GameException("Error opening textFontFile file", textFontFile, false);
-    } catch (GameException &e) {}
+    } catch (GameException &e) {
+        exit(1); //close all
+    }
 
-
+    //set points indicator
     pointsIndicator.setFont(textFont);
     pointsIndicator.setCharacterSize(textFontSize);
     pointsIndicator.setFillColor(sf::Color::White);
+    this->pointsDisplayed = "0000000000";
 
+    //set round indicator
     roundIndicator.setFont(numbersOrTitlesFont);
     roundIndicator.setCharacterSize(titleFontSize);
     roundIndicator.setFillColor(sf::Color(102, 0, 0));
-
-    this->pointsDisplayed = "0000000000";
     this->roundDisplayed = "1";
 }
 
@@ -37,24 +39,24 @@ void Gui::loadTextures() {
 
 void Gui::drawGui(sf::RenderWindow &window) {
     //draw HealthBar
-    int posXHealth = abs(5 * 32 - window.getSize().x) - 16; //"16" is a distance from window limits
-    sf::Vector2f worldPosHealth = window.mapPixelToCoords({posXHealth, 16});
+    int posXHealth =
+            abs(texManager.getTextureRef("healthBar").getSize().x - window.getSize().x) - distanceFromWindowLimits.x;
+    sf::Vector2f worldPosHealth = window.mapPixelToCoords({posXHealth, distanceFromWindowLimits.y});
     healthBar.setPosition(worldPosHealth);
     window.draw(healthBar);
 
     //draw PointsIndicator
     int posXPoints = abs(window.getSize().x / 2 - textFontSize * (totalDigits / 2 - 1));
-    sf::Vector2f worldPosPoints = window.mapPixelToCoords({posXPoints, 16}); //"16" is a distance from window limits
+    sf::Vector2f worldPosPoints = window.mapPixelToCoords({posXPoints, distanceFromWindowLimits.y});
     pointsIndicator.setPosition(worldPosPoints);
     pointsIndicator.setString(pointsDisplayed);
     window.draw(pointsIndicator);
 
     //draw RoundIndicator
-    sf::Vector2f worldPosRound = window.mapPixelToCoords({16, 16}); //"16" is a distance from window limits
+    sf::Vector2f worldPosRound = window.mapPixelToCoords(distanceFromWindowLimits);
     roundIndicator.setPosition(worldPosRound);
     roundIndicator.setString(roundDisplayed);
     window.draw(roundIndicator);
-
 }
 
 void Gui::updateHealthBar(int hp) {

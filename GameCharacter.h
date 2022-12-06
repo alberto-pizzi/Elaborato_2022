@@ -84,8 +84,6 @@ public:
     const std::vector<sf::IntRect> &getGoDown() const;
 
     const std::vector<sf::IntRect> &getGoUp() const;
-
-
 };
 
 

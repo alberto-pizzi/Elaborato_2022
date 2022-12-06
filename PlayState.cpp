@@ -100,7 +100,6 @@ void PlayState::handleInput() {
 
 PlayState::PlayState(Game *game) {
     this->game = game;
-    std::cout << "I'm PlayState" << std::endl; //TODO remove it (only for debug)
 
     //create random map
     arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike);

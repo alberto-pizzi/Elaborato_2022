@@ -17,6 +17,7 @@ private:
     void loadPlay();
 
     int nButtonSelected;
+    unsigned int fontSize = 50;
     sf::Font font;
     sf::Text mainMenu[nButtons];
 
