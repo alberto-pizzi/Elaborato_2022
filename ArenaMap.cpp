@@ -278,10 +278,12 @@ sf::Vector2i ArenaMap::randomPassableTile() {
 
     //casual tile position
     do {
-        tileSpawnX = rand() % this->maxColumnTiles;
-        tileSpawnY = rand() % this->maxRowTiles;
-
-    } while (!tileMap[1][tileSpawnY][tileSpawnX]->passable);
+        tileSpawnX = (rand() % (this->maxColumnTiles - 1)) + 1;
+        tileSpawnY = (rand() % (this->maxRowTiles - 1)) + 1;
+    } while ((!tileMap[1][tileSpawnY][tileSpawnX]->passable) || (!tileMap[1][tileSpawnY][tileSpawnX + 1]->passable) ||
+             (!tileMap[1][tileSpawnY + 1][tileSpawnX]->passable) ||
+             (!tileMap[1][tileSpawnY][tileSpawnX - 1]->passable) ||
+             (!tileMap[1][tileSpawnY - 1][tileSpawnX]->passable)); //spawn mike only when near tiles are passable
 
     return {tileSpawnX, tileSpawnY};
 }
