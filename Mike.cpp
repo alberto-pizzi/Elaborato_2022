@@ -21,7 +21,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Vector2i &spawnTile, const 
                                                     bubble),
                                       killStreak(streak) {
 
-
+    //this->sprite.setScale(sf::Vector2f(1.5,1.5));
 //WARNING: work here to edit frames
     goDown.reserve(3);
     goDown = {

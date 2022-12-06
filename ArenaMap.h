@@ -94,7 +94,7 @@ public:
     void drawSolidsAnd3DLayers(sf::RenderWindow &window);
 
     bool
-    isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]);
+    isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character);
 
     sf::Vector2i randomPassableTile();
 

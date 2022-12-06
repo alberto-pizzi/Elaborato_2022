@@ -195,7 +195,7 @@ void ArenaMap::loadTextures() {
     //...
 }
 
-bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character, const bool direction[]) {
+bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character) {
     sf::Vector2f oldPos = character.getPos(); //centered position (from PosEntity)
     sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
                                   static_cast<int>(oldPos.y / (float) tileSizeY)};

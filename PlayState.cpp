@@ -86,7 +86,7 @@ void PlayState::handleInput() {
 
     mike->directionInput(worldPos);
     normalizedVector = normalize(direction_vector);
-    if (arenaMap->isMovingCorrectly(normalizedVector, *mike, keyStates)) {
+    if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getPos(), this->game->window.getSize(),
                                                                  {mike->getSprite().getGlobalBounds().width,
