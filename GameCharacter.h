@@ -14,6 +14,7 @@
 #include "PosEntity.h"
 #include "Animation.h"
 #include "TextureManager.h"
+#include "Weapon.h"
 
 class GameCharacter : public PosEntity {
 protected:
@@ -31,6 +32,7 @@ protected:
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
     sf::Vector2i fileTextureRectSkinSize;
+    std::unique_ptr<Weapon> weapon;
 public:
     Animation currentAnimation{idle, 10.0f};
 
