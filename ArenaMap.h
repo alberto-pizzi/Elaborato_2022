@@ -51,7 +51,7 @@ private:
         Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
              int tileSizeX, int tileSizeY, int chosenMap);
 
-        bool isWalkable(int tile, int layerNumber, int chosenMap);
+        bool isWalkable(int tile, int layerNumber, int chosenMap) const;
     };
 
 protected:

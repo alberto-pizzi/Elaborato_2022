@@ -4,7 +4,7 @@
 
 #include "PlayState.h"
 
-void PlayState::draw(float dt) {
+void PlayState::draw(float dt) const {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
     this->arenaMap->drawFloorAndDesignElements(this->game->window);

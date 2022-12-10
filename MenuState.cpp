@@ -12,7 +12,7 @@ enum NameButton {
     Exit = 2,
 };
 
-void MenuState::draw(float dt) {
+void MenuState::draw(float dt) const {
     this->game->window.setView(this->view);
     this->game->window.clear();
     this->game->window.draw(this->game->background);
@@ -66,7 +66,6 @@ void MenuState::loadPlay() {
 }
 
 MenuState::MenuState(Game *game) {
-    //TODO improve menu design
     this->game = game;
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->view.setSize(pos);

@@ -12,6 +12,7 @@ TEST_F(GameCharacterFixture, TestXYMove) {
 }
 
 TEST_F(GameCharacterFixture, TestDiagonalMove) {
+    //FIXME epsilon (near)
     mike->move({-1, 1}, 1);
     EXPECT_LE(mike->getPos().x, 40 * 32 + 16 - 176);
     EXPECT_GE(mike->getPos().x, 40 * 32 + 16 - 177);

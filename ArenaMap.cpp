@@ -4,7 +4,8 @@
 
 #include "ArenaMap.h"
 
-bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) {
+bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const {
+    //FIXME enum
     switch (chosenMap) {
         case desert:
             if ((layerNumber == 5) && (tile != 0)) //solid elements layer

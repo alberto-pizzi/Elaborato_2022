@@ -30,7 +30,7 @@ public:
 
     void select();
 
-    void draw(float dt) override;
+    void draw(float dt) const override;
 
     void update(float dt) override;
 
