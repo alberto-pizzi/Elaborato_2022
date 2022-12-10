@@ -23,24 +23,25 @@ TEST_F(GameCharacterFixture, TestDiagonalMove) {
 
 TEST_F(GameCharacterFixture, TestDirectionMouseInput) {
     //test Mike body direction when mouse exceeds bisects (+- 45°) of all quadrants
-    mike->directionInput({1374, 629});
+    bool renderingDirection;
+    mike->directionInput({1374, 629}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoUp());
-    mike->directionInput({1213, 626});
+    mike->directionInput({1213, 626}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoUp());
 
-    mike->directionInput({1097, 697});
+    mike->directionInput({1097, 697}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoLeft());
-    mike->directionInput({1145, 859});
+    mike->directionInput({1145, 859}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoLeft());
 
-    mike->directionInput({1264, 912});
+    mike->directionInput({1264, 912}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoDown());
-    mike->directionInput({1355, 929});
+    mike->directionInput({1355, 929}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoDown());
 
-    mike->directionInput({1453, 809});
+    mike->directionInput({1453, 809}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoRight());
-    mike->directionInput({1487, 750});
+    mike->directionInput({1487, 750}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoRight());
 }
 

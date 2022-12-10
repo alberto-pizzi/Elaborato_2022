@@ -134,9 +134,11 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     bool legalFirstCenter = false;
 
 
-    mike = std::unique_ptr<Mike>(new Mike(textureManager.getTextureRef("mike"), spawnTile, {tileSizeX, tileSizeY},
-                                          {32, 32},
-                                          true));
+    mike = std::unique_ptr<Mike>(
+            new Mike(textureManager.getTextureRef("mike"), textureManager.getTextureRef("handgun"), spawnTile,
+                     {tileSizeX, tileSizeY},
+                     {32, 32},
+                     true));
     firstViewCenter = mike->getPos();
     sf::Vector2f distanceFromWindowCenter = {
             (static_cast<float>(window.getSize().x) / 2) +
@@ -183,9 +185,11 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
 }
 
 void ArenaMap::loadTextures() {
-    textureManager.loadTexture(this->nameMap, this->nameFile); //map texture
+    textureManager.loadTexture(this->nameMap, this->nameFile); //texture map
 
-    textureManager.loadTexture("mike", "res/textures/mike.png");
+    textureManager.loadTexture("mike", "res/textures/no_hands_mike.png");
+
+    textureManager.loadTexture("handgun", "res/textures/handgun.png");
 
     //...
 }

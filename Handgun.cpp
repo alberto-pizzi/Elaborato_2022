@@ -8,8 +8,13 @@ void Handgun::shoot() {
 
 }
 
-Handgun::Handgun(bool equipped, int totBullets, int damage, float shotDelay, float reloadTime, int magazineCapacity,
-                 int remainingBullets) : Weapon(equipped, totBullets, damage, shotDelay, reloadTime, magazineCapacity,
-                                                remainingBullets, fileTextureRectHandgunSize) {
+Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullets, int damage, float shotDelay,
+                 float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(equipped, handgunTexture,
+                                                                                        totBullets, damage, shotDelay,
+                                                                                        reloadTime,
+                                                                                        magazineCapacity,
+                                                                                        remainingBullets,
+                                                                                        fileTextureRectHandgunSize,
+                                                                                        "Handgun") {
 
 }

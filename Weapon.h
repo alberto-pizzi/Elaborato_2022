@@ -10,12 +10,14 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <cmath>
+#include <string>
 
 #include "Animation.h"
 #include "TextureManager.h"
 
 class Weapon {
 private:
+
     class Magazine {
     public:
         int totalCapacity;
@@ -32,14 +34,23 @@ protected:
     float reloadTime;
     bool equipped;
     float nextShotDelay; //in seconds
+    std::string weaponName;
+    sf::Texture weaponTexture;
+    std::vector<sf::IntRect> idleWeapon;
 public:
+    sf::Sprite weaponSprite;
 
-    Weapon(bool equipped, int totBullets, int damage, float shotDelay, float reloadTime, int magazineCapacity,
-           int remainingBullets, const sf::Vector2i &texRectWeapon);
+    Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,
+           float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
+           std::string weaponName);
+
+    virtual ~Weapon();
 
     virtual void shoot() = 0;
 
     bool reloadWeapon();
+
+    void drawWeapon(sf::RenderWindow &window);
 
 };
 

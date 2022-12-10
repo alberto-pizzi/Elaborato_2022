@@ -15,6 +15,7 @@
 #include "Animation.h"
 #include "TextureManager.h"
 #include "Weapon.h"
+#include "Handgun.h"
 
 class GameCharacter : public PosEntity {
 protected:
@@ -32,8 +33,8 @@ protected:
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
     sf::Vector2i fileTextureRectSkinSize;
-    std::unique_ptr<Weapon> weapon;
 public:
+    std::unique_ptr<Weapon> weapon;
     Animation currentAnimation{idle, 10.0f};
 
     const sf::Sprite &getSprite() const;
@@ -86,6 +87,8 @@ public:
     const std::vector<sf::IntRect> &getGoDown() const;
 
     const std::vector<sf::IntRect> &getGoUp() const;
+
+
 };
 
 

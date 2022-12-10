@@ -11,13 +11,17 @@
 
 #include "GameCharacter.h"
 #include "Bonus.h"
+#include "TextureManager.h"
 
 class Spawner {
 private:
     std::vector<std::unique_ptr<GameCharacter>> enemies;
     std::vector<std::unique_ptr<Bonus>> bonuses;
     std::vector<std::unique_ptr<GameCharacter>> bosses;
+    TextureManager texManager;
 public:
+    Spawner(const TextureManager &textureManager);
+
     const std::vector<std::unique_ptr<GameCharacter>> &getEnemies() const;
 
     const std::vector<std::unique_ptr<Bonus>> &getBonuses() const;

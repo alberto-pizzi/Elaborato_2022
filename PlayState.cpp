@@ -8,7 +8,13 @@ void PlayState::draw(float dt) const {
     this->game->window.clear(sf::Color::Black);
     //this->game->window.draw(this->game->background);
     this->arenaMap->drawFloorAndDesignElements(this->game->window);
-    this->mike->drawEntity(this->game->window);
+    if (!isUp) {
+        this->mike->drawEntity(this->game->window);
+        this->mike->weapon->drawWeapon(this->game->window);
+    } else {
+        this->mike->weapon->drawWeapon(this->game->window);
+        this->mike->drawEntity(this->game->window);
+    }
 
     this->arenaMap->drawSolidsAnd3DLayers(
             this->game->window); //WARNING: this calling draw 3d and design layers, so it must be THE LAST ONE to be rendered
@@ -84,7 +90,7 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-    mike->directionInput(worldPos);
+    mike->directionInput(worldPos, isUp);
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());
@@ -104,8 +110,7 @@ PlayState::PlayState(Game *game) {
     //create random map
     arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike);
 
-    std::string fileName = "res/textures/viewfinder.png";
-    textureManager.loadTexture("viewfinder", fileName);
+    loadTextures();
     viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
 
     this->round = 1;
@@ -132,4 +137,12 @@ ArenaMap *PlayState::getArenaMap() const {
 
 PlayState::~PlayState() {
     delete arenaMap;
+}
+
+void PlayState::loadTextures() {
+    //load viewfinder
+    textureManager.loadTexture("viewfinder", "res/textures/viewfinder.png");
+
+    //load weapons
+    textureManager.loadTexture("handgun", "res/textures/handgun.png");
 }

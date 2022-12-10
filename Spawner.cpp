@@ -16,3 +16,7 @@ const std::vector<std::unique_ptr<GameCharacter>> &Spawner::getBosses() const {
     return bosses;
 }
 
+Spawner::Spawner(const TextureManager &textureManager) {
+    this->texManager = textureManager;
+}
+

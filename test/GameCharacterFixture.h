@@ -13,7 +13,8 @@
 
 class GameCharacterFixture : public ::testing::Test {
 protected:
-    sf::Texture tex;
+    sf::Texture mikeTex;
+    sf::Texture weaponTex;
     sf::Context context;
     std::unique_ptr<Mike> mike;
 public:

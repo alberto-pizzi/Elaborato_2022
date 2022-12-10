@@ -34,6 +34,7 @@ private:
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
     int round;
+    bool isUp = false;
 
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;
@@ -53,6 +54,8 @@ public:
     int whichMap();
 
     sf::Vector2f normalize(sf::Vector2f vector);
+
+    void loadTextures();
 };
 
 #endif //ELABORATO_PLAYSTATE_H
