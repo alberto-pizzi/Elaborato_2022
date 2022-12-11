@@ -37,8 +37,10 @@ protected:
     std::string weaponName;
     sf::Texture weaponTexture;
     std::vector<sf::IntRect> idleWeapon;
+    std::vector<sf::IntRect> shot;
 public:
     sf::Sprite weaponSprite;
+    Animation currentAnimation{idleWeapon, 10.0f};
 
     Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,
            float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,

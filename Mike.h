@@ -40,6 +40,7 @@ public:
 
     void directionInput(const sf::Vector2f &viewfinderPos, bool &isUp);
 
+    void setWeaponPosToShouldersPos();
 };
 
 

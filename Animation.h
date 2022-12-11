@@ -19,6 +19,8 @@ public:
 
     void setMovementAnimation(std::vector<sf::IntRect> &frames, float duration, int direction);
 
+    void setMovementAnimation(std::vector<sf::IntRect> &frames, float duration);
+
     void reset();
 
     void update(float dt);

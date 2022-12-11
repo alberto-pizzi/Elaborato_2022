@@ -36,3 +36,9 @@ void Animation::setMovementAnimation(std::vector<sf::IntRect> &frames, float dur
 sf::IntRect &Animation::getCurrentRect() const {
     return frames[currentFrame];
 }
+
+void Animation::setMovementAnimation(std::vector<sf::IntRect> &frames, float duration) {
+    this->frames = frames;
+    this->frameTime = duration / static_cast<float>(frames.size());
+    reset();
+}

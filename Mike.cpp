@@ -65,7 +65,6 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     };
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
-    weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 18, this->sprite.getPosition().y + 21);
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {
@@ -84,8 +83,6 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
 
     effectiveOffset = offset * newSpeed * dt;
     sprite.setPosition(sprite.getPosition() + effectiveOffset);
-    weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 18,
-                                     this->sprite.getPosition().y + 21); //weapon move with character
     pos += effectiveOffset;
 }
 
@@ -96,10 +93,12 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
     float frameDuration = 0.5f;
     float radians, degrees;
 
+    //weapon->weaponSprite.setOrigin(sf::Vector2f(16,16));
+
     //weapon angle from input
     radians = std::atan(translation.y / translation.x);
     degrees = radians * static_cast<float>(180 / M_PI);
-
+    weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 18, this->sprite.getPosition().y + 21);
     //when mouse exceeds bisects (+- 45°) of all quadrants, Mike changes body direction
     if (viewfinderPos.x >= origin.x) {
         weapon->weaponSprite.setScale(sf::Vector2f(1, 1));
@@ -127,6 +126,18 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
         }
     }
     weapon->weaponSprite.setRotation(degrees);
+}
+
+void Mike::setWeaponPosToShouldersPos() { //FIXME magic numbers
+    if (currentAnimation.frames == goRight)
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 16, this->sprite.getPosition().y + 21);
+    else if (currentAnimation.frames == goLeft)
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + this->sprite.getGlobalBounds().width - 16,
+                                         this->sprite.getPosition().y + 21);
+    else if (currentAnimation.frames == goUp)
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 32, this->sprite.getPosition().y + 21);
+    else if (currentAnimation.frames == goDown)
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 24, this->sprite.getPosition().y + 21);
 }
 
 Mike::~Mike() = default;

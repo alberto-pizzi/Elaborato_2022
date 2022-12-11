@@ -57,6 +57,15 @@ void PlayState::handleInput() {
                         float(event.size.height) / float(this->game->background.getTexture()->getSize().y));
                 break;
             }
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Left)
+                    mike->weapon->shoot();
+                break;
+            case sf::Event::KeyReleased: //single input
+                if (event.key.code == sf::Keyboard::R)
+                    std::cout << "RELOAD!" << std::endl;
+                break;
+
         }
     }
 
@@ -71,6 +80,7 @@ void PlayState::handleInput() {
         keyStates[LEFT] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         keyStates[RIGHT] = true;
+
 
     sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
     sf::Vector2f worldPos = this->game->window.mapPixelToCoords(localPosition);
@@ -101,6 +111,7 @@ void PlayState::handleInput() {
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
     }
+    mike->setWeaponPosToShouldersPos();
 
 }
 
