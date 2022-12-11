@@ -21,7 +21,7 @@ void Animation::reset() {
 }
 
 Animation::Animation(std::vector<sf::IntRect> &frames, float duration)
-        : frames(frames), frameTime(duration / static_cast<float>(frames.size())) {
+        : frames(frames), idleFrames(frames), frameTime(duration / static_cast<float>(frames.size())) {
     reset();
 }
 
@@ -37,8 +37,27 @@ sf::IntRect &Animation::getCurrentRect() const {
     return frames[currentFrame];
 }
 
-void Animation::setMovementAnimation(std::vector<sf::IntRect> &frames, float duration) {
+void Animation::setNotCyclicalAnimation(std::vector<sf::IntRect> &frames, float duration) {
     this->frames = frames;
     this->frameTime = duration / static_cast<float>(frames.size());
     reset();
 }
+
+void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isAnimationActive) {
+    if (isAnimationActive && (!end)) {
+        currentFrameTime += dt;
+        if (currentFrameTime >= frameTime) {
+            currentFrameTime -= frameTime;
+            currentFrame++;
+            if (currentFrame >= frames.size()) {
+                end = true;
+                currentFrame = 0;
+            }
+        }
+    } else {
+        end = false;
+        isAnimationActive = false;
+        setNotCyclicalAnimation(idleFrames, 10.f);
+    }
+}
+

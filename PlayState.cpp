@@ -28,7 +28,7 @@ void PlayState::draw(float dt) const {
 void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
-    //update Gui
+    //updateNotCyclicalAnimation Gui
     mike->gui.updatePoints(mike->getPoints());
     mike->gui.updateHealthBar(mike->getHp());
 }
@@ -60,7 +60,7 @@ void PlayState::handleInput() {
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     mike->weapon->shoot();
-                    shot = true;
+                    isAnimationActive = true;
                 }
                 break;
             case sf::Event::KeyReleased: //single input
@@ -114,7 +114,19 @@ void PlayState::handleInput() {
         mike->currentAnimation.update(frame_time.asSeconds());
     }
 
-    mike->weapon->currentAnimation.update(frame_time.asSeconds());
+    //updateNotCyclicalAnimation weapon animation if you make an action as shooting or reloading
+
+    /*
+    if ((!isEnded) && isAnimationActive)
+    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),isEnded);
+    else {
+        isEnded = false;
+        isAnimationActive = false;
+    }
+     */
+
+    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(), isEnded, isAnimationActive);
+
 
     mike->setWeaponPosToShouldersPos();
 

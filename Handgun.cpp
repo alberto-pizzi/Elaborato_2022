@@ -6,8 +6,8 @@
 
 void Handgun::shoot() {
     std::cout << "SHOOT!" << std::endl;
-    float frameDuration = 0.3f;
-    currentAnimation.setMovementAnimation(shot, frameDuration);
+    float frameDuration = 0.35f;
+    currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 }
 
 Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullets, int damage, float shotDelay,

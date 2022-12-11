@@ -19,15 +19,18 @@ public:
 
     void setMovementAnimation(std::vector<sf::IntRect> &frames, float duration, int direction);
 
-    void setMovementAnimation(std::vector<sf::IntRect> &frames, float duration);
+    void setNotCyclicalAnimation(std::vector<sf::IntRect> &frames, float duration);
 
     void reset();
 
     void update(float dt);
 
+    void updateNotCyclicalAnimation(float dt, bool &end, bool &isAnimationActive);
+
     sf::IntRect &getCurrentRect() const;
 
     std::vector<sf::IntRect> &frames;
+    std::vector<sf::IntRect> &idleFrames;
 private:
 
     float frameTime;

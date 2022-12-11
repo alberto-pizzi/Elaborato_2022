@@ -16,7 +16,7 @@
 #include "TextureManager.h"
 #include "Gui.h"
 
-//WARNING: for adding other Map, you must update nMap/loadMap and enum in ArenaMap.h
+//WARNING: for adding other Map, you must updateNotCyclicalAnimation nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
 
 
@@ -36,8 +36,9 @@ private:
     int round;
     bool isUp = false;
 
-    bool shot = false;
-    //int countA = 0;
+    //animation settings
+    bool isEnded = false;
+    bool isAnimationActive = false;
 
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;

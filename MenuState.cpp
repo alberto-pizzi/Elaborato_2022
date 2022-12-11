@@ -104,7 +104,7 @@ MenuState::MenuState(Game *game) {
     mainMenu[Exit].setPosition(sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
                                             (static_cast<float>(this->game->window.getSize().y) / 2 -
                                              static_cast<float>(fontSize)) * 2));
-    //if you add more buttons, you must update "nButtons" in the header file and unit testing
+    //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
 
     nButtonSelected = Play;
 }
