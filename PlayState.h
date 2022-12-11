@@ -23,7 +23,6 @@ const int nMap = 1;
 
 class PlayState : public GameState {
 private:
-
     sf::View gameView;
     sf::View guiView;
     ArenaMap *arenaMap;
@@ -38,7 +37,7 @@ private:
 
     //animation settings
     bool isEnded = false;
-    bool isAnimationActive = false;
+    bool isActiveAnimation = false;
 
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;

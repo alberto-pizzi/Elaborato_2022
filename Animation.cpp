@@ -43,8 +43,8 @@ void Animation::setNotCyclicalAnimation(std::vector<sf::IntRect> &frames, float 
     reset();
 }
 
-void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isAnimationActive) {
-    if (isAnimationActive && (!end)) {
+void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isActiveAnimation) {
+    if (isActiveAnimation && (!end)) {
         currentFrameTime += dt;
         if (currentFrameTime >= frameTime) {
             currentFrameTime -= frameTime;
@@ -56,7 +56,7 @@ void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isAnimatio
         }
     } else {
         end = false;
-        isAnimationActive = false;
+        isActiveAnimation = false;
         setNotCyclicalAnimation(idleFrames, 10.f);
     }
 }

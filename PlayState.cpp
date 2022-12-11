@@ -59,13 +59,18 @@ void PlayState::handleInput() {
             }
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    mike->weapon->shoot();
-                    isAnimationActive = true;
+                    if (mike->weapon->thereAreRemainingBullets()) {
+                        mike->weapon->shoot();
+                        isActiveAnimation = true;
+                    }
                 }
                 break;
             case sf::Event::KeyReleased: //single input
-                if (event.key.code == sf::Keyboard::R)
+                if (event.key.code == sf::Keyboard::R) {
                     std::cout << "RELOAD!" << std::endl;
+                    if (mike->weapon->reloadWeapon()) //FIXME add correct texture animation
+                        isActiveAnimation = true;
+                }
                 break;
 
         }
@@ -114,19 +119,8 @@ void PlayState::handleInput() {
         mike->currentAnimation.update(frame_time.asSeconds());
     }
 
-    //updateNotCyclicalAnimation weapon animation if you make an action as shooting or reloading
-
-    /*
-    if ((!isEnded) && isAnimationActive)
-    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),isEnded);
-    else {
-        isEnded = false;
-        isAnimationActive = false;
-    }
-     */
-
-    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(), isEnded, isAnimationActive);
-
+    //update weapon animation if you make an action as shooting or reloading
+    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(), isEnded, isActiveAnimation);
 
     mike->setWeaponPosToShouldersPos();
 

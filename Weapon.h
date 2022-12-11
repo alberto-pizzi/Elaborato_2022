@@ -30,6 +30,7 @@ private:
     sf::Vector2i fileTextureRectWeaponSize;
 protected:
     int totalBullets;
+    bool infiniteBullets = false;
     int damage;
     float reloadTime;
     bool equipped;
@@ -38,19 +39,22 @@ protected:
     sf::Texture weaponTexture;
     std::vector<sf::IntRect> idleWeapon;
     std::vector<sf::IntRect> shot;
+    std::vector<sf::IntRect> reload;
 public:
     sf::Sprite weaponSprite;
     Animation currentAnimation{idleWeapon, 10.0f};
 
     Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,
            float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
-           std::string weaponName);
+           std::string weaponName, bool infiniteBullets = false);
 
     virtual ~Weapon();
 
     virtual void shoot() = 0;
 
     bool reloadWeapon();
+
+    bool thereAreRemainingBullets() const;
 
     void drawWeapon(sf::RenderWindow &window);
 

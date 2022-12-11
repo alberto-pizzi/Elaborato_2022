@@ -5,16 +5,32 @@
 #include "Weapon.h"
 
 bool Weapon::reloadWeapon() {
-    return false;
+    int bulletsForFillMagazine;
+    float frameDuration = 0.35f;
+
+    if (((infiniteBullets) || (totalBullets > 0)) && (magazine.remainingBullets != magazine.totalCapacity)) {
+        currentAnimation.setNotCyclicalAnimation(reload, frameDuration);
+        if (infiniteBullets)
+            magazine.remainingBullets = magazine.totalCapacity;
+        else {
+            bulletsForFillMagazine = magazine.totalCapacity - magazine.remainingBullets;
+            if (totalBullets >= bulletsForFillMagazine)
+                magazine.remainingBullets += bulletsForFillMagazine;
+            else
+                magazine.remainingBullets += totalBullets;
+        }
+        return true;
+    } else
+        return false;
 }
 
 Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,
                float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
-               std::string weaponName)
+               std::string weaponName, bool infiniteBullets)
         : equipped(equipped), totalBullets(totBullets), damage(damage), nextShotDelay(shotDelay),
           reloadTime(reloadTime),
           magazine(magazineCapacity, remainingBullets), fileTextureRectWeaponSize(texRectWeapon),
-          weaponName(weaponName), weaponTexture(weaponTexture) {
+          weaponName(weaponName), weaponTexture(weaponTexture), infiniteBullets(infiniteBullets) {
 
     this->weaponSprite.setTexture(this->weaponTexture);
 
@@ -27,6 +43,13 @@ Weapon::~Weapon() {
 void Weapon::drawWeapon(sf::RenderWindow &window) {
     weaponSprite.setTextureRect(currentAnimation.getCurrentRect());
     window.draw(weaponSprite);
+}
+
+bool Weapon::thereAreRemainingBullets() const {
+    if (magazine.remainingBullets > 0)
+        return true;
+    else
+        return false;
 }
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),

@@ -64,7 +64,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                                                   this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
-    weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
+    weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, false));
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {

@@ -25,7 +25,7 @@ public:
 
     void update(float dt);
 
-    void updateNotCyclicalAnimation(float dt, bool &end, bool &isAnimationActive);
+    void updateNotCyclicalAnimation(float dt, bool &end, bool &isActiveAnimation);
 
     sf::IntRect &getCurrentRect() const;
 

@@ -10,14 +10,18 @@ void Handgun::shoot() {
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 }
 
-Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullets, int damage, float shotDelay,
-                 float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(equipped, handgunTexture,
-                                                                                        totBullets, damage, shotDelay,
-                                                                                        reloadTime,
-                                                                                        magazineCapacity,
-                                                                                        remainingBullets,
-                                                                                        fileTextureRectHandgunSize,
-                                                                                        "Handgun") {
+Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, bool infiniteBullets, int totBullets, int damage,
+                 float shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(equipped,
+                                                                                                         handgunTexture,
+                                                                                                         totBullets,
+                                                                                                         damage,
+                                                                                                         shotDelay,
+                                                                                                         reloadTime,
+                                                                                                         magazineCapacity,
+                                                                                                         remainingBullets,
+                                                                                                         fileTextureRectHandgunSize,
+                                                                                                         "Handgun",
+                                                                                                         infiniteBullets) {
 
     idleWeapon.reserve(1);
     idleWeapon = {
