@@ -58,8 +58,10 @@ void PlayState::handleInput() {
                 break;
             }
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left)
+                if (event.mouseButton.button == sf::Mouse::Left) {
                     mike->weapon->shoot();
+                    shot = true;
+                }
                 break;
             case sf::Event::KeyReleased: //single input
                 if (event.key.code == sf::Keyboard::R)
@@ -111,6 +113,9 @@ void PlayState::handleInput() {
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
     }
+
+    mike->weapon->currentAnimation.update(frame_time.asSeconds());
+
     mike->setWeaponPosToShouldersPos();
 
 }

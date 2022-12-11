@@ -36,6 +36,9 @@ private:
     int round;
     bool isUp = false;
 
+    bool shot = false;
+    //int countA = 0;
+
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;
 public:

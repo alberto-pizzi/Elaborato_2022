@@ -18,14 +18,6 @@ Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, 
 
     this->weaponSprite.setTexture(this->weaponTexture);
 
-    idleWeapon.reserve(1);
-    idleWeapon = {
-            {0 * this->fileTextureRectWeaponSize.x, 0 * this->fileTextureRectWeaponSize.y,
-             this->fileTextureRectWeaponSize.x,
-             this->fileTextureRectWeaponSize.y},
-    };
-
-    weaponSprite.setTextureRect({0, 0, 64, 32});
 }
 
 Weapon::~Weapon() {
@@ -33,6 +25,7 @@ Weapon::~Weapon() {
 }
 
 void Weapon::drawWeapon(sf::RenderWindow &window) {
+    weaponSprite.setTextureRect(currentAnimation.getCurrentRect());
     window.draw(weaponSprite);
 }
 

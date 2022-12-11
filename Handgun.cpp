@@ -6,7 +6,7 @@
 
 void Handgun::shoot() {
     std::cout << "SHOOT!" << std::endl;
-    float frameDuration = 0.5f;
+    float frameDuration = 0.3f;
     currentAnimation.setMovementAnimation(shot, frameDuration);
 }
 
@@ -18,9 +18,17 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
                                                                                         remainingBullets,
                                                                                         fileTextureRectHandgunSize,
                                                                                         "Handgun") {
-    /*
+
+    idleWeapon.reserve(1);
+    idleWeapon = {
+            {0, 0, this->fileTextureRectHandgunSize.x, this->fileTextureRectHandgunSize.y},
+    };
+
+    weaponSprite.setTextureRect({0, 0, this->fileTextureRectHandgunSize.x, this->fileTextureRectHandgunSize.y});
+
     shot.reserve(12);
-    for (int i=0;i<12;i++)
-        shot.emplace_back(i * 64,0,64,32); //FIXME check texture file and magic numbers
-        */
+    for (int i = 0; i < 12; i++)
+        shot.emplace_back(i * this->fileTextureRectHandgunSize.x, 0, this->fileTextureRectHandgunSize.x,
+                          this->fileTextureRectHandgunSize.y); //FIXME check texture file and magic numbers
+
 }

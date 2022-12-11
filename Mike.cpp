@@ -98,7 +98,8 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
     //weapon angle from input
     radians = std::atan(translation.y / translation.x);
     degrees = radians * static_cast<float>(180 / M_PI);
-    weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 18, this->sprite.getPosition().y + 21);
+    weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 18,
+                                     this->sprite.getPosition().y + 21); //FIXME magic numbers
     //when mouse exceeds bisects (+- 45°) of all quadrants, Mike changes body direction
     if (viewfinderPos.x >= origin.x) {
         weapon->weaponSprite.setScale(sf::Vector2f(1, 1));
