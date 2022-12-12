@@ -25,8 +25,6 @@ private:
 
         Magazine(int magazineCapacity, int remainingBullets);
     };
-
-    Magazine magazine;
     sf::Vector2i fileTextureRectWeaponSize;
 protected:
     int totalBullets;
@@ -37,6 +35,7 @@ protected:
     float nextShotDelay; //in seconds
     std::string weaponName;
     sf::Texture weaponTexture;
+    Magazine magazine;
     std::vector<sf::IntRect> idleWeapon;
     std::vector<sf::IntRect> shot;
     std::vector<sf::IntRect> reload;
@@ -57,6 +56,8 @@ public:
     bool thereAreRemainingBullets() const;
 
     void drawWeapon(sf::RenderWindow &window);
+
+    float getNextShotDelay() const;
 
 };
 

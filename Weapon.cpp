@@ -6,7 +6,7 @@
 
 bool Weapon::reloadWeapon() {
     int bulletsForFillMagazine;
-    float frameDuration = 0.35f;
+    float frameDuration = 1.0f;
 
     if (((infiniteBullets) || (totalBullets > 0)) && (magazine.remainingBullets != magazine.totalCapacity)) {
         currentAnimation.setNotCyclicalAnimation(reload, frameDuration);
@@ -50,6 +50,10 @@ bool Weapon::thereAreRemainingBullets() const {
         return true;
     else
         return false;
+}
+
+float Weapon::getNextShotDelay() const {
+    return nextShotDelay;
 }
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),

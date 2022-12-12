@@ -64,7 +64,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                                                   this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
-    weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, false));
+    weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {
@@ -93,7 +93,6 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
     float frameDuration = 0.5f;
     float radians, degrees;
 
-    //weapon->weaponSprite.setOrigin(sf::Vector2f(16,16));
 
     //weapon angle from input
     radians = std::atan(translation.y / translation.x);

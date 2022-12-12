@@ -57,6 +57,7 @@ void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isActiveAn
     } else {
         end = false;
         isActiveAnimation = false;
+        currentFrame = 0;
         setNotCyclicalAnimation(idleFrames, 10.f);
     }
 }

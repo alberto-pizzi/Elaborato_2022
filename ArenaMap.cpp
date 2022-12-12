@@ -189,7 +189,8 @@ void ArenaMap::loadTextures() {
 
     textureManager.loadTexture("mike", "res/textures/no_hands_mike.png");
 
-    textureManager.loadTexture("handgun", "res/textures/handgun.png");
+    textureManager.loadTexture("handgun",
+                               "res/textures/handgun_hand.png"); //spawning weapons (check that is equal in Playstate)
 
     //...
 }

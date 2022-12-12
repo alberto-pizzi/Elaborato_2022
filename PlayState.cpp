@@ -37,8 +37,11 @@ void PlayState::handleInput() {
     auto frame_time = frame_clock.restart();
     sf::Event event;
     sf::Vector2f normalizedVector;
-
-
+    if (mike->nextAttackTimeCount >=
+        50) //set limits to prevent overflow during counting (these numbers represent wide margin of prevention)
+        mike->nextAttackTimeCount = 20;
+    mike->nextAttackTimeCount += frame_time.asSeconds();
+    std::cout << "Time: " << mike->nextAttackTimeCount << std::endl;
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
             // Close the window
@@ -59,8 +62,10 @@ void PlayState::handleInput() {
             }
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (mike->weapon->thereAreRemainingBullets()) {
+                    if ((mike->weapon->thereAreRemainingBullets()) &&
+                        (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot();
+                        mike->nextAttackTimeCount = 0;
                         isActiveAnimation = true;
                     }
                 }
@@ -68,8 +73,10 @@ void PlayState::handleInput() {
             case sf::Event::KeyReleased: //single input
                 if (event.key.code == sf::Keyboard::R) {
                     std::cout << "RELOAD!" << std::endl;
-                    if (mike->weapon->reloadWeapon()) //FIXME add correct texture animation
+                    if (mike->weapon->reloadWeapon()) { //FIXME add correct texture animation
                         isActiveAnimation = true;
+                        std::cout << "RELOAD DONE!" << std::endl;
+                    }
                 }
                 break;
 
@@ -165,6 +172,6 @@ void PlayState::loadTextures() {
     //load viewfinder
     textureManager.loadTexture("viewfinder", "res/textures/viewfinder.png");
 
-    //load weapons
-    textureManager.loadTexture("handgun", "res/textures/handgun.png");
+    //load weapons (general, also spawning weapon)
+    textureManager.loadTexture("handgun", "res/textures/handgun_hand.png"); //FIXME
 }

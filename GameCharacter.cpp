@@ -4,6 +4,7 @@
 
 #include "GameCharacter.h"
 
+
 int GameCharacter::receiveDamage(int damagePoints, bool armor) {
     return 0;
 }
