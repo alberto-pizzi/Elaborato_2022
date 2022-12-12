@@ -13,6 +13,7 @@
 
 #include "TextureManager.h"
 #include "GameException.h"
+#include "GameCharacter.h"
 
 class Gui {
 private:
@@ -26,6 +27,16 @@ private:
     sf::Text roundIndicator;
     int textFontSize = 24;
     int titleFontSize = 24;
+
+    //magazine indicator
+    sf::Text remainingBulletsIndicator;
+    sf::Text totalBulletsIndicator;
+    int remainingBulletsTextSize = 20;
+    int totalBulletsTextSize = 10;
+    std::string remainingBulletsDisplayed;
+    std::string totalBulletsDisplayed;
+    sf::RectangleShape designSeparator;
+
     std::string pointsDisplayed;
     std::string roundDisplayed;
     const int totalDigits = 10;
@@ -46,6 +57,8 @@ public:
     void updateRound(int round);
 
     void updatePoints(unsigned int points);
+
+    void updateMagazines(int remaining, int total, bool isInfinite);
 
     void drawGui(sf::RenderWindow &window);
 

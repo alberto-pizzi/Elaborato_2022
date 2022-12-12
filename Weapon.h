@@ -59,6 +59,12 @@ public:
 
     float getNextShotDelay() const;
 
+    int getTotalBullets() const;
+
+    bool isInfiniteBullets() const;
+
+    const Magazine &getMagazine() const;
+
 };
 
 

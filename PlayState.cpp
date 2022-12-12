@@ -29,6 +29,8 @@ void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //updateNotCyclicalAnimation Gui
+    mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
+                              mike->weapon->isInfiniteBullets());
     mike->gui.updatePoints(mike->getPoints());
     mike->gui.updateHealthBar(mike->getHp());
 }
@@ -41,7 +43,7 @@ void PlayState::handleInput() {
         50) //set limits to prevent overflow during counting (these numbers represent wide margin of prevention)
         mike->nextAttackTimeCount = 20;
     mike->nextAttackTimeCount += frame_time.asSeconds();
-    std::cout << "Time: " << mike->nextAttackTimeCount << std::endl;
+    //std::cout << "Time: " << mike->nextAttackTimeCount << std::endl; //FIXME only for debug
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
             // Close the window
@@ -61,8 +63,9 @@ void PlayState::handleInput() {
                 break;
             }
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    if ((mike->weapon->thereAreRemainingBullets()) &&
+                if (event.mouseButton.button ==
+                    sf::Mouse::Left) { //FIXME review this when assault rifle implementation is done (for shooting animation and reload)
+                    if ((!isActiveAnimation) && (mike->weapon->thereAreRemainingBullets()) &&
                         (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot();
                         mike->nextAttackTimeCount = 0;

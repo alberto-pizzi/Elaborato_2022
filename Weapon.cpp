@@ -56,6 +56,18 @@ float Weapon::getNextShotDelay() const {
     return nextShotDelay;
 }
 
+int Weapon::getTotalBullets() const {
+    return totalBullets;
+}
+
+bool Weapon::isInfiniteBullets() const {
+    return infiniteBullets;
+}
+
+const Weapon::Magazine &Weapon::getMagazine() const {
+    return magazine;
+}
+
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {
 }

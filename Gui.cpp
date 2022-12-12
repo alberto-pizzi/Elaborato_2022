@@ -31,6 +31,22 @@ Gui::Gui() {
     roundIndicator.setCharacterSize(titleFontSize);
     roundIndicator.setFillColor(sf::Color(102, 0, 0));
     this->roundDisplayed = "1";
+
+    //set bullets indicator
+    remainingBulletsIndicator.setFont(textFont);
+    remainingBulletsIndicator.setCharacterSize(remainingBulletsTextSize);
+    remainingBulletsIndicator.setFillColor(sf::Color(239, 239, 239, 150));
+    this->remainingBulletsDisplayed = "12 "; //this number must be equal to Mike's STARTING bullets
+
+    totalBulletsIndicator.setFont(textFont);
+    totalBulletsIndicator.setCharacterSize(totalBulletsTextSize);
+    totalBulletsIndicator.setFillColor(sf::Color(239, 239, 239, 150));
+    this->totalBulletsDisplayed = "inf";
+
+    designSeparator.setSize(sf::Vector2f(3, 60));
+    designSeparator.setFillColor(sf::Color(239, 239, 239, 150));
+
+
 }
 
 void Gui::loadTextures() {
@@ -57,6 +73,31 @@ void Gui::drawGui(sf::RenderWindow &window) {
     roundIndicator.setPosition(worldPosRound);
     roundIndicator.setString(roundDisplayed);
     window.draw(roundIndicator);
+
+    //draw design separator
+    sf::Vector2i posDesignSeparator = {distanceFromWindowLimits.x,
+                                       static_cast<int>(window.getSize().y - distanceFromWindowLimits.y -
+                                                        designSeparator.getSize().y)};
+    sf::Vector2f worldPosSeparator = window.mapPixelToCoords(posDesignSeparator);
+    designSeparator.setPosition(worldPosSeparator);
+    window.draw(designSeparator);
+
+    //draw bullets indicator
+    sf::Vector2i posRemainingBullets = {
+            static_cast<int>( designSeparator.getGlobalBounds().width) + distanceFromWindowLimits.x * 2 - 6,
+            posDesignSeparator.y + 4};
+    sf::Vector2f worldPosRemainingBullets = window.mapPixelToCoords(posRemainingBullets);
+    remainingBulletsIndicator.setPosition(worldPosRemainingBullets);
+    remainingBulletsIndicator.setString(remainingBulletsDisplayed);
+
+    sf::Vector2i posTotalBullets = {posRemainingBullets.x,
+                                    posDesignSeparator.y + static_cast<int>(designSeparator.getSize().y) -
+                                    totalBulletsTextSize - 4};
+    sf::Vector2f worldPosTotalBullets = window.mapPixelToCoords(posTotalBullets);
+    totalBulletsIndicator.setPosition(worldPosTotalBullets);
+    totalBulletsIndicator.setString(totalBulletsDisplayed);
+    window.draw(remainingBulletsIndicator);
+    window.draw(totalBulletsIndicator);
 }
 
 void Gui::updateHealthBar(int hp) {
@@ -96,5 +137,29 @@ const std::string &Gui::getPointsDisplayed() const {
 void Gui::updateRound(int round) {
     std::string roundString = std::to_string(round);
     this->roundDisplayed = roundString;
+}
+
+void Gui::updateMagazines(int remaining, int total, bool isInfinite) {
+    if (remaining == 0)
+        remainingBulletsIndicator.setFillColor(sf::Color(102, 0, 0, 200)); //red color
+    else
+        remainingBulletsIndicator.setFillColor(sf::Color(210, 210, 210, 200)); //standard color (grey)
+
+    if (!isInfinite) {
+        if ((total <= 20) && (total != 0))
+            totalBulletsIndicator.setFillColor(sf::Color(255, 216, 0, 200)); //yellow color
+        else if (total == 0)
+            totalBulletsIndicator.setFillColor(sf::Color(102, 0, 0, 200)); //red color
+    } else
+        totalBulletsIndicator.setFillColor(sf::Color(210, 210, 210, 200)); //standard color (grey)
+
+    std::string remainingBullets = std::to_string(remaining);
+    this->remainingBulletsDisplayed = remainingBullets;
+    if (isInfinite)
+        this->totalBulletsDisplayed = "inf";
+    else {
+        std::string totalBullets = std::to_string(total);
+        this->totalBulletsDisplayed = totalBullets;
+    }
 }
 
