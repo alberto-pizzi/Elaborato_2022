@@ -13,7 +13,7 @@ private:
     const sf::Vector2i fileTextureRectShotgunReloadSize = {128, 32};
 public:
     Shotgun(bool equipped, const sf::Texture &handgunTexture, int totBullets = 32, int damage = 15,
-            float shotDelay = 0.7f, float reloadTime = 5, int magazineCapacity = 8,
+            float shotDelay = 0.7f, float reloadTime = 1, int magazineCapacity = 8,
             int remainingBullets = 8);
 
     void shoot() override;

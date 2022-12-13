@@ -46,8 +46,8 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int
         shot.emplace_back(i * this->fileTextureRectAssaultShotSize.x, 0, this->fileTextureRectAssaultShotSize.x,
                           this->fileTextureRectAssaultShotSize.y);
 
-    reload.reserve(16);
-    for (int i = 0; i < 16; i++)
+    reload.reserve(17);
+    for (int i = 0; i < 17; i++)
         reload.emplace_back(i * this->fileTextureRectAssaultReloadSize.x, 1 * this->fileTextureRectAssaultReloadSize.y,
                             this->fileTextureRectAssaultReloadSize.x,
                             this->fileTextureRectAssaultReloadSize.y);

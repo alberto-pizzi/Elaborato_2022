@@ -6,7 +6,7 @@
 
 bool Weapon::reloadWeapon() {
     int bulletsForFillMagazine;
-    float frameDuration = 1.0f;
+    float frameDuration = this->reloadTime;
 
     if (((infiniteBullets) || (totalBullets > 0)) && (magazine.remainingBullets != magazine.totalCapacity)) {
         currentAnimation.setNotCyclicalAnimation(reload, frameDuration);

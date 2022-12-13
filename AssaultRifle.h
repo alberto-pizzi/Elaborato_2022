@@ -13,7 +13,7 @@ private:
     const sf::Vector2i fileTextureRectAssaultReloadSize = {96, 64};
 public:
     AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int totBullets = 150, int damage = 5,
-                 float shotDelay = 0.2f, float reloadTime = 5, int magazineCapacity = 30,
+                 float shotDelay = 0.2f, float reloadTime = 1, int magazineCapacity = 30,
                  int remainingBullets = 30);
 
     void shoot() override;
