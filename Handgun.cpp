@@ -24,6 +24,10 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
                                                                                         fileTextureRectHandgunSize,
                                                                                         "Handgun",
                                                                                         true) {
+    this->startCenterForTranslation[LEFT] = {-16, 21};
+    this->startCenterForTranslation[RIGHT] = {16, 21};
+    this->startCenterForTranslation[UP] = {32, 21};
+    this->startCenterForTranslation[DOWN] = {24, 21};
     //FIXME check texture file and magic numbers
     idleWeapon.reserve(1);
     idleWeapon = {

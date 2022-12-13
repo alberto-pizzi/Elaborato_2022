@@ -15,6 +15,9 @@ enum Directions {
     UP = 2,
     DOWN = 3,
 };
+enum typeOfWeapon {
+    HANDGUN = 0, ASSAULT_RIFLE, SHOTGUN,
+};
 
 class Mike : public GameCharacter {
 private:
@@ -27,6 +30,8 @@ public:
                   float speed = 250.f, unsigned int points = 0, unsigned int coins = 0, int armor = 0,
                   bool bubble = false,
                   int streak = 0);
+
+    int whichWeapon;
 
     virtual ~Mike();
 

@@ -18,6 +18,7 @@ bool Weapon::reloadWeapon() {
                 magazine.remainingBullets += bulletsForFillMagazine;
             else
                 magazine.remainingBullets += totalBullets;
+            totalBullets -= bulletsForFillMagazine;
         }
         return true;
     } else

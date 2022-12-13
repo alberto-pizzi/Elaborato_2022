@@ -29,8 +29,9 @@ void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //updateNotCyclicalAnimation Gui
-    mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
-                              mike->weapon->isInfiniteBullets());
+    if (isEnded)
+        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
+                                  mike->weapon->isInfiniteBullets());
     mike->gui.updatePoints(mike->getPoints());
     mike->gui.updateHealthBar(mike->getHp());
 }
@@ -177,4 +178,9 @@ void PlayState::loadTextures() {
 
     //load weapons (general, also spawning weapon)
     textureManager.loadTexture("handgun", "res/textures/handgun_hand.png"); //FIXME
+
+    textureManager.loadTexture("assaultRifle", "res/textures/assault_rifle.png"); //FIXME
+
+    textureManager.loadTexture("shotgun", "res/textures/shotgun.png"); //FIXME
+
 }

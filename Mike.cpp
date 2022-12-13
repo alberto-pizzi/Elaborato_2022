@@ -65,6 +65,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     };
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
+    this->whichWeapon = HANDGUN;
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {
@@ -125,19 +126,35 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
             isUp = true;
         }
     }
+    switch (whichWeapon) {
+        case HANDGUN:
+            weapon->weaponSprite.setOrigin(sf::Vector2f(0, 0));
+            break;
+        case ASSAULT_RIFLE:
+            weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
+            break;
+        case SHOTGUN:
+            weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
+            break;
+    }
+
     weapon->weaponSprite.setRotation(degrees);
 }
 
 void Mike::setWeaponPosToShouldersPos() { //FIXME magic numbers
     if (currentAnimation.frames == goRight)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 16, this->sprite.getPosition().y + 21);
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[RIGHT].x,
+                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[RIGHT].y);
     else if (currentAnimation.frames == goLeft)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + this->sprite.getGlobalBounds().width - 16,
-                                         this->sprite.getPosition().y + 21);
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + this->sprite.getGlobalBounds().width +
+                                         weapon->startCenterForTranslation[LEFT].x,
+                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[LEFT].y);
     else if (currentAnimation.frames == goUp)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 32, this->sprite.getPosition().y + 21);
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[UP].x,
+                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[UP].y);
     else if (currentAnimation.frames == goDown)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + 24, this->sprite.getPosition().y + 21);
+        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[DOWN].x,
+                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
 }
 
 Mike::~Mike() = default;

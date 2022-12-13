@@ -15,6 +15,7 @@
 #include "Animation.h"
 #include "TextureManager.h"
 
+
 class Weapon {
 private:
 
@@ -25,8 +26,12 @@ private:
 
         Magazine(int magazineCapacity, int remainingBullets);
     };
+
     sf::Vector2i fileTextureRectWeaponSize;
 protected:
+    enum Directions {
+        LEFT = 0, RIGHT, UP, DOWN,
+    };
     int totalBullets;
     bool infiniteBullets = false;
     int damage;
@@ -41,6 +46,7 @@ protected:
     std::vector<sf::IntRect> reload;
 public:
     sf::Sprite weaponSprite;
+    sf::Vector2f startCenterForTranslation[4]; //4 directions
     Animation currentAnimation{idleWeapon, 10.0f};
 
     Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,

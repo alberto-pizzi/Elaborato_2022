@@ -16,6 +16,8 @@
 #include "TextureManager.h"
 #include "Weapon.h"
 #include "Handgun.h"
+#include "AssaultRifle.h"
+#include "Shotgun.h"
 
 class GameCharacter : public PosEntity {
 protected:
