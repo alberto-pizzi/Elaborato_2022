@@ -64,9 +64,8 @@ void PlayState::handleInput() {
                 break;
             }
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button ==
-                    sf::Mouse::Left) { //FIXME review this when assault rifle implementation is done (for shooting animation and reload)
-                    if ((!isActiveAnimation) && (mike->weapon->thereAreRemainingBullets()) &&
+                if ((mike->whichWeapon != ASSAULT_RIFLE) && (event.mouseButton.button == sf::Mouse::Left)) {
+                    if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
                         (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot();
                         mike->nextAttackTimeCount = 0;
@@ -79,6 +78,8 @@ void PlayState::handleInput() {
                     std::cout << "RELOAD!" << std::endl;
                     if (mike->weapon->reloadWeapon()) { //FIXME add correct texture animation
                         isActiveAnimation = true;
+                        orderedReloading = true;
+                        isReloading = true;
                         std::cout << "RELOAD DONE!" << std::endl;
                     }
                 }
@@ -98,6 +99,17 @@ void PlayState::handleInput() {
         keyStates[LEFT] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         keyStates[RIGHT] = true;
+
+    //repeated input (automatic fire, assault rifle)
+    if ((mike->whichWeapon == ASSAULT_RIFLE) && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
+        if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
+            (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
+            mike->weapon->shoot();
+            mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
+                                      mike->weapon->isInfiniteBullets());
+            mike->nextAttackTimeCount = 0;
+            isActiveAnimation = true;
+        }
 
 
     sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
@@ -132,6 +144,11 @@ void PlayState::handleInput() {
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(), isEnded, isActiveAnimation);
+
+    if (orderedReloading && isEnded) {
+        isReloading = false;
+        orderedReloading = false;
+    }
 
     mike->setWeaponPosToShouldersPos();
 

@@ -38,6 +38,8 @@ private:
     //animation settings
     bool isEnded = false;
     bool isActiveAnimation = false;
+    bool isReloading = false;
+    bool orderedReloading = false;
 
     sf::Sprite viewfinderSprite;
     TextureManager textureManager;
