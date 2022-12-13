@@ -71,6 +71,8 @@ public:
 
     const Magazine &getMagazine() const;
 
+    const std::string &getWeaponName() const;
+
 };
 
 

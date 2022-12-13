@@ -31,8 +31,6 @@ public:
                   bool bubble = false,
                   int streak = 0);
 
-    int whichWeapon;
-
     virtual ~Mike();
 
     Gui gui;

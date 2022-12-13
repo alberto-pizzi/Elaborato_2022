@@ -65,7 +65,6 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     };
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
-    this->whichWeapon = HANDGUN;
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {
@@ -126,17 +125,13 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
             isUp = true;
         }
     }
-    switch (whichWeapon) {
-        case HANDGUN:
-            weapon->weaponSprite.setOrigin(sf::Vector2f(0, 0));
-            break;
-        case ASSAULT_RIFLE:
-            weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
-            break;
-        case SHOTGUN:
-            weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
-            break;
-    }
+
+    if (weapon->getWeaponName() == "Handgun")
+        weapon->weaponSprite.setOrigin(sf::Vector2f(0, 0));
+    else if (weapon->getWeaponName() == "AssaultRifle")
+        weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
+    else if (weapon->getWeaponName() == "Shotgun")
+        weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
 
     weapon->weaponSprite.setRotation(degrees);
 }

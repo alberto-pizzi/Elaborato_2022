@@ -69,6 +69,10 @@ const Weapon::Magazine &Weapon::getMagazine() const {
     return magazine;
 }
 
+const std::string &Weapon::getWeaponName() const {
+    return weaponName;
+}
+
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {
 }

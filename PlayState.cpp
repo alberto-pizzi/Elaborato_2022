@@ -64,7 +64,8 @@ void PlayState::handleInput() {
                 break;
             }
             case sf::Event::MouseButtonPressed:
-                if ((mike->whichWeapon != ASSAULT_RIFLE) && (event.mouseButton.button == sf::Mouse::Left)) {
+                if ((mike->weapon->getWeaponName() != "AssaultRifle") &&
+                    (event.mouseButton.button == sf::Mouse::Left)) {
                     if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
                         (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot();
@@ -101,7 +102,7 @@ void PlayState::handleInput() {
         keyStates[RIGHT] = true;
 
     //repeated input (automatic fire, assault rifle)
-    if ((mike->whichWeapon == ASSAULT_RIFLE) && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
+    if ((mike->weapon->getWeaponName() == "AssaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
         if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
             (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
             mike->weapon->shoot();
