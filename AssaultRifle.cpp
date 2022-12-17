@@ -33,24 +33,28 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int
     this->startCenterForTranslation[RIGHT] = {16, 21};
     this->startCenterForTranslation[UP] = {32, 21};
     this->startCenterForTranslation[DOWN] = {24, 21};
-    //FIXME check texture file and magic numbers
-    idleWeapon.reserve(1);
+
+    enum nFramesAssaultRifle {
+        IDLE = 1, SHOT = 16, RELOAD = 17,
+    };
+
+    idleWeapon.reserve(IDLE);
     idleWeapon = {
             {0, 0, this->fileTextureRectAssaultShotSize.x, this->fileTextureRectAssaultShotSize.y},
     };
 
     weaponSprite.setTextureRect({0, 0, this->fileTextureRectAssaultShotSize.x, this->fileTextureRectAssaultShotSize.y});
 
-    shot.reserve(16);
-    for (int i = 0; i < 16; i++)
+    shot.reserve(SHOT);
+    for (int i = 0; i < SHOT; i++)
         shot.emplace_back(i * this->fileTextureRectAssaultShotSize.x, 0, this->fileTextureRectAssaultShotSize.x,
                           this->fileTextureRectAssaultShotSize.y);
 
-    reload.reserve(17);
-    for (int i = 0; i < 17; i++)
+    reload.reserve(RELOAD);
+    for (int i = 0; i < RELOAD; i++)
         reload.emplace_back(i * this->fileTextureRectAssaultReloadSize.x, 1 * this->fileTextureRectAssaultReloadSize.y,
                             this->fileTextureRectAssaultReloadSize.x,
                             this->fileTextureRectAssaultReloadSize.y);
 
-    this->hitBox.setSize(sf::Vector2f(66, 30)); //TODO check correctness
+    this->hitBox.setSize(sf::Vector2f(66, 30));
 }

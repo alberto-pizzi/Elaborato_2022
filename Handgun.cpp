@@ -28,25 +28,29 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
     this->startCenterForTranslation[RIGHT] = {16, 21};
     this->startCenterForTranslation[UP] = {32, 21};
     this->startCenterForTranslation[DOWN] = {24, 21};
-    //FIXME check texture file and magic numbers
-    idleWeapon.reserve(1);
+
+    enum nFramesHandgun {
+        IDLE = 1, SHOT = 12, RELOAD = 17,
+    };
+
+    idleWeapon.reserve(IDLE);
     idleWeapon = {
             {0, 0, this->fileTextureRectHandgunSize.x, this->fileTextureRectHandgunSize.y},
     };
 
     weaponSprite.setTextureRect({0, 0, this->fileTextureRectHandgunSize.x, this->fileTextureRectHandgunSize.y});
 
-    shot.reserve(12);
-    for (int i = 0; i < 12; i++)
+    shot.reserve(SHOT);
+    for (int i = 0; i < SHOT; i++)
         shot.emplace_back(i * this->fileTextureRectHandgunSize.x, 0, this->fileTextureRectHandgunSize.x,
                           this->fileTextureRectHandgunSize.y);
 
-    reload.reserve(20);
-    for (int i = 0; i < 20; i++)
+    reload.reserve(RELOAD);
+    for (int i = 0; i < RELOAD; i++)
         reload.emplace_back(i * this->fileTextureRectHandgunSize.x, 1 * this->fileTextureRectHandgunSize.y,
                             this->fileTextureRectHandgunSize.x,
                             this->fileTextureRectHandgunSize.y);
 
 
-    this->hitBox.setSize(sf::Vector2f(32, 20)); //TODO check correctness
+    this->hitBox.setSize(sf::Vector2f(40, 20)); //TODO check correctness
 }

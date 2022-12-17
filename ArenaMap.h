@@ -38,6 +38,9 @@ private:
         UP = 2,
         DOWN = 3,
     };
+    enum Layers {
+        background = 0, principal_floor, design_elements, layer_3d, solid_elements, last_layer,
+    };
 
     class Tile {
     public:

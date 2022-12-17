@@ -32,21 +32,25 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
     this->startCenterForTranslation[RIGHT] = {16, 27};
     this->startCenterForTranslation[UP] = {32, 27};
     this->startCenterForTranslation[DOWN] = {24, 27};
-    //FIXME check texture file and magic numbers
-    idleWeapon.reserve(1);
+
+    enum nFramesHandgun {
+        IDLE = 1, SHOT = 14, RELOAD = 14,
+    };
+
+    idleWeapon.reserve(IDLE);
     idleWeapon = {
             {0, 0, this->fileTextureRectShotgunShotSize.x, this->fileTextureRectShotgunShotSize.y},
     };
 
     weaponSprite.setTextureRect({0, 0, this->fileTextureRectShotgunShotSize.x, this->fileTextureRectShotgunShotSize.y});
 
-    shot.reserve(14);
-    for (int i = 0; i < 14; i++)
+    shot.reserve(SHOT);
+    for (int i = 0; i < SHOT; i++)
         shot.emplace_back(i * this->fileTextureRectShotgunShotSize.x, 0, this->fileTextureRectShotgunShotSize.x,
                           this->fileTextureRectShotgunShotSize.y);
 
-    reload.reserve(14);
-    for (int i = 0; i < 14; i++)
+    reload.reserve(RELOAD);
+    for (int i = 0; i < RELOAD; i++)
         reload.emplace_back(i * this->fileTextureRectShotgunReloadSize.x, 2 * this->fileTextureRectShotgunReloadSize.y,
                             this->fileTextureRectShotgunReloadSize.x,
                             this->fileTextureRectShotgunReloadSize.y);

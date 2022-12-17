@@ -5,16 +5,30 @@
 #include "ArenaMap.h"
 
 bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const {
-    //FIXME enum (magic numbers)
     switch (chosenMap) {
         case desert:
-            if ((layerNumber == 5) && (tile != 0)) //solid elements layer
+            enum desertKeyTiles {
+                beginMapLittleLimits = 41,
+                endMapLittleLimits = 48,
+                beginRockSideLimits = 201,
+                endRockSideLimits = 215,
+                beginRockSideLimits2 = 241,
+                endRockSideLimits2 = 255,
+                beginRockSideLimits3 = 281,
+                endRockSideLimits3 = 295,
+                beginRockDiagonalLimits = 85,
+                endRockDiagonalLimits = 88,
+            };
+
+            if ((layerNumber == solid_elements) && (tile != 0)) //solid elements layer
                 return false;
-            else if ((layerNumber == 2) && (tile == 0)) //map limits
+            else if ((layerNumber == principal_floor) && (tile == 0)) //map limits
                 return false;
-            else if (((tile >= 41) && (tile <= 48)) || ((tile >= 201) && (tile <= 215)) ||
-                     ((tile >= 241) && (tile <= 255)) || ((tile >= 281) && (tile <= 295)) ||
-                     ((tile >= 85) && (tile <= 88)))
+            else if (((tile >= beginMapLittleLimits) && (tile <= endMapLittleLimits)) ||
+                     ((tile >= beginRockSideLimits) && (tile <= endRockSideLimits)) ||
+                     ((tile >= beginRockSideLimits2) && (tile <= endRockSideLimits2)) ||
+                     ((tile >= beginRockSideLimits3) && (tile <= endRockSideLimits3)) ||
+                     ((tile >= beginRockDiagonalLimits) && (tile <= endRockDiagonalLimits)))
                 return false;
             else
                 return true;
@@ -25,10 +39,10 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const 
 }
 
 ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Texture &texture, int layer,
-                     int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer + 1), cellRow(posX),
+                     int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer), cellRow(posX),
                                                                     cellColumn(posY) {
     int tileTexturePosX, tileTexturePosY;
-    this->passable = isWalkable(tile, layer + 1, chosenMap);
+    this->passable = isWalkable(tile, layer, chosenMap);
     this->tileSprite.setTexture(texture);
     posTile = {static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)};
     tileTexturePosX = (tile % (widthTex / tileSizeX)) - 1;
@@ -102,7 +116,7 @@ void ArenaMap::loadMapFile(int chosenMap) {
                             new Tile(nTile, this->widthFile, row,
                                      column, this->textureManager.getTextureRef(this->nameMap),
                                      countLayer, this->tileSizeX, this->tileSizeY, chosenMap));
-                    if ((countLayer == 4) && (nTile != 0) && isRealWall(chosenMap, nTile))
+                    if ((countLayer == solid_elements) && (nTile != 0) && isRealWall(chosenMap, nTile))
                         solidTiles.emplace_back(columns[column]);
 
                 }
@@ -114,7 +128,7 @@ void ArenaMap::loadMapFile(int chosenMap) {
 }
 
 void ArenaMap::drawFloorAndDesignElements(sf::RenderWindow &window) {
-    for (int l = 0; l <= 2; l++) {
+    for (int l = 0; l <= design_elements; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
                 window.draw(this->tileMap[l][i][j]->tileSprite);
@@ -220,49 +234,49 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
     sf::FloatRect tolerance;
 
     //left tile collision
-    if ((offset.x > 0) && (((!tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
+    if ((offset.x > 0) && (((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
                             (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[4][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
+                                    tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
                                     tolerance))) ||
-                           ((!tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
+                           ((!tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
                             (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[1][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
+                                    tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
                                     tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.x = 0;
     }
 
         //right tile collision
-    else if ((offset.x < 0) && (((!tileMap[4][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
+    else if ((offset.x < 0) && (((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
                                  (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[4][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
+                                         tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
                                          tolerance))) ||
-                                ((!tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
+                                ((!tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
                                  (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[1][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
+                                         tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
                                          tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.x = 0;
     }
 
     //top tile collision
-    if ((offset.y > 0) && (((!tileMap[4][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
+    if ((offset.y > 0) && (((!tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
                             (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[4][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                    tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                     tolerance))) ||
-                           ((!tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
+                           ((!tileMap[principal_floor][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
                             (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[1][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                    tileMap[principal_floor][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                     tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.y = 0;
     }
 
         //bottom tile collision
-    else if ((offset.y < 0) && (((!tileMap[4][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
+    else if ((offset.y < 0) && (((!tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
                                  (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[4][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                         tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                          tolerance))) ||
-                                ((!tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
+                                ((!tileMap[principal_floor][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
                                  (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[1][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
+                                         tileMap[principal_floor][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                          tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.y = 0;
     }
@@ -291,10 +305,12 @@ sf::Vector2i ArenaMap::randomPassableTile() {
     do {
         tileSpawnX = (rand() % (this->maxColumnTiles - 1)) + 1;
         tileSpawnY = (rand() % (this->maxRowTiles - 1)) + 1;
-    } while ((!tileMap[1][tileSpawnY][tileSpawnX]->passable) || (!tileMap[1][tileSpawnY][tileSpawnX + 1]->passable) ||
-             (!tileMap[1][tileSpawnY + 1][tileSpawnX]->passable) ||
-             (!tileMap[1][tileSpawnY][tileSpawnX - 1]->passable) ||
-             (!tileMap[1][tileSpawnY - 1][tileSpawnX]->passable)); //spawn mike only when near tiles are passable
+    } while ((!tileMap[principal_floor][tileSpawnY][tileSpawnX]->passable) ||
+             (!tileMap[1][tileSpawnY][tileSpawnX + 1]->passable) ||
+             (!tileMap[principal_floor][tileSpawnY + 1][tileSpawnX]->passable) ||
+             (!tileMap[principal_floor][tileSpawnY][tileSpawnX - 1]->passable) ||
+             (!tileMap[principal_floor][tileSpawnY -
+                                        1][tileSpawnX]->passable)); //spawn mike only when near tiles are passable
 
     return {tileSpawnX, tileSpawnY};
 }
