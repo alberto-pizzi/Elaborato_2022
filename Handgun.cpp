@@ -47,4 +47,6 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
                             this->fileTextureRectHandgunSize.x,
                             this->fileTextureRectHandgunSize.y);
 
+
+    this->hitBox.setSize(sf::Vector2f(32, 20)); //TODO check correctness
 }

@@ -52,4 +52,5 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int
                             this->fileTextureRectAssaultReloadSize.x,
                             this->fileTextureRectAssaultReloadSize.y);
 
+    this->hitBox.setSize(sf::Vector2f(66, 30)); //TODO check correctness
 }

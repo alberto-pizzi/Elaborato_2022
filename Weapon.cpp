@@ -42,8 +42,15 @@ Weapon::~Weapon() {
 }
 
 void Weapon::drawWeapon(sf::RenderWindow &window) {
-    weaponSprite.setTextureRect(currentAnimation.getCurrentRect());
+    sf::IntRect tmp = currentAnimation.getCurrentRect();
+    if (this->isCut)
+        tmp.width = 32;
+    else
+        tmp.width = 160;
+    //weaponSprite.setTextureRect(currentAnimation.getCurrentRect());
+    weaponSprite.setTextureRect(tmp);
     window.draw(weaponSprite);
+    //window.draw(hitBox);
 }
 
 bool Weapon::thereAreRemainingBullets() const {

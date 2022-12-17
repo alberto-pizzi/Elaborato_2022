@@ -143,6 +143,9 @@ void PlayState::handleInput() {
         mike->currentAnimation.update(frame_time.asSeconds());
     }
 
+
+
+
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(), isEnded, isActiveAnimation);
 
@@ -152,6 +155,11 @@ void PlayState::handleInput() {
     }
 
     mike->setWeaponPosToShouldersPos();
+
+    if (arenaMap->isWeaponCuttable(*mike))
+        mike->weapon->isCut = true;
+    else
+        mike->weapon->isCut = false;
 
 }
 

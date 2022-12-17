@@ -29,8 +29,9 @@ enum mapNumber {
 
 class ArenaMap {
 private:
-
-
+    enum nTileFromFile {
+        initialRealWall = 20, endRealWall = 38, nTotRows = 8, nTotColumns = 40,
+    };
     enum Collisions {
         LEFT = 0,
         RIGHT = 1,
@@ -55,6 +56,10 @@ private:
     };
 
 protected:
+    struct Walls {
+        sf::Vector2f begin;
+        sf::Vector2f end;
+    };
     int maxColumnTiles;
     int maxRowTiles;
     int tileSizeX;
@@ -65,6 +70,8 @@ protected:
     std::string nameFile;
     std::string nameMap;
     std::vector<std::vector<std::vector<Tile *>>> tileMap;
+    std::vector<Tile *> solidTiles;
+    std::vector<Walls> walls;
     //WARNING: updateNotCyclicalAnimation this string array and enum for adding other Map
     std::string mapList[1] = {
             "res/maps/desertMap.txt",
@@ -101,6 +108,13 @@ public:
     sf::Vector2f
     legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
                     const sf::Vector2f &oldCenter);
+
+    bool isWeaponCuttable(const GameCharacter &character);
+
+    bool isRealWall(int chosenMap, int nTile);
+
+    void findWallsCoordinates(); //TODO check if it is useful
+
 };
 
 

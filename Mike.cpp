@@ -65,6 +65,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     };
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
+
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {
@@ -134,9 +135,14 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
         weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
 
     weapon->weaponSprite.setRotation(degrees);
+
+    //hit box
+
+    weapon->hitBox.setScale(weapon->weaponSprite.getScale());
+    weapon->hitBox.setRotation(degrees);
 }
 
-void Mike::setWeaponPosToShouldersPos() { //FIXME magic numbers
+void Mike::setWeaponPosToShouldersPos() {
     if (currentAnimation.frames == goRight)
         weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[RIGHT].x,
                                          this->sprite.getPosition().y + weapon->startCenterForTranslation[RIGHT].y);
@@ -150,6 +156,8 @@ void Mike::setWeaponPosToShouldersPos() { //FIXME magic numbers
     else if (currentAnimation.frames == goDown)
         weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[DOWN].x,
                                          this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
+
+    weapon->hitBox.setPosition(weapon->weaponSprite.getPosition());
 }
 
 Mike::~Mike() = default;

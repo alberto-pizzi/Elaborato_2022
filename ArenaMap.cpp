@@ -5,7 +5,7 @@
 #include "ArenaMap.h"
 
 bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const {
-    //FIXME enum
+    //FIXME enum (magic numbers)
     switch (chosenMap) {
         case desert:
             if ((layerNumber == 5) && (tile != 0)) //solid elements layer
@@ -102,6 +102,8 @@ void ArenaMap::loadMapFile(int chosenMap) {
                             new Tile(nTile, this->widthFile, row,
                                      column, this->textureManager.getTextureRef(this->nameMap),
                                      countLayer, this->tileSizeX, this->tileSizeY, chosenMap));
+                    if ((countLayer == 4) && (nTile != 0) && isRealWall(chosenMap, nTile))
+                        solidTiles.emplace_back(columns[column]);
 
                 }
                 rows.emplace_back(columns);
@@ -182,6 +184,8 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
                                                {mike->getSprite().getGlobalBounds().width,
                                                 mike->getSprite().getGlobalBounds().height}, firstViewCenter));
     window.setView(this->playerView);
+
+    findWallsCoordinates();
 }
 
 void ArenaMap::loadTextures() {
@@ -318,6 +322,57 @@ ArenaMap::legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSiz
              (pos.y + distanceFromWindowCenter.y < static_cast<float>(maxRowTiles * tileSizeY)))
         newCenter = {oldCenter.x, pos.y};
     return newCenter;
+}
+
+bool ArenaMap::isWeaponCuttable(const GameCharacter &character) {
+
+    bool isInside = false;
+    for (int i = 0; i < solidTiles.size(); i++) {
+        if (((character.getSprite().getGlobalBounds().top + character.getSprite().getGlobalBounds().height) <=
+             solidTiles[i]->posTile.y + static_cast<float>(tileSizeY)))
+            if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds()))
+                return true;
+    }
+    return false;
+}
+
+bool ArenaMap::isRealWall(int chosenMap, int nTile) {
+    //these magic numbers are related to the tiles of texture map file
+    switch (chosenMap) {
+        case desert:
+            for (int i = 0; i <= nTotRows; i++) {
+                if ((nTile >= initialRealWall + (nTotColumns * i)) && (nTile <= endRealWall + (nTotColumns * i)))
+                    return true;
+            }
+            return false;
+            break;
+    }
+    return false;
+}
+
+void ArenaMap::findWallsCoordinates() {
+
+    sf::Vector2f begin = solidTiles[0]->tileSprite.getPosition();
+    sf::Vector2f end = {solidTiles[0]->tileSprite.getPosition().x + solidTiles[0]->tileSprite.getGlobalBounds().width,
+                        solidTiles[0]->tileSprite.getPosition().y + solidTiles[0]->tileSprite.getGlobalBounds().height};
+    sf::Vector2i tmpTile = {solidTiles[0]->cellColumn, solidTiles[0]->cellRow};
+
+    for (int i = 1; i < solidTiles.size(); i++) {
+        if ((solidTiles[i]->cellColumn == tmpTile.x + 1) && (solidTiles[i]->cellRow == tmpTile.y)) {
+            end = {solidTiles[i]->tileSprite.getPosition().x + solidTiles[i]->tileSprite.getGlobalBounds().width,
+                   solidTiles[i]->tileSprite.getPosition().y + solidTiles[i]->tileSprite.getGlobalBounds().height};
+            tmpTile.x = solidTiles[i]->cellColumn;
+        } else {
+            walls.push_back({begin, end});
+            begin = solidTiles[i]->tileSprite.getPosition();
+            tmpTile = {solidTiles[i]->cellColumn, solidTiles[i]->cellRow};
+        }
+        if (i == solidTiles.size() - 1) {
+            end = {solidTiles[i]->tileSprite.getPosition().x + solidTiles[i]->tileSprite.getGlobalBounds().width,
+                   solidTiles[i]->tileSprite.getPosition().y + solidTiles[i]->tileSprite.getGlobalBounds().height};
+            walls.push_back({begin, end});
+        }
+    }
 }
 
 

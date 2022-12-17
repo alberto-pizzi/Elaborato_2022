@@ -50,4 +50,7 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
         reload.emplace_back(i * this->fileTextureRectShotgunReloadSize.x, 2 * this->fileTextureRectShotgunReloadSize.y,
                             this->fileTextureRectShotgunReloadSize.x,
                             this->fileTextureRectShotgunReloadSize.y);
+
+    this->hitBox.setSize(sf::Vector2f(70, 15));
+
 }

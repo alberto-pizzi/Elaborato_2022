@@ -45,7 +45,9 @@ protected:
     std::vector<sf::IntRect> shot;
     std::vector<sf::IntRect> reload;
 public:
+    bool isCut = false;
     sf::Sprite weaponSprite;
+    sf::RectangleShape hitBox;
     sf::Vector2f startCenterForTranslation[4]; //4 directions
     Animation currentAnimation{idleWeapon, 10.0f};
 
