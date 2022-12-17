@@ -135,9 +135,9 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
         weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
 
     weapon->weaponSprite.setRotation(degrees);
+    weapon->setDegrees(degrees);
 
     //hit box
-
     weapon->hitBox.setScale(weapon->weaponSprite.getScale());
     weapon->hitBox.setRotation(degrees);
 }

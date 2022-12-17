@@ -22,8 +22,6 @@ enum typeOfWeapon {
 class Mike : public GameCharacter {
 private:
     int killStreak;
-
-
 public:
     explicit Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Vector2i &spawnTile,
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated = true, int hp = 20,

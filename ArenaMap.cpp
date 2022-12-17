@@ -324,16 +324,24 @@ ArenaMap::legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSiz
     return newCenter;
 }
 
-bool ArenaMap::isWeaponCuttable(const GameCharacter &character) {
-
-    bool isInside = false;
+int ArenaMap::weaponCutXSize(const GameCharacter &character) {
+    sf::FloatRect delta;
     for (int i = 0; i < solidTiles.size(); i++) {
+        //if (((character.weapon->getDegrees() >= 35) && (character.weapon->weaponSprite.getScale().x == 1)) || (character.weapon->getDegrees() <= -35) && (character.weapon->weaponSprite.getScale().x == -1))
         if (((character.getSprite().getGlobalBounds().top + character.getSprite().getGlobalBounds().height) <=
              solidTiles[i]->posTile.y + static_cast<float>(tileSizeY)))
-            if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds()))
-                return true;
+            if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds(),
+                                                                      delta)) {
+                //std::cout<<"Left: "<<delta.left<<" Top: "<<delta.top<<" Width: "<<delta.width<<" Height: "<<delta.height<<std::endl;
+                if (delta.top + delta.height - 2 == solidTiles[i]->tileSprite.getGlobalBounds().top +
+                                                    solidTiles[i]->tileSprite.getGlobalBounds().height - 2)
+                    return character.weapon->hitBox.getSize().x + std::abs(
+                            character.weapon->hitBox.getGlobalBounds().left -
+                            character.weapon->weaponSprite.getGlobalBounds().left) -
+                           std::max(delta.width, delta.height) - 2;
+            }
     }
-    return false;
+    return 0;
 }
 
 bool ArenaMap::isRealWall(int chosenMap, int nTile) {

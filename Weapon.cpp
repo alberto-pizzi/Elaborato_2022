@@ -44,9 +44,9 @@ Weapon::~Weapon() {
 void Weapon::drawWeapon(sf::RenderWindow &window) {
     sf::IntRect tmp = currentAnimation.getCurrentRect();
     if (this->isCut)
-        tmp.width = 32;
+        tmp.width = this->cutValueX;
     else
-        tmp.width = 160;
+        tmp.width = currentAnimation.getOriginalAnimationSizeX();
     //weaponSprite.setTextureRect(currentAnimation.getCurrentRect());
     weaponSprite.setTextureRect(tmp);
     window.draw(weaponSprite);
@@ -78,6 +78,14 @@ const Weapon::Magazine &Weapon::getMagazine() const {
 
 const std::string &Weapon::getWeaponName() const {
     return weaponName;
+}
+
+float Weapon::getDegrees() const {
+    return degrees;
+}
+
+void Weapon::setDegrees(float degrees) {
+    Weapon::degrees = degrees;
 }
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),

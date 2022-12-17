@@ -41,6 +41,7 @@ void Animation::setNotCyclicalAnimation(std::vector<sf::IntRect> &frames, float 
     this->frames = frames;
     this->frameTime = duration / static_cast<float>(frames.size());
     reset();
+    this->originalAnimationSizeX = frames[0].width;
 }
 
 void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isActiveAnimation) {
@@ -60,5 +61,9 @@ void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isActiveAn
         currentFrame = 0;
         setNotCyclicalAnimation(idleFrames, 10.f);
     }
+}
+
+int Animation::getOriginalAnimationSizeX() const {
+    return originalAnimationSizeX;
 }
 

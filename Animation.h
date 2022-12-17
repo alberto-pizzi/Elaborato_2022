@@ -31,11 +31,15 @@ public:
 
     std::vector<sf::IntRect> &frames;
     std::vector<sf::IntRect> &idleFrames;
+
+    int getOriginalAnimationSizeX() const;
+
 private:
 
     float frameTime;
     int currentFrame;
     float currentFrameTime;
+    int originalAnimationSizeX;
 };
 
 #endif //ELABORATO_ANIMATION_H

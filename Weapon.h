@@ -44,8 +44,10 @@ protected:
     std::vector<sf::IntRect> idleWeapon;
     std::vector<sf::IntRect> shot;
     std::vector<sf::IntRect> reload;
+    float degrees;
 public:
     bool isCut = false;
+    int cutValueX = 0;
     sf::Sprite weaponSprite;
     sf::RectangleShape hitBox;
     sf::Vector2f startCenterForTranslation[4]; //4 directions
@@ -74,6 +76,10 @@ public:
     const Magazine &getMagazine() const;
 
     const std::string &getWeaponName() const;
+
+    float getDegrees() const;
+
+    void setDegrees(float degrees);
 
 };
 

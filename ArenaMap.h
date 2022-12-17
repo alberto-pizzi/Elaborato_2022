@@ -109,7 +109,7 @@ public:
     legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
                     const sf::Vector2f &oldCenter);
 
-    bool isWeaponCuttable(const GameCharacter &character);
+    int weaponCutXSize(const GameCharacter &character);
 
     bool isRealWall(int chosenMap, int nTile);
 
