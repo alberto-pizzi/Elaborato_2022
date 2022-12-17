@@ -18,6 +18,40 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const 
                 endRockSideLimits3 = 295,
                 beginRockDiagonalLimits = 85,
                 endRockDiagonalLimits = 88,
+
+                multiplierFactorRow = 40,
+                //tree
+                beginTreeRoots1 = 954,
+                endTreeRoots1 = 956,
+                beginTreeRoots2 = 994,
+                endTreeRoots2 = 996,
+
+                //wheels
+                beginWheel1 = 668,
+                endWheel1 = 669,
+                beginWheel2 = 708,
+                endWheel2 = 709,
+
+                //cellar
+                beginCellar1 = 588,
+                endCellar1 = 589,
+                beginCellar2 = 628,
+                endCellar2 = 629,
+
+                //bonfire
+                beginBonfire1 = 665,
+                endBonfire1 = 666,
+                beginBonfire2 = 705,
+                endBonfire2 = 706,
+
+                //barrel
+                endBarrel = 667,
+
+                //char and shelf
+                beginShelf = 623,
+                endShelf = 624,
+                chair = 701,
+
             };
 
             if ((layerNumber == solid_elements) && (tile != 0)) //solid elements layer
@@ -29,6 +63,16 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const 
                      ((tile >= beginRockSideLimits2) && (tile <= endRockSideLimits2)) ||
                      ((tile >= beginRockSideLimits3) && (tile <= endRockSideLimits3)) ||
                      ((tile >= beginRockDiagonalLimits) && (tile <= endRockDiagonalLimits)))
+                return false;
+            else if (
+                    ((tile >= beginWheel1) && (tile <= endWheel1)) ||
+                    ((tile >= beginWheel2) && (tile <= beginWheel2)) ||
+                    ((tile >= beginCellar1) && (tile <= endCellar1)) ||
+                    ((tile >= beginCellar2) && (tile <= endCellar2)) ||
+                    ((tile >= beginBonfire1) && (tile <= endBonfire1)) ||
+                    ((tile >= beginBonfire2) && (tile <= endBonfire2)) ||
+                    ((tile >= beginShelf) && (tile <= endShelf)) ||
+                    ((tile == endBarrel) || (tile == chair)))
                 return false;
             else
                 return true;
@@ -234,7 +278,8 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
     sf::FloatRect tolerance;
 
     //left tile collision
-    if ((offset.x > 0) && (((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
+    if ((offset.x > 0) && ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) ||
+                             (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable)) &&
                             (character.getSprite().getGlobalBounds().intersects(
                                     tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
                                     tolerance))) ||
@@ -246,19 +291,22 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
     }
 
         //right tile collision
-    else if ((offset.x < 0) && (((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
-                                 (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
-                                         tolerance))) ||
-                                ((!tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
-                                 (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
-                                         tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
+    else if ((offset.x < 0) &&
+             ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) ||
+                (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable)) &&
+               (character.getSprite().getGlobalBounds().intersects(
+                       tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
+                       tolerance))) ||
+              ((!tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
+               (character.getSprite().getGlobalBounds().intersects(
+                       tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
+                       tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
         offset.x = 0;
     }
 
     //top tile collision
-    if ((offset.y > 0) && (((!tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
+    if ((offset.y > 0) && ((((!tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) ||
+                             (!tileMap[design_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable)) &&
                             (character.getSprite().getGlobalBounds().intersects(
                                     tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                     tolerance))) ||
@@ -270,7 +318,8 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
     }
 
         //bottom tile collision
-    else if ((offset.y < 0) && (((!tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
+    else if ((offset.y < 0) && ((((!tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable) ||
+                                  (!tileMap[design_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable)) &&
                                  (character.getSprite().getGlobalBounds().intersects(
                                          tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
                                          tolerance))) ||
@@ -288,7 +337,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
 }
 
 void ArenaMap::drawSolidsAnd3DLayers(sf::RenderWindow &window) {
-    for (int l = 3; l < this->totalLayers; l++) {
+    for (int l = layer_3d; l < this->totalLayers; l++) {
         for (int i = 0; i < this->maxRowTiles; i++) {
             for (int j = 0; j < this->maxColumnTiles; j++) {
                 window.draw(this->tileMap[l][i][j]->tileSprite);
