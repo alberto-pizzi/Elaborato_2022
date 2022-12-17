@@ -7,7 +7,7 @@
 bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const {
     switch (chosenMap) {
         case desert:
-            enum desertKeyTiles {
+            enum desertTileNumbers {
                 beginMapLittleLimits = 41,
                 endMapLittleLimits = 48,
                 beginRockSideLimits = 201,
@@ -171,16 +171,6 @@ void ArenaMap::loadMapFile(int chosenMap) {
         file.close();
 }
 
-void ArenaMap::drawFloorAndDesignElements(sf::RenderWindow &window) {
-    for (int l = 0; l <= design_elements; l++) {
-        for (int i = 0; i < this->maxRowTiles; i++) {
-            for (int j = 0; j < this->maxColumnTiles; j++) {
-                window.draw(this->tileMap[l][i][j]->tileSprite);
-            }
-        }
-    }
-}
-
 void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
     this->playerView.reset(
             sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
@@ -193,12 +183,12 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     sf::Vector2f firstViewCenter;
     bool legalFirstCenter = false;
 
-
     mike = std::unique_ptr<Mike>(
             new Mike(textureManager.getTextureRef("mike"), textureManager.getTextureRef("handgun"), spawnTile,
                      {tileSizeX, tileSizeY},
                      {32, 32},
                      true));
+
     firstViewCenter = mike->getPos();
     sf::Vector2f distanceFromWindowCenter = {
             (static_cast<float>(window.getSize().x) / 2) +
@@ -336,16 +326,6 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         return true;
 }
 
-void ArenaMap::drawSolidsAnd3DLayers(sf::RenderWindow &window) {
-    for (int l = layer_3d; l < this->totalLayers; l++) {
-        for (int i = 0; i < this->maxRowTiles; i++) {
-            for (int j = 0; j < this->maxColumnTiles; j++) {
-                window.draw(this->tileMap[l][i][j]->tileSprite);
-            }
-        }
-    }
-}
-
 sf::Vector2i ArenaMap::randomPassableTile() {
     srand(time(NULL));
     int tileSpawnX, tileSpawnY;
@@ -397,7 +377,6 @@ int ArenaMap::weaponCutXSize(const GameCharacter &character) {
              solidTiles[i]->posTile.y + static_cast<float>(tileSizeY)))
             if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds(),
                                                                       delta)) {
-                //std::cout<<"Left: "<<delta.left<<" Top: "<<delta.top<<" Width: "<<delta.width<<" Height: "<<delta.height<<std::endl;
                 if (delta.top + delta.height - 2 == solidTiles[i]->tileSprite.getGlobalBounds().top +
                                                     solidTiles[i]->tileSprite.getGlobalBounds().height - 2)
                     return character.weapon->hitBox.getSize().x + std::abs(
@@ -446,6 +425,31 @@ void ArenaMap::findWallsCoordinates() {
             walls.push_back({begin, end});
         }
     }
+}
+
+void ArenaMap::drawLayer(sf::RenderWindow &window, int layer) {
+    for (int i = 0; i < this->maxRowTiles; i++) {
+        for (int j = 0; j < this->maxColumnTiles; j++) {
+            window.draw(this->tileMap[layer][i][j]->tileSprite);
+        }
+    }
+}
+
+bool ArenaMap::isWeaponOverTheWall(const GameCharacter &character) {
+    sf::FloatRect delta;
+    for (int i = 0; i < solidTiles.size(); i++) {
+        //if (((character.weapon->getDegrees() >= 35) && (character.weapon->weaponSprite.getScale().x == 1)) || (character.weapon->getDegrees() <= -35) && (character.weapon->weaponSprite.getScale().x == -1))
+        if ((character.getSprite().getGlobalBounds().top >=
+             solidTiles[i]->posTile.y + static_cast<float>(tileSizeY) - 5))
+            if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds(),
+                                                                      delta)) {
+                //std::cout<<"Left: "<<delta.left<<" Top: "<<delta.top<<" Width: "<<delta.width<<" Height: "<<delta.height<<std::endl;
+                if (delta.top + delta.height - 2 == solidTiles[i]->tileSprite.getGlobalBounds().top +
+                                                    solidTiles[i]->tileSprite.getGlobalBounds().height - 2)
+                    return true;
+            }
+    }
+    return false;
 }
 
 

@@ -6,9 +6,21 @@
 
 void PlayState::draw(float dt) const {
     this->game->window.clear(sf::Color::Black);
-    //this->game->window.draw(this->game->background);
-    this->arenaMap->drawFloorAndDesignElements(this->game->window);
-    if (!isUp) {
+
+    this->arenaMap->drawLayer(this->game->window, background);
+    this->arenaMap->drawLayer(this->game->window, principal_floor);
+
+    bool isOver = this->arenaMap->isWeaponOverTheWall(*mike);
+    //TODO check layer 3d rendering when will be implement the enemies and bullets
+    if (isOver) {
+        this->arenaMap->drawLayer(this->game->window, solid_elements);
+        this->arenaMap->drawLayer(this->game->window, layer_3d);
+        this->arenaMap->drawLayer(this->game->window, last_layer);
+    }
+
+    this->arenaMap->drawLayer(this->game->window, design_elements);
+
+    if (!skinDirection[UP]) {
         this->mike->drawEntity(this->game->window);
         this->mike->weapon->drawWeapon(this->game->window);
     } else {
@@ -16,8 +28,11 @@ void PlayState::draw(float dt) const {
         this->mike->drawEntity(this->game->window);
     }
 
-    this->arenaMap->drawSolidsAnd3DLayers(
-            this->game->window); //WARNING: this calling draw 3d and design layers, so it must be THE LAST ONE to be rendered
+    if (!isOver) {
+        this->arenaMap->drawLayer(this->game->window, solid_elements);
+        this->arenaMap->drawLayer(this->game->window, layer_3d);
+        this->arenaMap->drawLayer(this->game->window, last_layer);
+    }
 
     this->game->window.draw(viewfinderSprite); //draw viewfinder
 
@@ -131,7 +146,7 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-    mike->directionInput(worldPos, isUp);
+    mike->directionInput(worldPos, skinDirection);
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());

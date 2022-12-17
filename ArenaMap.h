@@ -26,6 +26,9 @@
 enum mapNumber {
     desert = 0,
 };
+enum Layers {
+    background = 0, principal_floor, design_elements, layer_3d, solid_elements, last_layer,
+};
 
 class ArenaMap {
 private:
@@ -37,9 +40,6 @@ private:
         RIGHT = 1,
         UP = 2,
         DOWN = 3,
-    };
-    enum Layers {
-        background = 0, principal_floor, design_elements, layer_3d, solid_elements, last_layer,
     };
 
     class Tile {
@@ -99,9 +99,7 @@ public:
 
     void loadTextures();
 
-    void drawFloorAndDesignElements(sf::RenderWindow &window);
-
-    void drawSolidsAnd3DLayers(sf::RenderWindow &window);
+    void drawLayer(sf::RenderWindow &window, int layer);
 
     bool
     isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character);
@@ -113,6 +111,8 @@ public:
                     const sf::Vector2f &oldCenter);
 
     int weaponCutXSize(const GameCharacter &character);
+
+    bool isWeaponOverTheWall(const GameCharacter &character);
 
     bool isRealWall(int chosenMap, int nTile);
 

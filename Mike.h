@@ -39,7 +39,7 @@ public:
 
     void drawEntity(sf::RenderWindow &window) override;
 
-    void directionInput(const sf::Vector2f &viewfinderPos, bool &isUp);
+    void directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirection)[4]);
 
     void setWeaponPosToShouldersPos();
 };

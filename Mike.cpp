@@ -87,7 +87,7 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
     pos += effectiveOffset;
 }
 
-void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
+void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirection)[4]) {
     //set Cartesian plane as player position
     sf::Vector2f origin = this->pos;
     sf::Vector2f translation = viewfinderPos - origin;
@@ -104,25 +104,43 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool &isUp) {
         weapon->weaponSprite.setScale(sf::Vector2f(1, 1));
         if ((translation.y < translation.x) && (translation.y > -(translation.x))) {
             currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
-            isUp = false;
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = true;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = false;
         } else if (viewfinderPos.y >= origin.y) {
             currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
-            isUp = false;
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = true;
         } else if (viewfinderPos.y < origin.y) {
             currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
-            isUp = true;
+            skinDirection[UP] = true;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = false;
         }
     } else if (viewfinderPos.x < origin.x) {
         weapon->weaponSprite.setScale(sf::Vector2f(-1, 1));
         if ((translation.y > translation.x) && (translation.y < -(translation.x))) {
             currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
-            isUp = false;
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = true;
+            skinDirection[DOWN] = false;
         } else if (viewfinderPos.y >= origin.y) {
             currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
-            isUp = false;
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = true;
         } else {
             currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
-            isUp = true;
+            skinDirection[UP] = true;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = false;
         }
     }
 
