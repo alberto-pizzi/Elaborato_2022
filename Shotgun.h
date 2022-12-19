@@ -16,7 +16,7 @@ public:
             float shotDelay = 0.7f, float reloadTime = 1, int magazineCapacity = 8,
             int remainingBullets = 8);
 
-    void shoot() override;
+    void shoot(const sf::Vector2f &normalizedBulletDir) override;
 };
 
 

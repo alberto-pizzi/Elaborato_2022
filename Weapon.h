@@ -11,10 +11,12 @@
 #include <SFML/System.hpp>
 #include <cmath>
 #include <string>
+#include <memory>
+#include <vector>
 
 #include "Animation.h"
 #include "TextureManager.h"
-
+#include "Bullet.h"
 
 class Weapon {
 private:
@@ -45,6 +47,9 @@ protected:
     std::vector<sf::IntRect> shot;
     std::vector<sf::IntRect> reload;
     float degrees;
+
+    std::vector<std::unique_ptr<Bullet>> bullets;
+    sf::Texture bulletTexture;
 public:
     bool isCut = false;
     int cutValueX = 0;
@@ -59,9 +64,9 @@ public:
 
     virtual ~Weapon();
 
-    virtual void shoot() = 0;
+    virtual void shoot(const sf::Vector2f &normalizedBulletDir) = 0;
 
-    bool reloadWeapon();
+    virtual bool reloadWeapon();
 
     bool thereAreRemainingBullets() const;
 
@@ -80,6 +85,10 @@ public:
     float getDegrees() const;
 
     void setDegrees(float degrees);
+
+    const std::vector<std::unique_ptr<Bullet>> &getBullets() const;
+
+    void drawBullets(sf::RenderWindow &window, float dt) const;
 
 };
 

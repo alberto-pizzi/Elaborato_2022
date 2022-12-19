@@ -88,6 +88,18 @@ void Weapon::setDegrees(float degrees) {
     Weapon::degrees = degrees;
 }
 
+const std::vector<std::unique_ptr<Bullet>> &Weapon::getBullets() const {
+    return bullets;
+}
+
+void Weapon::drawBullets(sf::RenderWindow &window, float dt) const {
+    for (int i = 0; i < bullets.size(); i++) {
+        bullets[i]->move(bullets[i]->getBulletDir(), dt);
+        window.draw(bullets[i]->getBulletSprite());
+    }
+}
+
+
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {
 }

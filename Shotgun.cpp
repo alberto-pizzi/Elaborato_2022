@@ -4,7 +4,7 @@
 
 #include "Shotgun.h"
 
-void Shotgun::shoot() {
+void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
@@ -33,7 +33,7 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
     this->startCenterForTranslation[UP] = {32, 27};
     this->startCenterForTranslation[DOWN] = {24, 27};
 
-    enum nFramesHandgun {
+    enum totFramesShotgun {
         IDLE = 1, SHOT = 14, RELOAD = 14,
     };
 

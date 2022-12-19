@@ -11,6 +11,8 @@ void PlayState::draw(float dt) const {
     this->arenaMap->drawLayer(this->game->window, principal_floor);
 
     bool isOver = this->arenaMap->isWeaponOverTheWall(*mike);
+
+
     //TODO check layer 3d rendering when will be implement the enemies and bullets
     if (isOver) {
         this->arenaMap->drawLayer(this->game->window, solid_elements);
@@ -28,11 +30,16 @@ void PlayState::draw(float dt) const {
         this->mike->drawEntity(this->game->window);
     }
 
+
     if (!isOver) {
         this->arenaMap->drawLayer(this->game->window, solid_elements);
         this->arenaMap->drawLayer(this->game->window, layer_3d);
         this->arenaMap->drawLayer(this->game->window, last_layer);
     }
+
+    this->mike->weapon->drawBullets(this->game->window, dt); //FIXME check correctness layer
+
+
 
     this->game->window.draw(viewfinderSprite); //draw viewfinder
 
@@ -43,6 +50,8 @@ void PlayState::draw(float dt) const {
 void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
+    //std::cout<<"SIZE: "<<mike->weapon->getBullets().size()<<std::endl;
+
     //updateNotCyclicalAnimation Gui
     if (isEnded)
         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
@@ -59,6 +68,19 @@ void PlayState::handleInput() {
         50) //set limits to prevent overflow during counting (these numbers represent wide margin of prevention)
         mike->nextAttackTimeCount = 20;
     mike->nextAttackTimeCount += frame_time.asSeconds();
+
+    //TODO check if mouse inputs are in the correct lines
+
+    localPosition = sf::Mouse::getPosition(this->game->window);
+    worldPos = this->game->window.mapPixelToCoords(localPosition);
+
+
+    mike->directionInput(worldPos, skinDirection);
+
+    //viewfinder positioning
+    viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
+                                              worldPos.y - viewfinderSprite.getGlobalBounds().height / 2));
+
     //std::cout << "Time: " << mike->nextAttackTimeCount << std::endl; //FIXME only for debug
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -83,7 +105,7 @@ void PlayState::handleInput() {
                     (event.mouseButton.button == sf::Mouse::Left)) {
                     if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
                         (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
-                        mike->weapon->shoot();
+                        mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
                         mike->nextAttackTimeCount = 0;
                         isActiveAnimation = true;
                     }
@@ -104,6 +126,12 @@ void PlayState::handleInput() {
         }
     }
 
+    /*
+    localPosition = sf::Mouse::getPosition(this->game->window);
+    worldPos = this->game->window.mapPixelToCoords(localPosition);
+     */
+
+
     for (int i = 0; i < 4; i++) //set no input in all keyStates
         keyStates[i] = false;
 
@@ -116,22 +144,24 @@ void PlayState::handleInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         keyStates[RIGHT] = true;
 
+
     //repeated input (automatic fire, assault rifle)
     if ((mike->weapon->getWeaponName() == "AssaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
         if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
             (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
-            mike->weapon->shoot();
+            mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
             mike->nextAttackTimeCount = 0;
             isActiveAnimation = true;
         }
 
-
-    sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
-    sf::Vector2f worldPos = this->game->window.mapPixelToCoords(localPosition);
+    /*
+    //viewfinder positioning
     viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
                                               worldPos.y - viewfinderSprite.getGlobalBounds().height / 2));
+
+                                              */
 
     if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
         direction_vector.x = 0.f;
@@ -146,7 +176,7 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-    mike->directionInput(worldPos, skinDirection);
+    //mike->directionInput(worldPos, skinDirection);
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());
@@ -187,6 +217,11 @@ PlayState::PlayState(Game *game) {
     viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
 
     this->round = 1;
+
+
+    this->localPosition = sf::Mouse::getPosition(this->game->window);
+    this->worldPos = this->game->window.mapPixelToCoords(localPosition);
+
 }
 
 int PlayState::whichMap() {
@@ -194,6 +229,7 @@ int PlayState::whichMap() {
     int map = rand() % nMap;
     return map;
 }
+
 
 sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
     auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
@@ -223,4 +259,14 @@ void PlayState::loadTextures() {
 
     textureManager.loadTexture("shotgun", "res/textures/shotgun.png"); //FIXME
 
+    //bullet
+    textureManager.loadTexture("bullet", "res/textures/bullet.png"); //FIXME
+
+}
+
+sf::Vector2f
+PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character) {
+    sf::Vector2f origin = character.getPos();
+    sf::Vector2f translation = viewfinderPos - origin;
+    return normalize(translation);
 }

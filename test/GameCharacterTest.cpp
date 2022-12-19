@@ -23,7 +23,7 @@ TEST_F(GameCharacterFixture, TestDiagonalMove) {
 
 TEST_F(GameCharacterFixture, TestDirectionMouseInput) {
     //test Mike body direction when mouse exceeds bisects (+- 45°) of all quadrants
-    bool renderingDirection;
+    bool renderingDirection[4];
     mike->directionInput({1374, 629}, renderingDirection);
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoUp());
     mike->directionInput({1213, 626}, renderingDirection);

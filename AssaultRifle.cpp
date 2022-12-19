@@ -4,7 +4,7 @@
 
 #include "AssaultRifle.h"
 
-void AssaultRifle::shoot() {
+void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
@@ -34,7 +34,7 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int
     this->startCenterForTranslation[UP] = {32, 21};
     this->startCenterForTranslation[DOWN] = {24, 21};
 
-    enum nFramesAssaultRifle {
+    enum totFramesAssaultRifle {
         IDLE = 1, SHOT = 16, RELOAD = 17,
     };
 

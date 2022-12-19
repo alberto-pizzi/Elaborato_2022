@@ -99,7 +99,7 @@ public:
 
     void loadTextures();
 
-    void drawLayer(sf::RenderWindow &window, int layer);
+    void drawLayer(sf::RenderWindow &window, int layer) const;
 
     bool
     isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character);

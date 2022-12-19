@@ -8,10 +8,12 @@ GameCharacterFixture::~GameCharacterFixture() = default;
 
 GameCharacterFixture::GameCharacterFixture() {
     if ((!mikeTex.loadFromFile("../res/textures/no_hands_mike.png")) &&
-        (!weaponTex.loadFromFile("../res/textures/handgun.png")))
+        (!weaponTex.loadFromFile("../res/textures/handgun.png")) &&
+        (!bulletTex.loadFromFile("../res/textures/bullet.png")))
         std::cerr << "Error opening mike texture" << std::endl;
     else {
-        mike = std::unique_ptr<Mike>(new Mike(mikeTex, weaponTex, {40, 24}, {32, 32}, {32, 32}, true, 20, 250));
+        mike = std::unique_ptr<Mike>(new Mike(mikeTex, weaponTex, bulletTex, {40, 24}, {32, 32}, {32, 32}, true,
+                                              20, 250));
     }
 
 }

@@ -23,11 +23,12 @@ class Mike : public GameCharacter {
 private:
     int killStreak;
 public:
-    explicit Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Vector2i &spawnTile,
-                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated = true, int hp = 20,
-                  float speed = 250.f, unsigned int points = 0, unsigned int coins = 0, int armor = 0,
-                  bool bubble = false,
-                  int streak = 0);
+    explicit Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture,
+                  const sf::Texture &handgunBulletTexture,
+                  const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin,
+                  bool animated = true, int hp = 20, float speed = 250.f, unsigned int points = 0,
+                  unsigned int coins = 0,
+                  int armor = 0, bool bubble = false, int streak = 0);
 
     virtual ~Mike();
 

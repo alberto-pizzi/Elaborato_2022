@@ -15,6 +15,7 @@ class GameCharacterFixture : public ::testing::Test {
 protected:
     sf::Texture mikeTex;
     sf::Texture weaponTex;
+    sf::Texture bulletTex;
     sf::Context context;
     std::unique_ptr<Mike> mike;
 public:

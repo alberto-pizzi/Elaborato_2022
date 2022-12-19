@@ -35,6 +35,10 @@ private:
     int round;
     bool skinDirection[4] = {false, false, false, false};
 
+    //mouse input positioning
+    sf::Vector2i localPosition;
+    sf::Vector2f worldPos;
+
     //animation settings
     bool isEnded = false;
     bool isActiveAnimation = false;
@@ -61,6 +65,8 @@ public:
     sf::Vector2f normalize(sf::Vector2f vector);
 
     void loadTextures();
+
+    sf::Vector2f normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character);
 };
 
 #endif //ELABORATO_PLAYSTATE_H

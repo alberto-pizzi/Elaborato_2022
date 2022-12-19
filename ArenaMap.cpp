@@ -184,7 +184,9 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     bool legalFirstCenter = false;
 
     mike = std::unique_ptr<Mike>(
-            new Mike(textureManager.getTextureRef("mike"), textureManager.getTextureRef("handgun"), spawnTile,
+            new Mike(textureManager.getTextureRef("mike"), textureManager.getTextureRef("handgun"),
+                     textureManager.getTextureRef("bullet"),
+                     spawnTile,
                      {tileSizeX, tileSizeY},
                      {32, 32},
                      true));
@@ -247,6 +249,9 @@ void ArenaMap::loadTextures() {
     textureManager.loadTexture("assaultRifle", "res/textures/assault_rifle.png"); //FIXME
 
     textureManager.loadTexture("shotgun", "res/textures/shotgun.png"); //FIXME
+
+    //bullet
+    textureManager.loadTexture("bullet", "res/textures/bullet.png"); //FIXME
 
     //...
 }
@@ -427,7 +432,7 @@ void ArenaMap::findWallsCoordinates() {
     }
 }
 
-void ArenaMap::drawLayer(sf::RenderWindow &window, int layer) {
+void ArenaMap::drawLayer(sf::RenderWindow &window, int layer) const {
     for (int i = 0; i < this->maxRowTiles; i++) {
         for (int j = 0; j < this->maxColumnTiles; j++) {
             window.draw(this->tileMap[layer][i][j]->tileSprite);

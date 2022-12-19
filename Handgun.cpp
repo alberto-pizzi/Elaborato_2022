@@ -4,32 +4,40 @@
 
 #include "Handgun.h"
 
-void Handgun::shoot() {
+void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+
+    //shoot ONE bullet
+    bullets.emplace_back(new HandgunBullet(bulletTexture, 350, barrelHole, this->weaponSprite.getPosition(),
+                                           this->degrees, this->weaponSprite.getOrigin(),
+                                           this->weaponSprite.getScale(), normalizedBulletDir));
+
     this->magazine.remainingBullets--;
     //std::cout<<"Remain bullets: "<<this->magazine.remainingBullets<<std::endl; //FIXME (only for debug)
 }
 
-Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullets, int damage, float shotDelay,
-                 float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(equipped,
-                                                                                        handgunTexture,
-                                                                                        totBullets,
-                                                                                        damage,
-                                                                                        shotDelay,
-                                                                                        reloadTime,
-                                                                                        magazineCapacity,
-                                                                                        remainingBullets,
-                                                                                        fileTextureRectHandgunSize,
-                                                                                        "Handgun",
-                                                                                        true) {
+Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
+                 int totBullets,
+                 int damage, float shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
+        equipped,
+        handgunTexture,
+        totBullets,
+        damage,
+        shotDelay,
+        reloadTime,
+        magazineCapacity,
+        remainingBullets,
+        fileTextureRectHandgunSize,
+        "Handgun",
+        true) {
     this->startCenterForTranslation[LEFT] = {-16, 21};
     this->startCenterForTranslation[RIGHT] = {16, 21};
     this->startCenterForTranslation[UP] = {32, 21};
     this->startCenterForTranslation[DOWN] = {24, 21};
 
-    enum nFramesHandgun {
+    enum totFramesHandgun {
         IDLE = 1, SHOT = 12, RELOAD = 17,
     };
 
@@ -53,4 +61,6 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
 
 
     this->hitBox.setSize(sf::Vector2f(40, 20)); //TODO check correctness
+
+    this->bulletTexture = handgunBulletTexture;
 }

@@ -32,6 +32,7 @@ Gui::Gui() {
     roundIndicator.setFillColor(sf::Color(102, 0, 0));
     this->roundDisplayed = "1";
 
+    //FIXME
     //set bullets indicator
     remainingBulletsIndicator.setFont(textFont);
     remainingBulletsIndicator.setCharacterSize(remainingBulletsTextSize);

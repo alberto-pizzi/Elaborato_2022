@@ -9,19 +9,20 @@ bool Mike::isKillStreak(GameCharacter &character) {
     return false;
 }
 
-Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Vector2i &spawnTile,
-           const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated, int hp, float speed,
-           unsigned int points, unsigned int coins, int armor, bool bubble, int streak) : GameCharacter(mikeTexture, hp,
-                                                                                                        speed,
-                                                                                                        points,
-                                                                                                        spawnTile,
-                                                                                                        tileSize,
-                                                                                                        rectSkin,
-                                                                                                        animated,
-                                                                                                        coins,
-                                                                                                        armor,
-                                                                                                        bubble),
-                                                                                          killStreak(streak) {
+Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
+           const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated,
+           int hp, float speed, unsigned int points, unsigned int coins, int armor, bool bubble, int streak)
+        : GameCharacter(mikeTexture, hp,
+                        speed,
+                        points,
+                        spawnTile,
+                        tileSize,
+                        rectSkin,
+                        animated,
+                        coins,
+                        armor,
+                        bubble),
+          killStreak(streak) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames
     goDown.reserve(3);
@@ -64,7 +65,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                                                   this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
-    weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture));
+    weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, handgunBulletTexture));
 
 }
 
@@ -173,6 +174,8 @@ void Mike::setWeaponPosToShouldersPos() {
     else if (currentAnimation.frames == goDown)
         weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[DOWN].x,
                                          this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
+
+    //std::cout<<"Shoulder Pos x:"<<weapon->weaponSprite.getPosition().x<<" Y: "<<weapon->weaponSprite.getPosition().y<<std::endl;
 
     weapon->hitBox.setPosition(weapon->weaponSprite.getPosition());
 }
