@@ -4,7 +4,7 @@
 
 #include "Gui.h"
 
-Gui::Gui() {
+Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets) {
     loadTextures();
     std::cout << "i'm GUI constructor" << std::endl;
     healthBar.setTexture(texManager.getTextureRef("healthBar"));
@@ -24,30 +24,32 @@ Gui::Gui() {
     pointsIndicator.setFont(textFont);
     pointsIndicator.setCharacterSize(textFontSize);
     pointsIndicator.setFillColor(sf::Color::White);
-    this->pointsDisplayed = "0000000000";
+    this->pointsDisplayed = std::to_string(points);
 
     //set round indicator
     roundIndicator.setFont(numbersOrTitlesFont);
     roundIndicator.setCharacterSize(titleFontSize);
-    roundIndicator.setFillColor(sf::Color(102, 0, 0));
-    this->roundDisplayed = "1";
+    roundIndicator.setFillColor(redGuiColor);
+    this->roundDisplayed = std::to_string(round);
 
     //FIXME
     //set bullets indicator
     remainingBulletsIndicator.setFont(textFont);
     remainingBulletsIndicator.setCharacterSize(remainingBulletsTextSize);
-    remainingBulletsIndicator.setFillColor(sf::Color(239, 239, 239, 150));
-    this->remainingBulletsDisplayed = "12 "; //this number must be equal to Mike's STARTING bullets
+    remainingBulletsIndicator.setFillColor(semiTransparentGreyGuiColor);
+    //this->remainingBulletsDisplayed = "12 "; //this number must be equal to Mike's STARTING bullets
+    this->remainingBulletsDisplayed = std::to_string(remainingBullets);
 
     totalBulletsIndicator.setFont(textFont);
     totalBulletsIndicator.setCharacterSize(totalBulletsTextSize);
-    totalBulletsIndicator.setFillColor(sf::Color(239, 239, 239, 150));
-    this->totalBulletsDisplayed = "inf";
+    totalBulletsIndicator.setFillColor(semiTransparentGreyGuiColor);
+    if (infiniteBullets)
+        this->totalBulletsDisplayed = "inf";
+    else
+        this->totalBulletsDisplayed = std::to_string(totalBullets);
 
     designSeparator.setSize(sf::Vector2f(3, 60));
-    designSeparator.setFillColor(sf::Color(239, 239, 239, 150));
-
-
+    designSeparator.setFillColor(semiTransparentGreyGuiColor);
 }
 
 void Gui::loadTextures() {
@@ -103,7 +105,7 @@ void Gui::drawGui(sf::RenderWindow &window) {
 
 void Gui::updateHealthBar(int hp) {
     int totalHP = 20; //this is to be equal to mike total HP
-    healthBar.setTextureRect({0, 0, (5 * 32 * hp) / totalHP, 32});
+    healthBar.setTextureRect({0, 0, (5 * 32 * hp) / totalHP, 32}); //FIXME magic numbers
 }
 
 TextureManager Gui::getTexManager() {
@@ -123,7 +125,7 @@ void Gui::updatePoints(unsigned int points) {
         if (numDigits == totalDigits - 1)
             this->pointsDisplayed = zeros + digits;
         else {
-            for (int i = 0; i < totalDigits - numDigits; i++)
+            for (int i = 0; i < totalDigits - numDigits - 1; i++)
                 zeros += "0";
             this->pointsDisplayed = zeros + digits;
         }
@@ -142,17 +144,17 @@ void Gui::updateRound(int round) {
 
 void Gui::updateMagazines(int remaining, int total, bool isInfinite) {
     if (remaining == 0)
-        remainingBulletsIndicator.setFillColor(sf::Color(102, 0, 0, 200)); //red color
+        remainingBulletsIndicator.setFillColor(redGuiColor); //red color
     else
-        remainingBulletsIndicator.setFillColor(sf::Color(210, 210, 210, 200)); //standard color (grey)
+        remainingBulletsIndicator.setFillColor(semiTransparentGreyGuiColor); //standard color (grey)
 
     if (!isInfinite) {
         if ((total <= 20) && (total != 0))
-            totalBulletsIndicator.setFillColor(sf::Color(255, 216, 0, 200)); //yellow color
+            totalBulletsIndicator.setFillColor(yellowGuiColor); //yellow color
         else if (total == 0)
-            totalBulletsIndicator.setFillColor(sf::Color(102, 0, 0, 200)); //red color
+            totalBulletsIndicator.setFillColor(redGuiColor); //red color
     } else
-        totalBulletsIndicator.setFillColor(sf::Color(210, 210, 210, 200)); //standard color (grey)
+        totalBulletsIndicator.setFillColor(semiTransparentGreyGuiColor); //standard color (grey)
 
     std::string remainingBullets = std::to_string(remaining);
     this->remainingBulletsDisplayed = remainingBullets;

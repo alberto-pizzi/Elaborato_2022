@@ -10,7 +10,7 @@ void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
     //shoot ONE bullet
-    bullets.emplace_back(new HandgunBullet(bulletTexture, 350, barrelHole, this->weaponSprite.getPosition(),
+    bullets.emplace_back(new HandgunBullet(bulletTexture, 1000, barrelHole, this->weaponSprite.getPosition(),
                                            this->degrees, this->weaponSprite.getOrigin(),
                                            this->weaponSprite.getScale(), normalizedBulletDir));
 

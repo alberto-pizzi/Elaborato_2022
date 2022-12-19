@@ -28,6 +28,11 @@ private:
     int textFontSize = 24;
     int titleFontSize = 24;
 
+    //colors
+    const sf::Color semiTransparentGreyGuiColor = sf::Color(239, 239, 239, 150);
+    const sf::Color redGuiColor = sf::Color(102, 0, 0, 200);
+    const sf::Color yellowGuiColor = sf::Color(255, 216, 0, 200);
+
     //magazine indicator
     sf::Text remainingBulletsIndicator;
     sf::Text totalBulletsIndicator;
@@ -42,7 +47,7 @@ private:
     const int totalDigits = 10;
     sf::Vector2i distanceFromWindowLimits = {16, 16};
 public:
-    Gui();
+    Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets);
 
     const std::string &getPointsDisplayed() const;
 

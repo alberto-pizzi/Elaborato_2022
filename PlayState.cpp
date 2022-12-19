@@ -30,6 +30,7 @@ void PlayState::draw(float dt) const {
         this->mike->drawEntity(this->game->window);
     }
 
+    this->mike->weapon->drawBullets(this->game->window, dt); //FIXME check correctness layer and collisions
 
     if (!isOver) {
         this->arenaMap->drawLayer(this->game->window, solid_elements);
@@ -37,7 +38,7 @@ void PlayState::draw(float dt) const {
         this->arenaMap->drawLayer(this->game->window, last_layer);
     }
 
-    this->mike->weapon->drawBullets(this->game->window, dt); //FIXME check correctness layer
+
 
 
 

@@ -22,7 +22,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         coins,
                         armor,
                         bubble),
-          killStreak(streak) {
+          killStreak(streak), gui(this->points, 1, 12, 12, true) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames
     goDown.reserve(3);
@@ -174,8 +174,6 @@ void Mike::setWeaponPosToShouldersPos() {
     else if (currentAnimation.frames == goDown)
         weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[DOWN].x,
                                          this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
-
-    //std::cout<<"Shoulder Pos x:"<<weapon->weaponSprite.getPosition().x<<" Y: "<<weapon->weaponSprite.getPosition().y<<std::endl;
 
     weapon->hitBox.setPosition(weapon->weaponSprite.getPosition());
 }
