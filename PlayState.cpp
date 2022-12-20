@@ -53,6 +53,8 @@ void PlayState::update(float dt) {
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //std::cout<<"SIZE: "<<mike->weapon->getBullets().size()<<std::endl;
 
+
+    mike->weapon->updateBullets(arenaMap);
     //updateNotCyclicalAnimation Gui
     if (isEnded)
         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
@@ -151,13 +153,6 @@ void PlayState::handleInput() {
             isActiveAnimation = true;
         }
 
-    /*
-    //viewfinder positioning
-    viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
-                                              worldPos.y - viewfinderSprite.getGlobalBounds().height / 2));
-
-                                              */
-
     if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
         direction_vector.x = 0.f;
     else if (keyStates[LEFT])
@@ -175,7 +170,7 @@ void PlayState::handleInput() {
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());
-        arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getPos(), this->game->window.getSize(),
+        arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
                                                                  {mike->getSprite().getGlobalBounds().width,
                                                                   mike->getSprite().getGlobalBounds().height},
                                                                  arenaMap->playerView.getCenter()));
@@ -261,7 +256,7 @@ void PlayState::loadTextures() {
 
 sf::Vector2f
 PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character) {
-    sf::Vector2f origin = character.getPos();
+    sf::Vector2f origin = character.getSpriteCenter();
     sf::Vector2f translation = viewfinderPos - origin;
     return normalize(translation);
 }

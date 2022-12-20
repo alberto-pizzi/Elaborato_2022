@@ -28,7 +28,6 @@ public:
 
     bool checkEnemyCollision(const GameCharacter &target);
 
-    bool checkSolidAndLimitCollision();
 
     virtual void move(const sf::Vector2f &offset, float dt); // NOLINT(modernize-use-override)
 

@@ -189,7 +189,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
                      {32, 32},
                      true));
 
-    firstViewCenter = mike->getPos();
+    firstViewCenter = mike->getSpriteCenter();
     sf::Vector2f distanceFromWindowCenter = {
             (static_cast<float>(window.getSize().x) / 2) +
             static_cast<float>(mike->getSprite().getTextureRect().width) / 2,
@@ -228,7 +228,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
         }
     } while (!legalFirstCenter);
 
-    this->playerView.setCenter(legalViewCenter(mike->getPos(), window.getSize(),
+    this->playerView.setCenter(legalViewCenter(mike->getSpriteCenter(), window.getSize(),
                                                {mike->getSprite().getGlobalBounds().width,
                                                 mike->getSprite().getGlobalBounds().height}, firstViewCenter));
     window.setView(this->playerView);
@@ -255,7 +255,7 @@ void ArenaMap::loadTextures() {
 }
 
 bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character) {
-    sf::Vector2f oldPos = character.getPos(); //centered position (from PosEntity)
+    sf::Vector2f oldPos = character.getSpriteCenter(); //centered position (from PosEntity)
     sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
                                   static_cast<int>(oldPos.y / (float) tileSizeY)};
     int playerSideInTileContact[4] = {
@@ -460,6 +460,23 @@ bool ArenaMap::isWeaponOverTheWall(const GameCharacter &character) {
                                                     solidTiles[i]->tileSprite.getGlobalBounds().height - 2)
                     return true;
             }
+    }
+    return false;
+}
+
+bool ArenaMap::collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) {
+    //map limits
+    if (bulletGlobalPos.left + bulletGlobalPos.width < 0 ||
+        bulletGlobalPos.top + bulletGlobalPos.height < 0 ||
+        bulletGlobalPos.left + bulletGlobalPos.width > static_cast<float>(maxColumnTiles * tileSizeX) ||
+        bulletGlobalPos.top + bulletGlobalPos.height > static_cast<float>(maxRowTiles * tileSizeY))
+        return true;
+    else {
+        sf::FloatRect delta;
+        for (int i = 0; i < solidTiles.size(); i++)
+            if ((bulletGlobalPos.intersects(solidTiles[i]->tileSprite.getGlobalBounds(), delta)) &&
+                (delta.width == bulletGlobalPos.width) && (delta.height == bulletGlobalPos.height))
+                return true;
     }
     return false;
 }

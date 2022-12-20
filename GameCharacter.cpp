@@ -48,10 +48,8 @@ GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsign
     sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * tileSize.x),
                                     static_cast<float>(tilePosition.y * tileSize.y)));
 
-    pos = {(static_cast<float>(tilePosition.x * tileSize.x)) + spriteCenter.x,
-           (static_cast<float>(tilePosition.y * tileSize.y)) +
-           spriteCenter.y}; //this updates coordinates in PosEntity
-
+    //pos = sprite.getGlobalBounds(); //this updates coordinates in PosEntity
+    updateGlobalPosition(sprite.getGlobalBounds()); //FIXME
 
 }
 

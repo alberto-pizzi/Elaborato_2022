@@ -29,10 +29,6 @@ void Bullet::setBulletTexture(const sf::Texture &bulletTexture) {
     Bullet::bulletTexture = bulletTexture;
 }
 
-bool Bullet::checkSolidAndLimitCollision() {
-    return false;
-}
-
 const sf::Vector2f &Bullet::getBulletDir() const {
     return bulletDir;
 }
@@ -40,5 +36,5 @@ const sf::Vector2f &Bullet::getBulletDir() const {
 void Bullet::move(const sf::Vector2f &offset, float dt) {
     sf::Vector2f currentVelocity = offset * dt * bulletSpeed;
     bulletSprite.setPosition(bulletSprite.getPosition() + currentVelocity);
-    //TODO set Pos
+    updateGlobalPosition(bulletSprite.getGlobalBounds());
 }

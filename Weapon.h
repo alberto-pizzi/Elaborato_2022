@@ -18,6 +18,8 @@
 #include "TextureManager.h"
 #include "Bullet.h"
 
+class ArenaMap;
+
 class Weapon {
 private:
 
@@ -48,6 +50,7 @@ protected:
     std::vector<sf::IntRect> reload;
     float degrees;
 
+    //bullet
     std::vector<std::unique_ptr<Bullet>> bullets;
     sf::Texture bulletTexture;
 public:
@@ -89,6 +92,8 @@ public:
     const std::vector<std::unique_ptr<Bullet>> &getBullets() const;
 
     void drawBullets(sf::RenderWindow &window, float dt) const;
+
+    void updateBullets(ArenaMap *map);
 
     const sf::Vector2i &getFileTextureRectWeaponSize() const;
 

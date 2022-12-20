@@ -3,6 +3,7 @@
 //
 
 #include "Weapon.h"
+#include "ArenaMap.h"
 
 bool Weapon::reloadWeapon() {
     int bulletsForFillMagazine;
@@ -94,13 +95,24 @@ const std::vector<std::unique_ptr<Bullet>> &Weapon::getBullets() const {
 
 void Weapon::drawBullets(sf::RenderWindow &window, float dt) const {
     for (int i = 0; i < bullets.size(); i++) {
-        bullets[i]->move(bullets[i]->getBulletDir(), dt);
         window.draw(bullets[i]->getBulletSprite());
+        bullets[i]->move(bullets[i]->getBulletDir(), dt);
     }
 }
 
 const sf::Vector2i &Weapon::getFileTextureRectWeaponSize() const {
     return fileTextureRectWeaponSize;
+}
+
+void Weapon::updateBullets(ArenaMap *map) { //FIXME
+    for (int i = 0; i < bullets.size(); i++) {
+        if (map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) {
+            bullets.erase(bullets.begin() + i);
+            std::cout << "Erase" << std::endl;
+            continue;
+        }
+    }
+    std::cout << "Bullets: " << bullets.size() << std::endl;
 }
 
 

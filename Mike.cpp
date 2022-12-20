@@ -85,12 +85,13 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
 
     effectiveOffset = offset * newSpeed * dt;
     sprite.setPosition(sprite.getPosition() + effectiveOffset);
-    pos += effectiveOffset;
+    //pos = sprite.getGlobalBounds();
+    updateGlobalPosition(sprite.getGlobalBounds());
 }
 
 void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirection)[4]) {
     //set Cartesian plane as player position
-    sf::Vector2f origin = this->pos;
+    sf::Vector2f origin = spriteCenter;
     sf::Vector2f translation = viewfinderPos - origin;
     float frameDuration = 0.5f;
     float radians, degrees;
