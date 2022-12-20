@@ -8,24 +8,33 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+
+    //shoot ONE bullet
+    bullets.emplace_back(new ShotgunBullet(bulletTexture, 1500, barrelHole, this->weaponSprite.getPosition(),
+                                           this->degrees, this->weaponSprite.getOrigin(),
+                                           this->weaponSprite.getScale(), normalizedBulletDir));
+
+    std::cout << " bullets: " << this->bullets.size() << std::endl;
     this->magazine.remainingBullets--;
     //std::cout<<"Remain bullets: "<<this->magazine.remainingBullets<<std::endl; //FIXME (only for debug)
     std::cout << "Remain bullets: " << this->totalBullets << std::endl;
 
 }
 
-Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, int totBullets, int damage, float shotDelay,
-                 float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(equipped,
-                                                                                        handgunTexture,
-                                                                                        totBullets,
-                                                                                        damage,
-                                                                                        shotDelay,
-                                                                                        reloadTime,
-                                                                                        magazineCapacity,
-                                                                                        remainingBullets,
-                                                                                        fileTextureRectShotgunShotSize,
-                                                                                        "Shotgun",
-                                                                                        false) {
+Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &shotgunBulletTexture,
+                 int totBullets,
+                 int damage, float shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
+        equipped,
+        handgunTexture,
+        totBullets,
+        damage,
+        shotDelay,
+        reloadTime,
+        magazineCapacity,
+        remainingBullets,
+        fileTextureRectShotgunShotSize,
+        "Shotgun",
+        false) {
 
 
     this->startCenterForTranslation[LEFT] = {-16, 27};
@@ -56,5 +65,8 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, int totBullet
                             this->fileTextureRectShotgunReloadSize.y);
 
     this->hitBox.setSize(sf::Vector2f(70, 15));
+
+    //set bullet texture
+    this->bulletTexture = shotgunBulletTexture;
 
 }

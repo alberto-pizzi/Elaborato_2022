@@ -8,12 +8,9 @@ Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotation
                const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir) : bulletSpeed(speed), bulletTexture(tex),
                                                                                  bulletDir(bulletDir) {
 
-    bulletSprite.setTexture(tex);
-
-    this->bulletSprite.setOrigin(-rotationOrigin); //FIXME
+    this->bulletSprite.setTexture(tex);
     this->bulletSprite.setScale(weaponScale);
     this->bulletSprite.setRotation(degrees);
-
 }
 
 bool Bullet::checkEnemyCollision(const GameCharacter &target) {
