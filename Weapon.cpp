@@ -109,7 +109,7 @@ void Weapon::updateBullets(ArenaMap *map) {
         if (map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) {
             bullets.erase(bullets.begin() + i);
             i--;
-            if (i == -1)
+            if (bullets.empty())
                 break;
             continue;
         }
