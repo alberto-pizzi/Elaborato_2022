@@ -99,6 +99,10 @@ void Weapon::drawBullets(sf::RenderWindow &window, float dt) const {
     }
 }
 
+const sf::Vector2i &Weapon::getFileTextureRectWeaponSize() const {
+    return fileTextureRectWeaponSize;
+}
+
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {

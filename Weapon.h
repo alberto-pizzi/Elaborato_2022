@@ -90,6 +90,8 @@ public:
 
     void drawBullets(sf::RenderWindow &window, float dt) const;
 
+    const sf::Vector2i &getFileTextureRectWeaponSize() const;
+
 };
 
 

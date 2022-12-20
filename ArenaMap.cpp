@@ -364,7 +364,7 @@ int ArenaMap::getTotalLayers() const {
 
 sf::Vector2f
 ArenaMap::legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
-                          const sf::Vector2f &oldCenter) {
+                          const sf::Vector2f &oldCenter) const {
     sf::Vector2f distanceFromWindowCenter = {(static_cast<float>(windowSize.x) / 2) + (characterSize.x / 2),
                                              (static_cast<float>(windowSize.y) / 2) + (characterSize.y / 2)};
     sf::Vector2f newCenter = oldCenter;

@@ -22,7 +22,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         coins,
                         armor,
                         bubble),
-          killStreak(streak), gui(this->points, 1, 12, 12, true) {
+          killStreak(streak), gui(this->points, 1, 12, 12, true, handgunTexture) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames
     goDown.reserve(3);
@@ -66,7 +66,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     };
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, handgunBulletTexture));
-
+    gui.updateWeaponType(handgunTexture, weapon->currentAnimation.idleFrames[0], weapon->hitBox.getSize());
 }
 
 void Mike::drawEntity(sf::RenderWindow &window) {

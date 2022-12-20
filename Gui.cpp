@@ -4,7 +4,8 @@
 
 #include "Gui.h"
 
-Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets) {
+Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
+         const sf::Texture &weaponTexture) : weaponTexture(weaponTexture) {
     loadTextures();
     std::cout << "i'm GUI constructor" << std::endl;
     healthBar.setTexture(texManager.getTextureRef("healthBar"));
@@ -32,7 +33,6 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
     roundIndicator.setFillColor(redGuiColor);
     this->roundDisplayed = std::to_string(round);
 
-    //FIXME
     //set bullets indicator
     remainingBulletsIndicator.setFont(textFont);
     remainingBulletsIndicator.setCharacterSize(remainingBulletsTextSize);
@@ -50,6 +50,13 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
 
     designSeparator.setSize(sf::Vector2f(3, 60));
     designSeparator.setFillColor(semiTransparentGreyGuiColor);
+
+    //weapon indicator
+
+    weaponSpriteIndicator.setTexture(weaponTexture);
+    weaponSpriteIndicator.setColor(sf::Color::Black);
+    weaponSpriteIndicator.setScale(sf::Vector2f(1.5, 1.5));
+
 }
 
 void Gui::loadTextures() {
@@ -101,6 +108,18 @@ void Gui::drawGui(sf::RenderWindow &window) {
     totalBulletsIndicator.setString(totalBulletsDisplayed);
     window.draw(remainingBulletsIndicator);
     window.draw(totalBulletsIndicator);
+
+    //draw weapon type
+    sf::Vector2i posWeaponTypeIndicator = {static_cast<int>(static_cast<float>(window.getSize().x) -
+                                                            (hitBoxWeaponSize.x * weaponSpriteIndicator.getScale().x)) -
+                                           3 * distanceFromWindowLimits.x,
+                                           static_cast<int>(static_cast<float>(window.getSize().y) -
+                                                            (static_cast<float>(weaponSpriteIndicator.getTextureRect().height) *
+                                                             weaponSpriteIndicator.getScale().y)) -
+                                           distanceFromWindowLimits.y};
+    sf::Vector2f worldPosWeaponTypeIndicator = window.mapPixelToCoords(posWeaponTypeIndicator);
+    weaponSpriteIndicator.setPosition(worldPosWeaponTypeIndicator);
+    window.draw(weaponSpriteIndicator);
 }
 
 void Gui::updateHealthBar(int hp) {
@@ -164,5 +183,13 @@ void Gui::updateMagazines(int remaining, int total, bool isInfinite) {
         std::string totalBullets = std::to_string(total);
         this->totalBulletsDisplayed = totalBullets;
     }
+}
+
+void Gui::updateWeaponType(const sf::Texture &newWeaponTexture, const sf::IntRect &idleFrame,
+                           const sf::Vector2f &hitboxSize) {
+    weaponSpriteIndicator.setTexture(newWeaponTexture);
+    weaponSpriteIndicator.setTextureRect(idleFrame);
+    hitBoxWeaponSize = hitboxSize;
+    weaponSpriteIndicator.setScale(sf::Vector2f(1.5, 1.5));
 }
 

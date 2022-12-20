@@ -108,7 +108,7 @@ public:
 
     sf::Vector2f
     legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
-                    const sf::Vector2f &oldCenter);
+                    const sf::Vector2f &oldCenter) const;
 
     int weaponCutXSize(const GameCharacter &character);
 

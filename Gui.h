@@ -19,6 +19,10 @@ class Gui {
 private:
     void loadTextures();
 
+    sf::Texture weaponTexture;
+    sf::Sprite weaponSpriteIndicator;
+    sf::Vector2f hitBoxWeaponSize;
+
     TextureManager texManager;
     sf::Sprite healthBar;
     sf::Font numbersOrTitlesFont;
@@ -47,7 +51,8 @@ private:
     const int totalDigits = 10;
     sf::Vector2i distanceFromWindowLimits = {16, 16};
 public:
-    Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets);
+    Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
+        const sf::Texture &weaponTexture);
 
     const std::string &getPointsDisplayed() const;
 
@@ -56,6 +61,9 @@ public:
     void message(std::string message);
 
     void updateHealthBar(int hp);
+
+    void
+    updateWeaponType(const sf::Texture &newWeaponTexture, const sf::IntRect &idleFrame, const sf::Vector2f &hitboxSize);
 
     void updateArmor(int armor);
 

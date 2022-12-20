@@ -22,6 +22,7 @@ void PlayState::draw(float dt) const {
 
     this->arenaMap->drawLayer(this->game->window, design_elements);
 
+    //draw mike and his weapon
     if (!skinDirection[UP]) {
         this->mike->drawEntity(this->game->window);
         this->mike->weapon->drawWeapon(this->game->window);
@@ -30,6 +31,7 @@ void PlayState::draw(float dt) const {
         this->mike->drawEntity(this->game->window);
     }
 
+    //draw bullets
     this->mike->weapon->drawBullets(this->game->window, dt); //FIXME check correctness layer and collisions
 
     if (!isOver) {
@@ -38,12 +40,10 @@ void PlayState::draw(float dt) const {
         this->arenaMap->drawLayer(this->game->window, last_layer);
     }
 
+    //draw viewfinder
+    this->game->window.draw(viewfinderSprite);
 
-
-
-
-    this->game->window.draw(viewfinderSprite); //draw viewfinder
-
+    //draw gui
     mike->gui.drawGui(this->game->window);
 
 }
@@ -126,12 +126,6 @@ void PlayState::handleInput() {
 
         }
     }
-
-    /*
-    localPosition = sf::Mouse::getPosition(this->game->window);
-    worldPos = this->game->window.mapPixelToCoords(localPosition);
-     */
-
 
     for (int i = 0; i < 4; i++) //set no input in all keyStates
         keyStates[i] = false;
