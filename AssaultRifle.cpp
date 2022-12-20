@@ -8,14 +8,22 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+
+    //shoot ONE bullet
+    bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 1700, barrelHole, this->weaponSprite.getPosition(),
+                                                this->degrees, this->weaponSprite.getOrigin(),
+                                                this->weaponSprite.getScale(), normalizedBulletDir));
+
     this->magazine.remainingBullets--;
     //std::cout<<"Remain bullets: "<<this->magazine.remainingBullets<<std::endl; //FIXME (only for debug)
     std::cout << "Remain bullets: " << this->totalBullets << std::endl;
 
 }
 
-AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int totBullets, int damage,
-                           float shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
+AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
+                           const sf::Texture &assaultRifleBulletTexture,
+                           int totBullets, int damage, float shotDelay, float reloadTime, int magazineCapacity,
+                           int remainingBullets) : Weapon(
         equipped,
         handgunTexture,
         totBullets,
@@ -57,4 +65,7 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture, int
                             this->fileTextureRectAssaultReloadSize.y);
 
     this->hitBox.setSize(sf::Vector2f(66, 30));
+
+    //set bullet texture
+    this->bulletTexture = assaultRifleBulletTexture;
 }
