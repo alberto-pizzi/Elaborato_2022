@@ -335,7 +335,7 @@ sf::Vector2i ArenaMap::randomPassableTile() {
     srand(time(NULL));
     int tileSpawnX, tileSpawnY;
 
-    //casual tile position
+    //casual tile position. Spawn mike only when near tiles are passable.
     do {
         tileSpawnX = (rand() % (this->maxColumnTiles - 1)) + 1;
         tileSpawnY = (rand() % (this->maxRowTiles - 1)) + 1;
@@ -343,20 +343,17 @@ sf::Vector2i ArenaMap::randomPassableTile() {
              (!tileMap[principal_floor][tileSpawnY][tileSpawnX + 1]->passable) ||
              (!tileMap[principal_floor][tileSpawnY + 1][tileSpawnX]->passable) ||
              (!tileMap[principal_floor][tileSpawnY][tileSpawnX - 1]->passable) ||
-             (!tileMap[principal_floor][tileSpawnY -
-                                        1][tileSpawnX]->passable) ||
+             (!tileMap[principal_floor][tileSpawnY - 1][tileSpawnX]->passable) ||
              (!tileMap[design_elements][tileSpawnY][tileSpawnX]->passable) ||
              (!tileMap[design_elements][tileSpawnY][tileSpawnX + 1]->passable) ||
              (!tileMap[design_elements][tileSpawnY + 1][tileSpawnX]->passable) ||
              (!tileMap[design_elements][tileSpawnY][tileSpawnX - 1]->passable) ||
-             (!tileMap[design_elements][tileSpawnY -
-                                        1][tileSpawnX]->passable) ||
+             (!tileMap[design_elements][tileSpawnY - 1][tileSpawnX]->passable) ||
              (!tileMap[solid_elements][tileSpawnY][tileSpawnX]->passable) ||
              (!tileMap[solid_elements][tileSpawnY][tileSpawnX + 1]->passable) ||
              (!tileMap[solid_elements][tileSpawnY + 1][tileSpawnX]->passable) ||
              (!tileMap[solid_elements][tileSpawnY][tileSpawnX - 1]->passable) ||
-             (!tileMap[solid_elements][tileSpawnY -
-                                       1][tileSpawnX]->passable)); //spawn mike only when near tiles are passable
+             (!tileMap[solid_elements][tileSpawnY - 1][tileSpawnX]->passable));
 
     return {tileSpawnX, tileSpawnY};
 }
