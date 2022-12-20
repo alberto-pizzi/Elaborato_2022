@@ -72,8 +72,8 @@ protected:
     int heightFile;
     std::string nameFile;
     std::string nameMap;
-    std::vector<std::vector<std::vector<Tile *>>> tileMap;
-    std::vector<Tile *> solidTiles;
+    std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> tileMap;
+    std::vector<std::shared_ptr<Tile>> solidTiles;
     std::vector<Walls> walls;
     //WARNING: updateNotCyclicalAnimation this string array and enum for adding other Map
     std::string mapList[1] = {

@@ -106,9 +106,7 @@ void ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<
     startingMap(window, mike);
 }
 
-ArenaMap::~ArenaMap() {
-//TODO deallocate memory
-}
+ArenaMap::~ArenaMap() = default;
 
 ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
     loadMap(chosenMap, window, mike);
@@ -149,10 +147,10 @@ void ArenaMap::loadMapFile(int chosenMap) {
         //start reading
         tileMap.reserve(this->totalLayers);
         for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
-            std::vector<std::vector<Tile *>> rows;
+            std::vector<std::vector<std::shared_ptr<Tile>>> rows;
             rows.reserve(this->maxRowTiles);
             for (int row = 0; row < this->maxRowTiles; row++) {
-                std::vector<Tile *> columns;
+                std::vector<std::shared_ptr<Tile>> columns;
                 columns.reserve(this->maxColumnTiles);
                 for (int column = 0; column < this->maxColumnTiles; column++) {
                     file >> nTile;
