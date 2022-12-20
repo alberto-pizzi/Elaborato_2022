@@ -12,7 +12,7 @@ class Shotgun : public Weapon {
 private:
     const sf::Vector2i fileTextureRectShotgunShotSize = {160, 32};
     const sf::Vector2i fileTextureRectShotgunReloadSize = {128, 32};
-    const sf::Vector2f barrelHole = {98, 15}; //FIXME
+    const sf::Vector2f barrelHole = {98, 15};
 public:
     Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &shotgunBulletTexture,
             int totBullets = 32, int damage = 15, float shotDelay = 0.7f, float reloadTime = 1,
