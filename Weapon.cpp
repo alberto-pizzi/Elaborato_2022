@@ -104,15 +104,16 @@ const sf::Vector2i &Weapon::getFileTextureRectWeaponSize() const {
     return fileTextureRectWeaponSize;
 }
 
-void Weapon::updateBullets(ArenaMap *map) { //FIXME
+void Weapon::updateBullets(ArenaMap *map) {
     for (int i = 0; i < bullets.size(); i++) {
         if (map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) {
             bullets.erase(bullets.begin() + i);
-            std::cout << "Erase" << std::endl;
+            i--;
+            if (i == -1)
+                break;
             continue;
         }
     }
-    std::cout << "Bullets: " << bullets.size() << std::endl;
 }
 
 

@@ -472,10 +472,11 @@ bool ArenaMap::collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) {
         bulletGlobalPos.top + bulletGlobalPos.height > static_cast<float>(maxRowTiles * tileSizeY))
         return true;
     else {
+        //check if collides with solids
         sf::FloatRect delta;
         for (int i = 0; i < solidTiles.size(); i++)
             if ((bulletGlobalPos.intersects(solidTiles[i]->tileSprite.getGlobalBounds(), delta)) &&
-                (delta.width == bulletGlobalPos.width) && (delta.height == bulletGlobalPos.height))
+                (std::max(delta.width, delta.height) >= static_cast<float>(tileSizeX) / 3))
                 return true;
     }
     return false;
