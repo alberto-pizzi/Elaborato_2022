@@ -66,13 +66,14 @@ void Gui::loadTextures() {
 void Gui::drawGui(sf::RenderWindow &window) {
     //draw HealthBar
     int posXHealth =
-            abs(texManager.getTextureRef("healthBar").getSize().x - window.getSize().x) - distanceFromWindowLimits.x;
+            static_cast<int>(window.getSize().x - texManager.getTextureRef("healthBar").getSize().x) -
+            distanceFromWindowLimits.x;
     sf::Vector2f worldPosHealth = window.mapPixelToCoords({posXHealth, distanceFromWindowLimits.y});
     healthBar.setPosition(worldPosHealth);
     window.draw(healthBar);
 
     //draw PointsIndicator
-    int posXPoints = abs(window.getSize().x / 2 - textFontSize * (totalDigits / 2 - 1));
+    int posXPoints = static_cast<int>(window.getSize().x) / 2 - textFontSize * (totalDigits / 2 - 1);
     sf::Vector2f worldPosPoints = window.mapPixelToCoords({posXPoints, distanceFromWindowLimits.y});
     pointsIndicator.setPosition(worldPosPoints);
     pointsIndicator.setString(pointsDisplayed);
