@@ -7,21 +7,20 @@
 
 TEST_F(GameCharacterFixture, TestXYMove) {
     mike->move({0, 1}, 1);
-    EXPECT_EQ(40 * 32 + 16, mike->getPos().x);
-    EXPECT_EQ(24 * 32 + 16 + 250, mike->getPos().y);
+    EXPECT_EQ(40 * 32 + 24, mike->getSpriteCenter().x);
+    EXPECT_EQ(24 * 32 + 24 + 250, mike->getSpriteCenter().y);
 }
 
 TEST_F(GameCharacterFixture, TestDiagonalMove) {
-    //FIXME epsilon (near)
     mike->move({-1, 1}, 1);
-    EXPECT_LE(mike->getPos().x, 40 * 32 + 16 - 176);
-    EXPECT_GE(mike->getPos().x, 40 * 32 + 16 - 177);
+    EXPECT_LE(mike->getSpriteCenter().x, 40 * 32 + 24 - 176);
+    EXPECT_GE(mike->getSpriteCenter().x, 40 * 32 + 24 - 177);
 
-    EXPECT_LE(mike->getPos().y, 24 * 32 + 16 + 177);
-    EXPECT_GE(mike->getPos().y, 24 * 32 + 16 + 176);
+    EXPECT_LE(mike->getSpriteCenter().y, 24 * 32 + 24 + 177);
+    EXPECT_GE(mike->getSpriteCenter().y, 24 * 32 + 24 + 176);
 }
 
-TEST_F(GameCharacterFixture, TestDirectionMouseInput) {
+TEST_F(GameCharacterFixture, TestDirectionMouseInputAnimation) {
     //test Mike body direction when mouse exceeds bisects (+- 45°) of all quadrants
     bool renderingDirection[4];
     mike->directionInput({1374, 629}, renderingDirection);
@@ -66,7 +65,7 @@ TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikePoints) {
     ASSERT_EQ("0000000000", mike->gui.getPointsDisplayed());
 
     mike->setPoints(600);
-    stringPoints = "00000000" + std::to_string(mike->getPoints());
+    stringPoints = "0000000" + std::to_string(mike->getPoints());
     mike->gui.updatePoints(600);
     EXPECT_EQ(stringPoints, mike->gui.getPointsDisplayed());
 
@@ -74,5 +73,63 @@ TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikePoints) {
     stringPoints = "0" + std::to_string(mike->getPoints());
     mike->gui.updatePoints(999999999);
     EXPECT_EQ(stringPoints, mike->gui.getPointsDisplayed());
+}
+
+TEST_F (GameCharacterFixture, TestMagazineAfterShot) {
+
+    //handgun magazine test
+    ASSERT_EQ(12, mike->weapon->getMagazine().remainingBullets);
+    ASSERT_EQ(12, mike->weapon->getMagazine().totalCapacity);
+
+    mike->weapon->shoot({1, 0});
+    EXPECT_EQ(12 - 1, mike->weapon->getMagazine().remainingBullets);
+    EXPECT_EQ(12, mike->weapon->getMagazine().totalCapacity);
+
+    mike->weapon->setMagazine(1, 12);
+    mike->weapon->shoot({1, 0});
+    EXPECT_EQ(0, mike->weapon->getMagazine().remainingBullets);
+    EXPECT_EQ(12, mike->weapon->getMagazine().totalCapacity);
+
+    mike->weapon->reloadWeapon();
+    ASSERT_EQ(12, mike->weapon->getMagazine().totalCapacity);
+    EXPECT_EQ(mike->weapon->getMagazine().remainingBullets, mike->weapon->getMagazine().totalCapacity);
+}
+
+TEST_F (GameCharacterFixture, TestSkinSideCorrectnessnDuringMouseInput) {
+    bool skinDirection[4] = {false, false, false, false};
+
+    mike->directionInput({45 * 32, 21 * 32}, skinDirection);
+    ASSERT_EQ(skinDirection[RIGHT], true);
+
+    mike->directionInput({46 * 32, 27 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[RIGHT], true);
+
+    mike->directionInput({41 * 32, 20 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[UP], true);
+
+    mike->directionInput({38 * 32, 20 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[UP], true);
+
+    mike->directionInput({35 * 32, 21 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[LEFT], true);
+
+    mike->directionInput({33 * 32, 23 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[LEFT], true);
+
+    mike->directionInput({39 * 32, 35 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[DOWN], true);
+
+    mike->directionInput({42 * 32, 28 * 32}, skinDirection);
+    EXPECT_EQ(skinDirection[DOWN], true);
+}
+
+TEST_F (GameCharacterFixture, TestBulletsVectorFillingCorrectness) {
+    mike->weapon->shoot({1, 0});
+    ASSERT_EQ(mike->weapon->getBullets().size(), 1);
+
+    mike->weapon->shoot({1, 0});
+    mike->weapon->shoot({1, 0});
+    EXPECT_EQ(mike->weapon->getBullets().size(), 3);
+
 }
 

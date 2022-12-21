@@ -16,9 +16,6 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
 
     std::cout << " bullets: " << this->bullets.size() << std::endl;
     this->magazine.remainingBullets--;
-    //std::cout<<"Remain bullets: "<<this->magazine.remainingBullets<<std::endl; //FIXME (only for debug)
-    std::cout << "Remain bullets: " << this->totalBullets << std::endl;
-
 }
 
 Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &shotgunBulletTexture,

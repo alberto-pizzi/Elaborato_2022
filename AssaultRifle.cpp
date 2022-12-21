@@ -15,9 +15,6 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
                                                 this->weaponSprite.getScale(), normalizedBulletDir));
 
     this->magazine.remainingBullets--;
-    //std::cout<<"Remain bullets: "<<this->magazine.remainingBullets<<std::endl; //FIXME (only for debug)
-    std::cout << "Remain bullets: " << this->totalBullets << std::endl;
-
 }
 
 AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,

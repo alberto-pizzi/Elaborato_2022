@@ -25,7 +25,8 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
     pointsIndicator.setFont(textFont);
     pointsIndicator.setCharacterSize(textFontSize);
     pointsIndicator.setFillColor(sf::Color::White);
-    this->pointsDisplayed = std::to_string(points);
+    updatePoints(points);
+    //this->pointsDisplayed = std::to_string(points);
 
     //set round indicator
     roundIndicator.setFont(numbersOrTitlesFont);

@@ -97,6 +97,10 @@ public:
 
     const sf::Vector2i &getFileTextureRectWeaponSize() const;
 
+    void setTotalBullets(int totalBullets);
+
+    void setMagazine(int remainingBullets, int totalCapacity);
+
 };
 
 

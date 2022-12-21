@@ -84,7 +84,6 @@ void PlayState::handleInput() {
     viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
                                               worldPos.y - viewfinderSprite.getGlobalBounds().height / 2));
 
-    //std::cout << "Time: " << mike->nextAttackTimeCount << std::endl; //FIXME only for debug
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
             // Close the window

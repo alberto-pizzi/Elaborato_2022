@@ -116,6 +116,15 @@ void Weapon::updateBullets(ArenaMap *map) {
     }
 }
 
+void Weapon::setTotalBullets(int totalBullets) {
+    Weapon::totalBullets = totalBullets;
+}
+
+void Weapon::setMagazine(const int remainingBullets, const int totalCapacity) {
+    this->magazine.remainingBullets = remainingBullets;
+    this->magazine.totalCapacity = totalCapacity;
+}
+
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {

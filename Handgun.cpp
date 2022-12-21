@@ -15,7 +15,6 @@ void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
                                            this->weaponSprite.getScale(), normalizedBulletDir));
 
     this->magazine.remainingBullets--;
-    //std::cout<<"Remain bullets: "<<this->magazine.remainingBullets<<std::endl; //FIXME (only for debug)
 }
 
 Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,

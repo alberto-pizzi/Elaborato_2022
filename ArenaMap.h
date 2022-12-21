@@ -104,13 +104,13 @@ public:
     bool
     isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character);
 
-    sf::Vector2i randomPassableTile();
+    sf::Vector2i randomPassableTile() const;
 
     sf::Vector2f
     legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSize, const sf::Vector2f &characterSize,
                     const sf::Vector2f &oldCenter) const;
 
-    int weaponCutXSize(const GameCharacter &character);
+    int weaponCutXSize(const GameCharacter &character) const;
 
     bool isWeaponOverTheWall(const GameCharacter &character);
 

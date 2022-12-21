@@ -329,7 +329,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         return true;
 }
 
-sf::Vector2i ArenaMap::randomPassableTile() {
+sf::Vector2i ArenaMap::randomPassableTile() const {
     srand(time(NULL));
     int tileSpawnX, tileSpawnY;
 
@@ -381,7 +381,7 @@ ArenaMap::legalViewCenter(const sf::Vector2f &pos, const sf::Vector2u &windowSiz
     return newCenter;
 }
 
-int ArenaMap::weaponCutXSize(const GameCharacter &character) {
+int ArenaMap::weaponCutXSize(const GameCharacter &character) const {
     sf::FloatRect delta;
     for (int i = 0; i < solidTiles.size(); i++) {
         //if (((character.weapon->getDegrees() >= 35) && (character.weapon->weaponSprite.getScale().x == 1)) || (character.weapon->getDegrees() <= -35) && (character.weapon->weaponSprite.getScale().x == -1))
