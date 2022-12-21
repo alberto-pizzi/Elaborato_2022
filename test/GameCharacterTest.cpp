@@ -130,6 +130,5 @@ TEST_F (GameCharacterFixture, TestBulletsVectorFillingCorrectness) {
     mike->weapon->shoot({1, 0});
     mike->weapon->shoot({1, 0});
     EXPECT_EQ(mike->weapon->getBullets().size(), 3);
-
 }
 

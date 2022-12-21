@@ -38,3 +38,7 @@ void Bullet::move(const sf::Vector2f &offset, float dt) {
     bulletSprite.setPosition(bulletSprite.getPosition() + currentVelocity);
     updateGlobalPosition(bulletSprite.getGlobalBounds());
 }
+
+float Bullet::getBulletSpeed() const {
+    return bulletSpeed;
+}

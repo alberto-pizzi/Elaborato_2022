@@ -39,6 +39,8 @@ public:
 
     const sf::Vector2f &getBulletDir() const;
 
+    float getBulletSpeed() const;
+
 };
 
 

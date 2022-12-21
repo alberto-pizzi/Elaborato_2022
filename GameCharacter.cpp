@@ -42,14 +42,10 @@ GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsign
     else
         sprite.setTextureRect({0, 0, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y});
 
-    sf::Vector2f spriteCenter = {static_cast<float>(sprite.getTextureRect().width) / 2,
-                                 static_cast<float>(sprite.getTextureRect().height) / 2};
-
     sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * tileSize.x),
                                     static_cast<float>(tilePosition.y * tileSize.y)));
 
-    //pos = sprite.getGlobalBounds(); //this updates coordinates in PosEntity
-    updateGlobalPosition(sprite.getGlobalBounds()); //FIXME
+    updateGlobalPosition(sprite.getGlobalBounds()); //this updates coordinates in PosEntity
 
 }
 
@@ -120,6 +116,10 @@ const std::vector<sf::IntRect> &GameCharacter::getGoDown() const {
 
 const std::vector<sf::IntRect> &GameCharacter::getGoUp() const {
     return goUp;
+}
+
+void GameCharacter::setSpritePos(sf::Vector2f newPos) {
+    sprite.setPosition(newPos);
 }
 
 GameCharacter::~GameCharacter() = default;
