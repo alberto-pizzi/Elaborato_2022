@@ -37,14 +37,8 @@ TEST_F (ArenaMapFixture, TestBulletsDirection) {
 
 TEST_F (ArenaMapFixture, TestBulletCollisionsOnMap) {
 
-    ASSERT_EQ(map->collidesWithSolidsOrBounds(
-            {56 * 32, 13 * 32, static_cast<float>(map->textureManager.getTextureRef("bullet").getSize().x),
-             static_cast<float>(map->textureManager.getTextureRef("bullet").getSize().y)}), true);
-    EXPECT_EQ(map->collidesWithSolidsOrBounds(
-            {44 * 32, 17 * 32, static_cast<float>(map->textureManager.getTextureRef("bullet").getSize().x),
-             static_cast<float>(map->textureManager.getTextureRef("bullet").getSize().y)}), false);
-    EXPECT_EQ(map->collidesWithSolidsOrBounds(
-            {27 * 32, 33 * 32, static_cast<float>(map->textureManager.getTextureRef("bullet").getSize().x),
-             static_cast<float>(map->textureManager.getTextureRef("bullet").getSize().y)}), false);
+    ASSERT_EQ(map->collidesWithSolidsOrBounds({56 * 32, 13 * 32, 19, 8}), true);
+    EXPECT_EQ(map->collidesWithSolidsOrBounds({44 * 32, 17 * 32, 19, 8}), false);
+    EXPECT_EQ(map->collidesWithSolidsOrBounds({27 * 32, 33 * 32, 19, 8}), false);
 }
 

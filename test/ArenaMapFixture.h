@@ -12,10 +12,14 @@
 
 class ArenaMapFixture : public ::testing::Test {
 protected:
+    sf::Texture mikeTex;
+    sf::Texture weaponTex;
+    sf::Texture bulletTex;
     ArenaMap *map;
     sf::Context context;
     std::unique_ptr<Mike> mike;
     sf::RenderWindow fakeWindow;
+    TextureManager fakeTexManager;
 public:
     ArenaMapFixture();
 

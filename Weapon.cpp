@@ -125,6 +125,14 @@ void Weapon::setMagazine(const int remainingBullets, const int totalCapacity) {
     this->magazine.totalCapacity = totalCapacity;
 }
 
+bool Weapon::isEquipped() const {
+    return equipped;
+}
+
+void Weapon::setEquipped(bool equipped) {
+    Weapon::equipped = equipped;
+}
+
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {

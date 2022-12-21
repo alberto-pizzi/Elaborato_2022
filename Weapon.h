@@ -49,6 +49,7 @@ protected:
     std::vector<sf::IntRect> shot;
     std::vector<sf::IntRect> reload;
     float degrees;
+    TextureManager weaponsTextures;
 
     //bullet
     std::vector<std::unique_ptr<Bullet>> bullets;
@@ -100,6 +101,10 @@ public:
     void setTotalBullets(int totalBullets);
 
     void setMagazine(int remainingBullets, int totalCapacity);
+
+    bool isEquipped() const;
+
+    void setEquipped(bool equipped);
 
 };
 

@@ -9,5 +9,12 @@ ArenaMapFixture::~ArenaMapFixture() {
 }
 
 ArenaMapFixture::ArenaMapFixture() {
-    map = new ArenaMap(0, fakeWindow, mike);
+    if ((!mikeTex.loadFromFile("../res/textures/no_hands_mike.png")) &&
+        (!weaponTex.loadFromFile("../res/textures/handgun.png")) &&
+        (!bulletTex.loadFromFile("../res/textures/bullet.png")))
+        std::cerr << "Error opening mike texture" << std::endl;
+    else {
+
+        map = new ArenaMap(0, fakeWindow, mike, mikeTex, weaponTex, bulletTex, fakeTexManager);
+    }
 }

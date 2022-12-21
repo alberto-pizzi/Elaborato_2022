@@ -101,15 +101,13 @@ ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Textu
             sf::Vector2f(static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)));
 }
 
-void ArenaMap::loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
-    loadMapFile(chosenMap);
-    startingMap(window, mike);
-}
-
 ArenaMap::~ArenaMap() = default;
 
-ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
-    loadMap(chosenMap, window, mike);
+ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
+                   const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
+                   const TextureManager &guiTexManager) {
+    loadMapFile(chosenMap);
+    startingMap(window, mike, mikeTexture, weaponTexture, bulletTexture, guiTexManager);
 }
 
 void ArenaMap::loadMapFile(int chosenMap) {
@@ -138,25 +136,25 @@ void ArenaMap::loadMapFile(int chosenMap) {
     -height file (in pixel)
      */
 
-        //take tilemap data from file
-        file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
-             >> this->totalLayers >> this->nameFile >> this->widthFile >> this->heightFile;
-        //loadTextures textures' Map
-        loadTextures();
+    //take tilemap data from file
+    file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
+         >> this->totalLayers >> this->nameFile >> this->widthFile >> this->heightFile;
+    //loadMapTextures textures' Map
+    loadMapTextures();
 
-        //start reading
-        tileMap.reserve(this->totalLayers);
-        for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
-            std::vector<std::vector<std::shared_ptr<Tile>>> rows;
-            rows.reserve(this->maxRowTiles);
-            for (int row = 0; row < this->maxRowTiles; row++) {
-                std::vector<std::shared_ptr<Tile>> columns;
-                columns.reserve(this->maxColumnTiles);
-                for (int column = 0; column < this->maxColumnTiles; column++) {
+    //start reading
+    tileMap.reserve(this->totalLayers);
+    for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
+        std::vector<std::vector<std::shared_ptr<Tile>>> rows;
+        rows.reserve(this->maxRowTiles);
+        for (int row = 0; row < this->maxRowTiles; row++) {
+            std::vector<std::shared_ptr<Tile>> columns;
+            columns.reserve(this->maxColumnTiles);
+            for (int column = 0; column < this->maxColumnTiles; column++) {
                     file >> nTile;
                     columns.emplace_back(
                             new Tile(nTile, this->widthFile, row,
-                                     column, this->textureManager.getTextureRef(this->nameMap),
+                                     column, this->mapTexturesManager.getTextureRef(this->nameMap),
                                      countLayer, this->tileSizeX, this->tileSizeY, chosenMap));
                     if ((countLayer == solid_elements) && (nTile != 0) && isRealWall(chosenMap, nTile))
                         solidTiles.emplace_back(columns[column]);
@@ -169,7 +167,9 @@ void ArenaMap::loadMapFile(int chosenMap) {
         file.close();
 }
 
-void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike) {
+void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
+                           const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
+                           const TextureManager &guiTexManager) {
     this->playerView.reset(
             sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
                           static_cast<float>(0 * this->tileSizeX),
@@ -181,13 +181,8 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     sf::Vector2f firstViewCenter;
     bool legalFirstCenter = false;
 
-    mike = std::unique_ptr<Mike>(
-            new Mike(textureManager.getTextureRef("mike"), textureManager.getTextureRef("handgun"),
-                     textureManager.getTextureRef("bullet"),
-                     spawnTile,
-                     {tileSizeX, tileSizeY},
-                     {32, 32},
-                     true));
+    mike = std::unique_ptr<Mike>(new Mike(mikeTexture, weaponTexture, bulletTexture, spawnTile, guiTexManager,
+                                          {tileSizeX, tileSizeY}, {32, 32}, true));
 
     firstViewCenter = mike->getSpriteCenter();
     sf::Vector2f distanceFromWindowCenter = {
@@ -236,22 +231,10 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     findWallsCoordinates();
 }
 
-void ArenaMap::loadTextures() {
-    textureManager.loadTexture(this->nameMap, this->nameFile); //texture map
+void ArenaMap::loadMapTextures() {
+    mapTexturesManager.loadTexture(this->nameMap, this->nameFile); //texture map
 
-    textureManager.loadTexture("mike", "res/textures/no_hands_mike.png");
-
-    textureManager.loadTexture("handgun",
-                               "res/textures/handgun_hand.png"); //spawning weapons (check that is equal in Playstate)
-
-    textureManager.loadTexture("assaultRifle", "res/textures/assault_rifle.png"); //FIXME
-
-    textureManager.loadTexture("shotgun", "res/textures/shotgun.png"); //FIXME
-
-    //bullet
-    textureManager.loadTexture("bullet", "res/textures/bullet.png"); //FIXME
-
-    //...
+    //other  map tile sheet files...
 }
 
 bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character) {

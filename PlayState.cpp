@@ -199,11 +199,15 @@ void PlayState::handleInput() {
 PlayState::PlayState(Game *game) {
     this->game = game;
 
-    //create random map
-    arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike);
+    this->loadTextures();
 
-    loadTextures();
-    viewfinderSprite.setTexture(textureManager.getTextureRef("viewfinder"));
+    //create random map
+    arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
+                            weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
+                            guiTextures);
+
+
+    viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));
 
     this->round = 1;
 
@@ -238,18 +242,20 @@ PlayState::~PlayState() {
 }
 
 void PlayState::loadTextures() {
-    //load viewfinder
-    textureManager.loadTexture("viewfinder", "res/textures/viewfinder.png");
+    //load character textures
+    charactersTextures.loadTexture("mike", "res/textures/mike.png");
+
+    //load gui textures
+    guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
+    guiTextures.loadTexture("healthBar", "res/textures/progressbar.png");
 
     //load weapons (general, also spawning weapon)
-    textureManager.loadTexture("handgun", "res/textures/handgun_hand.png"); //FIXME
+    weaponsTextures.loadTexture("handgun", "res/textures/handgun_hand.png");
+    weaponsTextures.loadTexture("assaultRifle", "res/textures/assault_rifle.png");
+    weaponsTextures.loadTexture("shotgun", "res/textures/shotgun.png");
 
-    textureManager.loadTexture("assaultRifle", "res/textures/assault_rifle.png"); //FIXME
-
-    textureManager.loadTexture("shotgun", "res/textures/shotgun.png"); //FIXME
-
-    //bullet
-    textureManager.loadTexture("bullet", "res/textures/bullet.png"); //FIXME
+    //load bullets
+    weaponsTextures.loadTexture("bullet", "res/textures/bullet.png");
 
 }
 

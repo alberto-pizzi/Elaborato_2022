@@ -24,6 +24,7 @@ private:
     sf::Vector2f hitBoxWeaponSize;
 
     TextureManager texManager;
+
     sf::Sprite healthBar;
     sf::Font numbersOrTitlesFont;
     sf::Font textFont;
@@ -52,7 +53,7 @@ private:
     sf::Vector2i distanceFromWindowLimits = {16, 16};
 public:
     Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
-        const sf::Texture &weaponTexture);
+        const sf::Texture &weaponTexture, const TextureManager &guiTexManager);
 
     const std::string &getPointsDisplayed() const;
 

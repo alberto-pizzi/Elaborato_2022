@@ -26,7 +26,7 @@ private:
     sf::View gameView;
     sf::View guiView;
     ArenaMap *arenaMap;
-    //TODO add pause menu method - MenuState.cpp (loadTextures game)
+    //TODO add pause menu method - MenuState.cpp (loadMapTextures game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
     bool keyStates[4] = {false, false, false, false};
@@ -46,7 +46,11 @@ private:
     bool orderedReloading = false;
 
     sf::Sprite viewfinderSprite;
-    TextureManager textureManager;
+
+    //texture managers
+    TextureManager weaponsTextures;
+    TextureManager guiTextures;
+    TextureManager charactersTextures;
 public:
     explicit PlayState(Game *game);
 

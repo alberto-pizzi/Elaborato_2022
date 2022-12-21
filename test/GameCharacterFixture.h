@@ -18,6 +18,7 @@ protected:
     sf::Texture bulletTex;
     sf::Context context;
     std::unique_ptr<Mike> mike;
+    TextureManager fakeTexManager;
 public:
     GameCharacterFixture();
 

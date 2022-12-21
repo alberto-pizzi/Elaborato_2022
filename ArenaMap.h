@@ -57,7 +57,6 @@ private:
 
         bool isWalkable(int tile, int layerNumber, int chosenMap) const;
     };
-
 protected:
     struct Walls {
         sf::Vector2f begin;
@@ -82,22 +81,25 @@ protected:
     std::unique_ptr<PosEntity> entity;
     sf::Vector2i tileView = {40, 23};
 public:
-    TextureManager textureManager;
+    TextureManager mapTexturesManager;
     sf::View playerView;
 
-    explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
+    explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike,
+                      const sf::Texture &mikeTexture,
+                      const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
+                      const TextureManager &guiTexManager);
 
     virtual ~ArenaMap();
 
     int getTotalLayers() const;
 
-    void loadMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
-
     void loadMapFile(int chosenMap);
 
-    void startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike);
+    void startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
+                     const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
+                     const TextureManager &guiTexManager);
 
-    void loadTextures();
+    void loadMapTextures();
 
     void drawLayer(sf::RenderWindow &window, int layer) const;
 

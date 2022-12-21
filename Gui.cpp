@@ -5,8 +5,8 @@
 #include "Gui.h"
 
 Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
-         const sf::Texture &weaponTexture) : weaponTexture(weaponTexture) {
-    loadTextures();
+         const sf::Texture &weaponTexture, const TextureManager &guiTexManager) : weaponTexture(weaponTexture) {
+    texManager = guiTexManager;
     std::cout << "i'm GUI constructor" << std::endl;
     healthBar.setTexture(texManager.getTextureRef("healthBar"));
 
@@ -61,7 +61,7 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
 }
 
 void Gui::loadTextures() {
-    texManager.loadTexture("healthBar", "res/textures/progressbar.png");
+    //texManager.loadTexture("healthBar", "res/textures/progressbar.png");
 }
 
 void Gui::drawGui(sf::RenderWindow &window) {
