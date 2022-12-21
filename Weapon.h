@@ -41,7 +41,8 @@ protected:
     int damage;
     float reloadTime;
     bool equipped;
-    float nextShotDelay; //in seconds
+    sf::Time nextShotDelay; //in seconds
+
     std::string weaponName;
     sf::Texture weaponTexture;
     Magazine magazine;
@@ -55,6 +56,7 @@ protected:
     std::vector<std::unique_ptr<Bullet>> bullets;
     sf::Texture bulletTexture;
 public:
+    sf::Clock shotClock;
     bool isCut = false;
     int cutValueX = 0;
     sf::Sprite weaponSprite;
@@ -62,7 +64,7 @@ public:
     sf::Vector2f startCenterForTranslation[4]; //4 directions
     Animation currentAnimation{idleWeapon, 10.0f};
 
-    Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,
+    Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, sf::Time shotDelay,
            float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
            std::string weaponName, bool infiniteBullets = false);
 
@@ -75,8 +77,6 @@ public:
     bool thereAreRemainingBullets() const;
 
     void drawWeapon(sf::RenderWindow &window);
-
-    float getNextShotDelay() const;
 
     int getTotalBullets() const;
 
@@ -105,6 +105,8 @@ public:
     bool isEquipped() const;
 
     void setEquipped(bool equipped);
+
+    const sf::Time &getNextShotDelay() const;
 
 };
 

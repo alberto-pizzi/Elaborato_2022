@@ -65,12 +65,9 @@ void PlayState::update(float dt) {
 
 void PlayState::handleInput() {
     auto frame_time = frame_clock.restart();
+    sf::Time shotTimer;
     sf::Event event;
     sf::Vector2f normalizedVector;
-    if (mike->nextAttackTimeCount >=
-        50) //set limits to prevent overflow during counting (these numbers represent wide margin of prevention)
-        mike->nextAttackTimeCount = 20;
-    mike->nextAttackTimeCount += frame_time.asSeconds();
 
     //TODO check if mouse inputs are in the correct lines
 
@@ -106,9 +103,8 @@ void PlayState::handleInput() {
                 if ((mike->weapon->getWeaponName() != "AssaultRifle") &&
                     (event.mouseButton.button == sf::Mouse::Left)) {
                     if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
-                        (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
+                        (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
-                        mike->nextAttackTimeCount = 0;
                         isActiveAnimation = true;
                     }
                 }
@@ -144,11 +140,10 @@ void PlayState::handleInput() {
     //repeated input (automatic fire, assault rifle)
     if ((mike->weapon->getWeaponName() == "AssaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
         if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
-            (mike->nextAttackTimeCount >= mike->weapon->getNextShotDelay())) {
+            (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
             mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
-            mike->nextAttackTimeCount = 0;
             isActiveAnimation = true;
         }
 

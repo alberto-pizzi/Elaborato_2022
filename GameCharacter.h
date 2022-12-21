@@ -36,7 +36,6 @@ protected:
     std::vector<sf::IntRect> idle;
     sf::Vector2i fileTextureRectSkinSize;
 public:
-    double nextAttackTimeCount = 20; //high number for start counting
     std::unique_ptr<Weapon> weapon;
     Animation currentAnimation{idle, 10.0f};
 

@@ -13,6 +13,7 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     bullets.emplace_back(new ShotgunBullet(bulletTexture, 1900, barrelHole, this->weaponSprite.getPosition(),
                                            this->degrees, this->weaponSprite.getOrigin(),
                                            this->weaponSprite.getScale(), normalizedBulletDir));
+    shotClock.restart();
 
     std::cout << " bullets: " << this->bullets.size() << std::endl;
     this->magazine.remainingBullets--;
@@ -20,7 +21,7 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
 
 Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &shotgunBulletTexture,
                  int totBullets,
-                 int damage, float shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
+                 int damage, sf::Time shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
         equipped,
         handgunTexture,
         totBullets,

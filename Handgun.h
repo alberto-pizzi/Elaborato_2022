@@ -15,7 +15,7 @@ private:
     const sf::Vector2f barrelHole = {31, 13};
 public:
     Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
-            int totBullets = -999, int damage = 2, float shotDelay = 0.4f, float reloadTime = 1,
+            int totBullets = -999, int damage = 2, sf::Time shotDelay = sf::seconds(0.4f), float reloadTime = 1,
             int magazineCapacity = 12, int remainingBullets = 12); //handgun has infinite bullets (-999)
     void shoot(const sf::Vector2f &normalizedBulletDir) override;
 };

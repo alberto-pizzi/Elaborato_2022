@@ -26,7 +26,7 @@ bool Weapon::reloadWeapon() {
         return false;
 }
 
-Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, float shotDelay,
+Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, sf::Time shotDelay,
                float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
                std::string weaponName, bool infiniteBullets)
         : equipped(equipped), totalBullets(totBullets), damage(damage), nextShotDelay(shotDelay),
@@ -59,10 +59,6 @@ bool Weapon::thereAreRemainingBullets() const {
         return true;
     else
         return false;
-}
-
-float Weapon::getNextShotDelay() const {
-    return nextShotDelay;
 }
 
 int Weapon::getTotalBullets() const {
@@ -131,6 +127,10 @@ bool Weapon::isEquipped() const {
 
 void Weapon::setEquipped(bool equipped) {
     Weapon::equipped = equipped;
+}
+
+const sf::Time &Weapon::getNextShotDelay() const {
+    return nextShotDelay;
 }
 
 

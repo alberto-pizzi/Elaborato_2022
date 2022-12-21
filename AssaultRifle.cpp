@@ -13,13 +13,15 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
     bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 1700, barrelHole, this->weaponSprite.getPosition(),
                                                 this->degrees, this->weaponSprite.getOrigin(),
                                                 this->weaponSprite.getScale(), normalizedBulletDir));
+    shotClock.restart();
+
 
     this->magazine.remainingBullets--;
 }
 
 AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
                            const sf::Texture &assaultRifleBulletTexture,
-                           int totBullets, int damage, float shotDelay, float reloadTime, int magazineCapacity,
+                           int totBullets, int damage, sf::Time shotDelay, float reloadTime, int magazineCapacity,
                            int remainingBullets) : Weapon(
         equipped,
         handgunTexture,

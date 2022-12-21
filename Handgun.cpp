@@ -13,13 +13,15 @@ void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     bullets.emplace_back(new HandgunBullet(bulletTexture, 1200, barrelHole, this->weaponSprite.getPosition(),
                                            this->degrees, this->weaponSprite.getOrigin(),
                                            this->weaponSprite.getScale(), normalizedBulletDir));
+    shotClock.restart();
+
 
     this->magazine.remainingBullets--;
 }
 
 Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
                  int totBullets,
-                 int damage, float shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
+                 int damage, sf::Time shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
         equipped,
         handgunTexture,
         totBullets,
