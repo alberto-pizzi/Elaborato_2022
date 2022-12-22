@@ -70,15 +70,17 @@ void PlayState::update(float dt) {
     //update bonuses
     if (!this->spawner->bonuses.empty()) {
         for (int i = 0; i < this->spawner->bonuses.size(); i++) {
-            if (this->spawner->bonuses[i]->getBonusType() == NEW_WEAPON) {
-                if (this->spawner->bonuses[i]->isActiveAnimation)
-                    this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                                           this->spawner->bonuses[i]->isEndedAnimation,
-                                                                                           this->spawner->bonuses[i]->isActiveAnimation);
-                //TODO add other bonuses updates
-            }
-            if (this->spawner->bonuses[i]->getBonusType() == COINS) {
-                this->spawner->bonuses[i]->currentAnimation.update(dt);
+            switch (this->spawner->bonuses[i]->getBonusType()) {
+                case NEW_WEAPON:
+                    if (this->spawner->bonuses[i]->isActiveAnimation)
+                        this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                               this->spawner->bonuses[i]->isEndedAnimation,
+                                                                                               this->spawner->bonuses[i]->isActiveAnimation);
+                    break;
+                case COINS:
+                    this->spawner->bonuses[i]->currentAnimation.update(dt);
+                    break;
+                    //TODO add other bonuses updates
             }
             //check if stayTime is over
             if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
