@@ -38,3 +38,7 @@ void Spawner::spawnWeapon() {
                                        {40 * 32, 24 * 32})); //FIXME add random spawn
 }
 
+void Spawner::spawnCoin() {
+    bonuses.emplace_back(new Coin(bonusesTextures.getTextureRef("coin"), {40 * 32, 24 * 32}));
+}
+

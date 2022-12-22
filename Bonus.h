@@ -30,11 +30,12 @@ public:
     bool isActiveAnimation = false;
     bool isEndedAnimation = false;
     bool despawnStarted = false;
+    bool isInfiniteAnimation = false;
 
     Animation currentAnimation{animationFrames, 10.f};
 
     Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
-          std::vector<sf::IntRect> animationFrames, int bonusType);
+          std::vector<sf::IntRect> animationFrames, int bonusType, bool isInfinite);
 
     virtual void doSpecialAction(GameCharacter &character) = 0;
 
@@ -45,7 +46,7 @@ public:
     void drawBonus(sf::RenderWindow &window);
 
     virtual void
-    startDespawining() = 0; //WARNING: call this when you want despawning a new weapon (for startDespawining animation)
+    startDespawining(); //WARNING: call this when you want despawning a new weapon (for startDespawining animation)
 
     int getBonusType() const;
 

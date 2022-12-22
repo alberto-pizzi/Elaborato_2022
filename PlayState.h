@@ -40,6 +40,7 @@ private:
     //mouse input positioning
     sf::Vector2i localPosition;
     sf::Vector2f worldPos;
+    sf::Sprite viewfinderSprite;
 
     //animation settings
     bool isEnded = false;
@@ -47,9 +48,7 @@ private:
     bool isReloading = false;
     bool orderedReloading = false;
 
-    bool isSpawned = false;
-
-    sf::Sprite viewfinderSprite;
+    bool isSpawned = false; //TODO remove it
 
     //texture managers
     TextureManager weaponsTextures;

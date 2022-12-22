@@ -13,6 +13,7 @@
 #include "Bonus.h"
 #include "NewWeapon.h"
 #include "TextureManager.h"
+#include "Coin.h"
 
 
 class Spawner {
@@ -40,6 +41,8 @@ public:
     void despawnBonus(int &bonusIndex);
 
     void drawBonuses(sf::RenderWindow &window);
+
+    void spawnCoin();
 
 };
 

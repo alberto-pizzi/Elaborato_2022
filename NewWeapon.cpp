@@ -37,11 +37,12 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
 
 NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
                      int points, sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON) {
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, false) {
 
 
     Dice dice(totalWeapons);
 
+    this->sprite.setScale(sf::Vector2f(2, 2));
     this->weaponsTextures = weaponsTextures;
 
     this->selectWeaponToSpawn(dice.roll(1));

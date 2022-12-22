@@ -77,12 +77,15 @@ void PlayState::update(float dt) {
                                                                                            this->spawner->bonuses[i]->isActiveAnimation);
                 //TODO add other bonuses updates
             }
+            if (this->spawner->bonuses[i]->getBonusType() == COINS) {
+                this->spawner->bonuses[i]->currentAnimation.update(dt);
+            }
             //check if stayTime is over
             if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
                 this->spawner->bonuses[i]->getStayTime()) {
                 this->spawner->bonuses[i]->startDespawining();
                 this->spawner->bonuses[i]->isActiveAnimation = true;
-                if (this->spawner->bonuses[i]->isEndedAnimation) {
+                if (this->spawner->bonuses[i]->isEndedAnimation || this->spawner->bonuses[i]->isInfiniteAnimation) {
                     this->spawner->despawnBonus(i);
                     std::cout << "DESPAWN" << std::endl;
                 }
@@ -296,6 +299,7 @@ void PlayState::loadTextures() {
 
     //load bonuses textures
     bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
+    bonusesTextures.loadTexture("coin", "res/textures/coin.png");
 
 }
 
