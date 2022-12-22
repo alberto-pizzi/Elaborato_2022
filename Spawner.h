@@ -11,22 +11,36 @@
 
 #include "GameCharacter.h"
 #include "Bonus.h"
+#include "NewWeapon.h"
 #include "TextureManager.h"
+
 
 class Spawner {
 private:
+    friend class PlayState;
+
     std::vector<std::unique_ptr<GameCharacter>> enemies;
     std::vector<std::unique_ptr<Bonus>> bonuses;
     std::vector<std::unique_ptr<GameCharacter>> bosses;
-    TextureManager texManager;
+    TextureManager enemiesTextures;
+    TextureManager bonusesTextures;
+    TextureManager weaponsTextures;
 public:
-    Spawner(const TextureManager &textureManager);
+    Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
+            const TextureManager &weaponsTextures);
 
     const std::vector<std::unique_ptr<GameCharacter>> &getEnemies() const;
 
     const std::vector<std::unique_ptr<Bonus>> &getBonuses() const;
 
     const std::vector<std::unique_ptr<GameCharacter>> &getBosses() const;
+
+    void spawnWeapon();
+
+    void despawnBonus(int &bonusIndex);
+
+    void drawBonuses(sf::RenderWindow &window);
+
 };
 
 

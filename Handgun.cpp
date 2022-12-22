@@ -14,8 +14,6 @@ void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
                                            this->degrees, this->weaponSprite.getOrigin(),
                                            this->weaponSprite.getScale(), normalizedBulletDir));
     shotClock.restart();
-
-
     this->magazine.remainingBullets--;
 }
 

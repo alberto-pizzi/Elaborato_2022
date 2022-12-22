@@ -66,4 +66,3 @@ void Animation::updateNotCyclicalAnimation(float dt, bool &end, bool &isActiveAn
 int Animation::getOriginalAnimationSizeX() const {
     return originalAnimationSizeX;
 }
-

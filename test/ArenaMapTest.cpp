@@ -7,7 +7,7 @@
 #include "ArenaMapFixture.h"
 
 TEST_F (ArenaMapFixture, TestBulletsDirection) {
-    //set basic spawn
+    //set basic spawned
     mike->setSpritePos({40 * 32, 24 * 32});
     mike->updateGlobalPosition(mike->getSprite().getGlobalBounds());
 

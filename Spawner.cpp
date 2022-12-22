@@ -16,7 +16,25 @@ const std::vector<std::unique_ptr<GameCharacter>> &Spawner::getBosses() const {
     return bosses;
 }
 
-Spawner::Spawner(const TextureManager &textureManager) {
-    this->texManager = textureManager;
+Spawner::Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
+                 const TextureManager &weaponsTextures) {
+    this->enemiesTextures = enemiesTextures;
+    this->bonusesTextures = bonusesTextures;
+    this->weaponsTextures = weaponsTextures;
+}
+
+void Spawner::despawnBonus(int &bonusIndex) {
+    bonuses.erase(bonuses.begin() + bonusIndex);
+    bonusIndex--;
+}
+
+void Spawner::drawBonuses(sf::RenderWindow &window) {
+    for (int i = 0; i < bonuses.size(); i++)
+        bonuses[i]->drawBonus(window);
+}
+
+void Spawner::spawnWeapon() {
+    bonuses.emplace_back(new NewWeapon(weaponsTextures, bonusesTextures.getTextureRef("weaponBox"),
+                                       {40 * 32, 24 * 32})); //FIXME add random spawn
 }
 

@@ -176,7 +176,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
                           static_cast<float>(this->tileView.x * this->tileSizeX),
                           static_cast<float>(this->tileView.y * this->tileSizeY)));
 
-    //random spawn
+    //random spawned
     sf::Vector2i spawnTile = randomPassableTile();
     sf::Vector2f firstViewCenter;
     bool legalFirstCenter = false;

@@ -20,7 +20,6 @@
 const int nMap = 1;
 
 
-
 class PlayState : public GameState {
 private:
     sf::View gameView;
@@ -35,6 +34,9 @@ private:
     int round;
     bool skinDirection[4] = {false, false, false, false};
 
+    //random (number of dice faces in PlayState constructor)
+    Dice dice;
+
     //mouse input positioning
     sf::Vector2i localPosition;
     sf::Vector2f worldPos;
@@ -45,12 +47,15 @@ private:
     bool isReloading = false;
     bool orderedReloading = false;
 
+    bool isSpawned = false;
+
     sf::Sprite viewfinderSprite;
 
     //texture managers
     TextureManager weaponsTextures;
     TextureManager guiTextures;
     TextureManager charactersTextures;
+    TextureManager bonusesTextures;
 public:
     explicit PlayState(Game *game);
 
@@ -71,6 +76,8 @@ public:
     void loadTextures();
 
     sf::Vector2f normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character);
+
+    bool isRandomAbleTo(float percentage, int nRolls);
 };
 
 #endif //ELABORATO_PLAYSTATE_H

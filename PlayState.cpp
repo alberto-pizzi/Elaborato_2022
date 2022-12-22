@@ -22,6 +22,9 @@ void PlayState::draw(float dt) const {
 
     this->arenaMap->drawLayer(this->game->window, design_elements);
 
+    //draw bonuses
+    this->spawner->drawBonuses(this->game->window);
+
     //draw mike and his weapon
     if (!skinDirection[UP]) {
         this->mike->drawEntity(this->game->window);
@@ -30,6 +33,8 @@ void PlayState::draw(float dt) const {
         this->mike->weapon->drawWeapon(this->game->window);
         this->mike->drawEntity(this->game->window);
     }
+
+
 
     //draw bullets
     this->mike->weapon->drawBullets(this->game->window, dt); //FIXME check correctness layer and collisions
@@ -52,6 +57,41 @@ void PlayState::update(float dt) {
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //std::cout<<"SIZE: "<<mike->weapon->getBullets().size()<<std::endl;
+
+    /*
+    if ((!isSpawned) && isRandomAbleTo(40,100)){
+        this->spawner->spawnWeapon();
+        std::cout<<"SPAWNED"<<std::endl;
+        isSpawned = true;
+    }
+     */
+
+
+    //update bonuses
+    if (!this->spawner->bonuses.empty()) {
+        for (int i = 0; i < this->spawner->bonuses.size(); i++) {
+            if (this->spawner->bonuses[i]->getBonusType() == NEW_WEAPON) {
+                if (this->spawner->bonuses[i]->isActiveAnimation)
+                    this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                           this->spawner->bonuses[i]->isEndedAnimation,
+                                                                                           this->spawner->bonuses[i]->isActiveAnimation);
+                //TODO add other bonuses updates
+            }
+            //check if stayTime is over
+            if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
+                this->spawner->bonuses[i]->getStayTime()) {
+                this->spawner->bonuses[i]->startDespawining();
+                this->spawner->bonuses[i]->isActiveAnimation = true;
+                if (this->spawner->bonuses[i]->isEndedAnimation) {
+                    this->spawner->despawnBonus(i);
+                    std::cout << "DESPAWN" << std::endl;
+                }
+            }
+            if (this->spawner->bonuses.empty())
+                break;
+        }
+
+    }
 
 
     mike->weapon->updateBullets(arenaMap);
@@ -191,10 +231,12 @@ void PlayState::handleInput() {
 
 }
 
-PlayState::PlayState(Game *game) {
+PlayState::PlayState(Game *game) : dice(1000) {
     this->game = game;
 
     this->loadTextures();
+
+    this->spawner = std::unique_ptr<Spawner>(new Spawner(charactersTextures, bonusesTextures, weaponsTextures));
 
     //create random map
     arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
@@ -252,6 +294,9 @@ void PlayState::loadTextures() {
     //load bullets
     weaponsTextures.loadTexture("bullet", "res/textures/bullet.png");
 
+    //load bonuses textures
+    bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
+
 }
 
 sf::Vector2f
@@ -259,4 +304,15 @@ PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const Game
     sf::Vector2f origin = character.getSpriteCenter();
     sf::Vector2f translation = viewfinderPos - origin;
     return normalize(translation);
+}
+
+bool PlayState::isRandomAbleTo(float percentage, int nRolls) { //TODO shift to spawner class
+
+    float restPercentage = 1 - (percentage / 100);
+
+    int chance = dice.roll(nRolls);
+
+    if (static_cast<float>(chance) >= (static_cast<float>(nRolls * dice.getFaces())) * restPercentage)
+        return true;
+    return false;
 }

@@ -8,6 +8,7 @@
 #include "GameCharacter.h"
 #include "GameException.h"
 #include "Gui.h"
+#include "Bonus.h"
 
 enum Directions {
     LEFT = 0,
@@ -22,6 +23,7 @@ enum typeOfWeapon {
 class Mike : public GameCharacter {
 private:
     int killStreak;
+    std::vector<std::unique_ptr<Bonus>> mikeBonuses;
 public:
     Gui gui;
 
