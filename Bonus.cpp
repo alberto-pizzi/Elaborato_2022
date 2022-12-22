@@ -21,8 +21,8 @@ Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vect
     sprite.setTextureRect(currentAnimation.getCurrentRect());
 }
 
-bool Bonus::isAbove(const GameCharacter &character) const {
-    if (character.getSprite().getGlobalBounds().intersects(this->sprite.getGlobalBounds()))
+bool Bonus::isAbove(const sf::FloatRect &characterGlobalPos) const {
+    if (characterGlobalPos.intersects(this->sprite.getGlobalBounds()))
         return true;
     else
         return false;

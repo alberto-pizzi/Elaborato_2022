@@ -20,6 +20,10 @@
 
 class ArenaMap;
 
+enum AnimationKeySteps {
+    ENDED = 0, ACTIVE, RELOADING, ORDERED_RELOADING,
+};
+
 class Weapon {
 private:
 
@@ -36,6 +40,7 @@ protected:
     enum Directions {
         LEFT = 0, RIGHT, UP, DOWN,
     };
+
     int totalBullets;
     bool infiniteBullets = false;
     int damage;
@@ -52,10 +57,12 @@ protected:
     float degrees;
     TextureManager weaponsTextures; //TODO remove it
 
+
     //bullet
     std::vector<std::unique_ptr<Bullet>> bullets;
     sf::Texture bulletTexture;
 public:
+    bool animationKeyStep[4] = {false, false, false, false};
     sf::Clock shotClock;
     bool isCut = false;
     int cutValueX = 0;

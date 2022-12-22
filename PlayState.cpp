@@ -70,6 +70,8 @@ void PlayState::update(float dt) {
     //update bonuses
     if (!this->spawner->bonuses.empty()) {
         for (int i = 0; i < this->spawner->bonuses.size(); i++) {
+            //TODO check if the way which ordered is correct
+
             switch (this->spawner->bonuses[i]->getBonusType()) {
                 case NEW_WEAPON:
                     if (this->spawner->bonuses[i]->isActiveAnimation)
@@ -79,10 +81,15 @@ void PlayState::update(float dt) {
                     break;
                 case COINS:
                     this->spawner->bonuses[i]->currentAnimation.update(dt);
+                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds())) {
+                        std::cout << "COLLECTED COIN!" << std::endl;
+                        this->spawner->despawnBonus(i);
+                    }
                     break;
                     //TODO add other bonuses updates
             }
-            //check if stayTime is over
+            if (this->spawner->bonuses.empty()) //these are for prevent memory leak
+                break;
             if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
                 this->spawner->bonuses[i]->getStayTime()) {
                 this->spawner->bonuses[i]->startDespawining();
@@ -101,7 +108,7 @@ void PlayState::update(float dt) {
 
     mike->weapon->updateBullets(arenaMap);
     //updateNotCyclicalAnimation Gui
-    if (isEnded)
+    if (mike->weapon->animationKeyStep[AnimationKeySteps::ENDED])
         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                   mike->weapon->isInfiniteBullets());
     mike->gui.updatePoints(mike->getPoints());
@@ -147,20 +154,20 @@ void PlayState::handleInput() {
             case sf::Event::MouseButtonPressed:
                 if ((mike->weapon->getWeaponName() != "AssaultRifle") &&
                     (event.mouseButton.button == sf::Mouse::Left)) {
-                    if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
+                    if ((!mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING]) &&
+                        (mike->weapon->thereAreRemainingBullets()) &&
                         (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
-                        isActiveAnimation = true;
+                        mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
                     }
                 }
                 break;
-            case sf::Event::KeyReleased: //single input
+            case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::R) {
-                    std::cout << "RELOAD!" << std::endl;
-                    if (mike->weapon->reloadWeapon()) { //FIXME add correct texture animation
-                        isActiveAnimation = true;
-                        orderedReloading = true;
-                        isReloading = true;
+                    if (mike->weapon->reloadWeapon()) {
+                        mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
+                        mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] = true;
+                        mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING] = true;
                         std::cout << "RELOAD DONE!" << std::endl;
                     }
                 }
@@ -184,12 +191,13 @@ void PlayState::handleInput() {
 
     //repeated input (automatic fire, assault rifle)
     if ((mike->weapon->getWeaponName() == "AssaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
-        if ((!isReloading) && (mike->weapon->thereAreRemainingBullets()) &&
+        if ((!mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING]) &&
+            (mike->weapon->thereAreRemainingBullets()) &&
             (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
             mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
-            isActiveAnimation = true;
+            mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
         }
 
     if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
@@ -218,11 +226,14 @@ void PlayState::handleInput() {
     }
 
     //update weapon animation if you make an action as shooting or reloading
-    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(), isEnded, isActiveAnimation);
+    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
+                                                              mike->weapon->animationKeyStep[AnimationKeySteps::ENDED],
+                                                              mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE]);
 
-    if (orderedReloading && isEnded) {
-        isReloading = false;
-        orderedReloading = false;
+    if (mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] &&
+        mike->weapon->animationKeyStep[AnimationKeySteps::ENDED]) {
+        mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING] = false;
+        mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] = false;
     }
 
     mike->setWeaponPosToShouldersPos();
@@ -303,6 +314,7 @@ void PlayState::loadTextures() {
     bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
     bonusesTextures.loadTexture("coin", "res/textures/coin.png");
 
+    //add here all game textures...
 }
 
 sf::Vector2f

@@ -22,6 +22,10 @@ const int nMap = 1;
 
 class PlayState : public GameState {
 private:
+    enum InputKeys {
+        E = 0,
+    };
+
     sf::View gameView;
     sf::View guiView;
     ArenaMap *arenaMap;
@@ -41,14 +45,6 @@ private:
     sf::Vector2i localPosition;
     sf::Vector2f worldPos;
     sf::Sprite viewfinderSprite;
-
-    //animation settings
-    bool isEnded = false;
-    bool isActiveAnimation = false;
-    bool isReloading = false;
-    bool orderedReloading = false;
-
-    bool isSpawned = false; //TODO remove it
 
     //texture managers
     TextureManager weaponsTextures;

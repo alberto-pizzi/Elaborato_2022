@@ -10,6 +10,7 @@
 #include <memory>
 #include "Dice.h"
 
+
 enum BonusType {
     NEW_WEAPON = 0, AMMUNITION, COINS, INCREASED_DAMAGE, LIFE_POINTS, PROTECTION_BUBBLE, NUKE,
 };
@@ -24,8 +25,6 @@ protected:
     sf::Sprite sprite;
     sf::Texture texture;
     std::vector<sf::IntRect> animationFrames;
-
-
 public:
     bool isActiveAnimation = false;
     bool isEndedAnimation = false;
@@ -41,7 +40,7 @@ public:
 
     void addPoints(GameCharacter &target) const;
 
-    bool isAbove(const GameCharacter &character) const;
+    bool isAbove(const sf::FloatRect &characterGlobalPos) const;
 
     void drawBonus(sf::RenderWindow &window);
 
