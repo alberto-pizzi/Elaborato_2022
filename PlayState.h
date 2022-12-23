@@ -73,6 +73,8 @@ public:
     sf::Vector2f normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character);
 
     //bool isRandomAbleTo(float percentage, int nRolls);
+
+    void updateBonuses(float dt);
 };
 
 #endif //ELABORATO_PLAYSTATE_H

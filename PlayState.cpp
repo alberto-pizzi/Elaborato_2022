@@ -66,57 +66,8 @@ void PlayState::update(float dt) {
     }
      */
 
-
-    //update bonuses
-    if (!this->spawner->bonuses.empty()) {
-        for (int i = 0; i < this->spawner->bonuses.size(); i++) {
-            //TODO check if the way which ordered is correct
-
-            switch (this->spawner->bonuses[i]->getBonusType()) {
-                case NEW_WEAPON:
-                    if (this->spawner->bonuses[i]->isActiveAnimation)
-                        this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                                               this->spawner->bonuses[i]->isEndedAnimation,
-                                                                                               this->spawner->bonuses[i]->isActiveAnimation);
-                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds()) &&
-                        (sf::Keyboard::isKeyPressed(sf::Keyboard::E))) {
-                        this->spawner->bonuses[i]->doSpecialAction(*mike);
-                        mike->gui.updateWeaponType(weaponsTextures.getTextureRef(mike->weapon->getWeaponName()),
-                                                   mike->weapon->currentAnimation.idleFrames[0],
-                                                   mike->weapon->hitBox.getSize());
-                        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
-                                                  mike->weapon->getTotalBullets(),
-                                                  mike->weapon->isInfiniteBullets());
-                        this->spawner->despawnBonus(i);
-                    }
-                    break;
-                case COINS:
-                    this->spawner->bonuses[i]->currentAnimation.update(dt);
-                    //collect coin
-                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds())) {
-                        //std::cout << "COLLECTED COIN!" << std::endl;
-                        this->spawner->bonuses[i]->doSpecialAction(*mike);
-                        this->spawner->despawnBonus(i);
-                    }
-                    break;
-                    //TODO add other bonuses updates
-            }
-            if (this->spawner->bonuses.empty()) //these are for prevent memory leak
-                break;
-            if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
-                this->spawner->bonuses[i]->getStayTime()) {
-                this->spawner->bonuses[i]->startDespawining();
-                this->spawner->bonuses[i]->isActiveAnimation = true;
-                if (this->spawner->bonuses[i]->isEndedAnimation || this->spawner->bonuses[i]->isInfiniteAnimation) {
-                    this->spawner->despawnBonus(i);
-                    std::cout << "DESPAWN" << std::endl;
-                }
-            }
-            if (this->spawner->bonuses.empty())
-                break;
-        }
-
-    }
+    //update bonuses (updates animation and despawn them)
+    this->updateBonuses(dt);
 
 
     mike->weapon->updateBullets(arenaMap);
@@ -185,7 +136,6 @@ void PlayState::handleInput() {
                     }
                 }
                 break;
-
         }
     }
 
@@ -307,7 +257,7 @@ PlayState::~PlayState() {
 
 void PlayState::loadTextures() {
     //load character textures
-    charactersTextures.loadTexture("mike", "res/textures/mike.png");
+    charactersTextures.loadTexture("mike", "res/textures/no_hands_mike.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
@@ -333,6 +283,62 @@ PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const Game
     sf::Vector2f origin = character.getSpriteCenter();
     sf::Vector2f translation = viewfinderPos - origin;
     return normalize(translation);
+}
+
+void PlayState::updateBonuses(float dt) {
+    if (!this->spawner->bonuses.empty()) {
+        for (int i = 0; i < this->spawner->bonuses.size(); i++) {
+            //TODO check if the way which ordered is correct
+
+            switch (this->spawner->bonuses[i]->getBonusType()) {
+                case NEW_WEAPON:
+                    if (this->spawner->bonuses[i]->isActiveAnimation)
+                        this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                               this->spawner->bonuses[i]->isEndedAnimation,
+                                                                                               this->spawner->bonuses[i]->isActiveAnimation);
+                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds()) &&
+                        (sf::Keyboard::isKeyPressed(sf::Keyboard::E))) {
+                        this->spawner->bonuses[i]->doSpecialAction(*mike);
+                        mike->gui.updateWeaponType(weaponsTextures.getTextureRef(mike->weapon->getWeaponName()),
+                                                   mike->weapon->currentAnimation.idleFrames[0],
+                                                   mike->weapon->hitBox.getSize());
+                        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
+                                                  mike->weapon->getTotalBullets(),
+                                                  mike->weapon->isInfiniteBullets());
+                        this->spawner->despawnBonus(i);
+                        i--;
+                    }
+                    break;
+                case COINS:
+                    this->spawner->bonuses[i]->currentAnimation.update(dt);
+                    //collect coin
+                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds())) {
+                        //std::cout << "COLLECTED COIN!" << std::endl;
+                        this->spawner->bonuses[i]->doSpecialAction(*mike);
+                        this->spawner->despawnBonus(i);
+                        i--;
+                    }
+                    break;
+                    //TODO add other bonuses updates
+            }
+            if (this->spawner->bonuses.empty()) //these are for prevent memory leak
+                break;
+            else if (i == -1)
+                i = 0;
+            if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
+                this->spawner->bonuses[i]->getStayTime()) {
+                this->spawner->bonuses[i]->startDespawining();
+                this->spawner->bonuses[i]->isActiveAnimation = true;
+                if (this->spawner->bonuses[i]->isEndedAnimation || this->spawner->bonuses[i]->isInfiniteAnimation) {
+                    this->spawner->despawnBonus(i);
+                    std::cout << "DESPAWN" << std::endl;
+                }
+            }
+            if (this->spawner->bonuses.empty())
+                break;
+        }
+
+    }
 }
 
 /*

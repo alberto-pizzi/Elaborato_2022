@@ -38,7 +38,7 @@ public:
 
     void spawnWeapon();
 
-    void despawnBonus(int &bonusIndex);
+    void despawnBonus(int bonusIndex);
 
     void drawBonuses(sf::RenderWindow &window);
 

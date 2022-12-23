@@ -23,9 +23,8 @@ Spawner::Spawner(const TextureManager &enemiesTextures, const TextureManager &bo
     this->weaponsTextures = weaponsTextures;
 }
 
-void Spawner::despawnBonus(int &bonusIndex) {
+void Spawner::despawnBonus(int bonusIndex) {
     bonuses.erase(bonuses.begin() + bonusIndex);
-    bonusIndex--;
 }
 
 void Spawner::drawBonuses(sf::RenderWindow &window) {
@@ -35,11 +34,11 @@ void Spawner::drawBonuses(sf::RenderWindow &window) {
 
 void Spawner::spawnWeapon() {
     bonuses.emplace_back(new NewWeapon(weaponsTextures, bonusesTextures.getTextureRef("weaponBox"),
-                                       {40 * 32, 24 * 32})); //FIXME add random spawn (only for debug)
+                                       {40 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
 void Spawner::spawnCoin() {
     bonuses.emplace_back(new Coin(bonusesTextures.getTextureRef("coin"),
-                                  {40 * 32, 24 * 32})); //FIXME add random spawn (only for debug)
+                                  {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
