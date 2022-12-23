@@ -147,11 +147,11 @@ void Mike::directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirectio
         }
     }
 
-    if (weapon->getWeaponName() == "Handgun")
+    if (weapon->getWeaponName() == "handgun")
         weapon->weaponSprite.setOrigin(sf::Vector2f(0, 0));
-    else if (weapon->getWeaponName() == "AssaultRifle")
+    else if (weapon->getWeaponName() == "assaultRifle")
         weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
-    else if (weapon->getWeaponName() == "Shotgun")
+    else if (weapon->getWeaponName() == "shotgun")
         weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
 
     weapon->weaponSprite.setRotation(degrees);

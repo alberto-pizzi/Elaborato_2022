@@ -32,7 +32,7 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
         magazineCapacity,
         remainingBullets,
         fileTextureRectAssaultShotSize,
-        "AssaultRifle",
+        "assaultRifle",
         false) {
 
 

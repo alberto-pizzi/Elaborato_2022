@@ -31,7 +31,7 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
         magazineCapacity,
         remainingBullets,
         fileTextureRectShotgunShotSize,
-        "Shotgun",
+        "shotgun",
         false) {
 
 

@@ -5,6 +5,7 @@
 #include "NewWeapon.h"
 
 void NewWeapon::doSpecialAction(GameCharacter &character) {
+    addPoints(character);
     //replace current weapon with a new weapon
     character.weapon = std::move(this->newWeapon);
     character.weapon->setEquipped(true);
@@ -20,12 +21,13 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
                                                             weaponsTextures.getTextureRef("bullet")));
             break;
         case ASSAULT_RIFLE:
-            this->idleWeaponBox = {{76, 152, 30, 25}};
+            this->idleWeaponBox = {{142, 152, 25, 25}};
+
             newWeapon = std::unique_ptr<Weapon>(new AssaultRifle(false, weaponsTextures.getTextureRef("assaultRifle"),
                                                                  weaponsTextures.getTextureRef("bullet")));
             break;
         case SHOTGUN:
-            this->idleWeaponBox = {{142, 152, 25, 25}};
+            this->idleWeaponBox = {{76, 152, 30, 25}};
             newWeapon = std::unique_ptr<Weapon>(new Shotgun(false, weaponsTextures.getTextureRef("shotgun"),
                                                             weaponsTextures.getTextureRef("bullet")));
             break;

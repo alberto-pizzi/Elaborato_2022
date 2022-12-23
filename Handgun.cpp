@@ -29,7 +29,7 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
         magazineCapacity,
         remainingBullets,
         fileTextureRectHandgunSize,
-        "Handgun",
+        "handgun",
         true) {
     this->startCenterForTranslation[LEFT] = {-16, 21};
     this->startCenterForTranslation[RIGHT] = {16, 21};

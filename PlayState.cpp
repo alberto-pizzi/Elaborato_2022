@@ -78,11 +78,24 @@ void PlayState::update(float dt) {
                         this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
                                                                                                this->spawner->bonuses[i]->isEndedAnimation,
                                                                                                this->spawner->bonuses[i]->isActiveAnimation);
+                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds()) &&
+                        (sf::Keyboard::isKeyPressed(sf::Keyboard::E))) {
+                        this->spawner->bonuses[i]->doSpecialAction(*mike);
+                        mike->gui.updateWeaponType(weaponsTextures.getTextureRef(mike->weapon->getWeaponName()),
+                                                   mike->weapon->currentAnimation.idleFrames[0],
+                                                   mike->weapon->hitBox.getSize());
+                        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
+                                                  mike->weapon->getTotalBullets(),
+                                                  mike->weapon->isInfiniteBullets());
+                        this->spawner->despawnBonus(i);
+                    }
                     break;
                 case COINS:
                     this->spawner->bonuses[i]->currentAnimation.update(dt);
+                    //collect coin
                     if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds())) {
-                        std::cout << "COLLECTED COIN!" << std::endl;
+                        //std::cout << "COLLECTED COIN!" << std::endl;
+                        this->spawner->bonuses[i]->doSpecialAction(*mike);
                         this->spawner->despawnBonus(i);
                     }
                     break;
@@ -152,7 +165,7 @@ void PlayState::handleInput() {
                 break;
             }
             case sf::Event::MouseButtonPressed:
-                if ((mike->weapon->getWeaponName() != "AssaultRifle") &&
+                if ((mike->weapon->getWeaponName() != "assaultRifle") &&
                     (event.mouseButton.button == sf::Mouse::Left)) {
                     if ((!mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING]) &&
                         (mike->weapon->thereAreRemainingBullets()) &&
@@ -190,7 +203,7 @@ void PlayState::handleInput() {
 
 
     //repeated input (automatic fire, assault rifle)
-    if ((mike->weapon->getWeaponName() == "AssaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
+    if ((mike->weapon->getWeaponName() == "assaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
         if ((!mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING]) &&
             (mike->weapon->thereAreRemainingBullets()) &&
             (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
@@ -247,7 +260,7 @@ void PlayState::handleInput() {
 
 }
 
-PlayState::PlayState(Game *game) : dice(1000) {
+PlayState::PlayState(Game *game) {
     this->game = game;
 
     this->loadTextures();
@@ -259,7 +272,6 @@ PlayState::PlayState(Game *game) : dice(1000) {
                             weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
                             guiTextures);
 
-
     viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));
 
     this->round = 1;
@@ -267,7 +279,6 @@ PlayState::PlayState(Game *game) : dice(1000) {
 
     this->localPosition = sf::Mouse::getPosition(this->game->window);
     this->worldPos = this->game->window.mapPixelToCoords(localPosition);
-
 }
 
 int PlayState::whichMap() {
@@ -324,6 +335,7 @@ PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const Game
     return normalize(translation);
 }
 
+/*
 bool PlayState::isRandomAbleTo(float percentage, int nRolls) { //TODO shift to spawner class
 
     float restPercentage = 1 - (percentage / 100);
@@ -334,3 +346,4 @@ bool PlayState::isRandomAbleTo(float percentage, int nRolls) { //TODO shift to s
         return true;
     return false;
 }
+*/

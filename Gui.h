@@ -47,6 +47,9 @@ private:
     std::string totalBulletsDisplayed;
     sf::RectangleShape designSeparator;
 
+    //message box //TODO implement it (texture already been loaded)
+    sf::Text messageDisplayed;
+
     std::string pointsDisplayed;
     std::string roundDisplayed;
     const int totalDigits = 10;

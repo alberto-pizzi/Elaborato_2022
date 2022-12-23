@@ -39,7 +39,7 @@ private:
     bool skinDirection[4] = {false, false, false, false};
 
     //random (number of dice faces in PlayState constructor)
-    Dice dice;
+    //Dice dice;
 
     //mouse input positioning
     sf::Vector2i localPosition;
@@ -72,7 +72,7 @@ public:
 
     sf::Vector2f normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character);
 
-    bool isRandomAbleTo(float percentage, int nRolls);
+    //bool isRandomAbleTo(float percentage, int nRolls);
 };
 
 #endif //ELABORATO_PLAYSTATE_H

@@ -36,7 +36,7 @@ private:
     std::vector<sf::IntRect> despawnFrames;
 public:
     NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
-              int points = 20, sf::Time stayTime = sf::seconds(30));
+              int points = 10, sf::Time stayTime = sf::seconds(30));
 
     void startDespawining(); //WARNING: call this when you want despawning a new weapon (for startDespawining animation)
 

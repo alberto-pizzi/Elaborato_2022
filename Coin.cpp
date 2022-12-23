@@ -13,12 +13,12 @@ void Coin::setValue(int value) {
 }
 
 void Coin::doSpecialAction(GameCharacter &character) {
+    addPoints(character);
     character.setCoins(character.getCoins() + this->value);
 }
 
 Coin::Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, COINS, true) {
-
 
     animationFrames.clear();
     for (int i = 0; i < nFrames; i++) //1 because the first vector element already exist
