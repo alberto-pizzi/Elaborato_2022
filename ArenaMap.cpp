@@ -78,6 +78,9 @@ bool ArenaMap::Tile::isWalkable(int tile, int layerNumber, int chosenMap) const 
                 return true;
 
             break;
+        default:
+            std::cerr << "ERROR: SELECTED MAP NOT EXIST" << std::endl;
+            break;
     }
     return false;
 }
@@ -393,6 +396,9 @@ bool ArenaMap::isRealWall(int chosenMap, int nTile) {
             }
             return false;
             break;
+        default:
+            std::cerr << "ERROR: SELECTED MAP NOT EXIST" << std::endl;
+            break;
     }
     return false;
 }
@@ -447,7 +453,7 @@ bool ArenaMap::isWeaponOverTheWall(const GameCharacter &character) {
     return false;
 }
 
-bool ArenaMap::collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) {
+bool ArenaMap::collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) const {
     //map limits
     if (bulletGlobalPos.left + bulletGlobalPos.width < 0 ||
         bulletGlobalPos.top + bulletGlobalPos.height < 0 ||

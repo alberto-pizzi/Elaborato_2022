@@ -31,6 +31,9 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
             newWeapon = std::unique_ptr<Weapon>(new Shotgun(false, weaponsTextures.getTextureRef("shotgun"),
                                                             weaponsTextures.getTextureRef("bullet")));
             break;
+        default:
+            std::cerr << "ERROR: SELECTED WEAPON NOT EXIST" << std::endl;
+            break;
     }
     this->translation = {static_cast<float>(idleWeaponBox[0].left % frameSize.x),
                          static_cast<float>(idleWeaponBox[0].top % frameSize.y)};
@@ -41,8 +44,7 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
                      int points, sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, false) {
 
-
-    Dice dice(totalWeapons);
+    Dice dice(totalWeapons - 1);
 
     this->sprite.setScale(sf::Vector2f(2, 2));
     this->weaponsTextures = weaponsTextures;
@@ -51,14 +53,11 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
     this->animationFrames = this->idleWeaponBox;
     this->currentAnimation.idleFrames = this->idleWeaponBox;
 
-
     despawnFrames.reserve(DESPAWN);
     for (int i = 0; i < DESPAWN; i++)
         despawnFrames.emplace_back(i * frameSize.x, 1 * frameSize.y, frameSize.x, frameSize.y);
 
-
     //currentAnimation.setNotCyclicalAnimation(animationFrames,10.0f);
-
 
     this->stayTimer.restart();
 }

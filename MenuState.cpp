@@ -141,5 +141,8 @@ void MenuState::select() {
         case Exit:
             this->game->window.close();
             break;
+        default:
+            std::cerr << "ERROR: SELECTED BUTTON NOT EXIST" << std::endl;
+            break;
     }
 }

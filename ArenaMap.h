@@ -120,7 +120,7 @@ public:
 
     void findWallsCoordinates(); //TODO check if it is useful
 
-    bool collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos);
+    bool collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) const;
 
 };
 

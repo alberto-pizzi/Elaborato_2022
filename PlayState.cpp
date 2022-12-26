@@ -226,7 +226,6 @@ PlayState::PlayState(Game *game) {
 
     this->round = 1;
 
-
     this->localPosition = sf::Mouse::getPosition(this->game->window);
     this->worldPos = this->game->window.mapPixelToCoords(localPosition);
 }
@@ -236,7 +235,6 @@ int PlayState::whichMap() {
     int map = rand() % nMap;
     return map;
 }
-
 
 sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
     auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
@@ -320,6 +318,9 @@ void PlayState::updateBonuses(float dt) {
                     }
                     break;
                     //TODO add other bonuses updates
+                default:
+                    std::cerr << "ERROR: SELECTED BONUS NOT EXIST" << std::endl;
+                    break;
             }
             if (this->spawner->bonuses.empty()) //these are for prevent memory leak
                 break;
