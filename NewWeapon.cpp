@@ -44,7 +44,7 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
                      int points, sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, false) {
 
-    Dice dice(totalWeapons - 1);
+    Dice dice(totalWeapons - 1); //TODO optimize it when will be implemented random spawning algorithm
 
     this->sprite.setScale(sf::Vector2f(2, 2));
     this->weaponsTextures = weaponsTextures;

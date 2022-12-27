@@ -13,7 +13,7 @@ void PlayState::draw(float dt) const {
     bool isOver = this->arenaMap->isWeaponOverTheWall(*mike);
 
 
-    //TODO check layer 3d rendering when will be implement the enemies and bullets
+    //TODO check layer 3d rendering when will be implement the enemies
     if (isOver) {
         this->arenaMap->drawLayer(this->game->window, solid_elements);
         this->arenaMap->drawLayer(this->game->window, layer_3d);
@@ -37,7 +37,7 @@ void PlayState::draw(float dt) const {
 
 
     //draw bullets
-    this->mike->weapon->drawBullets(this->game->window, dt); //FIXME check correctness layer and collisions
+    this->mike->weapon->drawBullets(this->game->window, dt);
 
     if (!isOver) {
         this->arenaMap->drawLayer(this->game->window, solid_elements);
@@ -84,8 +84,6 @@ void PlayState::handleInput() {
     sf::Time shotTimer;
     sf::Event event;
     sf::Vector2f normalizedVector;
-
-    //TODO check if mouse inputs are in the correct lines
 
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
@@ -286,7 +284,6 @@ PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const Game
 void PlayState::updateBonuses(float dt) {
     if (!this->spawner->bonuses.empty()) {
         for (int i = 0; i < this->spawner->bonuses.size(); i++) {
-            //TODO check if the way which ordered is correct
 
             switch (this->spawner->bonuses[i]->getBonusType()) {
                 case NEW_WEAPON:
@@ -343,7 +340,7 @@ void PlayState::updateBonuses(float dt) {
 }
 
 /*
-bool PlayState::isRandomAbleTo(float percentage, int nRolls) { //TODO shift to spawner class
+bool PlayState::isRandomAbleTo(float percentage, int nRolls) {
 
     float restPercentage = 1 - (percentage / 100);
 

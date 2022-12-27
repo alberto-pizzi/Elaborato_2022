@@ -14,7 +14,7 @@
 
 #include "PosEntity.h"
 
-class GameCharacter; //FIXME forward declaration
+class GameCharacter;
 
 class Bullet : public PosEntity {
 protected:

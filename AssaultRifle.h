@@ -10,6 +10,9 @@
 
 class AssaultRifle : public Weapon {
 private:
+    enum totFramesAssaultRifle {
+        IDLE = 1, SHOT = 16, RELOAD = 17,
+    };
     const sf::Vector2i fileTextureRectAssaultShotSize = {128, 48};
     const sf::Vector2i fileTextureRectAssaultReloadSize = {96, 64};
     const sf::Vector2f barrelHole = {86, 17};

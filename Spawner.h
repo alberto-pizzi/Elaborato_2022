@@ -40,7 +40,7 @@ public:
 
     void despawnBonus(int bonusIndex);
 
-    void drawBonuses(sf::RenderWindow &window);
+    void drawBonuses(sf::RenderWindow &window) const;
 
     void spawnCoin();
 

@@ -6,9 +6,9 @@
 
 Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
          const sf::Texture &weaponTexture, const TextureManager &guiTexManager) : weaponTexture(weaponTexture) {
-    texManager = guiTexManager;
+    guiTextures = guiTexManager;
     std::cout << "i'm GUI constructor" << std::endl;
-    healthBar.setTexture(texManager.getTextureRef("healthBar"));
+    healthBar.setTexture(guiTextures.getTextureRef("healthBar"));
 
     std::string numberOrTitlesFontFile = "res/fonts/bloody.ttf";
     std::string textFontFile = "res/fonts/fffforwa.ttf";
@@ -60,14 +60,10 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
 
 }
 
-void Gui::loadTextures() {
-    //texManager.loadTexture("healthBar", "res/textures/progressbar.png");
-}
-
 void Gui::drawGui(sf::RenderWindow &window) {
     //draw HealthBar
     int posXHealth =
-            static_cast<int>(window.getSize().x - texManager.getTextureRef("healthBar").getSize().x) -
+            static_cast<int>(window.getSize().x - guiTextures.getTextureRef("healthBar").getSize().x) -
             distanceFromWindowLimits.x;
     sf::Vector2f worldPosHealth = window.mapPixelToCoords({posXHealth, distanceFromWindowLimits.y});
     healthBar.setPosition(worldPosHealth);
@@ -126,11 +122,11 @@ void Gui::drawGui(sf::RenderWindow &window) {
 
 void Gui::updateHealthBar(int hp) {
     int totalHP = 20; //this is to be equal to mike total HP
-    healthBar.setTextureRect({0, 0, (5 * 32 * hp) / totalHP, 32}); //FIXME magic numbers
+    healthBar.setTextureRect({0, 0, (5 * 32 * hp) / totalHP, 32}); //these values are the texture size
 }
 
 TextureManager Gui::getTexManager() {
-    return texManager;
+    return guiTextures;
 }
 
 const sf::Sprite &Gui::getHealthBar() const {

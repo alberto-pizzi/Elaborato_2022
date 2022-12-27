@@ -15,7 +15,7 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
                                            this->weaponSprite.getScale(), normalizedBulletDir));
     shotClock.restart();
 
-    std::cout << " bullets: " << this->bullets.size() << std::endl;
+    //std::cout << " bullets: " << this->bullets.size() << std::endl;
     this->magazine.remainingBullets--;
 }
 
@@ -34,15 +34,11 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
         "shotgun",
         false) {
 
-
+    //these values are used to give the correct starting point for centering on the player's shoulder
     this->startCenterForTranslation[LEFT] = {-16, 27};
     this->startCenterForTranslation[RIGHT] = {16, 27};
     this->startCenterForTranslation[UP] = {32, 27};
     this->startCenterForTranslation[DOWN] = {24, 27};
-
-    enum totFramesShotgun {
-        IDLE = 1, SHOT = 14, RELOAD = 14,
-    };
 
     idleWeapon.reserve(IDLE);
     idleWeapon = {
@@ -62,6 +58,7 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
                             this->fileTextureRectShotgunReloadSize.x,
                             this->fileTextureRectShotgunReloadSize.y);
 
+    //these values are the hit box weapon size from texture file
     this->hitBox.setSize(sf::Vector2f(70, 15));
 
     //set bullet texture

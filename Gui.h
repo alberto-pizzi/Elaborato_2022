@@ -17,13 +17,11 @@
 
 class Gui {
 private:
-    void loadTextures();
-
     sf::Texture weaponTexture;
     sf::Sprite weaponSpriteIndicator;
     sf::Vector2f hitBoxWeaponSize;
 
-    TextureManager texManager;
+    TextureManager guiTextures;
 
     sf::Sprite healthBar;
     sf::Font numbersOrTitlesFont;

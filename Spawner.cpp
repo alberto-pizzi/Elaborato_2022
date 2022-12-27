@@ -27,7 +27,7 @@ void Spawner::despawnBonus(int bonusIndex) {
     bonuses.erase(bonuses.begin() + bonusIndex);
 }
 
-void Spawner::drawBonuses(sf::RenderWindow &window) {
+void Spawner::drawBonuses(sf::RenderWindow &window) const {
     for (int i = 0; i < bonuses.size(); i++)
         bonuses[i]->drawBonus(window);
 }

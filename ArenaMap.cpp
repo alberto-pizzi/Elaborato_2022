@@ -439,7 +439,6 @@ void ArenaMap::drawLayer(sf::RenderWindow &window, int layer) const {
 bool ArenaMap::isWeaponOverTheWall(const GameCharacter &character) {
     sf::FloatRect delta;
     for (int i = 0; i < solidTiles.size(); i++) {
-        //if (((character.weapon->getDegrees() >= 35) && (character.weapon->weaponSprite.getScale().x == 1)) || (character.weapon->getDegrees() <= -35) && (character.weapon->weaponSprite.getScale().x == -1))
         if ((character.getSprite().getGlobalBounds().top >=
              solidTiles[i]->posTile.y + static_cast<float>(tileSizeY) - 5))
             if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds(),

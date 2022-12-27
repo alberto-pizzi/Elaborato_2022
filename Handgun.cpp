@@ -31,14 +31,11 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
         fileTextureRectHandgunSize,
         "handgun",
         true) {
+    //these values are used to give the correct starting point for centering on the player's shoulder
     this->startCenterForTranslation[LEFT] = {-16, 21};
     this->startCenterForTranslation[RIGHT] = {16, 21};
     this->startCenterForTranslation[UP] = {32, 21};
     this->startCenterForTranslation[DOWN] = {24, 21};
-
-    enum totFramesHandgun {
-        IDLE = 1, SHOT = 12, RELOAD = 17,
-    };
 
     idleWeapon.reserve(IDLE);
     idleWeapon = {
@@ -58,8 +55,8 @@ Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
                             this->fileTextureRectHandgunSize.x,
                             this->fileTextureRectHandgunSize.y);
 
-
-    this->hitBox.setSize(sf::Vector2f(40, 20)); //TODO check correctness
+    //these values are the hit box weapon size from texture file
+    this->hitBox.setSize(sf::Vector2f(40, 20));
 
     //set bullet texture
     this->bulletTexture = handgunBulletTexture;

@@ -55,8 +55,6 @@ protected:
     std::vector<sf::IntRect> shot;
     std::vector<sf::IntRect> reload;
     float degrees;
-    TextureManager weaponsTextures; //TODO remove it
-
 
     //bullet
     std::vector<std::unique_ptr<Bullet>> bullets;

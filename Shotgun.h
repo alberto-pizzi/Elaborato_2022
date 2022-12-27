@@ -10,6 +10,9 @@
 
 class Shotgun : public Weapon {
 private:
+    enum totFramesShotgun {
+        IDLE = 1, SHOT = 14, RELOAD = 14,
+    };
     const sf::Vector2i fileTextureRectShotgunShotSize = {160, 32};
     const sf::Vector2i fileTextureRectShotgunReloadSize = {128, 32};
     const sf::Vector2f barrelHole = {98, 15};

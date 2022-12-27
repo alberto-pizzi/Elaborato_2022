@@ -91,8 +91,6 @@ public:
     const std::vector<sf::IntRect> &getGoUp() const;
 
     void setSpritePos(sf::Vector2f newPos);
-
-
 };
 
 

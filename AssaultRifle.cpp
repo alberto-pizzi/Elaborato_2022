@@ -15,7 +15,6 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
                                                 this->weaponSprite.getScale(), normalizedBulletDir));
     shotClock.restart();
 
-
     this->magazine.remainingBullets--;
 }
 
@@ -35,15 +34,13 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
         "assaultRifle",
         false) {
 
-
+    //these values are used to give the correct starting point for centering on the player's shoulder
     this->startCenterForTranslation[LEFT] = {-16, 21};
     this->startCenterForTranslation[RIGHT] = {16, 21};
     this->startCenterForTranslation[UP] = {32, 21};
     this->startCenterForTranslation[DOWN] = {24, 21};
 
-    enum totFramesAssaultRifle {
-        IDLE = 1, SHOT = 16, RELOAD = 17,
-    };
+
 
     idleWeapon.reserve(IDLE);
     idleWeapon = {
@@ -63,6 +60,7 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
                             this->fileTextureRectAssaultReloadSize.x,
                             this->fileTextureRectAssaultReloadSize.y);
 
+    //these values are the hit box weapon size from texture file
     this->hitBox.setSize(sf::Vector2f(66, 30));
 
     //set bullet texture

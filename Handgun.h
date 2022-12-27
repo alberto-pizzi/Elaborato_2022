@@ -11,6 +11,9 @@
 
 class Handgun : public Weapon {
 private:
+    enum totFramesHandgun {
+        IDLE = 1, SHOT = 12, RELOAD = 17,
+    };
     const sf::Vector2i fileTextureRectHandgunSize = {64, 36};
     const sf::Vector2f barrelHole = {31, 13};
 public:
