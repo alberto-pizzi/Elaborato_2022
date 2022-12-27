@@ -10,12 +10,12 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
     //shoot ONE bullet
-    bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 1700, barrelHole, this->weaponSprite.getPosition(),
-                                                this->degrees, this->weaponSprite.getOrigin(),
-                                                this->weaponSprite.getScale(), normalizedBulletDir));
+    bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 1700, barrelHole, weaponSprite.getPosition(),
+                                                degrees, weaponSprite.getOrigin(),
+                                                weaponSprite.getScale(), normalizedBulletDir));
     shotClock.restart();
 
-    this->magazine.remainingBullets--;
+    magazine.remainingBullets--;
 }
 
 AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
@@ -35,34 +35,33 @@ AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,
         false) {
 
     //these values are used to give the correct starting point for centering on the player's shoulder
-    this->startCenterForTranslation[LEFT] = {-16, 21};
-    this->startCenterForTranslation[RIGHT] = {16, 21};
-    this->startCenterForTranslation[UP] = {32, 21};
-    this->startCenterForTranslation[DOWN] = {24, 21};
-
+    startCenterForTranslation[LEFT] = {-16, 21};
+    startCenterForTranslation[RIGHT] = {16, 21};
+    startCenterForTranslation[UP] = {32, 21};
+    startCenterForTranslation[DOWN] = {24, 21};
 
 
     idleWeapon.reserve(IDLE);
     idleWeapon = {
-            {0, 0, this->fileTextureRectAssaultShotSize.x, this->fileTextureRectAssaultShotSize.y},
+            {0, 0, fileTextureRectAssaultShotSize.x, fileTextureRectAssaultShotSize.y},
     };
 
-    weaponSprite.setTextureRect({0, 0, this->fileTextureRectAssaultShotSize.x, this->fileTextureRectAssaultShotSize.y});
+    weaponSprite.setTextureRect({0, 0, fileTextureRectAssaultShotSize.x, fileTextureRectAssaultShotSize.y});
 
     shot.reserve(SHOT);
     for (int i = 0; i < SHOT; i++)
-        shot.emplace_back(i * this->fileTextureRectAssaultShotSize.x, 0, this->fileTextureRectAssaultShotSize.x,
-                          this->fileTextureRectAssaultShotSize.y);
+        shot.emplace_back(i * fileTextureRectAssaultShotSize.x, 0, fileTextureRectAssaultShotSize.x,
+                          fileTextureRectAssaultShotSize.y);
 
     reload.reserve(RELOAD);
     for (int i = 0; i < RELOAD; i++)
-        reload.emplace_back(i * this->fileTextureRectAssaultReloadSize.x, 1 * this->fileTextureRectAssaultReloadSize.y,
-                            this->fileTextureRectAssaultReloadSize.x,
-                            this->fileTextureRectAssaultReloadSize.y);
+        reload.emplace_back(i * fileTextureRectAssaultReloadSize.x, 1 * fileTextureRectAssaultReloadSize.y,
+                            fileTextureRectAssaultReloadSize.x,
+                            fileTextureRectAssaultReloadSize.y);
 
     //these values are the hit box weapon size from texture file
-    this->hitBox.setSize(sf::Vector2f(66, 30));
+    hitBox.setSize(sf::Vector2f(66, 30));
 
     //set bullet texture
-    this->bulletTexture = assaultRifleBulletTexture;
+    bulletTexture = assaultRifleBulletTexture;
 }

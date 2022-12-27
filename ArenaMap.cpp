@@ -89,8 +89,8 @@ ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Textu
                      int tileSizeX, int tileSizeY, int chosenMap) : tileNumber(tile), layer(layer), cellRow(posX),
                                                                     cellColumn(posY) {
     int tileTexturePosX, tileTexturePosY;
-    this->passable = isWalkable(tile, layer, chosenMap);
-    this->tileSprite.setTexture(texture);
+    passable = isWalkable(tile, layer, chosenMap);
+    tileSprite.setTexture(texture);
     posTile = {static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)};
     tileTexturePosX = (tile % (widthTex / tileSizeX)) - 1;
     tileTexturePosY = tile / (widthTex / tileSizeY);
@@ -98,9 +98,9 @@ ArenaMap::Tile::Tile(int tile, int widthTex, int posX, int posY, const sf::Textu
         tileTexturePosX = 0;
     if (tileTexturePosY < 0)
         tileTexturePosY = 0;
-    this->tileSprite.setTextureRect(
+    tileSprite.setTextureRect(
             sf::IntRect(tileTexturePosX * tileSizeX, tileTexturePosY * tileSizeY, tileSizeX, tileSizeY));
-    this->tileSprite.setPosition(
+    tileSprite.setPosition(
             sf::Vector2f(static_cast<float>(posY * tileSizeX), static_cast<float>(posX * tileSizeY)));
 }
 
@@ -117,10 +117,10 @@ void ArenaMap::loadMapFile(int chosenMap) {
     std::ifstream file;
     file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try {
-        file.open(this->mapList[chosenMap]);
+        file.open(mapList[chosenMap]);
     }
     catch (std::ios_base::failure &e) {
-        throw GameException("Error opening file map", this->mapList[chosenMap], false);
+        throw GameException("Error opening file map", mapList[chosenMap], false);
     }
     std::string name;
     int nTile;
@@ -140,30 +140,30 @@ void ArenaMap::loadMapFile(int chosenMap) {
      */
 
     //take tilemap data from file
-    file >> this->nameMap >> this->maxColumnTiles >> this->maxRowTiles >> this->tileSizeX >> this->tileSizeY
-         >> this->totalLayers >> this->nameFile >> this->widthFile >> this->heightFile;
+    file >> nameMap >> maxColumnTiles >> maxRowTiles >> tileSizeX >> tileSizeY
+         >> totalLayers >> nameFile >> widthFile >> heightFile;
     //loadMapTextures textures' Map
     loadMapTextures();
 
     //start reading
-    tileMap.reserve(this->totalLayers);
-    for (int countLayer = 0; countLayer < this->totalLayers; countLayer++) {
+    tileMap.reserve(totalLayers);
+    for (int countLayer = 0; countLayer < totalLayers; countLayer++) {
         std::vector<std::vector<std::shared_ptr<Tile>>> rows;
-        rows.reserve(this->maxRowTiles);
-        for (int row = 0; row < this->maxRowTiles; row++) {
+        rows.reserve(maxRowTiles);
+        for (int row = 0; row < maxRowTiles; row++) {
             std::vector<std::shared_ptr<Tile>> columns;
-            columns.reserve(this->maxColumnTiles);
-            for (int column = 0; column < this->maxColumnTiles; column++) {
-                    file >> nTile;
-                    columns.emplace_back(
-                            new Tile(nTile, this->widthFile, row,
-                                     column, this->mapTexturesManager.getTextureRef(this->nameMap),
-                                     countLayer, this->tileSizeX, this->tileSizeY, chosenMap));
-                    if ((countLayer == solid_elements) && (nTile != 0) && isRealWall(chosenMap, nTile))
-                        solidTiles.emplace_back(columns[column]);
+            columns.reserve(maxColumnTiles);
+            for (int column = 0; column < maxColumnTiles; column++) {
+                file >> nTile;
+                columns.emplace_back(
+                        new Tile(nTile, widthFile, row,
+                                 column, mapTexturesManager.getTextureRef(nameMap),
+                                 countLayer, tileSizeX, tileSizeY, chosenMap));
+                if ((countLayer == solid_elements) && (nTile != 0) && isRealWall(chosenMap, nTile))
+                    solidTiles.emplace_back(columns[column]);
 
-                }
-                rows.emplace_back(columns);
+            }
+            rows.emplace_back(columns);
             }
             tileMap.emplace_back(rows);
         }
@@ -173,11 +173,11 @@ void ArenaMap::loadMapFile(int chosenMap) {
 void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
                            const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
                            const TextureManager &guiTexManager) {
-    this->playerView.reset(
-            sf::FloatRect(static_cast<float>(0 * this->tileSizeX),
-                          static_cast<float>(0 * this->tileSizeX),
-                          static_cast<float>(this->tileView.x * this->tileSizeX),
-                          static_cast<float>(this->tileView.y * this->tileSizeY)));
+    playerView.reset(
+            sf::FloatRect(static_cast<float>(0 * tileSizeX),
+                          static_cast<float>(0 * tileSizeX),
+                          static_cast<float>(tileView.x * tileSizeX),
+                          static_cast<float>(tileView.y * tileSizeY)));
 
     //random spawned
     sf::Vector2i spawnTile = randomPassableTile();
@@ -226,16 +226,16 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
         }
     } while (!legalFirstCenter);
 
-    this->playerView.setCenter(legalViewCenter(mike->getSpriteCenter(), window.getSize(),
-                                               {mike->getSprite().getGlobalBounds().width,
-                                                mike->getSprite().getGlobalBounds().height}, firstViewCenter));
-    window.setView(this->playerView);
+    playerView.setCenter(legalViewCenter(mike->getSpriteCenter(), window.getSize(),
+                                         {mike->getSprite().getGlobalBounds().width,
+                                          mike->getSprite().getGlobalBounds().height}, firstViewCenter));
+    window.setView(playerView);
 
     findWallsCoordinates();
 }
 
 void ArenaMap::loadMapTextures() {
-    mapTexturesManager.loadTexture(this->nameMap, this->nameFile); //texture map
+    mapTexturesManager.loadTexture(nameMap, nameFile); //texture map
 
     //other  map tile sheet files...
 }
@@ -321,8 +321,8 @@ sf::Vector2i ArenaMap::randomPassableTile() const {
 
     //casual tile position. Spawn mike only when near tiles are passable.
     do {
-        tileSpawnX = (rand() % (this->maxColumnTiles - 1)) + 1;
-        tileSpawnY = (rand() % (this->maxRowTiles - 1)) + 1;
+        tileSpawnX = (rand() % (maxColumnTiles - 1)) + 1;
+        tileSpawnY = (rand() % (maxRowTiles - 1)) + 1;
     } while ((!tileMap[principal_floor][tileSpawnY][tileSpawnX]->passable) ||
              (!tileMap[principal_floor][tileSpawnY][tileSpawnX + 1]->passable) ||
              (!tileMap[principal_floor][tileSpawnY + 1][tileSpawnX]->passable) ||
@@ -429,9 +429,9 @@ void ArenaMap::findWallsCoordinates() {
 }
 
 void ArenaMap::drawLayer(sf::RenderWindow &window, int layer) const {
-    for (int i = 0; i < this->maxRowTiles; i++) {
-        for (int j = 0; j < this->maxColumnTiles; j++) {
-            window.draw(this->tileMap[layer][i][j]->tileSprite);
+    for (int i = 0; i < maxRowTiles; i++) {
+        for (int j = 0; j < maxColumnTiles; j++) {
+            window.draw(tileMap[layer][i][j]->tileSprite);
         }
     }
 }

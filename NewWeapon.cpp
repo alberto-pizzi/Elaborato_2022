@@ -7,7 +7,7 @@
 void NewWeapon::doSpecialAction(GameCharacter &character) {
     addPoints(character);
     //replace current weapon with a new weapon
-    character.weapon = std::move(this->newWeapon);
+    character.weapon = std::move(newWeapon);
     character.weapon->setEquipped(true);
 }
 
@@ -16,18 +16,18 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
 
     switch (selected) {
         case HANDGUN:
-            this->idleWeaponBox = {{16, 152, 21, 25}};
+            idleWeaponBox = {{16, 152, 21, 25}};
             newWeapon = std::unique_ptr<Weapon>(new Handgun(false, weaponsTextures.getTextureRef("handgun"),
                                                             weaponsTextures.getTextureRef("bullet")));
             break;
         case ASSAULT_RIFLE:
-            this->idleWeaponBox = {{142, 152, 25, 25}};
+            idleWeaponBox = {{142, 152, 25, 25}};
 
             newWeapon = std::unique_ptr<Weapon>(new AssaultRifle(false, weaponsTextures.getTextureRef("assaultRifle"),
                                                                  weaponsTextures.getTextureRef("bullet")));
             break;
         case SHOTGUN:
-            this->idleWeaponBox = {{76, 152, 30, 25}};
+            idleWeaponBox = {{76, 152, 30, 25}};
             newWeapon = std::unique_ptr<Weapon>(new Shotgun(false, weaponsTextures.getTextureRef("shotgun"),
                                                             weaponsTextures.getTextureRef("bullet")));
             break;
@@ -35,8 +35,8 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
             std::cerr << "ERROR: SELECTED WEAPON NOT EXIST" << std::endl;
             break;
     }
-    this->translation = {static_cast<float>(idleWeaponBox[0].left % frameSize.x),
-                         static_cast<float>(idleWeaponBox[0].top % frameSize.y)};
+    translation = {static_cast<float>(idleWeaponBox[0].left % frameSize.x),
+                   static_cast<float>(idleWeaponBox[0].top % frameSize.y)};
 
 }
 
@@ -46,12 +46,12 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
 
     Dice dice(totalWeapons - 1); //TODO optimize it when will be implemented random spawning algorithm
 
-    this->sprite.setScale(sf::Vector2f(2, 2));
+    sprite.setScale(sf::Vector2f(2, 2));
     this->weaponsTextures = weaponsTextures;
 
-    this->selectWeaponToSpawn(dice.roll(1));
-    this->animationFrames = this->idleWeaponBox;
-    this->currentAnimation.idleFrames = this->idleWeaponBox;
+    selectWeaponToSpawn(dice.roll(1));
+    animationFrames = idleWeaponBox;
+    currentAnimation.idleFrames = idleWeaponBox;
 
     despawnFrames.reserve(DESPAWN);
     for (int i = 0; i < DESPAWN; i++)
@@ -59,13 +59,13 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
 
     //currentAnimation.setNotCyclicalAnimation(animationFrames,10.0f);
 
-    this->stayTimer.restart();
+    stayTimer.restart();
 }
 
 void NewWeapon::startDespawining() {
     if (!despawnStarted) {
         currentAnimation.setNotCyclicalAnimation(despawnFrames, 1.0f);
-        this->sprite.setPosition(this->sprite.getPosition() - this->translation);
+        sprite.setPosition(sprite.getPosition() - translation);
         despawnStarted = true;
     }
 }

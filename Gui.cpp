@@ -26,28 +26,28 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
     pointsIndicator.setCharacterSize(textFontSize);
     pointsIndicator.setFillColor(sf::Color::White);
     updatePoints(points);
-    //this->pointsDisplayed = std::to_string(points);
+    //pointsDisplayed = std::to_string(points);
 
     //set round indicator
     roundIndicator.setFont(numbersOrTitlesFont);
     roundIndicator.setCharacterSize(titleFontSize);
     roundIndicator.setFillColor(redGuiColor);
-    this->roundDisplayed = std::to_string(round);
+    roundDisplayed = std::to_string(round);
 
     //set bullets indicator
     remainingBulletsIndicator.setFont(textFont);
     remainingBulletsIndicator.setCharacterSize(remainingBulletsTextSize);
     remainingBulletsIndicator.setFillColor(semiTransparentGreyGuiColor);
-    //this->remainingBulletsDisplayed = "12 "; //this number must be equal to Mike's STARTING bullets
-    this->remainingBulletsDisplayed = std::to_string(remainingBullets);
+    //remainingBulletsDisplayed = "12 "; //this number must be equal to Mike's STARTING bullets
+    remainingBulletsDisplayed = std::to_string(remainingBullets);
 
     totalBulletsIndicator.setFont(textFont);
     totalBulletsIndicator.setCharacterSize(totalBulletsTextSize);
     totalBulletsIndicator.setFillColor(semiTransparentGreyGuiColor);
     if (infiniteBullets)
-        this->totalBulletsDisplayed = "inf";
+        totalBulletsDisplayed = "inf";
     else
-        this->totalBulletsDisplayed = std::to_string(totalBullets);
+        totalBulletsDisplayed = std::to_string(totalBullets);
 
     designSeparator.setSize(sf::Vector2f(3, 60));
     designSeparator.setFillColor(semiTransparentGreyGuiColor);
@@ -140,14 +140,14 @@ void Gui::updatePoints(unsigned int points) {
 
     if (numDigits != totalDigits) {
         if (numDigits == totalDigits - 1)
-            this->pointsDisplayed = zeros + digits;
+            pointsDisplayed = zeros + digits;
         else {
             for (int i = 0; i < totalDigits - numDigits - 1; i++)
                 zeros += "0";
-            this->pointsDisplayed = zeros + digits;
+            pointsDisplayed = zeros + digits;
         }
     } else
-        this->pointsDisplayed = digits;
+        pointsDisplayed = digits;
 }
 
 const std::string &Gui::getPointsDisplayed() const {
@@ -156,7 +156,7 @@ const std::string &Gui::getPointsDisplayed() const {
 
 void Gui::updateRound(int round) {
     std::string roundString = std::to_string(round);
-    this->roundDisplayed = roundString;
+    roundDisplayed = roundString;
 }
 
 void Gui::updateMagazines(int remaining, int total, bool isInfinite) {
@@ -174,12 +174,12 @@ void Gui::updateMagazines(int remaining, int total, bool isInfinite) {
         totalBulletsIndicator.setFillColor(semiTransparentGreyGuiColor); //standard color (grey)
 
     std::string remainingBullets = std::to_string(remaining);
-    this->remainingBulletsDisplayed = remainingBullets;
+    remainingBulletsDisplayed = remainingBullets;
     if (isInfinite)
-        this->totalBulletsDisplayed = "inf";
+        totalBulletsDisplayed = "inf";
     else {
         std::string totalBullets = std::to_string(total);
-        this->totalBulletsDisplayed = totalBullets;
+        totalBulletsDisplayed = totalBullets;
     }
 }
 

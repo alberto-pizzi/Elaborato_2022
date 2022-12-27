@@ -26,6 +26,6 @@ Coin::Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points
         animationFrames.emplace_back(i * frameSize.x, 0, frameSize.x, frameSize.y);
     currentAnimation.setNotCyclicalAnimation(animationFrames, 1.f);
 
-    this->stayTimer.restart();
+    stayTimer.restart();
 }
 

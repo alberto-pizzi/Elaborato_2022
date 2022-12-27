@@ -32,5 +32,5 @@ ShotgunBullet::ShotgunBullet(const sf::Texture &tex, float speed, const sf::Vect
                                            std::cos((M_PI * (degrees)) / 180))};
 
 
-    this->bulletSprite.setPosition(bulletOrigin);
+    bulletSprite.setPosition(bulletOrigin);
 }

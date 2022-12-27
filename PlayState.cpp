@@ -7,42 +7,42 @@
 void PlayState::draw(float dt) const {
     this->game->window.clear(sf::Color::Black);
 
-    this->arenaMap->drawLayer(this->game->window, background);
-    this->arenaMap->drawLayer(this->game->window, principal_floor);
+    arenaMap->drawLayer(this->game->window, background);
+    arenaMap->drawLayer(this->game->window, principal_floor);
 
-    bool isOver = this->arenaMap->isWeaponOverTheWall(*mike);
+    bool isOver = arenaMap->isWeaponOverTheWall(*mike);
 
 
     //TODO check layer 3d rendering when will be implement the enemies
     if (isOver) {
-        this->arenaMap->drawLayer(this->game->window, solid_elements);
-        this->arenaMap->drawLayer(this->game->window, layer_3d);
-        this->arenaMap->drawLayer(this->game->window, last_layer);
+        arenaMap->drawLayer(this->game->window, solid_elements);
+        arenaMap->drawLayer(this->game->window, layer_3d);
+        arenaMap->drawLayer(this->game->window, last_layer);
     }
 
-    this->arenaMap->drawLayer(this->game->window, design_elements);
+    arenaMap->drawLayer(this->game->window, design_elements);
 
     //draw bonuses
-    this->spawner->drawBonuses(this->game->window);
+    spawner->drawBonuses(this->game->window);
 
     //draw mike and his weapon
     if (!skinDirection[UP]) {
-        this->mike->drawEntity(this->game->window);
-        this->mike->weapon->drawWeapon(this->game->window);
+        mike->drawEntity(this->game->window);
+        mike->weapon->drawWeapon(this->game->window);
     } else {
-        this->mike->weapon->drawWeapon(this->game->window);
-        this->mike->drawEntity(this->game->window);
+        mike->weapon->drawWeapon(this->game->window);
+        mike->drawEntity(this->game->window);
     }
 
 
 
     //draw bullets
-    this->mike->weapon->drawBullets(this->game->window, dt);
+    mike->weapon->drawBullets(this->game->window, dt);
 
     if (!isOver) {
-        this->arenaMap->drawLayer(this->game->window, solid_elements);
-        this->arenaMap->drawLayer(this->game->window, layer_3d);
-        this->arenaMap->drawLayer(this->game->window, last_layer);
+        arenaMap->drawLayer(this->game->window, solid_elements);
+        arenaMap->drawLayer(this->game->window, layer_3d);
+        arenaMap->drawLayer(this->game->window, last_layer);
     }
 
     //draw viewfinder
@@ -67,7 +67,7 @@ void PlayState::update(float dt) {
      */
 
     //update bonuses (updates animation and despawn them)
-    this->updateBonuses(dt);
+    updateBonuses(dt);
 
 
     mike->weapon->updateBullets(arenaMap);
@@ -211,21 +211,21 @@ void PlayState::handleInput() {
 PlayState::PlayState(Game *game) {
     this->game = game;
 
-    this->loadTextures();
+    loadTextures();
 
-    this->spawner = std::unique_ptr<Spawner>(new Spawner(charactersTextures, bonusesTextures, weaponsTextures));
+    spawner = std::unique_ptr<Spawner>(new Spawner(charactersTextures, bonusesTextures, weaponsTextures));
 
     //create random map
-    arenaMap = new ArenaMap(this->whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
+    arenaMap = new ArenaMap(whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
                             weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
                             guiTextures);
 
     viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));
 
-    this->round = 1;
+    round = 1;
 
-    this->localPosition = sf::Mouse::getPosition(this->game->window);
-    this->worldPos = this->game->window.mapPixelToCoords(localPosition);
+    localPosition = sf::Mouse::getPosition(this->game->window);
+    worldPos = this->game->window.mapPixelToCoords(localPosition);
 }
 
 int PlayState::whichMap() {
@@ -282,35 +282,35 @@ PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const Game
 }
 
 void PlayState::updateBonuses(float dt) {
-    if (!this->spawner->bonuses.empty()) {
-        for (int i = 0; i < this->spawner->bonuses.size(); i++) {
+    if (!spawner->bonuses.empty()) {
+        for (int i = 0; i < spawner->bonuses.size(); i++) {
 
-            switch (this->spawner->bonuses[i]->getBonusType()) {
+            switch (spawner->bonuses[i]->getBonusType()) {
                 case NEW_WEAPON:
-                    if (this->spawner->bonuses[i]->isActiveAnimation)
-                        this->spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                                               this->spawner->bonuses[i]->isEndedAnimation,
-                                                                                               this->spawner->bonuses[i]->isActiveAnimation);
-                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds()) &&
+                    if (spawner->bonuses[i]->isActiveAnimation)
+                        spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                         spawner->bonuses[i]->isEndedAnimation,
+                                                                                         spawner->bonuses[i]->isActiveAnimation);
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds()) &&
                         (sf::Keyboard::isKeyPressed(sf::Keyboard::E))) {
-                        this->spawner->bonuses[i]->doSpecialAction(*mike);
+                        spawner->bonuses[i]->doSpecialAction(*mike);
                         mike->gui.updateWeaponType(weaponsTextures.getTextureRef(mike->weapon->getWeaponName()),
                                                    mike->weapon->currentAnimation.idleFrames[0],
                                                    mike->weapon->hitBox.getSize());
                         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
                                                   mike->weapon->getTotalBullets(),
                                                   mike->weapon->isInfiniteBullets());
-                        this->spawner->despawnBonus(i);
+                        spawner->despawnBonus(i);
                         i--;
                     }
                     break;
                 case COINS:
-                    this->spawner->bonuses[i]->currentAnimation.update(dt);
+                    spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect coin
-                    if (this->spawner->bonuses[i]->isAbove(this->mike->getSprite().getGlobalBounds())) {
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         //std::cout << "COLLECTED COIN!" << std::endl;
-                        this->spawner->bonuses[i]->doSpecialAction(*mike);
-                        this->spawner->despawnBonus(i);
+                        spawner->bonuses[i]->doSpecialAction(*mike);
+                        spawner->despawnBonus(i);
                         i--;
                     }
                     break;
@@ -319,20 +319,20 @@ void PlayState::updateBonuses(float dt) {
                     std::cerr << "ERROR: SELECTED BONUS NOT EXIST" << std::endl;
                     break;
             }
-            if (this->spawner->bonuses.empty()) //these are for prevent memory leak
+            if (spawner->bonuses.empty()) //these are for prevent memory leak
                 break;
             else if (i == -1)
                 i = 0;
-            if (this->spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
-                this->spawner->bonuses[i]->getStayTime()) {
-                this->spawner->bonuses[i]->startDespawining();
-                this->spawner->bonuses[i]->isActiveAnimation = true;
-                if (this->spawner->bonuses[i]->isEndedAnimation || this->spawner->bonuses[i]->isInfiniteAnimation) {
-                    this->spawner->despawnBonus(i);
+            if (spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
+                spawner->bonuses[i]->getStayTime()) {
+                spawner->bonuses[i]->startDespawining();
+                spawner->bonuses[i]->isActiveAnimation = true;
+                if (spawner->bonuses[i]->isEndedAnimation || spawner->bonuses[i]->isInfiniteAnimation) {
+                    spawner->despawnBonus(i);
                     std::cout << "DESPAWN" << std::endl;
                 }
             }
-            if (this->spawner->bonuses.empty())
+            if (spawner->bonuses.empty())
                 break;
         }
 

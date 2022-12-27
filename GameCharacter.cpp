@@ -34,13 +34,13 @@ GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsign
     //mike's frame position (in pixel)
     idle.reserve(1);
     idle = {
-            {0 * this->fileTextureRectSkinSize.x, 0 * this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x,
-             this->fileTextureRectSkinSize.y},
+            {0 * fileTextureRectSkinSize.x, 0 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
+             fileTextureRectSkinSize.y},
     };
     if (animated)
         sprite.setTextureRect(currentAnimation.getCurrentRect());
     else
-        sprite.setTextureRect({0, 0, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y});
+        sprite.setTextureRect({0, 0, fileTextureRectSkinSize.x, fileTextureRectSkinSize.y});
 
     sprite.setPosition(sf::Vector2f(static_cast<float>(tilePosition.x * tileSize.x),
                                     static_cast<float>(tilePosition.y * tileSize.y)));

@@ -6,8 +6,8 @@
 PosEntity::PosEntity() = default;
 
 void PosEntity::updateGlobalPosition(sf::FloatRect newGlobalPos) {
-    this->pos = newGlobalPos;
-    this->spriteCenter = {newGlobalPos.left + newGlobalPos.width / 2, newGlobalPos.top + newGlobalPos.height / 2};
+    pos = newGlobalPos;
+    spriteCenter = {newGlobalPos.left + newGlobalPos.width / 2, newGlobalPos.top + newGlobalPos.height / 2};
 }
 
 const sf::FloatRect &PosEntity::getPos() const {
