@@ -188,7 +188,7 @@ void PlayState::handleInput() {
     }
 
     //update enemies skin direction based on mike positioning
-    //spawner->updateSkinDirection(mike->getSpriteCenter());
+    spawner->updateSkinDirection(mike->getSpriteCenter());
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
@@ -230,6 +230,9 @@ PlayState::PlayState(Game *game) {
 
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
+
+    spawner->spawnEnemies();
+    spawner->spawnNuke();
 }
 
 int PlayState::whichMap() {
@@ -305,6 +308,16 @@ void PlayState::updateBonuses(float dt) {
                                                   mike->weapon->getTotalBullets(),
                                                   mike->weapon->isInfiniteBullets());
                         spawner->despawnBonus(i);
+                        i--;
+                    }
+                    break;
+                case NUKE:
+                    spawner->bonuses[i]->currentAnimation.update(dt);
+                    //collect coin
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
+                        spawner->bonuses[i]->doSpecialAction(*mike);
+                        //spawner->enemies.clear(); //kill all enemies //FIXME death animations
+                        spawner->despawnBonus(i); //FIXME memory error
                         i--;
                     }
                     break;

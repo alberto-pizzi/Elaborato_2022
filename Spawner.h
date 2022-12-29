@@ -15,6 +15,7 @@
 #include "TextureManager.h"
 #include "Coin.h"
 #include "Zombie.h"
+#include "Nuke.h"
 
 
 class Spawner {
@@ -50,6 +51,8 @@ public:
     void spawnCoin();
 
     void spawnEnemies();
+
+    void spawnNuke();
 
 };
 
