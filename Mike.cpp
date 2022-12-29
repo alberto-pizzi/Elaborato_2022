@@ -18,7 +18,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         points,
                         spawnTile,
                         tileSize,
-                        rectSkin,
+                        rectSkin, "mike",
                         animated,
                         coins,
                         armor,
@@ -70,10 +70,12 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     gui.updateWeaponType(handgunTexture, weapon->currentAnimation.idleFrames[0], weapon->hitBox.getSize());
 }
 
+/*
 void Mike::drawEntity(sf::RenderWindow &window) {
     sprite.setTextureRect(currentAnimation.getCurrentRect());
     window.draw(sprite);
 }
+*/
 
 void Mike::move(const sf::Vector2f &offset, float dt) {
     float newSpeed = this->speed;
@@ -81,7 +83,7 @@ void Mike::move(const sf::Vector2f &offset, float dt) {
 
     //set diagonal speed
     if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)) ||
-        ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
+            ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
         newSpeed /= std::sqrt(2.f);
 
     effectiveOffset = offset * newSpeed * dt;

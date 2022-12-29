@@ -25,6 +25,9 @@ void PlayState::draw(float dt) const {
     //draw bonuses
     spawner->drawBonuses(this->game->window);
 
+    //draw enemies
+    spawner->drawEnemies(this->game->window);
+
     //draw mike and his weapon
     if (!skinDirection[UP]) {
         mike->drawEntity(this->game->window);
@@ -33,8 +36,6 @@ void PlayState::draw(float dt) const {
         mike->weapon->drawWeapon(this->game->window);
         mike->drawEntity(this->game->window);
     }
-
-
 
     //draw bullets
     mike->weapon->drawBullets(this->game->window, dt);
@@ -174,7 +175,7 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-    //mike->directionInput(worldPos, skinDirection);
+    //mike->directionInput(worldPos, enemySkinDirection);
     normalizedVector = normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());
@@ -185,6 +186,9 @@ void PlayState::handleInput() {
         this->game->window.setView(arenaMap->playerView);
         mike->currentAnimation.update(frame_time.asSeconds());
     }
+
+    //update enemies skin direction based on mike positioning
+    //spawner->updateSkinDirection(mike->getSpriteCenter());
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
@@ -337,6 +341,14 @@ void PlayState::updateBonuses(float dt) {
         }
 
     }
+}
+
+void PlayState::calculateTotalEnemiesPerRound() {
+    if (round % bossRoundFrequency == 0) {
+        remainBosses = 1;
+    }
+
+
 }
 
 /*

@@ -35,7 +35,6 @@ private:
     bool keyStates[4] = {false, false, false, false};
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
-    int round;
     bool skinDirection[4] = {false, false, false, false};
 
     //random (number of dice faces in PlayState constructor)
@@ -51,6 +50,13 @@ private:
     TextureManager guiTextures;
     TextureManager charactersTextures;
     TextureManager bonusesTextures;
+
+    //game management
+    const int bossRoundFrequency = 5;
+    int round;
+    int remainEnemies;
+    int remainBosses;
+
 public:
     explicit PlayState(Game *game);
 
@@ -75,6 +81,8 @@ public:
     //bool isRandomAbleTo(float percentage, int nRolls);
 
     void updateBonuses(float dt);
+
+    void calculateTotalEnemiesPerRound();
 };
 
 #endif //ELABORATO_PLAYSTATE_H

@@ -14,6 +14,7 @@
 #include "NewWeapon.h"
 #include "TextureManager.h"
 #include "Coin.h"
+#include "Zombie.h"
 
 
 class Spawner {
@@ -42,7 +43,13 @@ public:
 
     void drawBonuses(sf::RenderWindow &window) const;
 
+    void drawEnemies(sf::RenderWindow &window);
+
+    void updateSkinDirection(const sf::Vector2f &target);
+
     void spawnCoin();
+
+    void spawnEnemies();
 
 };
 

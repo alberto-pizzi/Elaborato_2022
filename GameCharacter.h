@@ -18,6 +18,14 @@
 #include "Handgun.h"
 #include "AssaultRifle.h"
 #include "Shotgun.h"
+#include "GameException.h"
+
+enum Directions {
+    LEFT = 0,
+    RIGHT = 1,
+    UP = 2,
+    DOWN = 3,
+};
 
 class GameCharacter : public PosEntity {
 protected:
@@ -35,6 +43,7 @@ protected:
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
     sf::Vector2i fileTextureRectSkinSize;
+    std::string characterName;
 public:
     std::unique_ptr<Weapon> weapon;
     Animation currentAnimation{idle, 10.0f};
@@ -42,21 +51,24 @@ public:
     const sf::Sprite &getSprite() const;
 
     GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
-                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated = true,
-                  unsigned int coins = 0,
-                  int armor = 0, bool bubble = false);
+                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, std::string characterName,
+                  bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
     virtual ~GameCharacter();
 
     void move(const sf::Vector2f &offset, float dt) override = 0;
 
-    int receiveDamage(int damagePoints, bool armor);
+    void receiveDamage(int damagePoints);
+
+    int howMuchDamage() const;
 
     void chase(GameCharacter &enemy);
 
     bool isLegalFight(const GameCharacter &enemy) const;
 
-    virtual void drawEntity(sf::RenderWindow &window) = 0;
+    void drawEntity(sf::RenderWindow &window);
+
+    void enemySkinDirection(const sf::Vector2f &target);
 
     int getHp() const;
 

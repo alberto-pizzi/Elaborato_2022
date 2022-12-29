@@ -6,16 +6,9 @@
 #define ELABORATO_MIKE_H
 
 #include "GameCharacter.h"
-#include "GameException.h"
 #include "Gui.h"
 #include "Bonus.h"
 
-enum Directions {
-    LEFT = 0,
-    RIGHT = 1,
-    UP = 2,
-    DOWN = 3,
-};
 enum typeOfWeapon {
     HANDGUN = 0, ASSAULT_RIFLE, SHOTGUN,
 };
@@ -39,7 +32,7 @@ public:
 
     bool isKillStreak(GameCharacter &character);
 
-    void drawEntity(sf::RenderWindow &window) override;
+    //void drawEntity(sf::RenderWindow &window);
 
     void directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirection)[4]);
 

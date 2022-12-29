@@ -133,6 +133,10 @@ const sf::Time &Weapon::getNextShotDelay() const {
     return nextShotDelay;
 }
 
+int Weapon::getDamage() const {
+    return damage;
+}
+
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {

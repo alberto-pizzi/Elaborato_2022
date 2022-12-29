@@ -113,6 +113,8 @@ public:
 
     const sf::Time &getNextShotDelay() const;
 
+    int getDamage() const;
+
 };
 
 

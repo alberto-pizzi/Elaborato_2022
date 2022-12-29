@@ -5,8 +5,20 @@
 #include "GameCharacter.h"
 
 
-int GameCharacter::receiveDamage(int damagePoints, bool armor) {
-    return 0;
+void GameCharacter::receiveDamage(int damagePoints) {
+    if (!bubble) {
+        if (armor > 0) {
+            int armorDamage = armor - damagePoints;
+            if (armorDamage >= 0)
+                armor -= armorDamage;
+            else {
+                armor = 0;
+                HP += armorDamage; //add damage because it is certainly negative
+            }
+
+        } else
+            HP -= damagePoints;
+    }
 }
 
 void GameCharacter::chase(GameCharacter &enemy) {
@@ -19,10 +31,9 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
 
 GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points,
                              const sf::Vector2i &tilePosition,
-                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, bool animated,
-                             unsigned int coins,
-                             int armor,
-                             bool bubble)
+                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, std::string characterName,
+                             bool animated,
+                             unsigned int coins, int armor, bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
@@ -120,6 +131,50 @@ const std::vector<sf::IntRect> &GameCharacter::getGoUp() const {
 
 void GameCharacter::setSpritePos(sf::Vector2f newPos) {
     sprite.setPosition(newPos);
+}
+
+int GameCharacter::howMuchDamage() const {
+    int damagePoints = weapon->getDamage(); //FIXME implement features for character without weapon (zombie...)
+    if (armor > 15)
+        damagePoints /= 3;
+    else if (armor > 10)
+        damagePoints /= 2;
+    else if (armor >= 5)
+        damagePoints -= 2;
+
+    return damagePoints;
+}
+
+void GameCharacter::drawEntity(sf::RenderWindow &window) {
+    sprite.setTextureRect(currentAnimation.getCurrentRect());
+    window.draw(sprite);
+}
+
+void GameCharacter::enemySkinDirection(const sf::Vector2f &target) {
+    //set Cartesian plane as enemy position
+    sf::Vector2f origin = spriteCenter;
+    sf::Vector2f translation = target - origin;
+    float frameDuration = 0.5f;
+
+    //when target exceeds bisects (+- 45°) of all quadrants, enemy changes body direction
+    if (target.x >= origin.x) {
+        if ((translation.y < translation.x) && (translation.y > -(translation.x))) {
+            currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
+        } else if (target.y >= origin.y) {
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+        } else if (target.y < origin.y) {
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+        }
+    } else if (target.x < origin.x) {
+        if ((translation.y > translation.x) && (translation.y < -(translation.x))) {
+            currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
+        } else if (target.y >= origin.y) {
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+        } else {
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+        }
+    }
+
 }
 
 GameCharacter::~GameCharacter() = default;

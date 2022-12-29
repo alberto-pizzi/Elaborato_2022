@@ -42,3 +42,19 @@ void Spawner::spawnCoin() {
                                   {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
+void Spawner::spawnEnemies() {
+    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 24},
+                                    {32, 32}, {32, 32},
+                                    true)); //TODO add random spawn (only for debug) and correct texture
+}
+
+void Spawner::drawEnemies(sf::RenderWindow &window) {
+    for (int i = 0; i < enemies.size(); i++)
+        enemies[i]->drawEntity(window);
+}
+
+void Spawner::updateSkinDirection(const sf::Vector2f &target) {
+    for (int i = 0; i < enemies.size(); i++)
+        enemies[i]->enemySkinDirection(target);
+}
+
