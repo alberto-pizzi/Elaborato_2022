@@ -62,7 +62,7 @@ void Spawner::drawEnemies(sf::RenderWindow &window) {
 
 void Spawner::updateSkinDirection(const sf::Vector2f &target) {
     for (int i = 0; i < enemies.size(); i++)
-        enemies[i]->enemySkinDirection(target);
+        enemies[i]->characterSkinDirection(target);
 }
 
 void Spawner::spawnNuke() {

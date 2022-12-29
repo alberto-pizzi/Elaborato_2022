@@ -122,7 +122,10 @@ void Gui::drawGui(sf::RenderWindow &window) {
 
 void Gui::updateHealthBar(float hp) {
     float totalHP = 20; //this is to be equal to mike total HP
-    healthBar.setTextureRect({0, 0, static_cast<int>((5 * 32 * hp) / totalHP), 32}); //these values are the texture size
+    healthBar.setTextureRect({0, 0, static_cast<int>(
+            (static_cast<float>(guiTextures.getTextureRef("healthBar").getSize().x) * hp) / totalHP),
+                              static_cast<int>(guiTextures.getTextureRef(
+                                      "healthBar").getSize().y)}); //these values are the texture size
 }
 
 TextureManager Gui::getTexManager() {

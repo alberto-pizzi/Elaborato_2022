@@ -46,8 +46,6 @@ public:
 
     void updateActiveBonuses();
 
-    void directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirection)[4]);
-
     void setWeaponPosToShouldersPos();
 
     std::vector<ActualBonus> getActualBonuses() const;

@@ -29,7 +29,7 @@ void PlayState::draw(float dt) const {
     spawner->drawEnemies(this->game->window);
 
     //draw mike and his weapon
-    if (!skinDirection[UP]) {
+    if (!mike->skinDirection[UP]) {
         mike->drawEntity(this->game->window);
         mike->weapon->drawWeapon(this->game->window);
     } else {
@@ -98,7 +98,7 @@ void PlayState::handleInput() {
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
 
-    mike->directionInput(worldPos, skinDirection);
+    mike->characterSkinDirection(worldPos);
 
     //viewfinder positioning
     viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
@@ -183,7 +183,7 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-    //mike->directionInput(worldPos, enemySkinDirection);
+    //mike->characterSkinDirection(worldPos, enemySkinDirection);
     normalizedVector = mike->normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());

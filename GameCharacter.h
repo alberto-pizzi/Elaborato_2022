@@ -51,7 +51,9 @@ protected:
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
     sf::Vector2i fileTextureRectSkinSize;
+
 public:
+    bool skinDirection[4] = {false, false, false, false};
     std::unique_ptr<Weapon> weapon;
     Animation currentAnimation{idle, 10.0f};
 
@@ -64,6 +66,8 @@ public:
     virtual ~GameCharacter();
 
     void move(const sf::Vector2f &offset, float dt) override = 0;
+
+    void characterSkinDirection(const sf::Vector2f &targetPos);
 
     void receiveDamage(int damagePoints);
 
@@ -78,8 +82,6 @@ public:
     bool isLegalFight(const GameCharacter &enemy) const;
 
     void drawEntity(sf::RenderWindow &window);
-
-    void enemySkinDirection(const sf::Vector2f &target);
 
     float getHp() const;
 

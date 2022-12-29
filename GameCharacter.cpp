@@ -159,33 +159,6 @@ void GameCharacter::drawEntity(sf::RenderWindow &window) {
     window.draw(sprite);
 }
 
-void GameCharacter::enemySkinDirection(const sf::Vector2f &target) {
-    //set Cartesian plane as enemy position
-    sf::Vector2f origin = spriteCenter;
-    sf::Vector2f translation = target - origin;
-    float frameDuration = 0.5f;
-
-    //when target exceeds bisects (+- 45°) of all quadrants, enemy changes body direction
-    if (target.x >= origin.x) {
-        if ((translation.y < translation.x) && (translation.y > -(translation.x))) {
-            currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
-        } else if (target.y >= origin.y) {
-            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
-        } else if (target.y < origin.y) {
-            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
-        }
-    } else if (target.x < origin.x) {
-        if ((translation.y > translation.x) && (translation.y < -(translation.x))) {
-            currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
-        } else if (target.y >= origin.y) {
-            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
-        } else {
-            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
-        }
-    }
-
-}
-
 void GameCharacter::updateCharacterColor() {
     if (bubble) {
         sprite.setColor(bubbleColor);
@@ -195,6 +168,82 @@ void GameCharacter::updateCharacterColor() {
     else {
         sprite.setColor(sf::Color::White);
         weapon->weaponSprite.setColor(sf::Color::White);
+    }
+}
+
+void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
+    //set Cartesian plane as player position
+    sf::Vector2f origin = spriteCenter;
+    sf::Vector2f translation = targetPos - origin;
+    float frameDuration = 0.5f;
+    float radians, degrees;
+
+
+    //weapon angle from input
+    radians = std::atan(translation.y / translation.x);
+    degrees = radians * static_cast<float>(180 / M_PI);
+
+    //when mouse exceeds bisects (+- 45°) of all quadrants, Mike changes body direction
+    if (targetPos.x >= origin.x) {
+        if (weapon != nullptr)
+            weapon->weaponSprite.setScale(sf::Vector2f(1, 1));
+        if ((translation.y < translation.x) && (translation.y > -(translation.x))) {
+            currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = true;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = false;
+        } else if (targetPos.y >= origin.y) {
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = true;
+        } else if (targetPos.y < origin.y) {
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+            skinDirection[UP] = true;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = false;
+        }
+    } else if (targetPos.x < origin.x) {
+        if (weapon != nullptr)
+            weapon->weaponSprite.setScale(sf::Vector2f(-1, 1));
+        if ((translation.y > translation.x) && (translation.y < -(translation.x))) {
+            currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = true;
+            skinDirection[DOWN] = false;
+        } else if (targetPos.y >= origin.y) {
+            currentAnimation.setMovementAnimation(goDown, frameDuration, DOWN);
+            skinDirection[UP] = false;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = true;
+        } else {
+            currentAnimation.setMovementAnimation(goUp, frameDuration, UP);
+            skinDirection[UP] = true;
+            skinDirection[RIGHT] = false;
+            skinDirection[LEFT] = false;
+            skinDirection[DOWN] = false;
+        }
+    }
+
+    if (weapon != nullptr) {
+        if (weapon->getWeaponName() == "handgun")
+            weapon->weaponSprite.setOrigin(sf::Vector2f(0, 0));
+        else if (weapon->getWeaponName() == "assaultRifle")
+            weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
+        else if (weapon->getWeaponName() == "shotgun")
+            weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
+
+        weapon->weaponSprite.setRotation(degrees);
+        weapon->setDegrees(degrees);
+
+        //hit box
+        weapon->hitBox.setScale(weapon->weaponSprite.getScale());
+        weapon->hitBox.setRotation(degrees);
     }
 }
 
