@@ -74,7 +74,7 @@ const sf::Sprite &GameCharacter::getSprite() const {
     return sprite;
 }
 
-int GameCharacter::getHp() const {
+float GameCharacter::getHp() const {
     return HP;
 }
 
@@ -94,7 +94,7 @@ int GameCharacter::getCoins() const {
     return coins;
 }
 
-void GameCharacter::setHp(int hp) {
+void GameCharacter::setHp(float hp) {
     HP = hp;
 }
 

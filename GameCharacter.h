@@ -37,7 +37,7 @@ private:
     sf::Time hitTime = sf::seconds(0.5);
     const sf::Color bubbleColor = sf::Color(0, 191, 255);
 protected:
-    int HP;
+    float HP;
     int armor;
     float speed;
     bool bubble;
@@ -81,7 +81,7 @@ public:
 
     void enemySkinDirection(const sf::Vector2f &target);
 
-    int getHp() const;
+    float getHp() const;
 
     int getArmor() const;
 
@@ -93,7 +93,7 @@ public:
 
     int getSpeed() const;
 
-    void setHp(int hp);
+    void setHp(float hp);
 
     void setArmor(int armor);
 

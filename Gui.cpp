@@ -120,9 +120,9 @@ void Gui::drawGui(sf::RenderWindow &window) {
     window.draw(weaponSpriteIndicator);
 }
 
-void Gui::updateHealthBar(int hp) {
-    int totalHP = 20; //this is to be equal to mike total HP
-    healthBar.setTextureRect({0, 0, (5 * 32 * hp) / totalHP, 32}); //these values are the texture size
+void Gui::updateHealthBar(float hp) {
+    float totalHP = 20; //this is to be equal to mike total HP
+    healthBar.setTextureRect({0, 0, static_cast<int>((5 * 32 * hp) / totalHP), 32}); //these values are the texture size
 }
 
 TextureManager Gui::getTexManager() {
