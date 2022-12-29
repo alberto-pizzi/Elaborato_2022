@@ -40,14 +40,14 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
 
 GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points,
                              const sf::Vector2i &tilePosition,
-                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, std::string characterName,
+                             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
                              bool animated,
                              unsigned int coins, int armor, bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
           armor(armor),
-          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin) {
+          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType) {
 
     sprite.setTexture(texture);
 
@@ -184,6 +184,18 @@ void GameCharacter::enemySkinDirection(const sf::Vector2f &target) {
         }
     }
 
+}
+
+void GameCharacter::updateCharacterColor() {
+    if (bubble) {
+        sprite.setColor(bubbleColor);
+        weapon->weaponSprite.setColor(bubbleColor);
+    }
+        //TODO add here hit color
+    else {
+        sprite.setColor(sf::Color::White);
+        weapon->weaponSprite.setColor(sf::Color::White);
+    }
 }
 
 GameCharacter::~GameCharacter() = default;

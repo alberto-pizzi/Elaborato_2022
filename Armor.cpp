@@ -1,12 +1,11 @@
 //
-// Created by Alberto Pizzi on 29/12/22.
+// Created by alber on 29/12/2022.
 //
 
-#include "Nuke.h"
-#include "Mike.h"
+#include "Armor.h"
 
-Nuke::Nuke(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, NUKE,
+Armor::Armor(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, ARMOR,
                 true,
                 false) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 
@@ -15,11 +14,12 @@ Nuke::Nuke(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points
         animationFrames.emplace_back(i * frameSize.x, 0, frameSize.x, frameSize.y);
     currentAnimation.setNotCyclicalAnimation(animationFrames, 1.f);
 
+    quantity = 2; //FIXME set random quantity
+
     stayTimer.restart();
 }
 
-void Nuke::doSpecialAction(Mike &character) {
+void Armor::doSpecialAction(Mike &character) {
     addPoints(character);
-    //kill all action is made by Spawner class
+    character.setArmor(character.getArmor() + this->quantity);
 }
-

@@ -36,6 +36,7 @@ private:
     };
 
     sf::Vector2i fileTextureRectWeaponSize;
+    int defaultDamage;
 protected:
     enum Directions {
         LEFT = 0, RIGHT, UP, DOWN,
@@ -46,7 +47,8 @@ protected:
     int damage;
     float reloadTime;
     bool equipped;
-    sf::Time nextShotDelay; //in seconds
+    sf::Time nextShotDelay;
+    float damageMultiplier = 1;
 
     std::string weaponName;
     sf::Texture weaponTexture;
@@ -114,6 +116,14 @@ public:
     const sf::Time &getNextShotDelay() const;
 
     int getDamage() const;
+
+    float getDamageMultiplier() const;
+
+    void setDamageMultiplier(float damageMultiplier);
+
+    int getDefaultDamage() const;
+
+    void setDamage(int damage);
 
 };
 

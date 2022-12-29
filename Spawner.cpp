@@ -45,7 +45,8 @@ void Spawner::spawnCoin() {
 void Spawner::spawnEnemies() {
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 24},
                                     {32, 32}, {32, 32},
-                                    true)); //TODO add random spawn (only for debug) and correct texture
+                                    true)); //TODO add random spawn (only for debug), correct texture and variable speed
+    //TODO remove them
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 27},
                                     {32, 32}, {32, 32},
                                     true));
@@ -66,7 +67,7 @@ void Spawner::updateSkinDirection(const sf::Vector2f &target) {
 
 void Spawner::spawnNuke() {
     bonuses.emplace_back(new Nuke(bonusesTextures.getTextureRef("coin"),
-                                  {36 * 32, 15 * 32}));
+                                  {36 * 32, 15 * 32})); //TODO set correct texture
 }
 
 void Spawner::updateEnemies(const GameCharacter &target, float dt) {
@@ -77,5 +78,25 @@ void Spawner::updateEnemies(const GameCharacter &target, float dt) {
         translation = target.getSpriteCenter() - origin;
         enemies[i]->move(enemies[i]->normalize(translation), dt);
     }
+}
+
+void Spawner::spawnAmmunition() {
+    bonuses.emplace_back(new Ammunition(bonusesTextures.getTextureRef("coin"),
+                                        {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+}
+
+void Spawner::spawnLifePoints() {
+    bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("coin"),
+                                        {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+}
+
+void Spawner::spawnBubble() {
+    bonuses.emplace_back(new ProtectionBubble(bonusesTextures.getTextureRef("coin"),
+                                              {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+}
+
+void Spawner::spawnArmor() {
+    bonuses.emplace_back(new Armor(bonusesTextures.getTextureRef("coin"),
+                                   {36 * 32, 15 * 32})); //TODO set correct texture and random tile
 }
 

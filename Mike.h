@@ -7,16 +7,24 @@
 
 #include "GameCharacter.h"
 #include "Gui.h"
-#include "Bonus.h"
 
 enum typeOfWeapon {
     HANDGUN = 0, ASSAULT_RIFLE, SHOTGUN,
 };
 
+
 class Mike : public GameCharacter {
 private:
+    enum BonusType {
+        NEW_WEAPON = 0, AMMUNITION, COINS, INCREASED_DAMAGE, LIFE_POINTS, PROTECTION_BUBBLE, NUKE,
+    };
     int killStreak;
-    std::vector<std::unique_ptr<Bonus>> mikeBonuses;
+    struct ActualBonus {
+        int bonusType;
+        sf::Clock effectTimer;
+        sf::Time effectTime;
+    };
+    std::vector<ActualBonus> actualBonuses;
 public:
     Gui gui;
 
@@ -34,9 +42,15 @@ public:
 
     //void drawEntity(sf::RenderWindow &window);
 
+    void addToOwnBonuses(int bonusType, sf::Time duration);
+
+    void updateActiveBonuses();
+
     void directionInput(const sf::Vector2f &viewfinderPos, bool (&skinDirection)[4]);
 
     void setWeaponPosToShouldersPos();
+
+    std::vector<ActualBonus> getActualBonuses() const;
 };
 
 

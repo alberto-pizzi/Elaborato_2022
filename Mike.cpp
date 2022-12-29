@@ -18,7 +18,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         points,
                         spawnTile,
                         tileSize,
-                        rectSkin, "mike",
+                        rectSkin, MIKE,
                         animated,
                         coins,
                         armor,
@@ -180,6 +180,38 @@ void Mike::setWeaponPosToShouldersPos() {
                                          this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
 
     weapon->hitBox.setPosition(weapon->weaponSprite.getPosition());
+}
+
+void Mike::addToOwnBonuses(int bonusType, sf::Time duration) {
+    sf::Clock timer;
+    actualBonuses.push_back({bonusType, timer, duration});
+}
+
+void Mike::updateActiveBonuses() {
+    for (int i = 0; i < actualBonuses.size(); i++) {
+        if (actualBonuses[i].effectTimer.getElapsedTime() >= actualBonuses[i].effectTime) {
+            switch (actualBonuses[i].bonusType) {
+                case BonusType::PROTECTION_BUBBLE:
+                    bubble = false; //reset bubble to default value (false)
+                    break;
+                case BonusType::INCREASED_DAMAGE:
+                    weapon->setDamageMultiplier(1); //reset damage multiplier to default value (1)
+                    weapon->setDamage(weapon->getDefaultDamage());
+                    break;
+                default:
+                    std::cerr << "ERROR: OWNABLE BONUS NOT EXIST" << std::endl;
+                    break;
+            }
+            actualBonuses.erase(actualBonuses.begin() + i);
+            i--;
+        }
+        if (actualBonuses.empty())
+            break;
+    }
+}
+
+std::vector<Mike::ActualBonus> Mike::getActualBonuses() const {
+    return actualBonuses;
 }
 
 Mike::~Mike() = default;

@@ -72,8 +72,6 @@ public:
 
     int whichMap();
 
-    sf::Vector2f normalize(sf::Vector2f vector);
-
     void loadTextures();
 
     sf::Vector2f normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character);

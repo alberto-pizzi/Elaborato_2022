@@ -16,6 +16,10 @@
 #include "Coin.h"
 #include "Zombie.h"
 #include "Nuke.h"
+#include "Ammunition.h"
+#include "LifePoints.h"
+#include "ProtectionBubble.h"
+#include "Armor.h"
 
 
 class Spawner {
@@ -55,6 +59,14 @@ public:
     void spawnEnemies();
 
     void spawnNuke();
+
+    void spawnAmmunition();
+
+    void spawnLifePoints();
+
+    void spawnBubble();
+
+    void spawnArmor();
 
 };
 

@@ -6,6 +6,7 @@
 #define ELABORATO_NUKE_H
 
 #include "Bonus.h"
+#include "Mike.h"
 
 class Nuke : public Bonus {
 private:
@@ -15,7 +16,7 @@ public:
     Nuke(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 35,
          sf::Time stayTime = sf::seconds(25));
 
-    void doSpecialAction(GameCharacter &character) override;
+    void doSpecialAction(Mike &character) override;
 };
 
 

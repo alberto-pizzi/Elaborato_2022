@@ -7,7 +7,7 @@
 Zombie::Zombie(const sf::Texture &zombieTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
                const sf::Vector2i &rectSkin, bool animated, int hp, float speed, unsigned int points,
                unsigned int coins, int armor, bool bubble) : GameCharacter(zombieTexture, hp, speed, points, spawnTile,
-                                                                           tileSize, rectSkin, "zombie", animated,
+                                                                           tileSize, rectSkin, ZOMBIE, animated,
                                                                            coins, armor, bubble) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames
@@ -50,7 +50,6 @@ Zombie::Zombie(const sf::Texture &zombieTexture, const sf::Vector2i &spawnTile, 
             {2 * this->fileTextureRectSkinSize.x, 3 *
                                                   this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
-
 }
 
 void Zombie::move(const sf::Vector2f &offset, float dt) {

@@ -9,10 +9,11 @@
 #include "GameException.h"
 #include <memory>
 #include "Dice.h"
+#include "Mike.h"
 
 
 enum BonusType {
-    NEW_WEAPON = 0, AMMUNITION, COINS, INCREASED_DAMAGE, LIFE_POINTS, PROTECTION_BUBBLE, NUKE,
+    NEW_WEAPON = 0, AMMUNITION, COINS, INCREASED_DAMAGE, LIFE_POINTS, PROTECTION_BUBBLE, NUKE, ARMOR
 };
 
 class Bonus {
@@ -21,6 +22,8 @@ private:
 protected:
     int bonusPoints;
     sf::Time stayTime;
+    sf::Time duration = sf::seconds(0); //default value
+    bool isOwnable;
     sf::Clock stayTimer;
     sf::Sprite sprite;
     sf::Texture texture;
@@ -34,9 +37,9 @@ public:
     Animation currentAnimation{animationFrames, 10.f};
 
     Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
-          std::vector<sf::IntRect> animationFrames, int bonusType, bool isInfinite);
+          std::vector<sf::IntRect> animationFrames, int bonusType, bool isInfinite, bool ownable);
 
-    virtual void doSpecialAction(GameCharacter &character) = 0;
+    virtual void doSpecialAction(Mike &character) = 0;
 
     void addPoints(GameCharacter &target) const;
 
@@ -52,6 +55,8 @@ public:
     const sf::Time &getStayTime() const;
 
     const sf::Clock &getStayTimer() const;
+
+    const sf::Time &getDuration() const;
 
 
 };

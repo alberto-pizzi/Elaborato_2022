@@ -3,6 +3,7 @@
 //
 
 #include "Coin.h"
+#include "Mike.h"
 
 int Coin::getValue() const {
     return value;
@@ -12,14 +13,14 @@ void Coin::setValue(int value) {
     Coin::value = value;
 }
 
-void Coin::doSpecialAction(GameCharacter &character) {
+void Coin::doSpecialAction(Mike &character) {
     addPoints(character);
     character.setCoins(character.getCoins() + this->value);
 }
 
 Coin::Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, COINS,
-                true) { //those values are the sprite frame size
+                true, false) { //those values are the sprite frame size
 
     animationFrames.clear();
     for (int i = 0; i < nFrames; i++)

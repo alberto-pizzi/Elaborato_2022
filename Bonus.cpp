@@ -11,9 +11,9 @@ void Bonus::addPoints(GameCharacter &target) const {
 }
 
 Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
-             std::vector<sf::IntRect> animationFrames, int bonusType, bool isInfinite)
+             std::vector<sf::IntRect> animationFrames, int bonusType, bool isInfinite, bool ownable)
         : bonusPoints(points), stayTime(stayTime), texture(texture), animationFrames(std::move(animationFrames)),
-          bonusType(bonusType), isInfiniteAnimation(isInfinite) {
+          bonusType(bonusType), isInfiniteAnimation(isInfinite), isOwnable(ownable) {
     sprite.setTexture(texture);
     sprite.setPosition(spawnCoords);
     //updateGlobalPosition(sprite.getGlobalBounds());
@@ -47,6 +47,10 @@ const sf::Clock &Bonus::getStayTimer() const {
 
 void Bonus::startDespawining() {
 //WARNING: only for common animations
+}
+
+const sf::Time &Bonus::getDuration() const {
+    return duration;
 }
 
 

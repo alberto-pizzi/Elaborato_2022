@@ -32,7 +32,8 @@ Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, 
         : equipped(equipped), totalBullets(totBullets), damage(damage), nextShotDelay(shotDelay),
           reloadTime(reloadTime),
           magazine(magazineCapacity, remainingBullets), fileTextureRectWeaponSize(texRectWeapon),
-          weaponName(weaponName), weaponTexture(weaponTexture), infiniteBullets(infiniteBullets) {
+          weaponName(weaponName), weaponTexture(weaponTexture), infiniteBullets(infiniteBullets),
+          defaultDamage(damage) {
 
     this->weaponSprite.setTexture(this->weaponTexture);
 
@@ -135,6 +136,22 @@ const sf::Time &Weapon::getNextShotDelay() const {
 
 int Weapon::getDamage() const {
     return damage;
+}
+
+float Weapon::getDamageMultiplier() const {
+    return damageMultiplier;
+}
+
+void Weapon::setDamageMultiplier(float damageMultiplier) {
+    this->damageMultiplier = damageMultiplier;
+}
+
+int Weapon::getDefaultDamage() const {
+    return defaultDamage;
+}
+
+void Weapon::setDamage(int damage) {
+    this->damage = damage;
 }
 
 

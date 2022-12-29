@@ -67,10 +67,13 @@ void PlayState::update(float dt) {
     }
      */
 
+    mike->updateActiveBonuses(); //update active bonuses like bubble, increase damage...
+    mike->updateCharacterColor();
+
+    //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
+
     //update enemies
     spawner->updateEnemies(*mike, dt);
-    std::cout << "Mike sprite center X: " << mike->getSpriteCenter().x << " Y: " << mike->getSpriteCenter().y
-              << std::endl;
 
     //update bonuses (updates animation and despawn them)
     updateBonuses(dt);
@@ -181,7 +184,7 @@ void PlayState::handleInput() {
         direction_vector.y = 1.f;
 
     //mike->directionInput(worldPos, enemySkinDirection);
-    normalizedVector = normalize(direction_vector);
+    normalizedVector = mike->normalize(direction_vector);
     if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
@@ -236,23 +239,18 @@ PlayState::PlayState(Game *game) {
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
-    spawner->spawnEnemies(); //TODO remove them
+    //TODO remove them
+    //spawner->spawnEnemies();
     //spawner->spawnNuke();
+    //spawner->spawnWeapon();
+    //spawner->spawnAmmunition();
+    //spawner->spawnBubble();
 }
 
 int PlayState::whichMap() {
     srand(time(NULL));
     int map = rand() % nMap;
     return map;
-}
-
-sf::Vector2f PlayState::normalize(sf::Vector2f vector) {
-    auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
-    //Prevent division by zero
-    if (norm == 0)
-        return sf::Vector2f{};
-    else
-        return vector / norm;
 }
 
 ArenaMap *PlayState::getArenaMap() const {
@@ -290,7 +288,7 @@ sf::Vector2f
 PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character) {
     sf::Vector2f origin = character.getSpriteCenter();
     sf::Vector2f translation = viewfinderPos - origin;
-    return normalize(translation);
+    return mike->normalize(translation);
 }
 
 void PlayState::updateBonuses(float dt) {
@@ -318,20 +316,43 @@ void PlayState::updateBonuses(float dt) {
                     break;
                 case NUKE:
                     spawner->bonuses[i]->currentAnimation.update(dt);
-                    //collect coin
+                    //collect nuke
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
-                        //spawner->enemies.clear(); //kill all enemies //FIXME death animations
-                        spawner->despawnBonus(i); //FIXME memory error
+                        spawner->enemies.clear(); //kill all enemies //FIXME death animations
+                        spawner->despawnBonus(i);
                         i--;
                     }
                     break;
+                case AMMUNITION:
+                    spawner->bonuses[i]->currentAnimation.update(dt);
+                    //collect ammo
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
+                        spawner->bonuses[i]->doSpecialAction(*mike);
+                        spawner->despawnBonus(i);
+                        i--;
+                        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
+                                                  mike->weapon->getTotalBullets(),
+                                                  mike->weapon->isInfiniteBullets());
+                    }
+                    break;
+                case LIFE_POINTS:
                 case COINS:
                     spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect coin
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         //std::cout << "COLLECTED COIN!" << std::endl;
                         spawner->bonuses[i]->doSpecialAction(*mike);
+                        spawner->despawnBonus(i);
+                        i--;
+                    }
+                    break;
+                case PROTECTION_BUBBLE:
+                    spawner->bonuses[i]->currentAnimation.update(dt);
+                    //collect protection bubble
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
+                        spawner->bonuses[i]->doSpecialAction(*mike);
+                        mike->addToOwnBonuses(PROTECTION_BUBBLE, spawner->bonuses[i]->getDuration());
                         spawner->despawnBonus(i);
                         i--;
                     }

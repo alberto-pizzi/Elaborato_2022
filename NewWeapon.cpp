@@ -4,7 +4,7 @@
 
 #include "NewWeapon.h"
 
-void NewWeapon::doSpecialAction(GameCharacter &character) {
+void NewWeapon::doSpecialAction(Mike &character) {
     addPoints(character);
     //replace current weapon with a new weapon
     character.weapon = std::move(newWeapon);
@@ -42,7 +42,7 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
 
 NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
                      int points, sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, false) {
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, false, false) {
 
     Dice dice(totalWeapons - 1); //TODO optimize it when will be implemented random spawning algorithm
 

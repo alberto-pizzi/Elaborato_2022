@@ -12,6 +12,7 @@
 #include "GameException.h"
 #include "Weapon.h"
 #include "Bonus.h"
+#include "Mike.h"
 
 
 enum totFramesWeaponBox {
@@ -42,7 +43,7 @@ public:
 
     void selectWeaponToSpawn(int selected);
 
-    void doSpecialAction(GameCharacter &character) override;
+    void doSpecialAction(Mike &character) override;
 };
 
 

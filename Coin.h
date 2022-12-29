@@ -6,6 +6,7 @@
 #define ELABORATO_COIN_H
 
 #include "Bonus.h"
+#include "Mike.h"
 
 class Coin : public Bonus {
 private:
@@ -16,7 +17,7 @@ public:
     Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 2,
          sf::Time stayTime = sf::seconds(15));
 
-    void doSpecialAction(GameCharacter &character) override;
+    void doSpecialAction(Mike &character) override;
 
     int getValue() const;
 
