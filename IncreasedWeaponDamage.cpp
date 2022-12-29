@@ -6,7 +6,7 @@
 
 IncreasedWeaponDamage::IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points,
                                              sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, INCREASED_DAMAGE,
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, INCREASED_DAMAGE, sf::Vector2f(),
                 true,
                 true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 

@@ -66,7 +66,7 @@ void Spawner::updateSkinDirection(const sf::Vector2f &target) {
 }
 
 void Spawner::spawnNuke() {
-    bonuses.emplace_back(new Nuke(bonusesTextures.getTextureRef("coin"),
+    bonuses.emplace_back(new Nuke(bonusesTextures.getTextureRef("bonusesBox"),
                                   {36 * 32, 15 * 32})); //TODO set correct texture
 }
 
@@ -81,22 +81,22 @@ void Spawner::updateEnemies(const GameCharacter &target, float dt) {
 }
 
 void Spawner::spawnAmmunition() {
-    bonuses.emplace_back(new Ammunition(bonusesTextures.getTextureRef("coin"),
+    bonuses.emplace_back(new Ammunition(bonusesTextures.getTextureRef("bonusesBox"),
                                         {36 * 32, 15 * 32})); //TODO set correct texture and random tile
 }
 
 void Spawner::spawnLifePoints() {
-    bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("coin"),
+    bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("bonusesBox"),
                                         {36 * 32, 15 * 32})); //TODO set correct texture and random tile
 }
 
 void Spawner::spawnBubble() {
-    bonuses.emplace_back(new ProtectionBubble(bonusesTextures.getTextureRef("coin"),
+    bonuses.emplace_back(new ProtectionBubble(bonusesTextures.getTextureRef("bonusesBox"),
                                               {36 * 32, 15 * 32})); //TODO set correct texture and random tile
 }
 
 void Spawner::spawnArmor() {
-    bonuses.emplace_back(new Armor(bonusesTextures.getTextureRef("coin"),
+    bonuses.emplace_back(new Armor(bonusesTextures.getTextureRef("bonusesBox"),
                                    {36 * 32, 15 * 32})); //TODO set correct texture and random tile
 }
 

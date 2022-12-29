@@ -5,7 +5,7 @@
 #include "Armor.h"
 
 Armor::Armor(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, ARMOR,
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, ARMOR, sf::Vector2f(),
                 true,
                 false) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 

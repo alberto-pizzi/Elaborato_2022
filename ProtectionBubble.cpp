@@ -6,14 +6,17 @@
 
 ProtectionBubble::ProtectionBubble(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points,
                                    sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, PROTECTION_BUBBLE,
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, PROTECTION_BUBBLE, {32, 32},
                 true,
                 true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 
-    animationFrames.clear();
-    for (int i = 0; i < nFrames; i++)
-        animationFrames.emplace_back(i * frameSize.x, 0, frameSize.x, frameSize.y);
-    currentAnimation.setNotCyclicalAnimation(animationFrames, 1.f);
+    animationFrames = idleWeaponBox;
+    currentAnimation.idleFrames = idleWeaponBox;
+
+
+    //currentAnimation.setNotCyclicalAnimation(animationFrames,10.0f);
+
+    stayTimer.restart();
 
     duration = sf::seconds(15); //FIXME set random seconds
 

@@ -22,7 +22,6 @@ public:
     int getValue() const;
 
     void setValue(int value);
-
 };
 
 
