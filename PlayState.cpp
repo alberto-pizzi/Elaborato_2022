@@ -280,6 +280,7 @@ void PlayState::loadTextures() {
     //load bonuses textures
     bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
     bonusesTextures.loadTexture("coin", "res/textures/coin.png");
+    bonusesTextures.loadTexture("bonusesBox", "res/textures/bonuses.png");
 
     //add here all game textures...
 }
