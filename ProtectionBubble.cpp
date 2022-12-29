@@ -10,17 +10,17 @@ ProtectionBubble::ProtectionBubble(const sf::Texture &bonusTexture, sf::Vector2f
                 true,
                 true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 
-    animationFrames = idleWeaponBox;
-    currentAnimation.idleFrames = idleWeaponBox;
+    this->sprite.setScale(sf::Vector2f(1.5, 1.5)); //TODO insert it into parent class
+    idleBonusBox = {{(0 * animationFrameSize.x) + 22, 2 * animationFrameSize.y + 24, 23, 25}};
+    translation = {static_cast<float>(idleBonusBox[0].left % animationFrameSize.x),
+                   static_cast<float>(idleBonusBox[0].top % animationFrameSize.y)}; //FIXME
 
-
-    //currentAnimation.setNotCyclicalAnimation(animationFrames,10.0f);
-
-    stayTimer.restart();
+    //TODO insert these lines into bonus son classes
+    this->animationFrames = idleBonusBox;
+    currentAnimation.idleFrames = idleBonusBox;
 
     duration = sf::seconds(15); //FIXME set random seconds
 
-    stayTimer.restart();
 }
 
 void ProtectionBubble::doSpecialAction(Mike &character) {

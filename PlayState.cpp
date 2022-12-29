@@ -244,7 +244,7 @@ PlayState::PlayState(Game *game) {
     //spawner->spawnNuke();
     //spawner->spawnWeapon();
     //spawner->spawnAmmunition();
-    //spawner->spawnBubble();
+    spawner->spawnBubble();
 }
 
 int PlayState::whichMap() {
@@ -348,12 +348,25 @@ void PlayState::updateBonuses(float dt) {
                         i--;
                     }
                     break;
+                    /*
                 case PROTECTION_BUBBLE:
                     spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect protection bubble
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
                         mike->addToOwnBonuses(PROTECTION_BUBBLE, spawner->bonuses[i]->getDuration());
+                        spawner->despawnBonus(i);
+                        i--;
+                    }
+                    break;
+                     */
+                case PROTECTION_BUBBLE:
+                    if (spawner->bonuses[i]->isActiveAnimation)
+                        spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                         spawner->bonuses[i]->isEndedAnimation,
+                                                                                         spawner->bonuses[i]->isActiveAnimation);
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
+                        spawner->bonuses[i]->doSpecialAction(*mike);
                         spawner->despawnBonus(i);
                         i--;
                     }

@@ -16,18 +16,18 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
 
     switch (selected) {
         case HANDGUN:
-            idleWeaponBox = {{16, 152, 21, 25}};
+            idleBonusBox = {{16, 152, 21, 25}};
             newWeapon = std::unique_ptr<Weapon>(new Handgun(false, weaponsTextures.getTextureRef("handgun"),
                                                             weaponsTextures.getTextureRef("bullet")));
             break;
         case ASSAULT_RIFLE:
-            idleWeaponBox = {{142, 152, 25, 25}};
+            idleBonusBox = {{142, 152, 25, 25}};
 
             newWeapon = std::unique_ptr<Weapon>(new AssaultRifle(false, weaponsTextures.getTextureRef("assaultRifle"),
                                                                  weaponsTextures.getTextureRef("bullet")));
             break;
         case SHOTGUN:
-            idleWeaponBox = {{76, 152, 30, 25}};
+            idleBonusBox = {{76, 152, 30, 25}};
             newWeapon = std::unique_ptr<Weapon>(new Shotgun(false, weaponsTextures.getTextureRef("shotgun"),
                                                             weaponsTextures.getTextureRef("bullet")));
             break;
@@ -35,8 +35,8 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
             std::cerr << "ERROR: SELECTED WEAPON NOT EXIST" << std::endl;
             break;
     }
-    translation = {static_cast<float>(idleWeaponBox[0].left % frameSize.x),
-                   static_cast<float>(idleWeaponBox[0].top % frameSize.y)};
+    translation = {static_cast<float>(idleBonusBox[0].left % bonusFrameSize.x),
+                   static_cast<float>(idleBonusBox[0].top % bonusFrameSize.y)};
 
 }
 
@@ -51,14 +51,17 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
     this->weaponsTextures = weaponsTextures;
 
     selectWeaponToSpawn(dice.roll(1));
-    animationFrames = idleWeaponBox;
-    currentAnimation.idleFrames = idleWeaponBox;
+    /*
+    animationFrames = idleBonusBox;
+    currentAnimation.idleFrames = idleBonusBox;
 
     despawnFrames.reserve(DESPAWN);
     for (int i = 0; i < DESPAWN; i++)
         despawnFrames.emplace_back(i * frameSize.x, 1 * frameSize.y, frameSize.x, frameSize.y);
 
+
     //currentAnimation.setNotCyclicalAnimation(animationFrames,10.0f);
 
     stayTimer.restart();
+     */
 }

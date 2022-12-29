@@ -36,8 +36,9 @@ protected:
     //animation
     sf::Vector2i bonusFrameSize;
     sf::Vector2f translation;
-    std::vector<sf::IntRect> idleWeaponBox;
+    std::vector<sf::IntRect> idleBonusBox;
     std::vector<sf::IntRect> despawnFrames;
+    const sf::Vector2i animationFrameSize = {64, 64};
 public:
     bool isActiveAnimation = false;
     bool isEndedAnimation = false;

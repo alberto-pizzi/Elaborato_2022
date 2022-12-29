@@ -20,13 +20,19 @@ Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vect
     //updateGlobalPosition(sprite.getGlobalBounds());
 
     if (bonusType != COINS) { //COINS has a different animation comportment than the others
+
+
         despawnFrames.reserve(DESPAWN);
         for (int i = 0; i < DESPAWN; i++)
-            despawnFrames.emplace_back(i * frameSize.x, 1 * frameSize.y, frameSize.x, frameSize.y);
+            despawnFrames.emplace_back(i * animationFrameSize.x, 1 * animationFrameSize.y, animationFrameSize.x,
+                                       animationFrameSize.y);
+
     }
 
 
     sprite.setTextureRect(currentAnimation.getCurrentRect());
+
+    stayTimer.restart();
 }
 
 bool Bonus::isAbove(const sf::FloatRect &characterGlobalPos) const {

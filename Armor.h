@@ -10,8 +10,6 @@
 class Armor : public Bonus {
 private:
     int quantity;
-    const int nFrames = 8;
-    const sf::Vector2i frameSize = {32, 32};
 public:
     Armor(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 6,
           sf::Time stayTime = sf::seconds(25));
