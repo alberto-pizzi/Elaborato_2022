@@ -48,6 +48,8 @@ public:
 
     void updateSkinDirection(const sf::Vector2f &target);
 
+    void updateEnemies(const GameCharacter &target, float dt);
+
     void spawnCoin();
 
     void spawnEnemies();

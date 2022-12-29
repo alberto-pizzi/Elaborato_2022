@@ -62,7 +62,9 @@ public:
 
     int howMuchDamage() const;
 
-    void chase(GameCharacter &enemy);
+    void chase(const GameCharacter &target, float dt);
+
+    sf::Vector2f normalize(sf::Vector2f vector);
 
     bool isLegalFight(const GameCharacter &enemy) const;
 

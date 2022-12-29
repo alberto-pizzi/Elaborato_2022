@@ -69,3 +69,13 @@ void Spawner::spawnNuke() {
                                   {36 * 32, 15 * 32}));
 }
 
+void Spawner::updateEnemies(const GameCharacter &target, float dt) {
+    sf::Vector2f origin;
+    sf::Vector2f translation;
+    for (int i = 0; i < enemies.size(); i++) {
+        origin = enemies[i]->getSpriteCenter();
+        translation = target.getSpriteCenter() - origin;
+        enemies[i]->move(enemies[i]->normalize(translation), dt);
+    }
+}
+

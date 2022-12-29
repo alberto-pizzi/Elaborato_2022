@@ -54,5 +54,17 @@ Zombie::Zombie(const sf::Texture &zombieTexture, const sf::Vector2i &spawnTile, 
 }
 
 void Zombie::move(const sf::Vector2f &offset, float dt) {
-    //GameCharacter::move(offset, dt);
+    float newSpeed = this->speed;
+    sf::Vector2f effectiveOffset;
+
+
+    //set diagonal speed
+    if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)) ||
+        ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
+        newSpeed /= std::sqrt(2.f);
+
+    effectiveOffset = offset * newSpeed * dt;
+    sprite.setPosition(sprite.getPosition() + effectiveOffset);
+    //pos = sprite.getGlobalBounds();
+    updateGlobalPosition(sprite.getGlobalBounds());
 }

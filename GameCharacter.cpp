@@ -21,8 +21,17 @@ void GameCharacter::receiveDamage(int damagePoints) {
     }
 }
 
-void GameCharacter::chase(GameCharacter &enemy) {
+void GameCharacter::chase(const GameCharacter &target, float dt) {
+    move(normalize(target.getSpriteCenter()), dt);
+}
 
+sf::Vector2f GameCharacter::normalize(sf::Vector2f vector) {
+    auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
+    //Prevent division by zero
+    if (norm == 0)
+        return sf::Vector2f{};
+    else
+        return vector / norm;
 }
 
 bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {

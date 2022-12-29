@@ -67,6 +67,11 @@ void PlayState::update(float dt) {
     }
      */
 
+    //update enemies
+    spawner->updateEnemies(*mike, dt);
+    std::cout << "Mike sprite center X: " << mike->getSpriteCenter().x << " Y: " << mike->getSpriteCenter().y
+              << std::endl;
+
     //update bonuses (updates animation and despawn them)
     updateBonuses(dt);
 
@@ -188,7 +193,7 @@ void PlayState::handleInput() {
     }
 
     //update enemies skin direction based on mike positioning
-    spawner->updateSkinDirection(mike->getSpriteCenter());
+    spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
@@ -231,8 +236,8 @@ PlayState::PlayState(Game *game) {
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
-    spawner->spawnEnemies();
-    spawner->spawnNuke();
+    spawner->spawnEnemies(); //TODO remove them
+    //spawner->spawnNuke();
 }
 
 int PlayState::whichMap() {
