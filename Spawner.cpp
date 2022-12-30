@@ -100,3 +100,9 @@ void Spawner::spawnArmor() {
                                    {36 * 32, 15 * 32})); //TODO set correct texture and random tile
 }
 
+void Spawner::spawnIncreasedDamage() {
+    bonuses.emplace_back(new IncreasedWeaponDamage(bonusesTextures.getTextureRef("bonusesBox"),
+                                                   {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+
+}
+

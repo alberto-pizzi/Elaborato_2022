@@ -19,8 +19,8 @@ void Coin::doSpecialAction(Mike &character) {
 }
 
 Coin::Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, COINS, {32, 32},
-                true, false) { //those values are the sprite frame size
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 32, 32, 32}}, COINS, {32, 32}, 0,
+                true, false, false) { //those values are the sprite frame size
 
     animationFrames.clear();
     for (int i = 0; i < nFrames; i++)

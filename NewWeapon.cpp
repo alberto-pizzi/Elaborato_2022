@@ -42,8 +42,9 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
 
 NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
                      int points, sf::Time stayTime)
-        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, {64, 64}, false,
-                false) {
+        : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, {64, 64}, 0,
+                false,
+                false, true) {
 
     Dice dice(totalWeapons - 1); //TODO optimize it when will be implemented random spawning algorithm
 
@@ -51,17 +52,5 @@ NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &b
     this->weaponsTextures = weaponsTextures;
 
     selectWeaponToSpawn(dice.roll(1));
-    /*
-    animationFrames = idleBonusBox;
-    currentAnimation.idleFrames = idleBonusBox;
 
-    despawnFrames.reserve(DESPAWN);
-    for (int i = 0; i < DESPAWN; i++)
-        despawnFrames.emplace_back(i * frameSize.x, 1 * frameSize.y, frameSize.x, frameSize.y);
-
-
-    //currentAnimation.setNotCyclicalAnimation(animationFrames,10.0f);
-
-    stayTimer.restart();
-     */
 }

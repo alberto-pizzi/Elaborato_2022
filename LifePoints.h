@@ -10,7 +10,6 @@
 class LifePoints : public Bonus {
 private:
     int quantity;
-    const int nFrames = 8;
 public:
     LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 8,
                sf::Time stayTime = sf::seconds(25));

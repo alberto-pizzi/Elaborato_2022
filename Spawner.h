@@ -20,6 +20,7 @@
 #include "LifePoints.h"
 #include "ProtectionBubble.h"
 #include "Armor.h"
+#include "IncreasedWeaponDamage.h"
 
 
 class Spawner {
@@ -67,6 +68,8 @@ public:
     void spawnBubble();
 
     void spawnArmor();
+
+    void spawnIncreasedDamage();
 
 };
 

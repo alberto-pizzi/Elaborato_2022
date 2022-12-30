@@ -9,8 +9,6 @@
 #include "Mike.h"
 
 class Nuke : public Bonus {
-private:
-    const int nFrames = 8;
 public:
     Nuke(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 35,
          sf::Time stayTime = sf::seconds(25));

@@ -244,7 +244,9 @@ PlayState::PlayState(Game *game) {
     //spawner->spawnNuke();
     //spawner->spawnWeapon();
     //spawner->spawnAmmunition();
-    spawner->spawnBubble();
+    //spawner->spawnBubble();
+    //spawner->spawnIncreasedDamage();
+    //spawner->spawnCoin();
 }
 
 int PlayState::whichMap() {
@@ -315,16 +317,7 @@ void PlayState::updateBonuses(float dt) {
                         i--;
                     }
                     break;
-                case NUKE:
-                    spawner->bonuses[i]->currentAnimation.update(dt);
-                    //collect nuke
-                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
-                        spawner->bonuses[i]->doSpecialAction(*mike);
-                        spawner->enemies.clear(); //kill all enemies //FIXME death animations
-                        spawner->despawnBonus(i);
-                        i--;
-                    }
-                    break;
+                    /*
                 case AMMUNITION:
                     spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect ammo
@@ -337,7 +330,7 @@ void PlayState::updateBonuses(float dt) {
                                                   mike->weapon->isInfiniteBullets());
                     }
                     break;
-                case LIFE_POINTS:
+                    */
                 case COINS:
                     spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect coin
@@ -360,6 +353,23 @@ void PlayState::updateBonuses(float dt) {
                     }
                     break;
                      */
+                case NUKE:
+                    if (spawner->bonuses[i]->isActiveAnimation)
+                        spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                         spawner->bonuses[i]->isEndedAnimation,
+                                                                                         spawner->bonuses[i]->isActiveAnimation);
+                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
+                        spawner->bonuses[i]->doSpecialAction(*mike);
+                        spawner->bonuses.clear(); //kill all enemies //FIXME death animations
+                        spawner->despawnBonus(i);
+                        i--;
+                    }
+                    break;
+                    //the next bonuses have the same functioning
+                case INCREASED_DAMAGE:
+                case AMMUNITION:
+                case ARMOR:
+                case LIFE_POINTS:
                 case PROTECTION_BUBBLE:
                     if (spawner->bonuses[i]->isActiveAnimation)
                         spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,

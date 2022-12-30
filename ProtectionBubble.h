@@ -8,8 +8,6 @@
 #include "Bonus.h"
 
 class ProtectionBubble : public Bonus {
-private:
-    const int nFrames = 8;
 public:
     ProtectionBubble(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 10,
                      sf::Time stayTime = sf::seconds(25));

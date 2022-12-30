@@ -11,21 +11,34 @@ void Bonus::addPoints(GameCharacter &target) const {
 }
 
 Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
-             std::vector<sf::IntRect> animationFrames, int bonusType, sf::Vector2i frameSize, bool isInfinite,
-             bool ownable)
+             const std::vector<sf::IntRect> &animationFrames, int bonusType, sf::Vector2i frameSize,
+             int textureRowIndex, bool isInfinite, bool ownable, bool hasDespawnAnimation)
         : bonusPoints(points), stayTime(stayTime), texture(texture), animationFrames(std::move(animationFrames)),
-          bonusType(bonusType), isInfiniteAnimation(isInfinite), isOwnable(ownable), bonusFrameSize(frameSize) {
+          bonusType(bonusType), isInfiniteAnimation(isInfinite), isOwnable(ownable), bonusFrameSize(frameSize),
+          hasDespawnAnimation(hasDespawnAnimation) {
     sprite.setTexture(texture);
     sprite.setPosition(spawnCoords);
     //updateGlobalPosition(sprite.getGlobalBounds());
 
-    if (bonusType != COINS) { //COINS has a different animation comportment than the others
+    if (hasDespawnAnimation && (bonusType !=
+                                NEW_WEAPON)) { //bonuses with infinite animation (like coins) have a different animation comportment than the others
 
 
         despawnFrames.reserve(DESPAWN);
         for (int i = 0; i < DESPAWN; i++)
             despawnFrames.emplace_back(i * animationFrameSize.x, 1 * animationFrameSize.y, animationFrameSize.x,
                                        animationFrameSize.y);
+
+        //these numbers are the sprite borders (translation pixels), they depend on your own texture
+        idleBonusBox = {{(textureRowIndex * animationFrameSize.x) + 22, 2 * animationFrameSize.y + 24, 23, 25}};
+
+        translation = {static_cast<float>(idleBonusBox[0].left % animationFrameSize.x),
+                       static_cast<float>(idleBonusBox[0].top % animationFrameSize.y)};
+        this->animationFrames = idleBonusBox;
+        currentAnimation.idleFrames = idleBonusBox;
+
+        this->sprite.setScale(sf::Vector2f(1.5, 1.5));
+
 
     }
 

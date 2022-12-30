@@ -23,6 +23,7 @@ enum totFramesBonusBox {
 class Bonus {
 private:
     int bonusType;
+    bool hasDespawnAnimation;
 protected:
     int bonusPoints;
     sf::Time stayTime;
@@ -48,8 +49,8 @@ public:
     Animation currentAnimation{animationFrames, 10.f};
 
     Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
-          std::vector<sf::IntRect> animationFrames, int bonusType, sf::Vector2i frameSize, bool isInfinite,
-          bool ownable);
+          const std::vector<sf::IntRect> &animationFrames, int bonusType, sf::Vector2i frameSize,
+          int textureRowIndex, bool isInfinite, bool ownable, bool hasDespawnAnimation);
 
     virtual void doSpecialAction(Mike &character) = 0;
 
