@@ -55,6 +55,11 @@ void PlayState::draw(float dt) const {
 }
 
 void PlayState::update(float dt) {
+    if (isPaused) {
+        this->game->window.setView(arenaMap->playerView);
+        isPaused = false;
+    }
+
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //std::cout<<"SIZE: "<<mike->weapon->getBullets().size()<<std::endl;
@@ -66,6 +71,7 @@ void PlayState::update(float dt) {
         isSpawned = true;
     }
      */
+
 
     mike->updateActiveBonuses(); //update active bonuses like bubble, increase damage...
     mike->updateCharacterColor();
@@ -134,7 +140,10 @@ void PlayState::handleInput() {
                 }
                 break;
             case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::R) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    isPaused = true;
+                    this->game->pushState(new PauseState(this->game, arenaMap->playerView));
+                } else if (event.key.code == sf::Keyboard::R) {
                     if (mike->weapon->reloadWeapon()) {
                         mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
                         mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] = true;

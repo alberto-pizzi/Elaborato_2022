@@ -15,10 +15,10 @@
 #include "Mike.h"
 #include "TextureManager.h"
 #include "Gui.h"
+#include "PauseState.h"
 
 //WARNING: for adding other Map, you must updateNotCyclicalAnimation nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
-
 
 class PlayState : public GameState {
 private:
@@ -56,6 +56,9 @@ private:
     int round;
     int remainEnemies;
     int remainBosses;
+
+    //pause
+    bool isPaused = false;
 
 public:
     explicit PlayState(Game *game);
