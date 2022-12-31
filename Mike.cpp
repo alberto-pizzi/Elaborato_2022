@@ -18,7 +18,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         points,
                         spawnTile,
                         tileSize,
-                        rectSkin, MIKE,
+                        rectSkin, MIKE, 5,
                         animated,
                         coins,
                         armor,

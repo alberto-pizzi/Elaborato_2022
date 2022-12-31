@@ -62,7 +62,7 @@ void PauseState::handleInput() {
     }
 }
 
-PauseState::PauseState(Game *game, const sf::View &resumeView) : resumeView(resumeView) {
+PauseState::PauseState(Game *game) {
     this->game = game;
 
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
@@ -146,6 +146,3 @@ void PauseState::select() {
     }
 }
 
-PauseState::~PauseState() {
-    view = resumeView;
-}

@@ -60,6 +60,20 @@ void PlayState::update(float dt) {
         isPaused = false;
     }
 
+    //update enemies skin direction based on mike positioning
+    spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
+
+
+
+
+    for (int i = 0; i < spawner->enemies.size(); i++) {
+        if (spawner->enemies[i]->isAbleToHit(*mike)) {
+            mike->setIsHit(true);
+            mike->hitColorClock.restart();
+            mike->receiveDamage(2);
+        }
+    }
+
     //TODO insert game implementation
     //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
     //std::cout<<"SIZE: "<<mike->weapon->getBullets().size()<<std::endl;
@@ -142,7 +156,7 @@ void PlayState::handleInput() {
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Escape) {
                     isPaused = true;
-                    this->game->pushState(new PauseState(this->game, arenaMap->playerView));
+                    this->game->pushState(new PauseState(this->game));
                 } else if (event.key.code == sf::Keyboard::R) {
                     if (mike->weapon->reloadWeapon()) {
                         mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
@@ -204,8 +218,7 @@ void PlayState::handleInput() {
         mike->currentAnimation.update(frame_time.asSeconds());
     }
 
-    //update enemies skin direction based on mike positioning
-    spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
+
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),

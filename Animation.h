@@ -11,7 +11,6 @@
 #include <SFML/System.hpp>
 #include <vector>
 
-static int oldDirection = 5; //casual number (not 0 <= number < 4)
 
 class Animation {
 public:
@@ -35,6 +34,7 @@ public:
     int getOriginalAnimationSizeX() const;
 
 private:
+    int oldDirection = 5; //casual number (not 0 <= number < 4)
 
     float frameTime;
     int currentFrame;

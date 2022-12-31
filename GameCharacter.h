@@ -34,8 +34,11 @@ enum GameCharacterType {
 class GameCharacter : public PosEntity {
 private:
     int characterType;
-    sf::Time hitTime = sf::seconds(0.5);
+    sf::Time hitTimeColor = sf::seconds(0.3);
+
+    bool isHit = false;
     const sf::Color bubbleColor = sf::Color(0, 191, 255);
+    const sf::Color hitColor = sf::Color(102, 0, 0);
 protected:
     float HP;
     int armor;
@@ -52,7 +55,15 @@ protected:
     std::vector<sf::IntRect> idle;
     sf::Vector2i fileTextureRectSkinSize;
 
+    //hit attributes
+    float hitRange; //in coords
+    float oldHP = HP;
+    sf::Clock hitClock;
+    sf::Time nextHitTime = sf::seconds(1);
+
 public:
+    sf::Clock hitColorClock;
+
     bool skinDirection[4] = {false, false, false, false};
     std::unique_ptr<Weapon> weapon;
     Animation currentAnimation{idle, 10.0f};
@@ -60,7 +71,7 @@ public:
     const sf::Sprite &getSprite() const;
 
     GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
-                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
+                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, float hitRange = 5,
                   bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
     virtual ~GameCharacter();
@@ -75,7 +86,7 @@ public:
 
     int howMuchDamage() const;
 
-    void chase(const GameCharacter &target, float dt);
+    bool isAbleToHit(const GameCharacter &target);
 
     sf::Vector2f normalize(sf::Vector2f vector);
 
@@ -116,6 +127,10 @@ public:
     const std::vector<sf::IntRect> &getGoUp() const;
 
     void setSpritePos(sf::Vector2f newPos);
+
+    bool isHit1() const;
+
+    void setIsHit(bool isHit);
 };
 
 

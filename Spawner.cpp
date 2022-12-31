@@ -67,7 +67,7 @@ void Spawner::updateSkinDirection(const sf::Vector2f &target) {
 
 void Spawner::spawnNuke() {
     bonuses.emplace_back(new Nuke(bonusesTextures.getTextureRef("bonusesBox"),
-                                  {36 * 32, 15 * 32})); //TODO set correct texture
+                                  {36 * 32, 15 * 32})); //TODO set random tile
 }
 
 void Spawner::updateEnemies(const GameCharacter &target, float dt) {
@@ -77,32 +77,33 @@ void Spawner::updateEnemies(const GameCharacter &target, float dt) {
         origin = enemies[i]->getSpriteCenter();
         translation = target.getSpriteCenter() - origin;
         enemies[i]->move(enemies[i]->normalize(translation), dt);
+        enemies[i]->currentAnimation.update(dt);
     }
 }
 
 void Spawner::spawnAmmunition() {
     bonuses.emplace_back(new Ammunition(bonusesTextures.getTextureRef("bonusesBox"),
-                                        {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+                                        {36 * 32, 15 * 32})); //TODO set  random tile
 }
 
 void Spawner::spawnLifePoints() {
     bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("bonusesBox"),
-                                        {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+                                        {36 * 32, 15 * 32})); //TODO set random tile
 }
 
 void Spawner::spawnBubble() {
     bonuses.emplace_back(new ProtectionBubble(bonusesTextures.getTextureRef("bonusesBox"),
-                                              {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+                                              {36 * 32, 15 * 32})); //TODO set  random tile
 }
 
 void Spawner::spawnArmor() {
     bonuses.emplace_back(new Armor(bonusesTextures.getTextureRef("bonusesBox"),
-                                   {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+                                   {36 * 32, 15 * 32})); //TODO  set random tile
 }
 
 void Spawner::spawnIncreasedDamage() {
     bonuses.emplace_back(new IncreasedWeaponDamage(bonusesTextures.getTextureRef("bonusesBox"),
-                                                   {36 * 32, 15 * 32})); //TODO set correct texture and random tile
+                                                   {36 * 32, 15 * 32})); //TODO set crandom tile
 
 }
 

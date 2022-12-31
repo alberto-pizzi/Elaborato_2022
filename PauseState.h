@@ -8,6 +8,7 @@
 #include "GameState.h"
 #include "GameException.h"
 
+const int nButtonsPause = 3;
 
 class PauseState : public GameState {
 private:
@@ -16,14 +17,11 @@ private:
     int nButtonSelected;
     unsigned int fontSize = 50;
     sf::Font font;
-    sf::Text mainMenu[3];
+    sf::Text mainMenu[nButtonsPause];
 
-    sf::View resumeView;
 
 public:
-    explicit PauseState(Game *game, const sf::View &resumeView);
-
-    virtual ~PauseState();
+    explicit PauseState(Game *game);
 
     void moveUp();
 

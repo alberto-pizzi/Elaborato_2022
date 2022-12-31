@@ -21,10 +21,6 @@ void GameCharacter::receiveDamage(int damagePoints) {
     }
 }
 
-void GameCharacter::chase(const GameCharacter &target, float dt) {
-    move(normalize(target.getSpriteCenter()), dt);
-}
-
 sf::Vector2f GameCharacter::normalize(sf::Vector2f vector) {
     auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
     //Prevent division by zero
@@ -41,8 +37,8 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
 GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points,
                              const sf::Vector2i &tilePosition,
                              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
-                             bool animated,
-                             unsigned int coins, int armor, bool bubble)
+                             float hitRange,
+                             bool animated, unsigned int coins, int armor, bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
@@ -163,9 +159,11 @@ void GameCharacter::updateCharacterColor() {
     if (bubble) {
         sprite.setColor(bubbleColor);
         weapon->weaponSprite.setColor(bubbleColor);
-    }
-        //TODO add here hit color
-    else {
+    } else if (isHit) {
+        sprite.setColor(hitColor);
+        if (hitColorClock.getElapsedTime() >= hitTimeColor)
+            isHit = false;
+    } else {
         sprite.setColor(sf::Color::White);
         weapon->weaponSprite.setColor(sf::Color::White);
     }
@@ -178,12 +176,13 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
     float frameDuration = 0.5f;
     float radians, degrees;
 
+    if (weapon != nullptr) {
+        //weapon angle from input
+        radians = std::atan(translation.y / translation.x);
+        degrees = radians * static_cast<float>(180 / M_PI);
+    }
 
-    //weapon angle from input
-    radians = std::atan(translation.y / translation.x);
-    degrees = radians * static_cast<float>(180 / M_PI);
-
-    //when mouse exceeds bisects (+- 45°) of all quadrants, Mike changes body direction
+    //when mouse exceeds bisects (+- 45°) of all quadrants, character changes body direction
     if (targetPos.x >= origin.x) {
         if (weapon != nullptr)
             weapon->weaponSprite.setScale(sf::Vector2f(1, 1));
@@ -245,6 +244,25 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
         weapon->hitBox.setScale(weapon->weaponSprite.getScale());
         weapon->hitBox.setRotation(degrees);
     }
+}
+
+bool GameCharacter::isAbleToHit(const GameCharacter &target) {
+    sf::FloatRect hitBox = {this->getPos().left - hitRange, this->getPos().top - hitRange,
+                            this->getPos().width + hitRange, this->getPos().height + hitRange};
+
+    if ((hitClock.getElapsedTime() >= nextHitTime) && (hitBox.intersects(target.getPos()))) {
+        hitClock.restart();
+        return true;
+    } else
+        return false;
+}
+
+bool GameCharacter::isHit1() const {
+    return isHit;
+}
+
+void GameCharacter::setIsHit(bool isHit) {
+    GameCharacter::isHit = isHit;
 }
 
 GameCharacter::~GameCharacter() = default;
