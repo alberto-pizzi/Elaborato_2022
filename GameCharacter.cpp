@@ -266,5 +266,21 @@ void GameCharacter::setIsHit(bool isHit) {
     GameCharacter::isHit = isHit;
 }
 
+void GameCharacter::move(const sf::Vector2f &offset, float dt) {
+    float newSpeed = this->speed;
+    sf::Vector2f effectiveOffset;
+
+
+    //set diagonal speed
+    if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)) ||
+        ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
+        newSpeed /= std::sqrt(2.f);
+
+    effectiveOffset = offset * newSpeed * dt;
+    sprite.setPosition(sprite.getPosition() + effectiveOffset);
+    //pos = sprite.getGlobalBounds();
+    updateGlobalPosition(sprite.getGlobalBounds());
+}
+
 GameCharacter::~GameCharacter() = default;
 

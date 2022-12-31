@@ -66,23 +66,6 @@ void Warrior::receiveDamage(float damagePoints) {
         GameCharacter::receiveDamage(damagePoints);
 }
 
-void Warrior::move(const sf::Vector2f &offset, float dt) {
-    float newSpeed = this->speed;
-    sf::Vector2f effectiveOffset;
-
-
-    //set diagonal speed
-    if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)) ||
-        ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
-        newSpeed /= std::sqrt(2.f);
-
-    effectiveOffset = offset * newSpeed * dt;
-    sprite.setPosition(sprite.getPosition() + effectiveOffset);
-    //pos = sprite.getGlobalBounds();
-    updateGlobalPosition(sprite.getGlobalBounds());
-
-}
-
 void Warrior::drawEntity(sf::RenderWindow &window) {
     if (skinDirection[UP])
         shield.shieldSprite.setPosition({sprite.getPosition().x - 2, sprite.getPosition().y + 10});

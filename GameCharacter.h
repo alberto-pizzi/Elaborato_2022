@@ -75,7 +75,7 @@ public:
 
     virtual ~GameCharacter();
 
-    void move(const sf::Vector2f &offset, float dt) override = 0;
+    void move(const sf::Vector2f &offset, float dt) override;
 
     //virtual void fight(GameCharacter& enemy) = 0;
 

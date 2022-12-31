@@ -58,8 +58,6 @@ void PlayState::update(float dt) {
     spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
 
 
-
-
     for (int i = 0; i < spawner->enemies.size(); i++) {
         if (spawner->enemies[i]->isAbleToHit(*mike)) {
             mike->setIsHit(true);
