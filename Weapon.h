@@ -20,6 +20,8 @@
 
 class ArenaMap;
 
+class GameCharacter;
+
 enum AnimationKeySteps {
     ENDED = 0, ACTIVE, RELOADING, ORDERED_RELOADING,
 };
@@ -101,7 +103,7 @@ public:
 
     void drawBullets(sf::RenderWindow &window, float dt) const;
 
-    void updateBullets(ArenaMap *map);
+    void updateBullets(ArenaMap *map, const sf::FloatRect &enemyBox);
 
     const sf::Vector2i &getFileTextureRectWeaponSize() const;
 

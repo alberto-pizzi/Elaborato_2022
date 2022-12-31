@@ -91,7 +91,9 @@ void PlayState::update(float dt) {
     updateBonuses(dt);
 
 
-    mike->weapon->updateBullets(arenaMap);
+    for (int i = 0; i < spawner->enemies.size(); i++) { //FIXME
+        mike->weapon->updateBullets(arenaMap, spawner->enemies[i]->getPos());
+    }
     //updateNotCyclicalAnimation Gui
     if (mike->weapon->animationKeyStep[AnimationKeySteps::ENDED])
         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),

@@ -101,9 +101,10 @@ const sf::Vector2i &Weapon::getFileTextureRectWeaponSize() const {
     return fileTextureRectWeaponSize;
 }
 
-void Weapon::updateBullets(ArenaMap *map) {
+void Weapon::updateBullets(ArenaMap *map, const sf::FloatRect &enemyBox) {
     for (int i = 0; i < bullets.size(); i++) {
-        if (map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) {
+        if ((map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) ||
+            bullets[i]->getBulletSprite().getGlobalBounds().intersects(enemyBox)) { //FIXME
             bullets.erase(bullets.begin() + i);
             i--;
             if (bullets.empty())
