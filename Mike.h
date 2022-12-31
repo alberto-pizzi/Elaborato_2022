@@ -41,6 +41,7 @@ public:
     bool isKillStreak(GameCharacter &character);
 
     //void drawEntity(sf::RenderWindow &window);
+    void drawEntity(sf::RenderWindow &window) override;
 
     void addToOwnBonuses(int bonusType, sf::Time duration);
 

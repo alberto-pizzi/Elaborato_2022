@@ -5,9 +5,10 @@
 #include "GameCharacter.h"
 
 
-void GameCharacter::receiveDamage(int damagePoints) {
+void GameCharacter::receiveDamage(float damagePoints) {
     if (!bubble) {
         if (armor > 0) {
+            //FIXME
             int armorDamage = armor - damagePoints;
             if (armorDamage >= 0)
                 armor -= armorDamage;
@@ -138,7 +139,7 @@ void GameCharacter::setSpritePos(sf::Vector2f newPos) {
     sprite.setPosition(newPos);
 }
 
-int GameCharacter::howMuchDamage() const {
+int GameCharacter::howMuchArmorDamage() const {
     int damagePoints = weapon->getDamage(); //FIXME implement features for character without weapon (zombie...)
     if (armor > 15)
         damagePoints /= 3;

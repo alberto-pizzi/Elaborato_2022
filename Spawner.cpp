@@ -53,6 +53,12 @@ void Spawner::spawnEnemies() {
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {40, 25},
                                     {32, 32}, {32, 32},
                                     true));
+
+
+    enemies.emplace_back(
+            new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), {40, 25},
+                        {32, 32}, {32, 32}, 10,
+                        true));
 }
 
 void Spawner::drawEnemies(sf::RenderWindow &window) {

@@ -29,13 +29,7 @@ void PlayState::draw(float dt) const {
     spawner->drawEnemies(this->game->window);
 
     //draw mike and his weapon
-    if (!mike->skinDirection[UP]) {
-        mike->drawEntity(this->game->window);
-        mike->weapon->drawWeapon(this->game->window);
-    } else {
-        mike->weapon->drawWeapon(this->game->window);
-        mike->drawEntity(this->game->window);
-    }
+    mike->drawEntity(this->game->window);
 
     //draw bullets
     mike->weapon->drawBullets(this->game->window, dt);
@@ -262,7 +256,7 @@ PlayState::PlayState(Game *game) {
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
     //TODO remove them
-    //spawner->spawnEnemies();
+    spawner->spawnEnemies();
     //spawner->spawnNuke();
     //spawner->spawnWeapon();
     //spawner->spawnAmmunition();
@@ -288,6 +282,7 @@ PlayState::~PlayState() {
 void PlayState::loadTextures() {
     //load character textures
     charactersTextures.loadTexture("mike", "res/textures/no_hands_mike.png");
+    charactersTextures.loadTexture("shield", "res/textures/shield.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");

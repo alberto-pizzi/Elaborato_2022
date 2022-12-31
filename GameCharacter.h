@@ -41,7 +41,7 @@ private:
     const sf::Color hitColor = sf::Color(102, 0, 0);
 protected:
     float HP;
-    int armor;
+    int armor; //float
     float speed;
     bool bubble;
     unsigned int points;
@@ -57,12 +57,11 @@ protected:
 
     //hit attributes
     float hitRange; //in coords
-    float oldHP = HP;
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
 
 public:
-    sf::Clock hitColorClock;
+    sf::Clock hitColorClock; //FIXME getter
 
     bool skinDirection[4] = {false, false, false, false};
     std::unique_ptr<Weapon> weapon;
@@ -78,13 +77,15 @@ public:
 
     void move(const sf::Vector2f &offset, float dt) override = 0;
 
+    //virtual void fight(GameCharacter& enemy) = 0;
+
     void characterSkinDirection(const sf::Vector2f &targetPos);
 
-    void receiveDamage(int damagePoints);
+    virtual void receiveDamage(float damagePoints);
 
     void updateCharacterColor();
 
-    int howMuchDamage() const;
+    int howMuchArmorDamage() const;
 
     bool isAbleToHit(const GameCharacter &target);
 
@@ -92,7 +93,7 @@ public:
 
     bool isLegalFight(const GameCharacter &enemy) const;
 
-    void drawEntity(sf::RenderWindow &window);
+    virtual void drawEntity(sf::RenderWindow &window);
 
     float getHp() const;
 

@@ -21,6 +21,7 @@
 #include "ProtectionBubble.h"
 #include "Armor.h"
 #include "IncreasedWeaponDamage.h"
+#include "Warrior.h"
 
 
 class Spawner {
