@@ -83,6 +83,8 @@ public:
 
     void updateBonuses(float dt);
 
+    void updateEnemies(float dt);
+
     void calculateTotalEnemiesPerRound();
 };
 

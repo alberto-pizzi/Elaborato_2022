@@ -57,18 +57,8 @@ void PlayState::update(float dt) {
     //update enemies skin direction based on mike positioning
     spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
 
-
-    for (int i = 0; i < spawner->enemies.size(); i++) {
-        if (spawner->enemies[i]->isAbleToHit(*mike)) {
-            mike->setIsHit(true);
-            mike->hitColorClock.restart();
-            mike->receiveDamage(2);
-        }
-    }
-
-    //TODO insert game implementation
-    //std::cout << "updating" << std::endl; //TODO remove it (only for debug)
-    //std::cout<<"SIZE: "<<mike->weapon->getBullets().size()<<std::endl;
+    //update all enemies
+    updateEnemies(dt);
 
     /*
     if ((!isSpawned) && isRandomAbleTo(40,100)){
@@ -78,22 +68,16 @@ void PlayState::update(float dt) {
     }
      */
 
-
-    mike->updateActiveBonuses(); //update active bonuses like bubble, increase damage...
+    //update active bonuses like bubble, increase damage...
+    mike->updateActiveBonuses();
+    //update mike skin colore when damaged, etc...
     mike->updateCharacterColor();
 
     //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
 
-    //update enemies
-    spawner->updateEnemies(*mike, dt);
-
     //update bonuses (updates animation and despawn them)
     updateBonuses(dt);
 
-
-    for (int i = 0; i < spawner->enemies.size(); i++) { //FIXME
-        mike->weapon->updateBullets(arenaMap, spawner->enemies[i]->getPos());
-    }
     //updateNotCyclicalAnimation Gui
     if (mike->weapon->animationKeyStep[AnimationKeySteps::ENDED])
         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
@@ -429,6 +413,26 @@ void PlayState::calculateTotalEnemiesPerRound() {
     }
 
 
+}
+
+void PlayState::updateEnemies(float dt) {
+    for (int i = 0; i < spawner->enemies.size(); i++) {
+        spawner->updateEnemies(*mike, dt, i); //update animation and movement
+        mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
+        spawner->enemies[i]->updateCharacterColor();
+
+        if (spawner->enemies[i]->isDead()) { //TODO add death animation
+            spawner->enemies.erase(spawner->enemies.begin() + i);
+            i--;
+            if (spawner->enemies.empty())
+                break;
+        } else if (spawner->enemies[i]->isAbleToHit(*mike)) {
+            mike->setIsHit(true);
+            mike->hitColorClock.restart();
+            mike->receiveDamage(2); //FIXME
+        }
+
+    }
 }
 
 /*

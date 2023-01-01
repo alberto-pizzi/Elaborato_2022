@@ -101,16 +101,21 @@ const sf::Vector2i &Weapon::getFileTextureRectWeaponSize() const {
     return fileTextureRectWeaponSize;
 }
 
-void Weapon::updateBullets(ArenaMap *map, const sf::FloatRect &enemyBox) {
+void Weapon::updateBullets(ArenaMap *map, GameCharacter &enemy) {
     for (int i = 0; i < bullets.size(); i++) {
-        if ((map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) ||
-            bullets[i]->getBulletSprite().getGlobalBounds().intersects(enemyBox)) { //FIXME
+        if (map->collidesWithSolidsOrBounds(bullets[i]->getBulletSprite().getGlobalBounds())) { //FIXME
             bullets.erase(bullets.begin() + i);
             i--;
-            if (bullets.empty())
-                break;
-            continue;
+        } else if (bullets[i]->getBulletSprite().getGlobalBounds().intersects(enemy.getSprite().getGlobalBounds())) {
+            enemy.setIsHit(true);
+            enemy.hitColorClock.restart();
+            enemy.receiveDamage(2); //FIXME
+
+            bullets.erase(bullets.begin() + i);
+            i--;
         }
+        if (bullets.empty()) //if you make changes, it must be after each vector erase
+            break;
     }
 }
 

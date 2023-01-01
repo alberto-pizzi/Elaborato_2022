@@ -85,6 +85,8 @@ public:
 
     void updateCharacterColor();
 
+    bool isDead() const;
+
     int howMuchArmorDamage() const;
 
     bool isAbleToHit(const GameCharacter &target);

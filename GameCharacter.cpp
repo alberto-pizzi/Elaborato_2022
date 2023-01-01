@@ -159,14 +159,16 @@ void GameCharacter::drawEntity(sf::RenderWindow &window) {
 void GameCharacter::updateCharacterColor() {
     if (bubble) {
         sprite.setColor(bubbleColor);
-        weapon->weaponSprite.setColor(bubbleColor);
+        if (weapon != nullptr)
+            weapon->weaponSprite.setColor(bubbleColor);
     } else if (isHit) {
         sprite.setColor(hitColor);
         if (hitColorClock.getElapsedTime() >= hitTimeColor)
             isHit = false;
     } else {
         sprite.setColor(sf::Color::White);
-        weapon->weaponSprite.setColor(sf::Color::White);
+        if (weapon != nullptr)
+            weapon->weaponSprite.setColor(sf::Color::White);
     }
 }
 
@@ -280,6 +282,13 @@ void GameCharacter::move(const sf::Vector2f &offset, float dt) {
     sprite.setPosition(sprite.getPosition() + effectiveOffset);
     //pos = sprite.getGlobalBounds();
     updateGlobalPosition(sprite.getGlobalBounds());
+}
+
+bool GameCharacter::isDead() const {
+    if (HP <= 0)
+        return true;
+    else
+        return false;
 }
 
 GameCharacter::~GameCharacter() = default;

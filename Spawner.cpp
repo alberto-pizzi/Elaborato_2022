@@ -46,6 +46,7 @@ void Spawner::spawnEnemies() {
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 24},
                                     {32, 32}, {32, 32},
                                     true)); //TODO add random spawn (only for debug), correct texture and variable speed
+
     //TODO remove them
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 27},
                                     {32, 32}, {32, 32},
@@ -54,11 +55,13 @@ void Spawner::spawnEnemies() {
                                     {32, 32}, {32, 32},
                                     true));
 
-
+/*
     enemies.emplace_back(
             new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), {40, 25},
                         {32, 32}, {32, 32}, 10,
                         true));
+                        */
+
 }
 
 void Spawner::drawEnemies(sf::RenderWindow &window) {
@@ -76,15 +79,14 @@ void Spawner::spawnNuke() {
                                   {36 * 32, 15 * 32})); //TODO set random tile
 }
 
-void Spawner::updateEnemies(const GameCharacter &target, float dt) {
+void Spawner::updateEnemies(const GameCharacter &target, float dt, int enemyIndex) {
     sf::Vector2f origin;
     sf::Vector2f translation;
-    for (int i = 0; i < enemies.size(); i++) {
-        origin = enemies[i]->getSpriteCenter();
-        translation = target.getSpriteCenter() - origin;
-        enemies[i]->move(enemies[i]->normalize(translation), dt);
-        enemies[i]->currentAnimation.update(dt);
-    }
+
+    origin = enemies[enemyIndex]->getSpriteCenter();
+    translation = target.getSpriteCenter() - origin;
+    enemies[enemyIndex]->move(enemies[enemyIndex]->normalize(translation), dt);
+    enemies[enemyIndex]->currentAnimation.update(dt);
 }
 
 void Spawner::spawnAmmunition() {
