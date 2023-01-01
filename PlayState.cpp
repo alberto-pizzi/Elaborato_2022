@@ -220,7 +220,7 @@ void PlayState::handleInput() {
 
 }
 
-PlayState::PlayState(Game *game) {
+PlayState::PlayState(Game *game) : round(1) {
     this->game = game;
 
     loadTextures();
@@ -234,7 +234,7 @@ PlayState::PlayState(Game *game) {
 
     viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));
 
-    round = 1;
+    randomPercentageDice.setFaces(100 - 1);
 
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
@@ -408,11 +408,14 @@ void PlayState::updateBonuses(float dt) {
 }
 
 void PlayState::initRound() {
+    int sum = 0;
+    bool extraEnemy = false;
+
     if (round % bossRoundFrequency == 0) {
-        if (round % bossRoundFrequency * 2 == 0)
-            remainBosses = 2;
+        if (round <= 25)
+            remainBosses = round / bossRoundFrequency;
         else
-            remainBosses = 1;
+            remainBosses = bossRoundFrequency;
         remainEnemies = baseNumber;
     } else {
         //growing enemies
@@ -421,6 +424,23 @@ void PlayState::initRound() {
                         (incrementableNumber * (static_cast<unsigned int>(std::log2(static_cast<float>(round))) + 1));
     }
 
+
+    if (round < 30) {
+        enemiesPercentage[WARRIOR] = 10 + (round % 5);
+        sum += enemiesPercentage[WARRIOR];
+        enemiesPercentage[KAMIKAZE] = (round % 10) + 15;
+        sum += enemiesPercentage[KAMIKAZE];
+
+
+        enemiesPercentage[ZOMBIE] = 100 - sum;
+    }
+
+
+    std::cout << "ZOMBIE %: " << enemiesPercentage[ZOMBIE] << std::endl;
+    std::cout << "WARRIOR %: " << enemiesPercentage[WARRIOR] << std::endl;
+    std::cout << "KAMIKAZE %: " << enemiesPercentage[KAMIKAZE] << std::endl << std::endl;
+
+    std::cout << "SUM: " << sum << std::endl;
     //FIXME random spawning and enemy types
 
     for (int i = 0; i < remainEnemies; i++)
@@ -439,6 +459,7 @@ void PlayState::updateEnemies(float dt) {
         if (spawner->enemies[i]->isDead()) { //TODO add death animation
             spawner->enemies.erase(spawner->enemies.begin() + i);
             i--;
+            remainEnemies--; //FIXME
             if (spawner->enemies.empty())
                 break;
         } else if (spawner->enemies[i]->isAbleToHit(*mike)) {

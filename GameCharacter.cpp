@@ -157,14 +157,14 @@ void GameCharacter::drawEntity(sf::RenderWindow &window) {
 }
 
 void GameCharacter::updateCharacterColor() {
-    if (bubble) {
-        sprite.setColor(bubbleColor);
-        if (weapon != nullptr)
-            weapon->weaponSprite.setColor(bubbleColor);
-    } else if (isHit) {
+    if (isHit) {
         sprite.setColor(hitColor);
         if (hitColorClock.getElapsedTime() >= hitTimeColor)
             isHit = false;
+    } else if (bubble) {
+        sprite.setColor(bubbleColor);
+        if (weapon != nullptr)
+            weapon->weaponSprite.setColor(bubbleColor);
     } else {
         sprite.setColor(sf::Color::White);
         if (weapon != nullptr)

@@ -14,6 +14,8 @@ public:
 
     int roll(int rolls) const;
 
+    int casualNumber(int minValue, int maxValue, int rolls = 1) const;
+
     int getFaces() const;
 
     void setFaces(int faces);

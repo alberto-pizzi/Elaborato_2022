@@ -31,6 +31,8 @@ enum GameCharacterType {
     MIKE = 0, ZOMBIE, ARCHER, BOSS, WARRIOR, KAMIKAZE
 };
 
+const int nEnemyTypes = 3; //FIXME
+
 class GameCharacter : public PosEntity {
 private:
     int characterType;

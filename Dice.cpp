@@ -32,3 +32,15 @@ void Dice::setFaces(int faces) {
     this->faces = faces;
 }
 
+int Dice::casualNumber(int minValue, int maxValue, int rolls) const {
+    int result = 0;
+
+    if ((numRolls % maxRolls) == 0)
+        srand(time(0));
+
+    for (int i = 0; i < rolls; i++)
+        result += rand() % (maxValue + 1) + minValue; //return numbers from 0 to faces (0 <= result <= faces)
+    numRolls++;
+    return result;
+}
+

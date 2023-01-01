@@ -29,13 +29,11 @@ private:
     sf::View gameView;
     sf::View guiView;
     ArenaMap *arenaMap;
-    //TODO add pause menu method - MenuState.cpp (loadMapTextures game)
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
     bool keyStates[4] = {false, false, false, false};
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
-
 
     //random (number of dice faces in PlayState constructor)
     //Dice dice;
@@ -58,6 +56,9 @@ private:
     unsigned int remainBosses;
     sf::Clock afterRoundSleepClock;
     sf::Time afterRoundSleepTime = sf::seconds(20);
+    bool endRound = false;
+    Dice randomPercentageDice;
+    std::map<int, int> enemiesPercentage; //no bosses
 
     //pause
     bool isPaused = false;
