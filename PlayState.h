@@ -22,8 +22,8 @@ const int nMap = 1;
 
 class PlayState : public GameState {
 private:
-    enum InputKeys {
-        E = 0,
+    enum nEnemies {
+        baseNumber = 20, incrementableNumber = 7,
     };
 
     sf::View gameView;
@@ -52,10 +52,12 @@ private:
     TextureManager bonusesTextures;
 
     //game management
-    const int bossRoundFrequency = 5;
+    const int bossRoundFrequency = 5; //FIXME
     int round;
-    int remainEnemies;
-    int remainBosses;
+    unsigned int remainEnemies;
+    unsigned int remainBosses;
+    sf::Clock afterRoundSleepClock;
+    sf::Time afterRoundSleepTime = sf::seconds(20);
 
     //pause
     bool isPaused = false;
@@ -85,7 +87,9 @@ public:
 
     void updateEnemies(float dt);
 
-    void calculateTotalEnemiesPerRound();
+    void initRound();
+
+    bool isRoundEnded() const;
 };
 
 #endif //ELABORATO_PLAYSTATE_H

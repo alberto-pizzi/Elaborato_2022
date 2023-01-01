@@ -240,7 +240,7 @@ PlayState::PlayState(Game *game) {
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
     //TODO remove them
-    spawner->spawnEnemies();
+    initRound();
     //spawner->spawnNuke();
     //spawner->spawnWeapon();
     //spawner->spawnAmmunition();
@@ -407,10 +407,25 @@ void PlayState::updateBonuses(float dt) {
     }
 }
 
-void PlayState::calculateTotalEnemiesPerRound() {
+void PlayState::initRound() {
     if (round % bossRoundFrequency == 0) {
-        remainBosses = 1;
+        if (round % bossRoundFrequency * 2 == 0)
+            remainBosses = 2;
+        else
+            remainBosses = 1;
+        remainEnemies = baseNumber;
+    } else {
+        //growing enemies
+        remainBosses = 0;
+        remainEnemies = baseNumber +
+                        (incrementableNumber * (static_cast<unsigned int>(std::log2(static_cast<float>(round))) + 1));
     }
+
+    //FIXME random spawning and enemy types
+
+    for (int i = 0; i < remainEnemies; i++)
+        spawner->spawnEnemies(arenaMap->randomPassableTile());
+    //for (int i = 0; i < remainBosses; i++) //TODO add boss spawn
 
 
 }
@@ -433,6 +448,13 @@ void PlayState::updateEnemies(float dt) {
         }
 
     }
+}
+
+bool PlayState::isRoundEnded() const {
+    if ((remainEnemies == 0) && (remainBosses == 0))
+        return true;
+    else
+        return false;
 }
 
 /*

@@ -58,7 +58,7 @@ public:
 
     void spawnCoin();
 
-    void spawnEnemies();
+    void spawnEnemies(sf::Vector2i spawnTile);
 
     void spawnNuke();
 

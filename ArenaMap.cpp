@@ -111,6 +111,9 @@ ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike
                    const TextureManager &guiTexManager) {
     loadMapFile(chosenMap);
     startingMap(window, mike, mikeTexture, weaponTexture, bulletTexture, guiTexManager);
+
+    rowDice.setFaces(maxRowTiles - 2);
+    columnDice.setFaces(maxColumnTiles - 2);
 }
 
 void ArenaMap::loadMapFile(int chosenMap) {
@@ -316,13 +319,12 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
 }
 
 sf::Vector2i ArenaMap::randomPassableTile() const {
-    srand(time(NULL));
     int tileSpawnX, tileSpawnY;
 
     //casual tile position. Spawn mike only when near tiles are passable.
     do {
-        tileSpawnX = (rand() % (maxColumnTiles - 1)) + 1;
-        tileSpawnY = (rand() % (maxRowTiles - 1)) + 1;
+        tileSpawnX = columnDice.roll(1) + 1;
+        tileSpawnY = rowDice.roll(1) + 1;
     } while ((!tileMap[principal_floor][tileSpawnY][tileSpawnX]->passable) ||
              (!tileMap[principal_floor][tileSpawnY][tileSpawnX + 1]->passable) ||
              (!tileMap[principal_floor][tileSpawnY + 1][tileSpawnX]->passable) ||

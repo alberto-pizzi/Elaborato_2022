@@ -28,3 +28,7 @@ int Dice::getFaces() const {
     return faces;
 }
 
+void Dice::setFaces(int faces) {
+    this->faces = faces;
+}
+

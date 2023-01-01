@@ -16,6 +16,8 @@ public:
 
     int getFaces() const;
 
+    void setFaces(int faces);
+
 private:
     int faces;
     static int numRolls;

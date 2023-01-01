@@ -42,25 +42,26 @@ void Spawner::spawnCoin() {
                                   {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
-void Spawner::spawnEnemies() {
-    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 24},
+void Spawner::spawnEnemies(sf::Vector2i spawnTile) {
+    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), spawnTile,
                                     {32, 32}, {32, 32},
                                     true)); //TODO add random spawn (only for debug), correct texture and variable speed
 
-    //TODO remove them
-    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 27},
-                                    {32, 32}, {32, 32},
-                                    true));
-    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {40, 25},
-                                    {32, 32}, {32, 32},
-                                    true));
+    /*
+//TODO remove them
+enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 27},
+    {32, 32}, {32, 32},
+    true));
+enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {40, 25},
+    {32, 32}, {32, 32},
+    true));
 
-/*
-    enemies.emplace_back(
-            new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), {40, 25},
-                        {32, 32}, {32, 32}, 10,
-                        true));
-                        */
+
+enemies.emplace_back(
+new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), {40, 25},
+{32, 32}, {32, 32}, 10,
+true));
+*/
 
 }
 

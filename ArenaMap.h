@@ -22,6 +22,7 @@
 #include "GameException.h"
 #include "Mike.h"
 #include "GameCharacter.h"
+#include "Dice.h"
 
 enum mapNumber {
     desert = 0,
@@ -57,6 +58,9 @@ private:
 
         bool isWalkable(int tile, int layerNumber, int chosenMap) const;
     };
+
+    Dice rowDice;
+    Dice columnDice;
 protected:
     struct Walls {
         sf::Vector2f begin;
