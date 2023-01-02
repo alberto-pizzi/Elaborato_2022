@@ -32,37 +32,14 @@ void Spawner::drawBonuses(sf::RenderWindow &window) const {
         bonuses[i]->drawBonus(window);
 }
 
-void Spawner::spawnWeapon() {
+void Spawner::spawnWeapon(sf::Vector2f spawnPos) {
     bonuses.emplace_back(new NewWeapon(weaponsTextures, bonusesTextures.getTextureRef("weaponBox"),
                                        {40 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
-void Spawner::spawnCoin() {
+void Spawner::spawnCoin(sf::Vector2f spawnPos) {
     bonuses.emplace_back(new Coin(bonusesTextures.getTextureRef("coin"),
                                   {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
-}
-
-void Spawner::spawnEnemies(sf::Vector2i spawnTile) {
-    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), spawnTile,
-                                    {32, 32}, {32, 32},
-                                    true)); //TODO add random spawn (only for debug), correct texture and variable speed
-
-    /*
-//TODO remove them
-enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {36, 27},
-    {32, 32}, {32, 32},
-    true));
-enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), {40, 25},
-    {32, 32}, {32, 32},
-    true));
-
-
-enemies.emplace_back(
-new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), {40, 25},
-{32, 32}, {32, 32}, 10,
-true));
-*/
-
 }
 
 void Spawner::drawEnemies(sf::RenderWindow &window) {
@@ -114,5 +91,28 @@ void Spawner::spawnIncreasedDamage() {
     bonuses.emplace_back(new IncreasedWeaponDamage(bonusesTextures.getTextureRef("bonusesBox"),
                                                    {36 * 32, 15 * 32})); //TODO set crandom tile
 
+}
+
+void Spawner::spawnWarrior(sf::Vector2i spawnTile) {
+    enemies.emplace_back(
+            new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
+                        {32, 32}, {32, 32}, 10,
+                        true)); //TODO add correct texture and variable speed
+}
+
+void Spawner::spawnKamikaze(sf::Vector2i spawnTile) {
+    enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("mike"), spawnTile,
+                                      {32, 32}, {32, 32},
+                                      true)); //TODO add correct texture and variable speed
+}
+
+void Spawner::spawnArcher(sf::Vector2i spawnTile) {
+    //TODO add archer
+}
+
+void Spawner::spawnZombie(sf::Vector2i spawnTile) {
+    enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("mike"), spawnTile,
+                                    {32, 32}, {32, 32},
+                                    true)); //TODO add correct texture and variable speed
 }
 

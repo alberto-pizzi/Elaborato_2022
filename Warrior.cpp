@@ -56,11 +56,12 @@ Warrior::Warrior(const sf::Texture &warriorTexture, const sf::Texture &shieldTex
 void Warrior::receiveDamage(float damagePoints) {
     if (shield.defense > 0) {
         float shieldDamage = shield.defense - damagePoints;
-        if (shieldDamage >= 0)
-            shield.defense = shieldDamage;
+        if (shieldDamage > 0)
+            shield.defense -= damagePoints;
         else {
-            damagePoints *= -1; //if negative, set it to positive
-            GameCharacter::receiveDamage(damagePoints);
+            shield.defense = 0;
+            shieldDamage *= -1; //if negative, set it to positive
+            GameCharacter::receiveDamage(shieldDamage);
         }
     } else
         GameCharacter::receiveDamage(damagePoints);
@@ -96,6 +97,3 @@ Warrior::Shield::Shield(const sf::Texture &shieldTexture, float defense) : shiel
     shieldSprite.setScale(sf::Vector2f(0.5, 0.5));
 }
 
-bool Warrior::Shield::addArmor() {
-    return false;
-}

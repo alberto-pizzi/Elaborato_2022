@@ -22,6 +22,7 @@
 #include "Armor.h"
 #include "IncreasedWeaponDamage.h"
 #include "Warrior.h"
+#include "Kamikaze.h"
 
 
 class Spawner {
@@ -44,7 +45,7 @@ public:
 
     const std::vector<std::unique_ptr<GameCharacter>> &getBosses() const;
 
-    void spawnWeapon();
+    void spawnWeapon(sf::Vector2f spawnPos);
 
     void despawnBonus(int bonusIndex);
 
@@ -56,9 +57,7 @@ public:
 
     void updateEnemies(const GameCharacter &target, float dt, int enemyIndex);
 
-    void spawnCoin();
-
-    void spawnEnemies(sf::Vector2i spawnTile);
+    void spawnCoin(sf::Vector2f spawnPos);
 
     void spawnNuke();
 
@@ -71,6 +70,14 @@ public:
     void spawnArmor();
 
     void spawnIncreasedDamage();
+
+    void spawnZombie(sf::Vector2i spawnTile);
+
+    void spawnArcher(sf::Vector2i spawnTile);
+
+    void spawnKamikaze(sf::Vector2i spawnTile);
+
+    void spawnWarrior(sf::Vector2i spawnTile);
 
 };
 

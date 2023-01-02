@@ -54,6 +54,8 @@ void PlayState::update(float dt) {
         isPaused = false;
     }
 
+    checkAndUpdateRound();
+
     //update enemies skin direction based on mike positioning
     spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
 
@@ -70,7 +72,7 @@ void PlayState::update(float dt) {
 
     //update active bonuses like bubble, increase damage...
     mike->updateActiveBonuses();
-    //update mike skin colore when damaged, etc...
+    //update mike skin color when damaged, etc...
     mike->updateCharacterColor();
 
     //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
@@ -239,14 +241,8 @@ PlayState::PlayState(Game *game) : round(1) {
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
-    //TODO remove them
+    //initialize first round (with enemies, etc..)
     initRound();
-    //spawner->spawnNuke();
-    //spawner->spawnWeapon();
-    //spawner->spawnAmmunition();
-    //spawner->spawnBubble();
-    //spawner->spawnIncreasedDamage();
-    //spawner->spawnCoin();
 }
 
 int PlayState::whichMap() {
@@ -408,14 +404,15 @@ void PlayState::updateBonuses(float dt) {
 }
 
 void PlayState::initRound() {
-    int sum = 0;
+    float sum = 0;
+    float tmpPercentage, tmpNEnemies;
     bool extraEnemy = false;
 
     if (round % bossRoundFrequency == 0) {
         if (round <= 25)
             remainBosses = round / bossRoundFrequency;
         else
-            remainBosses = bossRoundFrequency;
+            remainBosses = bossRoundFrequency + 1;
         remainEnemies = baseNumber;
     } else {
         //growing enemies
@@ -426,25 +423,49 @@ void PlayState::initRound() {
 
 
     if (round < 30) {
-        enemiesPercentage[WARRIOR] = 10 + (round % 5);
-        sum += enemiesPercentage[WARRIOR];
-        enemiesPercentage[KAMIKAZE] = (round % 10) + 15;
-        sum += enemiesPercentage[KAMIKAZE];
+        //FIXME fix all percentages for each round
 
+        //warrior
+        totEnemiesForType[WARRIOR].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(15, 25));
+        tmpNEnemies = (totEnemiesForType[WARRIOR].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+        if (!isInteger(tmpNEnemies))
+            extraEnemy = true;
+        totEnemiesForType[WARRIOR].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+        sum += totEnemiesForType[WARRIOR].typePercentage;
 
-        enemiesPercentage[ZOMBIE] = 100 - sum;
+        //kamikaze
+        totEnemiesForType[KAMIKAZE].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(5, 15));
+        tmpNEnemies = (totEnemiesForType[KAMIKAZE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+        if (!isInteger(tmpNEnemies))
+            extraEnemy = true;
+        totEnemiesForType[KAMIKAZE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+        sum += totEnemiesForType[KAMIKAZE].typePercentage;
+
+        //zombie (most probable enemy must be the last)
+        totEnemiesForType[ZOMBIE].typePercentage = 100 - sum;
+        tmpNEnemies = (totEnemiesForType[ZOMBIE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+        if (!isInteger(tmpNEnemies))
+            extraEnemy = true;
+        totEnemiesForType[ZOMBIE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+
     }
 
+/*
+    std::cout << "ZOMBIE %: " << totEnemiesForType[ZOMBIE].numberOfEnemies << std::endl;
+    std::cout << "WARRIOR %: " << totEnemiesForType[WARRIOR].numberOfEnemies << std::endl;
+    std::cout << "KAMIKAZE %: " << totEnemiesForType[KAMIKAZE].numberOfEnemies << std::endl << std::endl;
 
-    std::cout << "ZOMBIE %: " << enemiesPercentage[ZOMBIE] << std::endl;
-    std::cout << "WARRIOR %: " << enemiesPercentage[WARRIOR] << std::endl;
-    std::cout << "KAMIKAZE %: " << enemiesPercentage[KAMIKAZE] << std::endl << std::endl;
+    //std::cout << "SUM: " << sum << std::endl;
+    */
 
-    std::cout << "SUM: " << sum << std::endl;
-    //FIXME random spawning and enemy types
+    if (extraEnemy) {
+        extraEnemy = false;
+        totEnemiesForType[ZOMBIE].numberOfEnemies++;
+    }
 
-    for (int i = 0; i < remainEnemies; i++)
-        spawner->spawnEnemies(arenaMap->randomPassableTile());
+    spawnEachTypeOfEnemies();
+
+    std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
     //for (int i = 0; i < remainBosses; i++) //TODO add boss spawn
 
 
@@ -476,6 +497,42 @@ bool PlayState::isRoundEnded() const {
         return true;
     else
         return false;
+}
+
+bool PlayState::isInteger(float n) const {
+    int x = n;
+    float temp2 = n - x;
+    if (temp2 > 0)
+        return false;
+    return true;
+}
+
+void PlayState::spawnEachTypeOfEnemies() {
+    for (int i = 0; i < totEnemiesForType[ZOMBIE].numberOfEnemies; i++) {
+        spawner->spawnZombie(arenaMap->randomPassableTile()); //FIXME random enemy type
+    }
+
+    for (int i = 0; i < totEnemiesForType[WARRIOR].numberOfEnemies; i++) {
+        spawner->spawnWarrior(arenaMap->randomPassableTile()); //FIXME random enemy type
+    }
+
+    for (int i = 0; i < totEnemiesForType[KAMIKAZE].numberOfEnemies; i++) {
+        spawner->spawnKamikaze(arenaMap->randomPassableTile()); //FIXME random enemy type
+    }
+
+    //TODO add archer
+}
+
+void PlayState::checkAndUpdateRound() {
+    if (endRoundCountStarted && (afterRoundSleepClock.getElapsedTime() >= afterRoundSleepTime)) {
+        endRoundCountStarted = false;
+        initRound();
+    } else if (isRoundEnded() && (!endRoundCountStarted)) {
+        endRoundCountStarted = true;
+        round++;
+        mike->gui.updateRound(round);
+        afterRoundSleepClock.restart();
+    }
 }
 
 /*

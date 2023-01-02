@@ -17,7 +17,6 @@ private:
 
         Shield(const sf::Texture &shieldTexture, float defense);
 
-        bool addArmor();
     };
 
     Shield shield;

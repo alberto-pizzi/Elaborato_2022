@@ -23,7 +23,7 @@ const int nMap = 1;
 class PlayState : public GameState {
 private:
     enum nEnemies {
-        baseNumber = 20, incrementableNumber = 7,
+        baseNumber = 15, incrementableNumber = 5,
     };
 
     sf::View gameView;
@@ -50,15 +50,19 @@ private:
     TextureManager bonusesTextures;
 
     //game management
+    struct EnemySpawnData {
+        unsigned int numberOfEnemies;
+        float typePercentage;
+    };
     const int bossRoundFrequency = 5; //FIXME
     int round;
     unsigned int remainEnemies;
     unsigned int remainBosses;
     sf::Clock afterRoundSleepClock;
     sf::Time afterRoundSleepTime = sf::seconds(20);
-    bool endRound = false;
+    bool endRoundCountStarted = false;
     Dice randomPercentageDice;
-    std::map<int, int> enemiesPercentage; //no bosses
+    std::map<int, EnemySpawnData> totEnemiesForType; //not bosses
 
     //pause
     bool isPaused = false;
@@ -90,7 +94,13 @@ public:
 
     void initRound();
 
+    void spawnEachTypeOfEnemies();
+
     bool isRoundEnded() const;
+
+    bool isInteger(float n) const;
+
+    void checkAndUpdateRound();
 };
 
 #endif //ELABORATO_PLAYSTATE_H
