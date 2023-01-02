@@ -20,4 +20,5 @@ ProtectionBubble::ProtectionBubble(const sf::Texture &bonusTexture, sf::Vector2f
 void ProtectionBubble::doSpecialAction(Mike &character) {
     addPoints(character);
     character.setBubble(true);
+    character.addToOwnBonuses(PROTECTION_BUBBLE, duration);
 }

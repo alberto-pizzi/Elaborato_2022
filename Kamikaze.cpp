@@ -52,6 +52,13 @@ Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawn
             {2 * this->fileTextureRectSkinSize.x, 3 *
                                                   this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
+
+    //FIXME
+    explosionArea.setRadius(56);
+    explosionArea.setFillColor(sf::Color::Blue);
+    explosionArea.setPosition(getSpriteCenter().x - explosionArea.getRadius(),
+                              getSpriteCenter().y - explosionArea.getRadius());
+
 }
 
 const sf::Clock &Kamikaze::getExplosionClock() const {
@@ -76,4 +83,11 @@ bool Kamikaze::isExplosionStarted() const {
 
 void Kamikaze::setExplosionStarted(bool explosionStarted) {
     Kamikaze::explosionStarted = explosionStarted;
+}
+
+void Kamikaze::drawEntity(sf::RenderWindow &window) {
+    explosionArea.setPosition(getSpriteCenter().x - explosionArea.getRadius(),
+                              getSpriteCenter().y - explosionArea.getRadius());
+    //window.draw(explosionArea); //TODO remove
+    GameCharacter::drawEntity(window);
 }

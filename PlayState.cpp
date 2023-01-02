@@ -243,6 +243,8 @@ PlayState::PlayState(Game *game) : round(1) {
 
     //initialize first round (with enemies, etc..)
     initRound();
+
+    //spawner->spawnBubble();
 }
 
 int PlayState::whichMap() {
