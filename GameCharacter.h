@@ -86,6 +86,8 @@ public:
 
     void characterSkinDirection(const sf::Vector2f &targetPos);
 
+    sf::FloatRect futureCharacterPosition(const sf::Vector2f &offset, float dt);
+
     virtual void receiveDamage(float damagePoints);
 
     void updateCharacterColor();

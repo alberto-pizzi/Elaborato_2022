@@ -164,7 +164,9 @@ void ArenaMap::loadMapFile(int chosenMap) {
                                  countLayer, tileSizeX, tileSizeY, chosenMap));
                 if ((countLayer == solid_elements) && (nTile != 0) && isRealWall(chosenMap, nTile))
                     solidTiles.emplace_back(columns[column]);
-
+                if ((!columns[column]->passable) &&
+                    (((countLayer == solid_elements) || (countLayer == principal_floor))))
+                    notPassableTiles.emplace_back(columns[column]);
             }
             rows.emplace_back(columns);
             }
@@ -235,6 +237,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     window.setView(playerView);
 
     findWallsCoordinates();
+    fillRectsVector();
 }
 
 void ArenaMap::loadMapTextures() {
@@ -259,7 +262,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
     };
     sf::FloatRect tolerance;
 
-    //left tile collision
+    //left tile checkCollision
     if ((offset.x > 0) && ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) ||
                              (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable)) &&
                             (character.getSprite().getGlobalBounds().intersects(
@@ -272,7 +275,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.x = 0;
     }
 
-        //right tile collision
+        //right tile checkCollision
     else if ((offset.x < 0) &&
              ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) ||
                 (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable)) &&
@@ -286,7 +289,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.x = 0;
     }
 
-    //top tile collision
+    //top tile checkCollision
     if ((offset.y > 0) && ((((!tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) ||
                              (!tileMap[design_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable)) &&
                             (character.getSprite().getGlobalBounds().intersects(
@@ -299,7 +302,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.y = 0;
     }
 
-        //bottom tile collision
+        //bottom tile checkCollision
     else if ((offset.y < 0) && ((((!tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable) ||
                                   (!tileMap[design_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable)) &&
                                  (character.getSprite().getGlobalBounds().intersects(
@@ -468,6 +471,51 @@ bool ArenaMap::collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) const {
             if ((bulletGlobalPos.intersects(solidTiles[i]->tileSprite.getGlobalBounds(), delta)) &&
                 (std::max(delta.width, delta.height) >= static_cast<float>(tileSizeX) / 3))
                 return true;
+    }
+    return false;
+}
+
+void ArenaMap::fillRectsVector() {
+    sf::Vector2f beginPos = notPassableTiles[0]->posTile;
+    sf::Vector2i previousTile = {notPassableTiles[0]->cellColumn, notPassableTiles[0]->cellRow};
+    sf::Vector2i size = {tileSizeX, tileSizeY};
+    bool end[2] = {false, false};
+
+    for (int i = 1; i < notPassableTiles.size(); i++) {
+        if ((notPassableTiles[i]->cellColumn == previousTile.x + 1) &&
+            (notPassableTiles[i]->cellRow == previousTile.y)) {
+            size.x += tileSizeX;
+            previousTile.x = notPassableTiles[i]->cellColumn;
+        } else if ((notPassableTiles[i]->cellColumn == previousTile.x) &&
+                   (notPassableTiles[i]->cellRow == previousTile.y + 1)) {
+            size.y += tileSizeY;
+            previousTile.y = notPassableTiles[i]->cellRow;
+        } else {
+            sf::RectangleShape tmpRect;
+            tmpRect.setSize({static_cast<float>(size.x), static_cast<float>(size.y)});
+            tmpRect.setPosition(beginPos);
+            tmpRect.setFillColor(sf::Color::Blue);
+            rectWalls.emplace_back(tmpRect);
+
+            beginPos = notPassableTiles[i]->posTile;
+            size = {tileSizeX, tileSizeY};
+            previousTile = {notPassableTiles[i]->cellColumn, notPassableTiles[i]->cellRow};
+        }
+        if (i == notPassableTiles.size() - 1) {
+            sf::RectangleShape tmpRect;
+            tmpRect.setSize({static_cast<float>(size.x), static_cast<float>(size.y)});
+            tmpRect.setPosition(beginPos);
+            tmpRect.setFillColor(sf::Color::Blue);
+            rectWalls.emplace_back(tmpRect);
+        }
+    }
+}
+
+bool ArenaMap::checkCollision(const sf::FloatRect &futureSpritePos) const {
+
+    for (int i = 0; i < rectWalls.size(); i++) {
+        if (futureSpritePos.intersects(rectWalls[i].getGlobalBounds()))
+            return true;
     }
     return false;
 }

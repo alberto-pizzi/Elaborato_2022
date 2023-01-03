@@ -308,3 +308,19 @@ const sf::Vector2f &GameCharacter::getDamageHit() const {
 
 GameCharacter::~GameCharacter() = default;
 
+sf::FloatRect GameCharacter::futureCharacterPosition(const sf::Vector2f &offset, float dt) {
+    float newSpeed = this->speed;
+    sf::Vector2f effectiveOffset;
+
+
+    //set diagonal speed
+    if (((offset.y > 0) && (offset.x > 0)) || ((offset.y > 0) && (offset.x < 0)) ||
+        ((offset.y < 0) && (offset.x > 0)) || ((offset.y < 0) && (offset.x < 0)))
+        newSpeed /= std::sqrt(2.f);
+
+    effectiveOffset = offset * newSpeed * dt;
+
+    return {sprite.getGlobalBounds().left + effectiveOffset.x, sprite.getGlobalBounds().top + effectiveOffset.y,
+            sprite.getGlobalBounds().width, sprite.getGlobalBounds().height};
+
+}

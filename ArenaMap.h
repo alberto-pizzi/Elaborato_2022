@@ -77,6 +77,7 @@ protected:
     std::string nameMap;
     std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> tileMap;
     std::vector<std::shared_ptr<Tile>> solidTiles;
+    std::vector<std::shared_ptr<Tile>> notPassableTiles;
     std::vector<Walls> walls;
     //WARNING: updateNotCyclicalAnimation this string array and enum for adding other Map
     std::string mapList[1] = {
@@ -85,6 +86,8 @@ protected:
     std::unique_ptr<PosEntity> entity;
     sf::Vector2i tileView = {40, 23};
 public:
+    std::vector<sf::RectangleShape> rectWalls;
+
     TextureManager mapTexturesManager;
     sf::View playerView;
 
@@ -125,6 +128,10 @@ public:
     void findWallsCoordinates(); //TODO check if it is useful
 
     bool collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) const;
+
+    void fillRectsVector();
+
+    bool checkCollision(const sf::FloatRect &futureSpritePos) const;
 
 };
 

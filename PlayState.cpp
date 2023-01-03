@@ -188,7 +188,7 @@ void PlayState::handleInput() {
 
     //mike->characterSkinDirection(worldPos, enemySkinDirection);
     normalizedVector = mike->normalize(direction_vector);
-    if (arenaMap->isMovingCorrectly(normalizedVector, *mike)) {
+    if (!arenaMap->checkCollision(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
                                                                  {mike->getSprite().getGlobalBounds().width,
