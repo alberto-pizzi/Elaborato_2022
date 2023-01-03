@@ -5,10 +5,12 @@
 #include "Kamikaze.h"
 
 Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
-                   const sf::Vector2i &rectSkin, bool animated, int hp, float speed, unsigned int points,
+                   const sf::Vector2i &rectSkin, sf::Vector2f damageHit, bool animated, int hp, float speed,
+                   unsigned int points,
                    unsigned int coins, int armor, bool bubble) : GameCharacter(kamikazeTexture, hp, speed, points,
                                                                                spawnTile,
-                                                                               tileSize, rectSkin, KAMIKAZE, 3,
+                                                                               tileSize, rectSkin, KAMIKAZE, damageHit,
+                                                                               3,
                                                                                animated,
                                                                                coins, armor, bubble) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
@@ -88,6 +90,40 @@ void Kamikaze::setExplosionStarted(bool explosionStarted) {
 void Kamikaze::drawEntity(sf::RenderWindow &window) {
     explosionArea.setPosition(getSpriteCenter().x - explosionArea.getRadius(),
                               getSpriteCenter().y - explosionArea.getRadius());
-    //window.draw(explosionArea); //TODO remove
+    //window.draw(explosionArea);
     GameCharacter::drawEntity(window);
+}
+
+bool Kamikaze::isAbleToHit(const GameCharacter &target) {
+    if (target.getSprite().getGlobalBounds().intersects(explosionArea.getGlobalBounds()))
+        return true;
+    else
+        return false;
+}
+
+void Kamikaze::hit(GameCharacter &target) {
+
+}
+
+void Kamikaze::areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets) {
+    if (!explosionStarted) {
+        explosionStarted = true;
+        explosionClock.restart();
+        std::cout << "START EXPLOSION COUNT" << std::endl;
+    }
+    //kamikaze explosion
+    if (explosionStarted && (explosionClock.getElapsedTime() >= explosionTime)) {
+        for (int j = 0; j < targets.size(); j++) {
+            if (this->isAbleToHit(*(targets[j]))) {
+                targets[j]->setIsHit(true);
+                targets[j]->hitColorClock.restart();
+                targets[j]->receiveDamage(
+                        static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
+                                                                   static_cast<int>(this->getDamageHit().y))));
+            }
+        }
+        std::cout << "KABOOM" << std::endl;
+        this->HP = 0; //kill himself
+        explosionStarted = false;
+    }
 }

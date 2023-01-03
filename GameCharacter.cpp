@@ -31,13 +31,14 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
 GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points,
                              const sf::Vector2i &tilePosition,
                              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
-                             float hitRange,
-                             bool animated, unsigned int coins, int armor, bool bubble)
+                             sf::Vector2f damageHit,
+                             float hitRange, bool animated, unsigned int coins, int armor, bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
           armor(armor),
-          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType) {
+          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType),
+          damageHit(damageHit) {
 
     sprite.setTexture(texture);
 
@@ -284,6 +285,25 @@ bool GameCharacter::isDead() const {
         return true;
     else
         return false;
+}
+
+int GameCharacter::getCharacterType() const {
+    return characterType;
+}
+
+void GameCharacter::hit(GameCharacter &target) {
+    target.setIsHit(true);
+    target.receiveDamage(static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
+                                                                    static_cast<int>(this->getDamageHit().y))));
+    target.hitColorClock.restart();
+}
+
+void GameCharacter::areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets) {
+
+}
+
+const sf::Vector2f &GameCharacter::getDamageHit() const {
+    return damageHit;
 }
 
 GameCharacter::~GameCharacter() = default;

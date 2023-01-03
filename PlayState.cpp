@@ -245,6 +245,10 @@ PlayState::PlayState(Game *game) : round(1) {
     initRound();
 
     //spawner->spawnBubble();
+    //spawner->spawnKamikaze(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
 }
 
 int PlayState::whichMap() {
@@ -265,6 +269,7 @@ void PlayState::loadTextures() {
     //load character textures
     charactersTextures.loadTexture("mike", "res/textures/no_hands_mike.png");
     charactersTextures.loadTexture("shield", "res/textures/shield.png");
+    charactersTextures.loadTexture("zombie", "res/textures/zombie.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
@@ -486,9 +491,12 @@ void PlayState::updateEnemies(float dt) {
             if (spawner->enemies.empty())
                 break;
         } else if (spawner->enemies[i]->isAbleToHit(*mike)) {
-            mike->setIsHit(true);
-            mike->hitColorClock.restart();
-            mike->receiveDamage(2); //FIXME
+            if (spawner->enemies[i]->getCharacterType() == KAMIKAZE) {
+                spawner->enemies[i]->areaHit(spawner->enemies);
+            } else {
+                //TODO implement hit chance
+                spawner->enemies[i]->hit(*mike);
+            }
         }
 
     }

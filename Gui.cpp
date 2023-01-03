@@ -12,7 +12,7 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
     //health bar
     healthBar.setTexture(guiTextures.getTextureRef("healthBar"));
     shadowHealthBar.setTexture(guiTextures.getTextureRef("healthBar"));
-    shadowHealthBar.setColor(sf::Color::Black);
+    shadowHealthBar.setColor(darkGreyColor);
 
     std::string numberOrTitlesFontFile = "res/fonts/bloody.ttf";
     std::string textFontFile = "res/fonts/fffforwa.ttf";

@@ -18,12 +18,13 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         points,
                         spawnTile,
                         tileSize,
-                        rectSkin, MIKE, 5,
+                        rectSkin, MIKE, {0, 0}, 5,
                         animated,
                         coins,
                         armor,
                         bubble),
-          killStreak(streak), gui(this->points, 1, 12, 12, true, handgunTexture, guiTexManager) {
+          killStreak(streak), gui(this->points, 1, 12, 12, true, handgunTexture,
+                                  guiTexManager) { //WARNING: Mike's damage hit never will be used
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames
     goDown.reserve(3);

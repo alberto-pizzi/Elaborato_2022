@@ -5,10 +5,10 @@
 #include "Warrior.h"
 
 Warrior::Warrior(const sf::Texture &warriorTexture, const sf::Texture &shieldTexture, const sf::Vector2i &spawnTile,
-                 const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, float defense, bool animated, int hp,
-                 float speed, unsigned int points, unsigned int coins, int armor, bool bubble)
+                 const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, float defense, sf::Vector2f damageHit,
+                 bool animated, int hp, float speed, unsigned int points, unsigned int coins, int armor, bool bubble)
         : GameCharacter(warriorTexture, hp, speed, points, spawnTile,
-                        tileSize, rectSkin, WARRIOR, 2, animated,
+                        tileSize, rectSkin, WARRIOR, damageHit, 2, animated,
                         coins, armor, bubble), shield(shieldTexture, defense) {
     this->sprite.setScale(sf::Vector2f(1.75, 1.75));
     //WARNING: work here to edit frames

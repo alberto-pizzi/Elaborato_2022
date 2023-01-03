@@ -5,11 +5,17 @@
 #include "Boss.h"
 
 Boss::Boss(const sf::Texture &bossTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
-           const sf::Vector2i &rectSkin, sf::Vector2f scaleSize, bool animated, int hp, float speed,
-           unsigned int points,
-           unsigned int coins, int armor, bool bubble) : GameCharacter(bossTexture, hp, speed, points, spawnTile,
-                                                                       tileSize, rectSkin, BOSS, 1, animated,
-                                                                       coins, armor, bubble) {
+           const sf::Vector2i &rectSkin, sf::Vector2f damageHit, sf::Vector2f scaleSize, bool animated, int hp,
+           float speed, unsigned int points, unsigned int coins, int armor, bool bubble) : GameCharacter(bossTexture,
+                                                                                                         hp, speed,
+                                                                                                         points,
+                                                                                                         spawnTile,
+                                                                                                         tileSize,
+                                                                                                         rectSkin, BOSS,
+                                                                                                         damageHit, 1,
+                                                                                                         animated,
+                                                                                                         coins, armor,
+                                                                                                         bubble) {
     this->sprite.setScale(sf::Vector2f(scaleSize));
     //WARNING: work here to edit frames
     goDown.reserve(3);

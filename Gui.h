@@ -36,6 +36,7 @@ private:
     const sf::Color semiTransparentGreyGuiColor = sf::Color(239, 239, 239, 150);
     const sf::Color redGuiColor = sf::Color(102, 0, 0, 200);
     const sf::Color yellowGuiColor = sf::Color(255, 216, 0, 200);
+    const sf::Color darkGreyColor = sf::Color(47, 47, 47, 255);
 
     //magazine indicator
     sf::Text remainingBulletsIndicator;

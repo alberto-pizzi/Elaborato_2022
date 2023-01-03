@@ -109,7 +109,7 @@ void Weapon::updateBullets(ArenaMap *map, GameCharacter &enemy) {
         } else if (bullets[i]->getBulletSprite().getGlobalBounds().intersects(enemy.getSprite().getGlobalBounds())) {
             enemy.setIsHit(true);
             enemy.hitColorClock.restart();
-            enemy.receiveDamage(2); //FIXME
+            enemy.receiveDamage(this->damage);
 
             bullets.erase(bullets.begin() + i);
             i--;

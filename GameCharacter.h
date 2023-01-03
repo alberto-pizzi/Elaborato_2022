@@ -19,6 +19,7 @@
 #include "AssaultRifle.h"
 #include "Shotgun.h"
 #include "GameException.h"
+#include "Dice.h"
 
 enum Directions {
     LEFT = 0,
@@ -45,6 +46,7 @@ protected:
     float HP;
     int armor; //float
     float speed;
+    sf::Vector2f damageHit; //damage is included between min and max values x = MIN y = MAX
     bool bubble;
     unsigned int points;
     unsigned int coins;
@@ -61,11 +63,12 @@ protected:
     float hitRange; //in coords
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
+    Dice randomDice;
 
     //the protected constructor is to make the class non-instantiable (like an abstract class)
     GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
-                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, float hitRange = 5,
-                  bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
+                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
+                  float hitRange = 5, bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
 public:
     sf::Clock hitColorClock; //FIXME getter
@@ -89,9 +92,13 @@ public:
 
     bool isDead() const;
 
+    virtual void hit(GameCharacter &target);
+
+    virtual void areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets);
+
     float damageWithArmor(float damagePoints) const;
 
-    bool isAbleToHit(const GameCharacter &target);
+    virtual bool isAbleToHit(const GameCharacter &target);
 
     sf::Vector2f normalize(sf::Vector2f vector);
 
@@ -136,6 +143,10 @@ public:
     bool isHit1() const;
 
     void setIsHit(bool isHit);
+
+    int getCharacterType() const;
+
+    const sf::Vector2f &getDamageHit() const;
 };
 
 

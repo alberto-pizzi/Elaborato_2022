@@ -23,6 +23,7 @@
 #include "IncreasedWeaponDamage.h"
 #include "Warrior.h"
 #include "Kamikaze.h"
+#include "Boss.h"
 
 
 class Spawner {
@@ -78,6 +79,8 @@ public:
     void spawnKamikaze(sf::Vector2i spawnTile);
 
     void spawnWarrior(sf::Vector2i spawnTile);
+
+    void spawnBoss(sf::Vector2i spawnTile);
 
 };
 
