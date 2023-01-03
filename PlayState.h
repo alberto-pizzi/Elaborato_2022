@@ -58,8 +58,10 @@ private:
     int round;
     unsigned int remainEnemies;
     unsigned int remainBosses;
-    sf::Clock afterRoundSleepClock;
+    sf::Clock roundSleepClock;
     sf::Time afterRoundSleepTime = sf::seconds(20);
+    const sf::Time firstRoundStartingTime = sf::seconds(10);
+    bool firstSpawnDone = false;
     bool endRoundCountStarted = false;
     Dice randomPercentageDice;
     std::map<int, EnemySpawnData> totEnemiesForType; //not bosses

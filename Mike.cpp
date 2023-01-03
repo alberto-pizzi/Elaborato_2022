@@ -11,8 +11,8 @@ bool Mike::isKillStreak(GameCharacter &character) {
 
 Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
            const sf::Vector2i &spawnTile, const TextureManager &guiTexManager, const sf::Vector2i &tileSize,
-           const sf::Vector2i &rectSkin, bool animated, int hp, float speed, unsigned int points, unsigned int coins,
-           int armor, bool bubble, int streak)
+           const sf::Vector2i &rectSkin, float startRoundCountdownSeconds, bool animated, int hp, float speed,
+           unsigned int points, unsigned int coins, int armor, bool bubble, int streak)
         : GameCharacter(mikeTexture, hp,
                         speed,
                         points,
@@ -23,7 +23,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         coins,
                         armor,
                         bubble),
-          killStreak(streak), gui(this->points, 1, 12, 12, true, handgunTexture,
+          killStreak(streak), gui(this->points, 1, 12, 12, true, startRoundCountdownSeconds, handgunTexture,
                                   guiTexManager) { //WARNING: Mike's damage hit never will be used
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames

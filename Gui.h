@@ -47,6 +47,12 @@ private:
     std::string totalBulletsDisplayed;
     sf::RectangleShape designSeparator;
 
+    //countdown indicator
+    sf::Text roundCountdownIndicator;
+    std::string roundCountdownDisplayed;
+    float startNumber;
+    bool countdownVisible = true;
+
     //message box //TODO implement it (texture already been loaded)
     sf::Text messageDisplayed;
 
@@ -56,7 +62,7 @@ private:
     sf::Vector2i distanceFromWindowLimits = {16, 16};
 public:
     Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
-        const sf::Texture &weaponTexture, const TextureManager &guiTexManager);
+        float startRoundCountdownSecond, const sf::Texture &weaponTexture, const TextureManager &guiTexManager);
 
     const std::string &getPointsDisplayed() const;
 
@@ -77,9 +83,15 @@ public:
 
     void updateMagazines(int remaining, int total, bool isInfinite);
 
+    void updateCountdown(float second, bool start);
+
     void drawGui(sf::RenderWindow &window);
 
     TextureManager getTexManager();
+
+    bool isCountdownVisible() const;
+
+    void setCountdownVisible(bool countdownVisible);
 
 };
 

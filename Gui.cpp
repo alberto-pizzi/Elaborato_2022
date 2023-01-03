@@ -5,7 +5,8 @@
 #include "Gui.h"
 
 Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
-         const sf::Texture &weaponTexture, const TextureManager &guiTexManager) : weaponTexture(weaponTexture) {
+         float startRoundCountdownSecond, const sf::Texture &weaponTexture, const TextureManager &guiTexManager)
+        : weaponTexture(weaponTexture) {
     guiTextures = guiTexManager;
     std::cout << "i'm GUI constructor" << std::endl;
 
@@ -61,6 +62,13 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
     weaponSpriteIndicator.setTexture(weaponTexture);
     weaponSpriteIndicator.setColor(sf::Color::Black);
     weaponSpriteIndicator.setScale(sf::Vector2f(1.5, 1.5));
+
+    //countdown indicator
+    roundCountdownIndicator.setFont(numbersOrTitlesFont);
+    roundCountdownIndicator.setCharacterSize(titleFontSize);
+    roundCountdownIndicator.setFillColor(redGuiColor);
+    roundCountdownDisplayed = std::to_string(static_cast<int>(startRoundCountdownSecond));
+    startNumber = startRoundCountdownSecond;
 
 }
 
@@ -124,6 +132,15 @@ void Gui::drawGui(sf::RenderWindow &window) {
     sf::Vector2f worldPosWeaponTypeIndicator = window.mapPixelToCoords(posWeaponTypeIndicator);
     weaponSpriteIndicator.setPosition(worldPosWeaponTypeIndicator);
     window.draw(weaponSpriteIndicator);
+
+    //draw countdown indicator
+    int posXCountdown = static_cast<int>(window.getSize().x) / 2 - textFontSize;
+    int posYCountdown = static_cast<int>(window.getSize().y) * 4 / 5 - textFontSize;
+    sf::Vector2f worldPosCountdown = window.mapPixelToCoords({posXCountdown, posYCountdown});
+    roundCountdownIndicator.setPosition(worldPosCountdown);
+    roundCountdownIndicator.setString(roundCountdownDisplayed);
+    if (countdownVisible)
+        window.draw(roundCountdownIndicator);
 }
 
 void Gui::updateHealthBar(float hp) {
@@ -198,5 +215,21 @@ void Gui::updateWeaponType(const sf::Texture &newWeaponTexture, const sf::IntRec
     weaponSpriteIndicator.setTextureRect(idleFrame);
     hitBoxWeaponSize = hitboxSize;
     weaponSpriteIndicator.setScale(sf::Vector2f(1.5, 1.5));
+}
+
+void Gui::updateCountdown(float second, bool start) {
+    if (start)
+        startNumber = second;
+
+    std::string countdownString = std::to_string(static_cast<int>(startNumber - second));
+    roundCountdownDisplayed = countdownString;
+}
+
+bool Gui::isCountdownVisible() const {
+    return countdownVisible;
+}
+
+void Gui::setCountdownVisible(bool countdownVisible) {
+    this->countdownVisible = countdownVisible;
 }
 

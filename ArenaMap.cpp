@@ -108,9 +108,10 @@ ArenaMap::~ArenaMap() = default;
 
 ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
                    const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
-                   const TextureManager &guiTexManager) {
+                   const TextureManager &guiTexManager,
+                   float firstRoundStartingTime) {
     loadMapFile(chosenMap);
-    startingMap(window, mike, mikeTexture, weaponTexture, bulletTexture, guiTexManager);
+    startingMap(window, mike, mikeTexture, weaponTexture, bulletTexture, guiTexManager, firstRoundStartingTime);
 
     rowDice.setFaces(maxRowTiles - 2);
     columnDice.setFaces(maxColumnTiles - 2);
@@ -177,7 +178,7 @@ void ArenaMap::loadMapFile(int chosenMap) {
 
 void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
                            const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
-                           const TextureManager &guiTexManager) {
+                           const TextureManager &guiTexManager, float firstRoundStartingTime) {
     playerView.reset(
             sf::FloatRect(static_cast<float>(0 * tileSizeX),
                           static_cast<float>(0 * tileSizeX),
@@ -190,7 +191,7 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     bool legalFirstCenter = false;
 
     mike = std::unique_ptr<Mike>(new Mike(mikeTexture, weaponTexture, bulletTexture, spawnTile, guiTexManager,
-                                          {tileSizeX, tileSizeY}, {32, 32}, true));
+                                          {tileSizeX, tileSizeY}, {32, 32}, firstRoundStartingTime, true));
 
     firstViewCenter = mike->getSpriteCenter();
     sf::Vector2f distanceFromWindowCenter = {

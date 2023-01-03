@@ -232,7 +232,7 @@ PlayState::PlayState(Game *game) : round(1) {
     //create random map
     arenaMap = new ArenaMap(whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
                             weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
-                            guiTextures);
+                            guiTextures, firstRoundStartingTime.asSeconds());
 
     viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));
 
@@ -240,15 +240,6 @@ PlayState::PlayState(Game *game) : round(1) {
 
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
-
-    //initialize first round (with enemies, etc..)
-    initRound();
-
-    //spawner->spawnBubble();
-    //spawner->spawnKamikaze(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
 }
 
 int PlayState::whichMap() {
@@ -534,14 +525,30 @@ void PlayState::spawnEachTypeOfEnemies() {
 }
 
 void PlayState::checkAndUpdateRound() {
-    if (endRoundCountStarted && (afterRoundSleepClock.getElapsedTime() >= afterRoundSleepTime)) {
-        endRoundCountStarted = false;
+    if ((round == 1) && (roundSleepClock.getElapsedTime() <= firstRoundStartingTime) && (!firstSpawnDone)) {
+        mike->gui.updateCountdown(firstRoundStartingTime.asSeconds(), false);
+
+    } else if ((round == 1) && (!firstSpawnDone)) {
+        mike->gui.setCountdownVisible(false);
+        //initialize first round (with enemies, etc..)
         initRound();
+        firstSpawnDone = true;
+    }
+
+    if (endRoundCountStarted && (roundSleepClock.getElapsedTime() >= afterRoundSleepTime)) {
+        endRoundCountStarted = false;
+        mike->gui.setCountdownVisible(false);
+        initRound();
+
     } else if (isRoundEnded() && (!endRoundCountStarted)) {
         endRoundCountStarted = true;
         round++;
         mike->gui.updateRound(round);
-        afterRoundSleepClock.restart();
+        roundSleepClock.restart();
+        mike->gui.setCountdownVisible(true);
+        mike->gui.updateCountdown(afterRoundSleepTime.asSeconds(), true);
+    } else {
+        mike->gui.updateCountdown(roundSleepClock.getElapsedTime().asSeconds(), false);
     }
 }
 

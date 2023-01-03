@@ -94,7 +94,8 @@ public:
     explicit ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike,
                       const sf::Texture &mikeTexture,
                       const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
-                      const TextureManager &guiTexManager);
+                      const TextureManager &guiTexManager,
+                      float firstRoundStartingTime);
 
     virtual ~ArenaMap();
 
@@ -104,7 +105,7 @@ public:
 
     void startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
                      const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
-                     const TextureManager &guiTexManager);
+                     const TextureManager &guiTexManager, float firstRoundStartingTime);
 
     void loadMapTextures();
 
