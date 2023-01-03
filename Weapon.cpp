@@ -140,7 +140,7 @@ const sf::Time &Weapon::getNextShotDelay() const {
     return nextShotDelay;
 }
 
-int Weapon::getDamage() const {
+float Weapon::getDamage() const {
     return damage;
 }
 
@@ -156,7 +156,7 @@ int Weapon::getDefaultDamage() const {
     return defaultDamage;
 }
 
-void Weapon::setDamage(int damage) {
+void Weapon::setDamage(float damage) {
     this->damage = damage;
 }
 

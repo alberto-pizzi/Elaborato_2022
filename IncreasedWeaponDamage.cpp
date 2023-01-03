@@ -17,6 +17,6 @@ IncreasedWeaponDamage::IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf
 
 void IncreasedWeaponDamage::doSpecialAction(Mike &character) {
     addPoints(character);
-    character.weapon->setDamage(static_cast<int>(static_cast<float>(character.weapon->getDamage()) * multiplier));
+    character.weapon->setDamage(character.weapon->getDamage() * multiplier);
     character.addToOwnBonuses(INCREASED_DAMAGE, duration);
 }

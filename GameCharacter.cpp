@@ -8,17 +8,10 @@
 void GameCharacter::receiveDamage(float damagePoints) {
     if (!bubble) {
         if (armor > 0) {
-            //FIXME
-            int armorDamage = armor - damagePoints;
-            if (armorDamage >= 0)
-                armor -= armorDamage;
-            else {
-                armor = 0;
-                HP += armorDamage; //add damage because it is certainly negative
-            }
-
-        } else
-            HP -= damagePoints;
+            damagePoints = damageWithArmor(damagePoints);
+            armor--;
+        }
+        HP -= damagePoints;
     }
 }
 
@@ -139,14 +132,16 @@ void GameCharacter::setSpritePos(sf::Vector2f newPos) {
     sprite.setPosition(newPos);
 }
 
-int GameCharacter::howMuchArmorDamage() const {
-    int damagePoints = weapon->getDamage(); //FIXME implement features for character without weapon (zombie...)
+float GameCharacter::damageWithArmor(float damagePoints) const {
     if (armor > 15)
         damagePoints /= 3;
     else if (armor > 10)
         damagePoints /= 2;
     else if (armor >= 5)
         damagePoints -= 2;
+
+    if (damagePoints <= 0)
+        damagePoints = 1;
 
     return damagePoints;
 }

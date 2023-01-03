@@ -46,7 +46,7 @@ protected:
 
     int totalBullets;
     bool infiniteBullets = false;
-    int damage;
+    float damage;
     float reloadTime;
     bool equipped;
     sf::Time nextShotDelay;
@@ -117,7 +117,7 @@ public:
 
     const sf::Time &getNextShotDelay() const;
 
-    int getDamage() const;
+    float getDamage() const;
 
     float getDamageMultiplier() const;
 
@@ -125,7 +125,7 @@ public:
 
     int getDefaultDamage() const;
 
-    void setDamage(int damage);
+    void setDamage(float damage);
 
 };
 

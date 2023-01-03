@@ -62,6 +62,11 @@ protected:
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
 
+    //the protected constructor is to make the class non-instantiable (like an abstract class)
+    GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
+                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, float hitRange = 5,
+                  bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
+
 public:
     sf::Clock hitColorClock; //FIXME getter
 
@@ -71,15 +76,10 @@ public:
 
     const sf::Sprite &getSprite() const;
 
-    GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
-                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, float hitRange = 5,
-                  bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
     virtual ~GameCharacter();
 
     void move(const sf::Vector2f &offset, float dt) override;
-
-    //virtual void fight(GameCharacter& enemy) = 0;
 
     void characterSkinDirection(const sf::Vector2f &targetPos);
 
@@ -89,7 +89,7 @@ public:
 
     bool isDead() const;
 
-    int howMuchArmorDamage() const;
+    float damageWithArmor(float damagePoints) const;
 
     bool isAbleToHit(const GameCharacter &target);
 

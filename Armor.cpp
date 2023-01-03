@@ -14,5 +14,8 @@ Armor::Armor(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int poin
 
 void Armor::doSpecialAction(Mike &character) {
     addPoints(character);
-    character.setArmor(character.getArmor() + this->quantity);
+    if (character.getArmor() <= 0)
+        character.setArmor(this->quantity);
+    else
+        character.setArmor(character.getArmor() + this->quantity);
 }
