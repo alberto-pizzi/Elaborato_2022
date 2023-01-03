@@ -63,8 +63,10 @@ void Spawner::updateEnemies(const GameCharacter &target, float dt, int enemyInde
 
     origin = enemies[enemyIndex]->getSpriteCenter();
     translation = target.getSpriteCenter() - origin;
-    enemies[enemyIndex]->move(enemies[enemyIndex]->normalize(translation), dt);
-    enemies[enemyIndex]->currentAnimation.update(dt);
+    if (!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds()))
+        enemies[enemyIndex]->move(enemies[enemyIndex]->normalize(translation), dt);
+    else
+        enemies[enemyIndex]->currentAnimation.update(dt); //enemies must be moving forever
 }
 
 void Spawner::spawnAmmunition() {

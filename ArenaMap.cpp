@@ -516,9 +516,9 @@ bool ArenaMap::checkCollision(const sf::FloatRect &futureSpritePos) const {
 
     for (int i = 0; i < rectWalls.size(); i++) {
         if (futureSpritePos.intersects(rectWalls[i].getGlobalBounds()))
-            return true;
+            return false;
     }
-    return false;
+    return true;
 }
 
 

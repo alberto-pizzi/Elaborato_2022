@@ -186,19 +186,15 @@ void PlayState::handleInput() {
     else if (keyStates[DOWN])
         direction_vector.y = 1.f;
 
-    //mike->characterSkinDirection(worldPos, enemySkinDirection);
     normalizedVector = mike->normalize(direction_vector);
-    if (!arenaMap->checkCollision(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
+    if (arenaMap->checkCollision(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
                                                                  {mike->getSprite().getGlobalBounds().width,
                                                                   mike->getSprite().getGlobalBounds().height},
                                                                  arenaMap->playerView.getCenter()));
         this->game->window.setView(arenaMap->playerView);
-        mike->currentAnimation.update(frame_time.asSeconds());
     }
-
-
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),

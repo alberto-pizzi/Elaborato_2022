@@ -278,6 +278,8 @@ void GameCharacter::move(const sf::Vector2f &offset, float dt) {
     sprite.setPosition(sprite.getPosition() + effectiveOffset);
     //pos = sprite.getGlobalBounds();
     updateGlobalPosition(sprite.getGlobalBounds());
+    if ((effectiveOffset.x != 0) || (effectiveOffset.y != 0))
+        currentAnimation.update(dt);
 }
 
 bool GameCharacter::isDead() const {
