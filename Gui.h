@@ -24,6 +24,7 @@ private:
     TextureManager guiTextures;
 
     sf::Sprite healthBar;
+    sf::Sprite shadowHealthBar;
     sf::Font numbersOrTitlesFont;
     sf::Font textFont;
     sf::Text pointsIndicator;

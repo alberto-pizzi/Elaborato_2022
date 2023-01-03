@@ -8,7 +8,11 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
          const sf::Texture &weaponTexture, const TextureManager &guiTexManager) : weaponTexture(weaponTexture) {
     guiTextures = guiTexManager;
     std::cout << "i'm GUI constructor" << std::endl;
+
+    //health bar
     healthBar.setTexture(guiTextures.getTextureRef("healthBar"));
+    shadowHealthBar.setTexture(guiTextures.getTextureRef("healthBar"));
+    shadowHealthBar.setColor(sf::Color::Black);
 
     std::string numberOrTitlesFontFile = "res/fonts/bloody.ttf";
     std::string textFontFile = "res/fonts/fffforwa.ttf";
@@ -67,6 +71,8 @@ void Gui::drawGui(sf::RenderWindow &window) {
             distanceFromWindowLimits.x;
     sf::Vector2f worldPosHealth = window.mapPixelToCoords({posXHealth, distanceFromWindowLimits.y});
     healthBar.setPosition(worldPosHealth);
+    shadowHealthBar.setPosition(worldPosHealth);
+    window.draw(shadowHealthBar);
     window.draw(healthBar);
 
     //draw PointsIndicator
