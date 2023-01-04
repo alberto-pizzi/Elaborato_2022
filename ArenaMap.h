@@ -132,7 +132,9 @@ public:
 
     void fillRectsVector();
 
-    bool checkCollision(const sf::FloatRect &futureSpritePos) const;
+    bool collides(const sf::FloatRect &futureSpritePos) const;
+
+    void autonomousMovementDecisions(sf::Vector2f &offset);
 
 };
 

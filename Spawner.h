@@ -36,6 +36,10 @@ private:
     TextureManager enemiesTextures;
     TextureManager bonusesTextures;
     TextureManager weaponsTextures;
+
+    //enemies update
+    sf::Vector2f wantedDirection;
+    bool findCollideTile = false;
 public:
     Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
             const TextureManager &weaponsTextures);
@@ -56,7 +60,7 @@ public:
 
     void updateSkinDirection(const sf::Vector2f &target);
 
-    void updateEnemies(const GameCharacter &target, float dt, int enemyIndex);
+    void updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide);
 
     void spawnCoin(sf::Vector2f spawnPos);
 
@@ -81,6 +85,9 @@ public:
     void spawnWarrior(sf::Vector2i spawnTile);
 
     void spawnBoss(sf::Vector2i spawnTile);
+
+    sf::Vector2f characterPositionRelativeToAnother(const GameCharacter &originCharacter,
+                                                    const GameCharacter &targetCharacter) const;
 
 };
 

@@ -57,7 +57,7 @@ void PlayState::update(float dt) {
     checkAndUpdateRound();
 
     //update enemies skin direction based on mike positioning
-    spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
+    //spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
 
     //update all enemies
     updateEnemies(dt);
@@ -187,7 +187,7 @@ void PlayState::handleInput() {
         direction_vector.y = 1.f;
 
     normalizedVector = mike->normalize(direction_vector);
-    if (arenaMap->checkCollision(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
+    if (!arenaMap->collides(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
                                                                  {mike->getSprite().getGlobalBounds().width,
@@ -467,7 +467,10 @@ void PlayState::initRound() {
 
 void PlayState::updateEnemies(float dt) {
     for (int i = 0; i < spawner->enemies.size(); i++) {
-        spawner->updateEnemies(*mike, dt, i); //update animation and movement
+        spawner->updateEnemy(*mike, dt, i, arenaMap->collides(spawner->enemies[i]->futureCharacterPosition(
+                spawner->enemies[i]->normalize(
+                        spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
+                dt))); //update animation and movement
         mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
         spawner->enemies[i]->updateCharacterColor();
 

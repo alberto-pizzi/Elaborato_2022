@@ -263,7 +263,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
     };
     sf::FloatRect tolerance;
 
-    //left tile checkCollision
+    //left tile collides
     if ((offset.x > 0) && ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) ||
                              (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable)) &&
                             (character.getSprite().getGlobalBounds().intersects(
@@ -276,7 +276,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.x = 0;
     }
 
-        //right tile checkCollision
+        //right tile collides
     else if ((offset.x < 0) &&
              ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) ||
                 (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable)) &&
@@ -290,7 +290,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.x = 0;
     }
 
-    //top tile checkCollision
+    //top tile collides
     if ((offset.y > 0) && ((((!tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) ||
                              (!tileMap[design_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable)) &&
                             (character.getSprite().getGlobalBounds().intersects(
@@ -303,7 +303,7 @@ bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &char
         offset.y = 0;
     }
 
-        //bottom tile checkCollision
+        //bottom tile collides
     else if ((offset.y < 0) && ((((!tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable) ||
                                   (!tileMap[design_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable)) &&
                                  (character.getSprite().getGlobalBounds().intersects(
@@ -512,13 +512,13 @@ void ArenaMap::fillRectsVector() {
     }
 }
 
-bool ArenaMap::checkCollision(const sf::FloatRect &futureSpritePos) const {
+bool ArenaMap::collides(const sf::FloatRect &futureSpritePos) const {
 
     for (int i = 0; i < rectWalls.size(); i++) {
         if (futureSpritePos.intersects(rectWalls[i].getGlobalBounds()))
-            return false;
+            return true;
     }
-    return true;
+    return false;
 }
 
 

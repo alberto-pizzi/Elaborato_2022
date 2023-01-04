@@ -326,3 +326,4 @@ sf::FloatRect GameCharacter::futureCharacterPosition(const sf::Vector2f &offset,
             sprite.getGlobalBounds().width, sprite.getGlobalBounds().height};
 
 }
+
