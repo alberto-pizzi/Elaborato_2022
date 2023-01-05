@@ -521,6 +521,34 @@ bool ArenaMap::collides(const sf::FloatRect &futureSpritePos) const {
     return false;
 }
 
+bool
+ArenaMap::collides(const sf::FloatRect &futureSpritePos, sf::RectangleShape &obstacle, bool (&whereCollide)[4]) const {
+    sf::FloatRect delta;
+
+    for (int i = 0; i < rectWalls.size(); i++) {
+        if (futureSpritePos.intersects(rectWalls[i].getGlobalBounds(), delta)) {
+            if (delta.top == rectWalls[i].getGlobalBounds().top) {
+                whereCollide[UP] = true;
+
+            } else if (delta.top + delta.height ==
+                       rectWalls[i].getGlobalBounds().top + rectWalls[i].getGlobalBounds().height) {
+                whereCollide[DOWN] = true;
+            }
+
+            if (delta.left == rectWalls[i].getGlobalBounds().left) {
+                whereCollide[LEFT] = true;
+            } else if (delta.left + delta.width ==
+                       rectWalls[i].getGlobalBounds().left + rectWalls[i].getGlobalBounds().width) {
+                whereCollide[RIGHT] = true;
+            }
+
+            obstacle = rectWalls[i];
+            return true;
+        }
+    }
+    return false;
+}
+
 
 
 

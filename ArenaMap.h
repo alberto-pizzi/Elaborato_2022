@@ -134,7 +134,8 @@ public:
 
     bool collides(const sf::FloatRect &futureSpritePos) const;
 
-    void autonomousMovementDecisions(sf::Vector2f &offset);
+    bool collides(const sf::FloatRect &futureSpritePos, sf::RectangleShape &obstacle, bool (&whereCollide)[4]) const;
+
 
 };
 
