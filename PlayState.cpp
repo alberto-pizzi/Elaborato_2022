@@ -457,7 +457,9 @@ void PlayState::initRound() {
         totEnemiesForType[ZOMBIE].numberOfEnemies++;
     }
 
-    spawnEachTypeOfEnemies();
+    //spawnEachTypeOfEnemies();
+    spawner->spawnZombie({30, 10});
+    remainEnemies = 1;
 
 
     std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

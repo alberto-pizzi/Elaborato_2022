@@ -72,7 +72,11 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
                         characterPositionRelativeToAnother(*enemies[enemyIndex], target));
             else {
                 //follow node
-                if (enemies[enemyIndex]->getSpriteCenter() == actualTarget)
+                sf::Vector2f oldVector = straightVector(enemies[enemyIndex]->normalize(
+                                                                calculateTranslation(enemies[enemyIndex]->getSpriteCenter(), actualTarget)),
+                                                        enemies[enemyIndex]->getSpriteCenter());
+                if (((enemies[enemyIndex]->getSpriteCenter().x >= actualTarget.x) && (oldVector.y == 0)) ||
+                    ((enemies[enemyIndex]->getSpriteCenter().y >= actualTarget.y) && (oldVector.x == 0)))
                     enemies[enemyIndex]->attachedToNodes = false;
                 else {
                     normalizedVector = straightVector(enemies[enemyIndex]->normalize(
@@ -181,27 +185,27 @@ sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &or
 sf::Vector2f
 Spawner::calculateNextNodeTarget(int enemyIndex, const sf::RectangleShape &obstacle, sf::Vector2f finalTargetPos) {
     sf::Vector2f nodes[4] = {{obstacle.getGlobalBounds().left -
-                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 - 1,
-                                                                                                obstacle.getGlobalBounds().top -
-                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                                                                                2 - 1},
+                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 - 2,
+                                     obstacle.getGlobalBounds().top -
+                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                     2 - 2},
                              {obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width +
                               enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 +
-                              1,                                                                obstacle.getGlobalBounds().top -
-                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                                                                                2 - 1},
+                              1,     obstacle.getGlobalBounds().top -
+                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                     2 - 2},
                              {obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width +
                               enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 +
-                              1,                                                                obstacle.getGlobalBounds().top +
-                                                                                                obstacle.getGlobalBounds().height +
-                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                                                                                2 + 1},
+                              1,     obstacle.getGlobalBounds().top +
+                                     obstacle.getGlobalBounds().height +
+                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                     2 + 2},
                              {obstacle.getGlobalBounds().left -
                               enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 -
-                              1,                                                                obstacle.getGlobalBounds().top +
-                                                                                                obstacle.getGlobalBounds().height +
-                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                                                                                2 + 1},
+                              1,     obstacle.getGlobalBounds().top +
+                                     obstacle.getGlobalBounds().height +
+                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                     2 + 2},
     };
 
 
