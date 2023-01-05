@@ -134,7 +134,7 @@ public:
 
     bool collides(const sf::FloatRect &futureSpritePos) const;
 
-    bool collides(const sf::FloatRect &futureSpritePos, sf::RectangleShape &obstacle, bool (&whereCollide)[4]) const;
+    bool collides(const sf::FloatRect &futureSpritePos, sf::RectangleShape &obstacle) const;
 
 
 };

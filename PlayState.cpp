@@ -459,6 +459,7 @@ void PlayState::initRound() {
 
     spawnEachTypeOfEnemies();
 
+
     std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
     //for (int i = 0; i < remainBosses; i++) //TODO add boss spawn
 
@@ -466,11 +467,14 @@ void PlayState::initRound() {
 }
 
 void PlayState::updateEnemies(float dt) {
+
     for (int i = 0; i < spawner->enemies.size(); i++) {
+        sf::RectangleShape obstacle;
+
         spawner->updateEnemy(*mike, dt, i, arenaMap->collides(spawner->enemies[i]->futureCharacterPosition(
                 spawner->enemies[i]->normalize(
                         spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
-                dt))); //update animation and movement
+                dt), obstacle), obstacle); //update animation and movement
         mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
         spawner->enemies[i]->updateCharacterColor();
 

@@ -71,6 +71,12 @@ protected:
                   float hitRange = 5, bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
 public:
+    //enemy AI
+    bool attachedToNodes = false;
+    sf::Vector2f target;
+    bool achieved;
+
+
     sf::Clock hitColorClock; //FIXME getter
 
     bool skinDirection[4] = {false, false, false, false};

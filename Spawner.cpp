@@ -57,46 +57,46 @@ void Spawner::spawnNuke() {
                                   {36 * 32, 15 * 32})); //TODO set random tile
 }
 
-void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide) {
+void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
+                          const sf::RectangleShape &obstacle) {
 
-    sf::Vector2f normalizedVector = enemies[enemyIndex]->normalize(
-            characterPositionRelativeToAnother(*enemies[enemyIndex], target));
+    sf::Vector2f normalizedVector, actualTarget = target.getSpriteCenter();
 
     //TODO implement enemies collision and AI deviation
 
     if (!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) {
-        /*
-        if (!collide) {
-            if (findCollideTile) {
-                enemies[enemyIndex]->move(wantedDirection, dt);
-                findCollideTile = false;
+
+        if (!collide) { //future collision
+            if (!enemies[enemyIndex]->attachedToNodes)
+                normalizedVector = enemies[enemyIndex]->normalize(
+                        characterPositionRelativeToAnother(*enemies[enemyIndex], target));
+            else {
+                //follow node
+                if (enemies[enemyIndex]->getSpriteCenter() == actualTarget)
+                    enemies[enemyIndex]->attachedToNodes = false;
+                else {
+                    normalizedVector = straightVector(enemies[enemyIndex]->normalize(
+                                                              calculateTranslation(enemies[enemyIndex]->getSpriteCenter(), actualTarget)),
+                                                      enemies[enemyIndex]->getSpriteCenter());
+                    //set 0
+                }
             }
-            else
-                enemies[enemyIndex]->move(normalizedVector, dt);
+            enemies[enemyIndex]->move(normalizedVector, dt);
+        } else {
+
+            //set node target
+            //if (!enemies[enemyIndex]->attachedToNodes){
+            actualTarget = calculateNextNodeTarget(enemyIndex, obstacle, sf::Vector2f());
+            enemies[enemyIndex]->attachedToNodes = true;
+            normalizedVector = straightVector(enemies[enemyIndex]->normalize(
+                                                      calculateTranslation(enemies[enemyIndex]->getSpriteCenter(), actualTarget)),
+                                              enemies[enemyIndex]->getSpriteCenter());
+            //}
+
+
+
+            enemies[enemyIndex]->move(normalizedVector, dt); //move with deviations
         }
-        else{
-            wantedDirection = normalizedVector; //save wanted direction for using it later
-            //TODO implement random  decision (0,1)
-
-            if (wantedDirection.y > 0){ //if he go down, he will go to right
-                normalizedVector.x = -wantedDirection.x; //go right
-                normalizedVector.y = 0;
-                findCollideTile = true;
-            }
-
-            if (wantedDirection.x < 0){ //if he go down, he will go to right
-                normalizedVector.y = wantedDirection.y; //go down
-                normalizedVector.x = 0;
-                findCollideTile = true;
-            }
-
-
-            */
-
-
-
-        enemies[enemyIndex]->move(normalizedVector, dt); //move with deviations
-        //}
         enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
     } else
         enemies[enemyIndex]->currentAnimation.update(dt); //enemies must be moving forever
@@ -176,5 +176,77 @@ sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &or
     translation = targetCharacter.getSpriteCenter() - origin;
 
     return translation;
+}
+
+sf::Vector2f
+Spawner::calculateNextNodeTarget(int enemyIndex, const sf::RectangleShape &obstacle, sf::Vector2f finalTargetPos) {
+    sf::Vector2f nodes[4] = {{obstacle.getGlobalBounds().left -
+                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 - 1,
+                                                                                                obstacle.getGlobalBounds().top -
+                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                                                                                2 - 1},
+                             {obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width +
+                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 +
+                              1,                                                                obstacle.getGlobalBounds().top -
+                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                                                                                2 - 1},
+                             {obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width +
+                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 +
+                              1,                                                                obstacle.getGlobalBounds().top +
+                                                                                                obstacle.getGlobalBounds().height +
+                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                                                                                2 + 1},
+                             {obstacle.getGlobalBounds().left -
+                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 -
+                              1,                                                                obstacle.getGlobalBounds().top +
+                                                                                                obstacle.getGlobalBounds().height +
+                                                                                                enemies[enemyIndex]->getSprite().getGlobalBounds().height /
+                                                                                                2 + 1},
+    };
+
+
+    double distance = std::sqrt((std::pow(nodes[0].x - enemies[enemyIndex]->getSpriteCenter().x, 2)) +
+                                (std::pow(nodes[0].y - enemies[enemyIndex]->getSpriteCenter().y, 2)));
+    double newDistance, min = distance;
+    int index = 0;
+
+    for (int i = 1; i < 4; i++) {
+        newDistance = std::sqrt((std::pow(nodes[i].x - enemies[enemyIndex]->getSpriteCenter().x, 2)) +
+                                (std::pow(nodes[i].y - enemies[enemyIndex]->getSpriteCenter().y, 2)));
+        if ((newDistance < min) && (newDistance > 2)) {
+            min = newDistance;
+            index = i;
+        }
+    }
+    /*
+    sf::Vector2f nextNodeTarget;
+
+
+    if (finalTargetPos.y > obstacle.getGlobalBounds().top + obstacle.getGlobalBounds().width){
+        nextNodeTarget = nodes[1];
+    }
+
+*/
+    return nodes[index];
+
+}
+
+sf::Vector2f Spawner::calculateTranslation(sf::Vector2f origin, sf::Vector2f target) const {
+    sf::Vector2f translation;
+    translation = target - origin;
+    return translation;
+}
+
+sf::Vector2f Spawner::straightVector(sf::Vector2f actualTargetPos, sf::Vector2f actualCharacterPos) {
+    sf::Vector2f modifiedVector, permanentVector = actualTargetPos;
+
+    if ((actualTargetPos.x > actualCharacterPos.x) ||
+        (actualTargetPos.x < actualCharacterPos.x)) //actual target is on right
+        modifiedVector = {permanentVector.x, 0};
+    else if ((actualTargetPos.y > actualCharacterPos.y) || (actualTargetPos.y < actualCharacterPos.y))
+        modifiedVector = {0, permanentVector.y};
+
+    return modifiedVector;
+
 }
 
