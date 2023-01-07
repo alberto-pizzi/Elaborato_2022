@@ -99,6 +99,7 @@ public:
 
     void changeDirection(int enemyIndex, const sf::RectangleShape &obstacle);
 
+
 };
 
 

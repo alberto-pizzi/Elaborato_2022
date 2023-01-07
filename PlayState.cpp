@@ -14,7 +14,7 @@ void PlayState::draw(float dt) const {
 
 
     //TODO check layer 3d rendering when will be implement the enemies
-    if (isOver) {
+    if (isOver) { //FIXME drawing enemy when mike's weapon is over
         arenaMap->drawLayer(this->game->window, solid_elements);
         arenaMap->drawLayer(this->game->window, layer_3d);
         arenaMap->drawLayer(this->game->window, last_layer);
@@ -447,11 +447,14 @@ void PlayState::initRound() {
     }
 
     //spawnEachTypeOfEnemies();
+
+    spawner->spawnZombie(arenaMap->randomPassableTile());
+    spawner->spawnZombie(arenaMap->randomPassableTile());
     spawner->spawnZombie(arenaMap->randomPassableTile());
     spawner->spawnZombie(arenaMap->randomPassableTile());
     spawner->spawnZombie(arenaMap->randomPassableTile());
 
-    remainEnemies = 3;
+    remainEnemies = 5;
 
 
     std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

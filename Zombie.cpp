@@ -8,7 +8,7 @@ Zombie::Zombie(const sf::Texture &zombieTexture, const sf::Vector2i &spawnTile, 
                const sf::Vector2i &rectSkin, sf::Vector2f damageHit, bool animated, int hp, float speed,
                unsigned int points,
                unsigned int coins, int armor, bool bubble) : GameCharacter(zombieTexture, hp, speed, points, spawnTile,
-                                                                           tileSize, rectSkin, ZOMBIE, damageHit, 5,
+                                                                           tileSize, rectSkin, ZOMBIE, damageHit, 2,
                                                                            animated,
                                                                            coins, armor, bubble) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));

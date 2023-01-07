@@ -301,7 +301,7 @@ void GameCharacter::hit(GameCharacter &target) {
 }
 
 void GameCharacter::areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets) {
-
+//FIXME improve implementation for area damage
 }
 
 const sf::Vector2f &GameCharacter::getDamageHit() const {
@@ -350,11 +350,15 @@ void GameCharacter::calculateEnemyMoveDirectionArray(sf::Vector2f offset) {
 
     if (offset.y < 0)
         keyStates[UP] = true;
-    if (offset.y > 0)
+
+    if (offset.y >= 0)
         keyStates[DOWN] = true;
+
     if (offset.x < 0)
         keyStates[LEFT] = true;
-    if (offset.x > 0)
+
+    if (offset.x >= 0)
         keyStates[RIGHT] = true;
+
 }
 
