@@ -31,8 +31,9 @@ private:
     ArenaMap *arenaMap;
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
-    bool keyStates[4] = {false, false, false, false};
-    sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
+
+    //bool keyStates[4] = {false, false, false, false};
+    //sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
 
     //random (number of dice faces in PlayState constructor)

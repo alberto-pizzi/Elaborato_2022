@@ -97,6 +97,8 @@ public:
 
     sf::Vector2f straightVector(sf::Vector2f actualTargetPos, sf::Vector2f actualCharacterPos);
 
+    void changeDirection(int enemyIndex, const sf::RectangleShape &obstacle);
+
 };
 
 

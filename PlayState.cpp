@@ -150,16 +150,16 @@ void PlayState::handleInput() {
     }
 
     for (int i = 0; i < 4; i++) //set no input in all keyStates
-        keyStates[i] = false;
+        mike->keyStates[i] = false;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        keyStates[UP] = true;
+        mike->keyStates[UP] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        keyStates[DOWN] = true;
+        mike->keyStates[DOWN] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        keyStates[LEFT] = true;
+        mike->keyStates[LEFT] = true;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        keyStates[RIGHT] = true;
+        mike->keyStates[RIGHT] = true;
 
 
     //repeated input (automatic fire, assault rifle)
@@ -173,20 +173,9 @@ void PlayState::handleInput() {
             mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
         }
 
-    if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
-        direction_vector.x = 0.f;
-    else if (keyStates[LEFT])
-        direction_vector.x = -1.f;
-    else if (keyStates[RIGHT])
-        direction_vector.x = 1.f;
-    if ((keyStates[UP] && keyStates[DOWN]) || (!keyStates[UP] && !keyStates[DOWN]))
-        direction_vector.y = 0.f;
-    else if (keyStates[UP])
-        direction_vector.y = -1.f;
-    else if (keyStates[DOWN])
-        direction_vector.y = 1.f;
+    mike->calculateDirectionVector();
 
-    normalizedVector = mike->normalize(direction_vector);
+    normalizedVector = mike->normalize(mike->direction_vector);
     if (!arenaMap->collides(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
@@ -458,8 +447,11 @@ void PlayState::initRound() {
     }
 
     //spawnEachTypeOfEnemies();
-    spawner->spawnZombie({30, 10});
-    remainEnemies = 1;
+    spawner->spawnZombie(arenaMap->randomPassableTile());
+    spawner->spawnZombie(arenaMap->randomPassableTile());
+    spawner->spawnZombie(arenaMap->randomPassableTile());
+
+    remainEnemies = 3;
 
 
     std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

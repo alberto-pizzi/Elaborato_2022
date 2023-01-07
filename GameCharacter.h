@@ -71,6 +71,9 @@ protected:
                   float hitRange = 5, bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
 public:
+    bool keyStates[4] = {false, false, false, false};
+    sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
+
     //enemy AI
     bool attachedToNodes = false;
     sf::Vector2f target;
@@ -108,7 +111,7 @@ public:
 
     virtual bool isAbleToHit(const GameCharacter &target);
 
-    sf::Vector2f normalize(sf::Vector2f vector);
+    sf::Vector2f normalize(sf::Vector2f vector) const;
 
     bool isLegalFight(const GameCharacter &enemy) const;
 
@@ -155,6 +158,10 @@ public:
     int getCharacterType() const;
 
     const sf::Vector2f &getDamageHit() const;
+
+    void calculateDirectionVector();
+
+    void calculateEnemyMoveDirectionArray(sf::Vector2f offset);
 };
 
 

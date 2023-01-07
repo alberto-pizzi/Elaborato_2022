@@ -66,6 +66,7 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
     if (!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) {
 
+        /*
         if (!collide) { //future collision
             if (!enemies[enemyIndex]->attachedToNodes)
                 normalizedVector = enemies[enemyIndex]->normalize(
@@ -101,7 +102,20 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
             enemies[enemyIndex]->move(normalizedVector, dt); //move with deviations
         }
+         */
+        enemies[enemyIndex]->calculateEnemyMoveDirectionArray(enemies[enemyIndex]->normalize(
+                characterPositionRelativeToAnother(*enemies[enemyIndex], target)));
+
+
+        if (collide)
+            changeDirection(enemyIndex, obstacle);
+
+        enemies[enemyIndex]->calculateDirectionVector();
+        normalizedVector = enemies[enemyIndex]->normalize(enemies[enemyIndex]->direction_vector);
+        enemies[enemyIndex]->move(normalizedVector, dt); //move enemy (in each case)
+
         enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
+
     } else
         enemies[enemyIndex]->currentAnimation.update(dt); //enemies must be moving forever
 
@@ -252,5 +266,49 @@ sf::Vector2f Spawner::straightVector(sf::Vector2f actualTargetPos, sf::Vector2f 
 
     return modifiedVector;
 
+}
+
+void Spawner::changeDirection(int enemyIndex, const sf::RectangleShape &obstacle) {
+    bool targetDirection[4];
+
+    for (int i = 0; i < 4; i++) {
+        targetDirection[i] = enemies[enemyIndex]->keyStates[i]; //copy array
+        enemies[enemyIndex]->keyStates[i] = false; //init array
+    }
+
+    if (enemies[enemyIndex]->getSprite().getGlobalBounds().top +
+        enemies[enemyIndex]->getSprite().getGlobalBounds().height <= obstacle.getGlobalBounds().top) {
+        if (targetDirection[LEFT] && targetDirection[DOWN])
+            enemies[enemyIndex]->keyStates[LEFT] = true; //go right
+        else if (targetDirection[RIGHT] && targetDirection[DOWN])
+            enemies[enemyIndex]->keyStates[RIGHT] = true; //go down
+
+    } else if (enemies[enemyIndex]->getSprite().getGlobalBounds().left >=
+               obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width) {
+        if (targetDirection[LEFT] && targetDirection[DOWN])
+            enemies[enemyIndex]->keyStates[DOWN] = true; //go down
+        else if (targetDirection[LEFT] && targetDirection[UP])
+            enemies[enemyIndex]->keyStates[UP] = true; //go up
+    } else if (enemies[enemyIndex]->getSprite().getGlobalBounds().left <= obstacle.getGlobalBounds().left) {
+        if (targetDirection[RIGHT] && targetDirection[DOWN])
+            enemies[enemyIndex]->keyStates[DOWN] = true; //go down
+        else if (targetDirection[RIGHT] && targetDirection[UP])
+            enemies[enemyIndex]->keyStates[UP] = true; //go up
+    } else if (enemies[enemyIndex]->getSprite().getGlobalBounds().top >=
+               obstacle.getGlobalBounds().top + obstacle.getGlobalBounds().height) {
+        if (targetDirection[RIGHT] && targetDirection[UP])
+            enemies[enemyIndex]->keyStates[RIGHT] = true; //go right
+        else if (targetDirection[LEFT] && targetDirection[UP])
+            enemies[enemyIndex]->keyStates[LEFT] = true; //go left
+    } else {
+
+        //TODO random decision
+
+        if (targetDirection[UP] || targetDirection[DOWN])
+            enemies[enemyIndex]->keyStates[RIGHT] = true; //go right //FIXME
+
+        if (targetDirection[LEFT] || targetDirection[RIGHT])
+            enemies[enemyIndex]->keyStates[DOWN] = true; //go right //FIXME
+    }
 }
 
