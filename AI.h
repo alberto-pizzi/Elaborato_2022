@@ -2,39 +2,27 @@
 // Created by Alberto Pizzi on 08/01/23.
 //
 
-#ifndef
-ELABORATO_AI_H
-#define
-ELABORATO_AI_H
+#ifndef ELABORATO_AI_H
+#define ELABORATO_AI_H
 
-#include
-"GameCharacter.h"
-
+#include "GameCharacter.h"
+#include "Node.h"
 
 class AI {
 private:
-struct GraphTile{
-float costF;
-float costG;
-float costH;
-};
+    std::vector<std::vector<Node>> map; //nodes map  (90x45)
 
-//TODO add graph with nodes
-std::vector<GraphTile> graph; //tiles are nodes  (90x45)
-std::vector<bool> mapWithObstacles;
+    std::vector<std::shared_ptr<Node>> openList;
+    std::vector<std::shared_ptr<Node>> closedList;
 
-std::vector<GraphTile> openList;
-std::vector<GraphTile> closedList;
 
-sf::Vector2i startingNode;
 public:
 
-explicit AI(const std::vector<bool>& mapWithObstacles);
+    explicit AI(const std::vector<std::vector<Node>> &map);
 
-void calculateWayWithAStar();
+    std::vector<Node> findPath(sf::Vector2i startTile, sf::Vector2i targetTile);
 
-void updateStartingPoint(sf::Vector2i startingTile);
-
+    int manhattanDistance(sf::Vector2i startTile, sf::Vector2i targetTile) const;
 
 
 };
