@@ -22,7 +22,15 @@ public:
 
     std::vector<Node> findPath(sf::Vector2i startTile, sf::Vector2i targetTile);
 
-    int manhattanDistance(sf::Vector2i startTile, sf::Vector2i targetTile) const;
+    int calculateManhattanDistance(sf::Vector2i startTile, sf::Vector2i targetTile) const;
+
+    std::vector<Node> reconstructPath(const std::shared_ptr<Node> &startNode, std::shared_ptr<Node> &currentNode);
+
+    bool isInsideClosedList(const std::shared_ptr<Node> &currentNode);
+
+    bool isInsideOpenList(const std::shared_ptr<Node> &currentNode);
+
+    int calculateGCost(sf::Vector2i start, sf::Vector2i end) const;
 
 
 };
