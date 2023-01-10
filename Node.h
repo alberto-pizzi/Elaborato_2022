@@ -30,7 +30,9 @@ private:
 public:
     Node(int x, int y, bool walkable, std::vector<std::shared_ptr<Node>> adjacentNodes = {});
 
-    void setAdjacentNodes(const std::vector<std::vector<Node>> &map, const std::shared_ptr<Node> &parentNode);
+    void expandNeighbors(const std::vector<std::vector<Node>> &map);
+
+    void setParent(const std::shared_ptr<Node> &parentNode);
 
 
 };

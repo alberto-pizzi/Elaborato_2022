@@ -10,33 +10,31 @@ Node::Node(int x, int y, bool walkable, const std::vector<std::shared_ptr<Node>>
 
 }
 
-void Node::setAdjacentNodes(const std::vector<std::vector<Node>> &map, const std::shared_ptr<Node> &parentNode) {
+void Node::expandNeighbors(const std::vector<std::vector<Node>> &map) {
     adjacentNodes.clear();
-
-    parent = parentNode; //FIXME
 
     // check north tile
     if (tile.y > 0) {
-        std::shared_ptr<Node> northTile = map[tile.y - 1][tile.x];
+        std::shared_ptr<Node> northTile = std::make_shared<Node>(map[tile.y - 1][tile.x]);
         if (northTile->walkable)
             adjacentNodes.push_back(northTile);
     }
     // check east tile
     if (tile.x < map[0].size() - 1) {
-        std::shared_ptr<Node> eastTile = map[tile.y][tile.x + 1]);
+        std::shared_ptr<Node> eastTile = std::make_shared<Node>(map[tile.y][tile.x + 1]);
         if (eastTile->walkable)
             adjacentNodes.push_back(eastTile);
 
     }
     // check south tile
     if (tile.y < map.size() - 1) {
-        std::shared_ptr<Node> southTile = map[tile.y + 1][tile.x];
+        std::shared_ptr<Node> southTile = std::make_shared<Node>(map[tile.y + 1][tile.x]);
         if (southTile->walkable)
             adjacentNodes.push_back(southTile);
     }
     // check west tile
     if (tile.x > 0) {
-        std::shared_ptr<Node> westTile = map[tile.y][tile.x - 1];
+        std::shared_ptr<Node> westTile = std::make_shared<Node>(map[tile.y][tile.x - 1]);
         if (westTile->walkable)
             adjacentNodes.push_back(westTile);
 
@@ -44,7 +42,7 @@ void Node::setAdjacentNodes(const std::vector<std::vector<Node>> &map, const std
 
     // check north-east tile
     if (tile.y > 0 && tile.x < map[0].size() - 1) {
-        std::shared_ptr<Node> northEastTile = map[tile.y - 1][tile.x + 1];
+        std::shared_ptr<Node> northEastTile = std::make_shared<Node>(map[tile.y - 1][tile.x + 1]);
         if (northEastTile->walkable)
             adjacentNodes.push_back(northEastTile);
 
@@ -52,7 +50,7 @@ void Node::setAdjacentNodes(const std::vector<std::vector<Node>> &map, const std
 
     // check south-east tile
     if (tile.y < map.size() - 1 && tile.x < map[0].size() - 1) {
-        std::shared_ptr<Node> southEasyTile = map[tile.y + 1][tile.x + 1];
+        std::shared_ptr<Node> southEasyTile = std::make_shared<Node>(map[tile.y + 1][tile.x + 1]);
         if (southEasyTile->walkable)
             adjacentNodes.push_back(southEasyTile);
 
@@ -60,7 +58,7 @@ void Node::setAdjacentNodes(const std::vector<std::vector<Node>> &map, const std
 
     // check north-west tile
     if (tile.x > 0 && tile.y > 0) {
-        std::shared_ptr<Node> northWestTile = map[tile.y - 1][tile.x - 1];
+        std::shared_ptr<Node> northWestTile = std::make_shared<Node>(map[tile.y - 1][tile.x - 1]);
         if (northWestTile->walkable)
             adjacentNodes.push_back(northWestTile);
 
@@ -68,11 +66,15 @@ void Node::setAdjacentNodes(const std::vector<std::vector<Node>> &map, const std
 
     // check south-west tile
     if (tile.x > 0 && tile.y < map[0].size() - 1) {
-        std::shared_ptr<Node> southWestTile = map[tile.y + 1][tile.x - 1];
+        std::shared_ptr<Node> southWestTile = std::make_shared<Node>(map[tile.y + 1][tile.x - 1]);
         if (southWestTile->walkable)
             adjacentNodes.push_back(southWestTile);
 
     }
 
 
+}
+
+void Node::setParent(const std::shared_ptr<Node> &parentNode) {
+    parent = parentNode;
 }
