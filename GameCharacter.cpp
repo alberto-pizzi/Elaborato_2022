@@ -300,9 +300,6 @@ void GameCharacter::hit(GameCharacter &target) {
     target.hitColorClock.restart();
 }
 
-void GameCharacter::areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets) {
-//FIXME improve implementation for area damage
-}
 
 const sf::Vector2f &GameCharacter::getDamageHit() const {
     return damageHit;

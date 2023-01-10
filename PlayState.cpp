@@ -212,12 +212,15 @@ PlayState::PlayState(Game *game) : round(1) {
 
     loadTextures();
 
-    spawner = std::unique_ptr<Spawner>(new Spawner(charactersTextures, bonusesTextures, weaponsTextures));
 
     //create random map
     arenaMap = new ArenaMap(whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
                             weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
                             guiTextures, firstRoundStartingTime.asSeconds());
+
+    spawner = std::unique_ptr<Spawner>(
+            new Spawner(charactersTextures, bonusesTextures, weaponsTextures, arenaMap->nodeMap));
+
 
     viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));
 

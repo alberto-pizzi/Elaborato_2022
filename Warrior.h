@@ -5,9 +5,9 @@
 #ifndef ELABORATO_WARRIOR_H
 #define ELABORATO_WARRIOR_H
 
-#include "GameCharacter.h"
+#include "Enemy.h"
 
-class Warrior : public GameCharacter {
+class Warrior : public Enemy {
 private:
     class Shield {
     public:
@@ -23,8 +23,8 @@ private:
 public:
     Warrior(const sf::Texture &warriorTexture, const sf::Texture &shieldTexture, const sf::Vector2i &spawnTile,
             const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, float defense, sf::Vector2f damageHit,
-            bool animated = true, int hp = 20, float speed = 230.f, unsigned int points = 10, unsigned int coins = 2,
-            int armor = 5, bool bubble = false);
+            const std::vector<std::vector<Node>> &nodeMap, bool animated = true, int hp = 20, float speed = 230.f,
+            unsigned int points = 10, unsigned int coins = 2, int armor = 5, bool bubble = false);
 
     void receiveDamage(float damagePoints) override;
 

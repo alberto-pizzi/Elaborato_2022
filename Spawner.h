@@ -9,7 +9,6 @@
 #include <vector>
 #include <iostream>
 
-#include "GameCharacter.h"
 #include "Bonus.h"
 #include "NewWeapon.h"
 #include "TextureManager.h"
@@ -24,15 +23,16 @@
 #include "Warrior.h"
 #include "Kamikaze.h"
 #include "Boss.h"
+#include "Enemy.h"
 
 
 class Spawner {
 private:
     friend class PlayState;
 
-    std::vector<std::unique_ptr<GameCharacter>> enemies;
+    std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Bonus>> bonuses;
-    std::vector<std::unique_ptr<GameCharacter>> bosses;
+    std::vector<std::unique_ptr<Enemy>> bosses;
     TextureManager enemiesTextures;
     TextureManager bonusesTextures;
     TextureManager weaponsTextures;
@@ -40,15 +40,18 @@ private:
     //enemies update
     sf::Vector2f wantedDirection;
     bool findCollideTile = false;
+
+    //node map
+    std::vector<std::vector<Node>> nodeMap;
 public:
     Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
-            const TextureManager &weaponsTextures);
+            const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap);
 
-    const std::vector<std::unique_ptr<GameCharacter>> &getEnemies() const;
+    const std::vector<std::unique_ptr<Enemy>> & getEnemies() const;
 
     const std::vector<std::unique_ptr<Bonus>> &getBonuses() const;
 
-    const std::vector<std::unique_ptr<GameCharacter>> &getBosses() const;
+    const std::vector<std::unique_ptr<Enemy>> & getBosses() const;
 
     void spawnWeapon(sf::Vector2f spawnPos);
 

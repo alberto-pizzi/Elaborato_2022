@@ -22,6 +22,7 @@
 #include "GameException.h"
 #include "Mike.h"
 #include "GameCharacter.h"
+#include "Enemy.h"
 #include "Dice.h"
 
 enum mapNumber {
@@ -88,6 +89,9 @@ protected:
 public:
     std::vector<sf::RectangleShape> rectWalls;
 
+    //nodemap
+    std::vector<std::vector<Node>> nodeMap;
+
     TextureManager mapTexturesManager;
     sf::View playerView;
 
@@ -135,6 +139,8 @@ public:
     bool collides(const sf::FloatRect &futureSpritePos) const;
 
     bool collides(const sf::FloatRect &futureSpritePos, sf::RectangleShape &obstacle) const;
+
+    void createNodesMap();
 
 
 };

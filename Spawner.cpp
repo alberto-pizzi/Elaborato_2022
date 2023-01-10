@@ -4,7 +4,7 @@
 
 #include "Spawner.h"
 
-const std::vector<std::unique_ptr<GameCharacter>> &Spawner::getEnemies() const {
+const std::vector<std::unique_ptr<Enemy>> & Spawner::getEnemies() const {
     return enemies;
 }
 
@@ -12,15 +12,16 @@ const std::vector<std::unique_ptr<Bonus>> &Spawner::getBonuses() const {
     return bonuses;
 }
 
-const std::vector<std::unique_ptr<GameCharacter>> &Spawner::getBosses() const {
+const std::vector<std::unique_ptr<Enemy>> & Spawner::getBosses() const {
     return bosses;
 }
 
 Spawner::Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
-                 const TextureManager &weaponsTextures) {
+                 const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap) {
     this->enemiesTextures = enemiesTextures;
     this->bonusesTextures = bonusesTextures;
     this->weaponsTextures = weaponsTextures;
+    this->nodeMap = nodeMap;
 }
 
 void Spawner::despawnBonus(int bonusIndex) {
@@ -121,7 +122,7 @@ void Spawner::spawnWarrior(sf::Vector2i spawnTile) {
 
     enemies.emplace_back(
             new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
-                        {32, 32}, {32, 32}, 10, damage,
+                        {32, 32}, {32, 32}, 10, damage, nodeMap,
                         true)); //TODO add correct texture and variable speed
 }
 
@@ -129,7 +130,7 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile) {
     sf::Vector2f damage = {7, 10};
 
     enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("mike"), spawnTile,
-                                      {32, 32}, {32, 32}, damage,
+                                      {32, 32}, {32, 32}, damage, nodeMap,
                                       true)); //TODO add correct texture and variable speed
 }
 
@@ -141,7 +142,7 @@ void Spawner::spawnZombie(sf::Vector2i spawnTile) {
     sf::Vector2f damage = {1, 3};
 
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("zombie"), spawnTile,
-                                    {32, 32}, {32, 32}, damage,
+                                    {32, 32}, {32, 32}, damage, nodeMap,
                                     true)); //TODO add variable speed
 }
 
@@ -150,7 +151,7 @@ void Spawner::spawnBoss(sf::Vector2i spawnTile) {
 
     bosses.emplace_back(new Boss(enemiesTextures.getTextureRef("mike"), spawnTile,
                                  {32, 32}, {32, 32},
-                                 damage)); //TODO add correct texture, variable speed and variable size
+                                 damage, nodeMap)); //TODO add correct texture, variable speed and variable size
 }
 
 sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &originCharacter,

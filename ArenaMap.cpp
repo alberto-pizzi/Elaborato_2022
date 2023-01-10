@@ -239,6 +239,10 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
 
     findWallsCoordinates();
     fillRectsVector();
+
+    //create node map (for AI)
+    createNodesMap();
+
 }
 
 void ArenaMap::loadMapTextures() {
@@ -531,6 +535,19 @@ ArenaMap::collides(const sf::FloatRect &futureSpritePos, sf::RectangleShape &obs
         }
     }
     return false;
+}
+
+void ArenaMap::createNodesMap() {
+    for (int i = 0; i < maxRowTiles; i++) {
+        std::vector<Node> column;
+        for (int j = 0; j < maxColumnTiles; j++) {
+            if ((!tileMap[principal_floor][i][j]) || (!tileMap[solid_elements][i][j]))
+                column.emplace_back(j, i, false);
+            else
+                column.emplace_back(j, i, true);
+        }
+        nodeMap.emplace_back(column);
+    }
 }
 
 

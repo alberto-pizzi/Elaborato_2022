@@ -5,14 +5,14 @@
 #include "Kamikaze.h"
 
 Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
-                   const sf::Vector2i &rectSkin, sf::Vector2f damageHit, bool animated, int hp, float speed,
-                   unsigned int points,
-                   unsigned int coins, int armor, bool bubble) : GameCharacter(kamikazeTexture, hp, speed, points,
-                                                                               spawnTile,
-                                                                               tileSize, rectSkin, KAMIKAZE, damageHit,
-                                                                               3,
-                                                                               animated,
-                                                                               coins, armor, bubble) {
+                   const sf::Vector2i &rectSkin, sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap,
+                   bool animated, int hp, float speed, unsigned int points, unsigned int coins, int armor, bool bubble)
+        : Enemy(kamikazeTexture, hp, speed, points,
+                spawnTile,
+                tileSize, rectSkin, KAMIKAZE, damageHit, nodeMap,
+                3,
+                animated,
+                coins, armor, bubble) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));
     //WARNING: work here to edit frames
     goDown.reserve(3);
@@ -105,7 +105,7 @@ void Kamikaze::hit(GameCharacter &target) {
 
 }
 
-void Kamikaze::areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets) {
+void Kamikaze::areaHit(std::vector<std::unique_ptr<Enemy>> &targets) {
     if (!explosionStarted) {
         explosionStarted = true;
         explosionClock.restart();

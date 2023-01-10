@@ -105,8 +105,6 @@ public:
 
     virtual void hit(GameCharacter &target);
 
-    virtual void areaHit(std::vector<std::unique_ptr<GameCharacter>> &targets);
-
     float damageWithArmor(float damagePoints) const;
 
     virtual bool isAbleToHit(const GameCharacter &target);

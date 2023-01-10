@@ -41,7 +41,7 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
             return reconstructPath(startNode, currentNode);
 
         // expand neighbors of current node
-        currentNode->expandNeighbors(nodesMap);
+        currentNode->expandNeighbors(map);
 
         // calculate costs of neighbors and add them to open list if not already in it
         for (int j = 0; j < currentNode->adjacentNodes.size(); j++) {
