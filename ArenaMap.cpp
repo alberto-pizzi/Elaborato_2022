@@ -541,7 +541,7 @@ void ArenaMap::createNodesMap() {
     for (int i = 0; i < maxRowTiles; i++) {
         std::vector<Node> column;
         for (int j = 0; j < maxColumnTiles; j++) {
-            if ((!tileMap[principal_floor][i][j]) || (!tileMap[solid_elements][i][j]))
+            if ((!tileMap[principal_floor][i][j]->passable) || (!tileMap[solid_elements][i][j]->passable))
                 column.emplace_back(j, i, false);
             else
                 column.emplace_back(j, i, true);

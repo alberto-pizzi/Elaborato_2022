@@ -36,6 +36,8 @@ public:
 
     const sf::Vector2i &getTile() const;
 
+    bool isWalkable() const;
+
 
 };
 

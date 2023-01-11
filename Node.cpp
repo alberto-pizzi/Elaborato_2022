@@ -82,3 +82,7 @@ void Node::setParent(const std::shared_ptr<Node> &parentNode) {
 const sf::Vector2i &Node::getTile() const {
     return tile;
 }
+
+bool Node::isWalkable() const {
+    return walkable;
+}

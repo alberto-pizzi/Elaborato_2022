@@ -29,7 +29,7 @@ void Enemy::followPath(float dt, sf::Vector2i tileSize) {
         sf::Vector2f currentPos = getSpriteCenter();
 
         Node nextNode = path[0]; //first node
-
+        //FIXME diagonal collision movement
         sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x),
                                 static_cast<float>(nextNode.getTile().y * tileSize.y)};
         sf::Vector2f offset = nextPos - currentPos;
