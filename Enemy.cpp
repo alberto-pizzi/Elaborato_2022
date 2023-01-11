@@ -18,14 +18,57 @@ Enemy::Enemy(const sf::Texture &tex, int hp, float speed, unsigned int points, c
                                           hitRange,
                                           animated, coins,
                                           armor, bubble),
-                            ai(nodeMap) {
+                            nodeMap(nodeMap) {
 
 }
 
-void Enemy::followPath(const std::vector<Node> &path) {
-    this->path = path;
+void Enemy::followPath(float dt, sf::Vector2i tileSize) {
+
+    if (!path.empty()) {
+
+        sf::Vector2f currentPos = getSpriteCenter();
+
+        Node nextNode = path[0]; //first node
+
+        sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x),
+                                static_cast<float>(nextNode.getTile().y * tileSize.y)};
+        sf::Vector2f offset = nextPos - currentPos;
+        sf::Vector2f normalizedVector = normalize(offset);
+
+        this->move(normalizedVector, dt);
+
+        if (sprite.getGlobalBounds().contains(nextPos))
+            path.erase(path.begin());
+    }
+
+    if (path.empty())
+        hasPath = false;
+
 }
 
 void Enemy::areaHit(std::vector<std::unique_ptr<Enemy>> &targets) {
 
+}
+
+void Enemy::setPath(const std::vector<Node> &path) {
+    this->path = path;
+}
+
+void Enemy::startPathfindingThread(sf::Vector2i startTile, sf::Vector2i targetTile) {
+    ai = std::make_shared<AI>(nodeMap);
+    pathReady = false;
+    pathfindingThread = std::thread(&Enemy::findPathWrapper, ai, startTile, targetTile, std::ref(path),
+                                    std::ref(pathReady));
+    pathfindingThread.detach();
+}
+
+void Enemy::findPathWrapper(const std::shared_ptr<AI> &ai, sf::Vector2i startTile, sf::Vector2i targetTile,
+                            std::vector<Node> &path,
+                            std::atomic<bool> &pathReady) {
+    path = ai->findPath(startTile, targetTile);
+    pathReady = true;
+}
+
+bool Enemy::isPathReady() {
+    return pathReady;
 }

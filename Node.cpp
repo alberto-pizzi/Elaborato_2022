@@ -78,3 +78,7 @@ void Node::expandNeighbors(const std::vector<std::vector<Node>> &map) {
 void Node::setParent(const std::shared_ptr<Node> &parentNode) {
     parent = parentNode;
 }
+
+const sf::Vector2i &Node::getTile() const {
+    return tile;
+}

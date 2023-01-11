@@ -219,7 +219,8 @@ PlayState::PlayState(Game *game) : round(1) {
                             guiTextures, firstRoundStartingTime.asSeconds());
 
     spawner = std::unique_ptr<Spawner>(
-            new Spawner(charactersTextures, bonusesTextures, weaponsTextures, arenaMap->nodeMap));
+            new Spawner(charactersTextures, bonusesTextures, weaponsTextures, arenaMap->nodeMap,
+                        {arenaMap->getTileSizeX(), arenaMap->getTileSizeY()}));
 
 
     viewfinderSprite.setTexture(guiTextures.getTextureRef("viewfinder"));

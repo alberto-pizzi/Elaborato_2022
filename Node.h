@@ -34,6 +34,8 @@ public:
 
     void setParent(const std::shared_ptr<Node> &parentNode);
 
+    const sf::Vector2i &getTile() const;
+
 
 };
 

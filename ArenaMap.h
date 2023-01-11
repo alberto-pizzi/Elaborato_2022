@@ -142,6 +142,10 @@ public:
 
     void createNodesMap();
 
+    int getTileSizeX() const;
+
+    int getTileSizeY() const;
+
 
 };
 

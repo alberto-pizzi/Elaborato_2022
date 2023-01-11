@@ -17,11 +17,13 @@ const std::vector<std::unique_ptr<Enemy>> & Spawner::getBosses() const {
 }
 
 Spawner::Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
-                 const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap) {
+                 const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap,
+                 sf::Vector2i tileSize) {
     this->enemiesTextures = enemiesTextures;
     this->bonusesTextures = bonusesTextures;
     this->weaponsTextures = weaponsTextures;
     this->nodeMap = nodeMap;
+    this->tileSize = tileSize;
 }
 
 void Spawner::despawnBonus(int bonusIndex) {
@@ -67,10 +69,44 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
     if (!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) {
 
+        //sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
+        std::vector<Node> newPath;
+        //if (collide) {
+        if ((enemies[enemyIndex]->pathClock.getElapsedTime() >= enemies[enemyIndex]->updatingPathTime) ||
+            enemies[enemyIndex]->firstTime) {
+            enemies[enemyIndex]->firstTime = false;
+            enemies[enemyIndex]->hasPath = true;
+
+/*
+                newPath = enemies[enemyIndex]->ai.findPath(calculateTileFromPos(enemies[enemyIndex]->getSpriteCenter()),
+                                                           calculateTileFromPos(target.getSpriteCenter()));
+                                                           */
+            enemies[enemyIndex]->startPathfindingThread(calculateTileFromPos(enemies[enemyIndex]->getSpriteCenter()),
+                                                        calculateTileFromPos(target.getSpriteCenter()));
+            //enemies[enemyIndex]->setPath(newPath);
+            enemies[enemyIndex]->pathClock.restart();
+        }
+        /*
+    }
+    else
+    {
+
+        if (enemies[enemyIndex]->hasPath )
+            enemies[enemyIndex]->path.clear();
+
         sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
+        normalizedVector = enemies[enemyIndex]->normalize(targetTranslatedPos);
+    }
+         */
 
-        enemies[enemyIndex]->calculateEnemyMoveDirectionArray(targetTranslatedPos);
 
+
+        if (!enemies[enemyIndex]->path.empty() && enemies[enemyIndex]->isPathReady())
+            enemies[enemyIndex]->followPath(dt, tileSize);
+
+        //enemies[enemyIndex]->calculateEnemyMoveDirectionArray(targetTranslatedPos);
+
+        /*
 
         if (collide) {
             changeDirection(enemyIndex, obstacle);
@@ -79,9 +115,11 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
             normalizedVector = enemies[enemyIndex]->direction_vector;
         } else
             normalizedVector = enemies[enemyIndex]->normalize(targetTranslatedPos);
+            */
 
 
-        enemies[enemyIndex]->move(normalizedVector, dt); //move enemy (in each case)
+
+        //enemies[enemyIndex]->move(normalizedVector, dt); //move enemy (in each case)
 
         enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
 
@@ -293,5 +331,13 @@ void Spawner::changeDirection(int enemyIndex, const sf::RectangleShape &obstacle
         if (targetDirection[LEFT] || targetDirection[RIGHT])
             enemies[enemyIndex]->keyStates[DOWN] = true; //go right //FIXME
     }
+}
+
+sf::Vector2i Spawner::calculateTileFromPos(sf::Vector2f pos) const {
+    return {static_cast<int>(pos.x) / tileSize.x, static_cast<int>(pos.y) / tileSize.y};
+}
+
+sf::Vector2f Spawner::calculatePosFromTile(sf::Vector2i tile) const {
+    return {static_cast<float>(tile.x * tileSize.x), static_cast<float>(tile.y * tileSize.y)};
 }
 

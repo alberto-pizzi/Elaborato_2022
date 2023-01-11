@@ -43,9 +43,11 @@ private:
 
     //node map
     std::vector<std::vector<Node>> nodeMap;
+    sf::Vector2i tileSize;
 public:
     Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
-            const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap);
+            const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap,
+            sf::Vector2i tileSize);
 
     const std::vector<std::unique_ptr<Enemy>> & getEnemies() const;
 
@@ -101,6 +103,10 @@ public:
     sf::Vector2f straightVector(sf::Vector2f actualTargetPos, sf::Vector2f actualCharacterPos);
 
     void changeDirection(int enemyIndex, const sf::RectangleShape &obstacle);
+
+    sf::Vector2i calculateTileFromPos(sf::Vector2f pos) const;
+
+    sf::Vector2f calculatePosFromTile(sf::Vector2i tile) const;
 
 
 };

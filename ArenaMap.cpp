@@ -550,6 +550,14 @@ void ArenaMap::createNodesMap() {
     }
 }
 
+int ArenaMap::getTileSizeX() const {
+    return tileSizeX;
+}
+
+int ArenaMap::getTileSizeY() const {
+    return tileSizeY;
+}
+
 
 
 
