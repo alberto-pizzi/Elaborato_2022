@@ -130,13 +130,15 @@ std::vector<Mike::ActualBonus> Mike::getActualBonuses() const {
     return actualBonuses;
 }
 
-void Mike::drawEntity(sf::RenderWindow &window) {
+void Mike::drawEntity(sf::RenderWindow &window, bool gameOver) {
     if (!skinDirection[UP]) {
-        GameCharacter::drawEntity(window);
-        weapon->drawWeapon(window);
+        GameCharacter::drawEntity(window, gameOver);
+        if (!gameOver)
+            weapon->drawWeapon(window);
     } else {
-        weapon->drawWeapon(window);
-        GameCharacter::drawEntity(window);
+        if (!gameOver)
+            weapon->drawWeapon(window);
+        GameCharacter::drawEntity(window, gameOver);
     }
 }
 

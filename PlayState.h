@@ -70,6 +70,12 @@ private:
     //pause
     bool isPaused = false;
 
+    //game over
+    bool gameOver = false;
+    bool startedGameOver = false;
+    sf::Clock gameOverClock;
+    sf::Time gameOverTime = sf::seconds(5);
+
 public:
     explicit PlayState(Game *game);
 
@@ -106,6 +112,8 @@ public:
     void checkAndUpdateRound();
 
     void updateViewfinderColor(const Enemy &enemy);
+
+    void checkMikeDead(float dt);
 };
 
 #endif //ELABORATO_PLAYSTATE_H

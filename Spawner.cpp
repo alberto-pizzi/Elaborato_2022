@@ -45,9 +45,9 @@ void Spawner::spawnCoin(sf::Vector2f spawnPos) {
                                   {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
-void Spawner::drawEnemies(sf::RenderWindow &window) {
+void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver) {
     for (int i = 0; i < enemies.size(); i++)
-        enemies[i]->drawEntity(window);
+        enemies[i]->drawEntity(window, gameOver);
 }
 
 void Spawner::updateSkinDirection(const sf::Vector2f &target) {
@@ -65,7 +65,7 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
     sf::Vector2f normalizedVector, actualTarget = target.getSpriteCenter();
 
-    //TODO implement enemies collision and AI deviation
+    //FIXME clean code
 
     if ((!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) &&
         (!enemies[enemyIndex]->isDead())) {

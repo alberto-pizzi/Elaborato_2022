@@ -60,6 +60,12 @@ private:
     std::string roundDisplayed;
     const int totalDigits = 10;
     sf::Vector2i distanceFromWindowLimits = {16, 16};
+
+    //game over
+    bool gameOver = false;
+    sf::Text gameOverText;
+    int gameOverTextSize = 50;
+
 public:
     Gui(unsigned int points, int round, int remainingBullets, int totalBullets, bool infiniteBullets,
         float startRoundCountdownSecond, const sf::Texture &weaponTexture, const TextureManager &guiTexManager);
@@ -93,6 +99,7 @@ public:
 
     void setCountdownVisible(bool countdownVisible);
 
+    void updateGameOver(bool gameOver);
 };
 
 

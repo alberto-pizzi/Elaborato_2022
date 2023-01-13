@@ -68,7 +68,7 @@ void Warrior::receiveDamage(float damagePoints) {
         GameCharacter::receiveDamage(damagePoints);
 }
 
-void Warrior::drawEntity(sf::RenderWindow &window) {
+void Warrior::drawEntity(sf::RenderWindow &window, bool gameOver) {
     if (skinDirection[UP])
         shield.shieldSprite.setPosition({sprite.getPosition().x - 2, sprite.getPosition().y + 10});
     else if (skinDirection[LEFT])
@@ -84,9 +84,9 @@ void Warrior::drawEntity(sf::RenderWindow &window) {
     if (skinDirection[UP]) {
         if (shield.defense > 0)
             window.draw(shield.shieldSprite);
-        GameCharacter::drawEntity(window);
+        GameCharacter::drawEntity(window, gameOver);
     } else {
-        GameCharacter::drawEntity(window);
+        GameCharacter::drawEntity(window, gameOver);
         if (shield.defense > 0)
             window.draw(shield.shieldSprite);
     }

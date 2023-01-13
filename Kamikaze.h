@@ -32,7 +32,7 @@ public:
 
     void setExplosionStarted(bool explosionStarted);
 
-    void drawEntity(sf::RenderWindow &window) override;
+    void drawEntity(sf::RenderWindow &window, bool gameOver) override;
 
     bool isAbleToHit(const GameCharacter &target) override;
 

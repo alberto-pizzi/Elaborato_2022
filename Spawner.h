@@ -61,7 +61,7 @@ public:
 
     void drawBonuses(sf::RenderWindow &window) const;
 
-    void drawEnemies(sf::RenderWindow &window);
+    void drawEnemies(sf::RenderWindow &window, bool gameOver);
 
     void updateSkinDirection(const sf::Vector2f &target);
 

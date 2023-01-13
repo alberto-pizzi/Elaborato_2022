@@ -122,7 +122,7 @@ public:
 
     bool isLegalFight(const GameCharacter &enemy) const;
 
-    virtual void drawEntity(sf::RenderWindow &window);
+    virtual void drawEntity(sf::RenderWindow &window, bool gameOver);
 
     float getHp() const;
 

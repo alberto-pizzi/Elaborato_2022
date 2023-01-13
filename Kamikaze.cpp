@@ -87,11 +87,11 @@ void Kamikaze::setExplosionStarted(bool explosionStarted) {
     Kamikaze::explosionStarted = explosionStarted;
 }
 
-void Kamikaze::drawEntity(sf::RenderWindow &window) {
+void Kamikaze::drawEntity(sf::RenderWindow &window, bool gameOver) {
     explosionArea.setPosition(getSpriteCenter().x - explosionArea.getRadius(),
                               getSpriteCenter().y - explosionArea.getRadius());
     //window.draw(explosionArea);
-    GameCharacter::drawEntity(window);
+    GameCharacter::drawEntity(window, gameOver);
 }
 
 bool Kamikaze::isAbleToHit(const GameCharacter &target) {

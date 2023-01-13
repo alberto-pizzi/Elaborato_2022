@@ -26,10 +26,11 @@ void PlayState::draw(float dt) const {
     spawner->drawBonuses(this->game->window);
 
     //draw enemies
-    spawner->drawEnemies(this->game->window);
+    spawner->drawEnemies(this->game->window, startedGameOver);
 
     //draw mike and his weapon
-    mike->drawEntity(this->game->window);
+    if (!gameOver)
+        mike->drawEntity(this->game->window, startedGameOver);
 
     //draw bullets
     mike->weapon->drawBullets(this->game->window, dt);
@@ -53,39 +54,43 @@ void PlayState::update(float dt) {
         this->game->window.setView(arenaMap->playerView);
         isPaused = false;
     }
+    if (gameOver && (gameOverClock.getElapsedTime() >= gameOverTime))
+        this->game->popState();
+    else if (!gameOver) {
+        checkAndUpdateRound();
 
-    checkAndUpdateRound();
+        //update enemies skin direction based on mike positioning
+        //spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
 
-    //update enemies skin direction based on mike positioning
-    //spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
+        //update all enemies
+        updateEnemies(dt);
+        checkMikeDead(dt);
 
-    //update all enemies
-    updateEnemies(dt);
+        /*
+        if ((!isSpawned) && isRandomAbleTo(40,100)){
+            this->spawner->spawnWeapon();
+            std::cout<<"SPAWNED"<<std::endl;
+            isSpawned = true;
+        }
+         */
 
-    /*
-    if ((!isSpawned) && isRandomAbleTo(40,100)){
-        this->spawner->spawnWeapon();
-        std::cout<<"SPAWNED"<<std::endl;
-        isSpawned = true;
+        //update active bonuses like bubble, increase damage...
+        mike->updateActiveBonuses();
+        //update mike skin color when damaged, etc...
+        mike->updateCharacterColor();
+
+        //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
+
+        //update bonuses (updates animation and despawn them)
+        updateBonuses(dt);
+
+        //updateNotCyclicalAnimation Gui
+        if (mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED])
+            mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
+                                      mike->weapon->isInfiniteBullets());
+        mike->gui.updatePoints(mike->getPoints());
+        mike->gui.updateHealthBar(mike->getHp());
     }
-     */
-
-    //update active bonuses like bubble, increase damage...
-    mike->updateActiveBonuses();
-    //update mike skin color when damaged, etc...
-    mike->updateCharacterColor();
-
-    //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
-
-    //update bonuses (updates animation and despawn them)
-    updateBonuses(dt);
-
-    //updateNotCyclicalAnimation Gui
-    if (mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED])
-        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
-                                  mike->weapon->isInfiniteBullets());
-    mike->gui.updatePoints(mike->getPoints());
-    mike->gui.updateHealthBar(mike->getHp());
 }
 
 void PlayState::handleInput() {
@@ -97,8 +102,8 @@ void PlayState::handleInput() {
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
 
-
-    mike->characterSkinDirection(worldPos);
+    if (!mike->isDead())
+        mike->characterSkinDirection(worldPos);
 
     //viewfinder positioning
     viewfinderSprite.setPosition(sf::Vector2f(worldPos.x - viewfinderSprite.getGlobalBounds().width / 2,
@@ -186,9 +191,10 @@ void PlayState::handleInput() {
     }
 
     //update weapon animation if you make an action as shooting or reloading
-    mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
-                                                              mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
-                                                              mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
+    if (!mike->isDead())
+        mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
+                                                                  mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
+                                                                  mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
 
     if (mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ORDERED_RELOADING] &&
         mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED]) {
@@ -570,6 +576,23 @@ void PlayState::updateViewfinderColor(const Enemy &enemy) {
         viewfinderSprite.setColor(enemy.getHitColor());
     else
         viewfinderSprite.setColor(sf::Color::White);
+}
+
+void PlayState::checkMikeDead(float dt) {
+    if (mike->isDead()) {
+        startedGameOver = true;
+        mike->startDespawning();
+        mike->isDeathAnimationActive = true;
+        mike->gui.updateGameOver(true);
+        mike->currentAnimation.updateNotCyclicalAnimation(dt, mike->isDeathAnimationEnded,
+                                                          mike->isDeathAnimationActive);
+        if (mike->isDeathAnimationEnded) {
+            if (!gameOver) {
+                gameOverClock.restart();
+                gameOver = true;
+            }
+        }
+    }
 }
 
 /*

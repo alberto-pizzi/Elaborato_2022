@@ -154,7 +154,7 @@ float GameCharacter::damageWithArmor(float damagePoints) const {
     return damagePoints;
 }
 
-void GameCharacter::drawEntity(sf::RenderWindow &window) {
+void GameCharacter::drawEntity(sf::RenderWindow &window, bool gameOver) {
     sprite.setTextureRect(currentAnimation.getCurrentRect());
     window.draw(sprite);
 }

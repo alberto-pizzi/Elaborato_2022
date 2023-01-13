@@ -70,6 +70,12 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
     roundCountdownDisplayed = std::to_string(static_cast<int>(startRoundCountdownSecond));
     startNumber = startRoundCountdownSecond;
 
+    //game over
+    gameOverText.setFont(numbersOrTitlesFont);
+    gameOverText.setCharacterSize(gameOverTextSize);
+    gameOverText.setFillColor(redGuiColor);
+    gameOverText.setString("GAME OVER");
+
 }
 
 void Gui::drawGui(sf::RenderWindow &window) {
@@ -96,51 +102,66 @@ void Gui::drawGui(sf::RenderWindow &window) {
     roundIndicator.setString(roundDisplayed);
     window.draw(roundIndicator);
 
-    //draw design separator
-    sf::Vector2i posDesignSeparator = {distanceFromWindowLimits.x,
-                                       static_cast<int>(window.getSize().y - distanceFromWindowLimits.y -
-                                                        designSeparator.getSize().y)};
-    sf::Vector2f worldPosSeparator = window.mapPixelToCoords(posDesignSeparator);
-    designSeparator.setPosition(worldPosSeparator);
-    window.draw(designSeparator);
+    if (!gameOver) {
+        //draw design separator
+        sf::Vector2i posDesignSeparator = {distanceFromWindowLimits.x,
+                                           static_cast<int>(window.getSize().y - distanceFromWindowLimits.y -
+                                                            designSeparator.getSize().y)};
+        sf::Vector2f worldPosSeparator = window.mapPixelToCoords(posDesignSeparator);
+        designSeparator.setPosition(worldPosSeparator);
+        window.draw(designSeparator);
 
-    //draw bullets indicator
-    sf::Vector2i posRemainingBullets = {
-            static_cast<int>( designSeparator.getGlobalBounds().width) + distanceFromWindowLimits.x * 2 - 6,
-            posDesignSeparator.y + 4};
-    sf::Vector2f worldPosRemainingBullets = window.mapPixelToCoords(posRemainingBullets);
-    remainingBulletsIndicator.setPosition(worldPosRemainingBullets);
-    remainingBulletsIndicator.setString(remainingBulletsDisplayed);
+        //draw bullets indicator
+        sf::Vector2i posRemainingBullets = {
+                static_cast<int>( designSeparator.getGlobalBounds().width) + distanceFromWindowLimits.x * 2 - 6,
+                posDesignSeparator.y + 4};
+        sf::Vector2f worldPosRemainingBullets = window.mapPixelToCoords(posRemainingBullets);
+        remainingBulletsIndicator.setPosition(worldPosRemainingBullets);
+        remainingBulletsIndicator.setString(remainingBulletsDisplayed);
 
-    sf::Vector2i posTotalBullets = {posRemainingBullets.x,
-                                    posDesignSeparator.y + static_cast<int>(designSeparator.getSize().y) -
-                                    totalBulletsTextSize - 4};
-    sf::Vector2f worldPosTotalBullets = window.mapPixelToCoords(posTotalBullets);
-    totalBulletsIndicator.setPosition(worldPosTotalBullets);
-    totalBulletsIndicator.setString(totalBulletsDisplayed);
-    window.draw(remainingBulletsIndicator);
-    window.draw(totalBulletsIndicator);
+        sf::Vector2i posTotalBullets = {posRemainingBullets.x,
+                                        posDesignSeparator.y + static_cast<int>(designSeparator.getSize().y) -
+                                        totalBulletsTextSize - 4};
+        sf::Vector2f worldPosTotalBullets = window.mapPixelToCoords(posTotalBullets);
+        totalBulletsIndicator.setPosition(worldPosTotalBullets);
+        totalBulletsIndicator.setString(totalBulletsDisplayed);
+        window.draw(remainingBulletsIndicator);
+        window.draw(totalBulletsIndicator);
 
-    //draw weapon type
-    sf::Vector2i posWeaponTypeIndicator = {static_cast<int>(static_cast<float>(window.getSize().x) -
-                                                            (hitBoxWeaponSize.x * weaponSpriteIndicator.getScale().x)) -
-                                           3 * distanceFromWindowLimits.x,
-                                           static_cast<int>(static_cast<float>(window.getSize().y) -
-                                                            (static_cast<float>(weaponSpriteIndicator.getTextureRect().height) *
-                                                             weaponSpriteIndicator.getScale().y)) -
-                                           distanceFromWindowLimits.y};
-    sf::Vector2f worldPosWeaponTypeIndicator = window.mapPixelToCoords(posWeaponTypeIndicator);
-    weaponSpriteIndicator.setPosition(worldPosWeaponTypeIndicator);
-    window.draw(weaponSpriteIndicator);
+        //draw weapon type
+        sf::Vector2i posWeaponTypeIndicator = {static_cast<int>(static_cast<float>(window.getSize().x) -
+                                                                (hitBoxWeaponSize.x *
+                                                                 weaponSpriteIndicator.getScale().x)) -
+                                               3 * distanceFromWindowLimits.x,
+                                               static_cast<int>(static_cast<float>(window.getSize().y) -
+                                                                (static_cast<float>(weaponSpriteIndicator.getTextureRect().height) *
+                                                                 weaponSpriteIndicator.getScale().y)) -
+                                               distanceFromWindowLimits.y};
+        sf::Vector2f worldPosWeaponTypeIndicator = window.mapPixelToCoords(posWeaponTypeIndicator);
+        weaponSpriteIndicator.setPosition(worldPosWeaponTypeIndicator);
+        window.draw(weaponSpriteIndicator);
 
-    //draw countdown indicator
-    int posXCountdown = static_cast<int>(window.getSize().x) / 2 - textFontSize;
-    int posYCountdown = static_cast<int>(window.getSize().y) * 4 / 5 - textFontSize;
-    sf::Vector2f worldPosCountdown = window.mapPixelToCoords({posXCountdown, posYCountdown});
-    roundCountdownIndicator.setPosition(worldPosCountdown);
-    roundCountdownIndicator.setString(roundCountdownDisplayed);
-    if (countdownVisible)
-        window.draw(roundCountdownIndicator);
+        //draw countdown indicator
+        int posXCountdown = static_cast<int>(window.getSize().x) / 2 - textFontSize;
+        int posYCountdown = static_cast<int>(window.getSize().y) * 4 / 5 - textFontSize;
+        sf::Vector2f worldPosCountdown = window.mapPixelToCoords({posXCountdown, posYCountdown});
+        roundCountdownIndicator.setPosition(worldPosCountdown);
+        roundCountdownIndicator.setString(roundCountdownDisplayed);
+        if (countdownVisible)
+            window.draw(roundCountdownIndicator);
+    }
+
+
+    //game over
+    if (gameOver) {
+        sf::Vector2i gameOverPos = {
+                static_cast<int>(window.getSize().x) / 2 - static_cast<int>(gameOverText.getGlobalBounds().width) / 2,
+                static_cast<int>(window.getSize().y) / 2 - static_cast<int>(gameOverText.getGlobalBounds().height) / 2};
+
+        sf::Vector2f worldPosGameOver = window.mapPixelToCoords(gameOverPos);
+        gameOverText.setPosition(worldPosGameOver);
+        window.draw(gameOverText);
+    }
 }
 
 void Gui::updateHealthBar(float hp) {
@@ -231,5 +252,9 @@ bool Gui::isCountdownVisible() const {
 
 void Gui::setCountdownVisible(bool countdownVisible) {
     this->countdownVisible = countdownVisible;
+}
+
+void Gui::updateGameOver(bool gameOver) {
+    this->gameOver = gameOver;
 }
 
