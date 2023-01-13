@@ -48,7 +48,7 @@ void Spawner::spawnCoin(sf::Vector2f spawnPos) {
 void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
     for (int i = 0; i < enemies.size(); i++) {
         enemies[i]->drawEntity(window, gameOver);
-        if (enemies[i]->weapon) {
+        if (enemies[i]->weapon && !enemies[i]->isDead()) {
             enemies[i]->weapon->drawWeapon(window);
             enemies[i]->weapon->drawBullets(window, dt);
         }
