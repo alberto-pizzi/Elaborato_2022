@@ -16,7 +16,7 @@ private:
     std::atomic<bool> pathReady;
     std::vector<std::vector<Node>> nodeMap;
 protected:
-    Enemy(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
+    Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
           const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
           const std::vector<std::vector<Node>> &nodeMap, float hitRange = 5, bool animated = true,
           unsigned int coins = 0, int armor = 0, bool bubble = false);

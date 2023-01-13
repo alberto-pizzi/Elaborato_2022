@@ -45,9 +45,14 @@ void Spawner::spawnCoin(sf::Vector2f spawnPos) {
                                   {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
-void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver) {
-    for (int i = 0; i < enemies.size(); i++)
+void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
+    for (int i = 0; i < enemies.size(); i++) {
         enemies[i]->drawEntity(window, gameOver);
+        if (enemies[i]->weapon) {
+            enemies[i]->weapon->drawWeapon(window);
+            enemies[i]->weapon->drawBullets(window, dt);
+        }
+    }
 }
 
 void Spawner::updateSkinDirection(const sf::Vector2f &target) {
@@ -174,7 +179,12 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile) {
 }
 
 void Spawner::spawnArcher(sf::Vector2i spawnTile) {
-    //TODO add archer
+    sf::Vector2f damage = {1, 3};
+
+    enemies.emplace_back(new Archer(enemiesTextures.getTextureRef("archer"), weaponsTextures.getTextureRef("bow"),
+                                    weaponsTextures.getTextureRef("arrow"), spawnTile,
+                                    {32, 32}, {32, 32}, damage, nodeMap,
+                                    true)); //TODO add variable speed
 }
 
 void Spawner::spawnZombie(sf::Vector2i spawnTile) {

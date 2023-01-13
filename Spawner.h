@@ -24,6 +24,7 @@
 #include "Kamikaze.h"
 #include "Boss.h"
 #include "Enemy.h"
+#include "Archer.h"
 
 
 class Spawner {
@@ -61,7 +62,7 @@ public:
 
     void drawBonuses(sf::RenderWindow &window) const;
 
-    void drawEnemies(sf::RenderWindow &window, bool gameOver);
+    void drawEnemies(sf::RenderWindow &window, bool gameOver, float dt);
 
     void updateSkinDirection(const sf::Vector2f &target);
 

@@ -79,25 +79,6 @@ void Mike::drawEntity(sf::RenderWindow &window) {
 */
 
 
-
-void Mike::setWeaponPosToShouldersPos() {
-    if (currentAnimation.frames == goRight)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[RIGHT].x,
-                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[RIGHT].y);
-    else if (currentAnimation.frames == goLeft)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + this->sprite.getGlobalBounds().width +
-                                         weapon->startCenterForTranslation[LEFT].x,
-                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[LEFT].y);
-    else if (currentAnimation.frames == goUp)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[UP].x,
-                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[UP].y);
-    else if (currentAnimation.frames == goDown)
-        weapon->weaponSprite.setPosition(this->sprite.getPosition().x + weapon->startCenterForTranslation[DOWN].x,
-                                         this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
-
-    weapon->hitBox.setPosition(weapon->weaponSprite.getPosition());
-}
-
 void Mike::addToOwnBonuses(int bonusType, sf::Time duration) {
     sf::Clock timer;
     actualBonuses.push_back({bonusType, timer, duration});

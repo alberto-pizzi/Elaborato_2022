@@ -4,7 +4,7 @@
 
 #include "Enemy.h"
 
-Enemy::Enemy(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
+Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
              const std::vector<std::vector<Node>> &nodeMap, float hitRange, bool animated, unsigned int coins,
              int armor,

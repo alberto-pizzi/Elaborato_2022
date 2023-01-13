@@ -47,7 +47,6 @@ public:
 
     void updateActiveBonuses();
 
-    void setWeaponPosToShouldersPos();
 
     std::vector<ActualBonus> getActualBonuses() const;
 };

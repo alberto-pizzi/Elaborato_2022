@@ -26,7 +26,7 @@ void PlayState::draw(float dt) const {
     spawner->drawBonuses(this->game->window);
 
     //draw enemies
-    spawner->drawEnemies(this->game->window, startedGameOver);
+    spawner->drawEnemies(this->game->window, startedGameOver, dt);
 
     //draw mike and his weapon
     if (!gameOver)
@@ -256,6 +256,7 @@ void PlayState::loadTextures() {
     charactersTextures.loadTexture("mike", "res/textures/no_hands_mike.png");
     charactersTextures.loadTexture("shield", "res/textures/shield.png");
     charactersTextures.loadTexture("zombie", "res/textures/zombie.png");
+    charactersTextures.loadTexture("archer", "res/textures/archer.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
@@ -265,9 +266,11 @@ void PlayState::loadTextures() {
     weaponsTextures.loadTexture("handgun", "res/textures/handgun_hand.png");
     weaponsTextures.loadTexture("assaultRifle", "res/textures/assault_rifle.png");
     weaponsTextures.loadTexture("shotgun", "res/textures/shotgun.png");
+    weaponsTextures.loadTexture("bow", "res/textures/bow.png");
 
     //load bullets
     weaponsTextures.loadTexture("bullet", "res/textures/bullet.png");
+    weaponsTextures.loadTexture("arrow", "res/textures/arrow.png");
 
     //load bonuses textures
     bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
@@ -458,11 +461,12 @@ void PlayState::initRound() {
 
     //spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
 
-    spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
+    spawner->spawnArcher(arenaMap->randomPassableTile());
 
     remainEnemies = 1;
 
@@ -488,6 +492,15 @@ void PlayState::updateEnemies(float dt) {
                         spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
                 dt), obstacle), obstacle); //update animation and movement
         mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
+        if (spawner->enemies[i]->weapon) {
+            spawner->enemies[i]->setWeaponPosToShouldersPos();
+
+            spawner->enemies[i]->weapon->updateBullets(arenaMap, *mike);
+            if (!mike->isDead())
+                spawner->enemies[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                         spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
+                                                                                         spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
+        }
         spawner->enemies[i]->updateCharacterColor();
         updateViewfinderColor(*spawner->enemies[i]);
 
@@ -500,7 +513,8 @@ void PlayState::updateEnemies(float dt) {
 
             if (spawner->enemies.empty())
                 break;
-        } else if (spawner->enemies[i]->isAbleToHit(*mike)) {
+        } else if ((spawner->enemies[i]->isAbleToHit(*mike)) ||
+                   (spawner->enemies[i]->getCharacterType() == ARCHER)) { //FIXME
             if (spawner->enemies[i]->getCharacterType() == KAMIKAZE) {
                 spawner->enemies[i]->areaHit(spawner->enemies);
             } else {

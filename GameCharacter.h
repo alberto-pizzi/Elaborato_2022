@@ -112,6 +112,8 @@ public:
 
     void startDespawning();
 
+    void setWeaponPosToShouldersPos();
+
     virtual void hit(GameCharacter &target);
 
     float damageWithArmor(float damagePoints) const;
