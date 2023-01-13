@@ -171,6 +171,8 @@ public:
     void calculateDirectionVector();
 
     void calculateEnemyMoveDirectionArray(sf::Vector2f offset);
+
+    const sf::Color &getHitColor() const;
 };
 
 

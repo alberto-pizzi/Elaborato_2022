@@ -51,13 +51,9 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
 
     death.reserve(deathFrames);
     for (int i = 0; i < deathFrames; i++) {
-        death.emplace_back(i * 32, 4 * 32, 32,
-                           32);
-    } //FIXME magic numbers
-
-
-
-
+        death.emplace_back(i * fileTextureRectSkinSize.x, 4 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
+                           fileTextureRectSkinSize.y);
+    }
 
     if (animated)
         sprite.setTextureRect(currentAnimation.getCurrentRect());
@@ -379,5 +375,9 @@ void GameCharacter::startDespawning() {
         currentAnimation.setNotCyclicalAnimation(death, 1.0f);
         despawnStarted = true;
     }
+}
+
+const sf::Color &GameCharacter::getHitColor() const {
+    return hitColor;
 }
 

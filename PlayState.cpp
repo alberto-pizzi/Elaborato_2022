@@ -483,6 +483,7 @@ void PlayState::updateEnemies(float dt) {
                 dt), obstacle), obstacle); //update animation and movement
         mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
         spawner->enemies[i]->updateCharacterColor();
+        updateViewfinderColor(*spawner->enemies[i]);
 
         if (spawner->enemies[i]->isDead()) {
 
@@ -562,6 +563,13 @@ void PlayState::checkAndUpdateRound() {
     } else {
         mike->gui.updateCountdown(roundSleepClock.getElapsedTime().asSeconds(), false);
     }
+}
+
+void PlayState::updateViewfinderColor(const Enemy &enemy) {
+    if (enemy.isHit1())
+        viewfinderSprite.setColor(enemy.getHitColor());
+    else
+        viewfinderSprite.setColor(sf::Color::White);
 }
 
 /*

@@ -104,6 +104,8 @@ public:
     bool isInteger(float n) const;
 
     void checkAndUpdateRound();
+
+    void updateViewfinderColor(const Enemy &enemy);
 };
 
 #endif //ELABORATO_PLAYSTATE_H
