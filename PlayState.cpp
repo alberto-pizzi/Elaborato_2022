@@ -81,7 +81,7 @@ void PlayState::update(float dt) {
     updateBonuses(dt);
 
     //updateNotCyclicalAnimation Gui
-    if (mike->weapon->animationKeyStep[AnimationKeySteps::ENDED])
+    if (mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED])
         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                   mike->weapon->isInfiniteBullets());
     mike->gui.updatePoints(mike->getPoints());
@@ -125,11 +125,11 @@ void PlayState::handleInput() {
             case sf::Event::MouseButtonPressed:
                 if ((mike->weapon->getWeaponName() != "assaultRifle") &&
                     (event.mouseButton.button == sf::Mouse::Left)) {
-                    if ((!mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING]) &&
+                    if ((!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) &&
                         (mike->weapon->thereAreRemainingBullets()) &&
                         (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
                         mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
-                        mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
+                        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
                     }
                 }
                 break;
@@ -139,9 +139,9 @@ void PlayState::handleInput() {
                     this->game->pushState(new PauseState(this->game));
                 } else if (event.key.code == sf::Keyboard::R) {
                     if (mike->weapon->reloadWeapon()) {
-                        mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
-                        mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] = true;
-                        mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING] = true;
+                        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+                        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ORDERED_RELOADING] = true;
+                        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING] = true;
                         std::cout << "RELOAD DONE!" << std::endl;
                     }
                 }
@@ -164,13 +164,13 @@ void PlayState::handleInput() {
 
     //repeated input (automatic fire, assault rifle)
     if ((mike->weapon->getWeaponName() == "assaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
-        if ((!mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING]) &&
+        if ((!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) &&
             (mike->weapon->thereAreRemainingBullets()) &&
             (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
             mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
-            mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE] = true;
+            mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
         }
 
     mike->calculateDirectionVector();
@@ -187,13 +187,13 @@ void PlayState::handleInput() {
 
     //update weapon animation if you make an action as shooting or reloading
     mike->weapon->currentAnimation.updateNotCyclicalAnimation(frame_time.asSeconds(),
-                                                              mike->weapon->animationKeyStep[AnimationKeySteps::ENDED],
-                                                              mike->weapon->animationKeyStep[AnimationKeySteps::ACTIVE]);
+                                                              mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
+                                                              mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
 
-    if (mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] &&
-        mike->weapon->animationKeyStep[AnimationKeySteps::ENDED]) {
-        mike->weapon->animationKeyStep[AnimationKeySteps::RELOADING] = false;
-        mike->weapon->animationKeyStep[AnimationKeySteps::ORDERED_RELOADING] = false;
+    if (mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ORDERED_RELOADING] &&
+        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED]) {
+        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING] = false;
+        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ORDERED_RELOADING] = false;
     }
 
     mike->setWeaponPosToShouldersPos();
@@ -450,15 +450,15 @@ void PlayState::initRound() {
         totEnemiesForType[ZOMBIE].numberOfEnemies++;
     }
 
-    //spawnEachTypeOfEnemies();
+    //spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
 
     spawner->spawnZombie(arenaMap->randomPassableTile());
-    spawner->spawnZombie(arenaMap->randomPassableTile());
-    spawner->spawnZombie(arenaMap->randomPassableTile());
-    spawner->spawnZombie(arenaMap->randomPassableTile());
-    spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
+    //spawner->spawnZombie(arenaMap->randomPassableTile());
 
-    remainEnemies = 5;
+    remainEnemies = 1;
 
 
     std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
@@ -472,6 +472,11 @@ void PlayState::updateEnemies(float dt) {
     for (int i = 0; i < spawner->enemies.size(); i++) {
         sf::RectangleShape obstacle;
 
+        if (spawner->enemies[i]->isDeathAnimationActive)
+            spawner->enemies[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                             spawner->enemies[i]->isDeathAnimationEnded,
+                                                                             spawner->enemies[i]->isDeathAnimationActive);
+
         spawner->updateEnemy(*mike, dt, i, arenaMap->collides(spawner->enemies[i]->futureCharacterPosition(
                 spawner->enemies[i]->normalize(
                         spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
@@ -479,10 +484,13 @@ void PlayState::updateEnemies(float dt) {
         mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
         spawner->enemies[i]->updateCharacterColor();
 
-        if (spawner->enemies[i]->isDead()) { //TODO add death animation
-            spawner->enemies.erase(spawner->enemies.begin() + i);
-            i--;
-            remainEnemies--; //FIXME
+        if (spawner->enemies[i]->isDead()) {
+
+            spawner->enemies[i]->startDespawning();
+            spawner->enemies[i]->isDeathAnimationActive = true;
+            if (spawner->enemies[i]->isDeathAnimationEnded)
+                spawner->despawnEnemy(i, remainEnemies);
+
             if (spawner->enemies.empty())
                 break;
         } else if (spawner->enemies[i]->isAbleToHit(*mike)) {

@@ -22,7 +22,7 @@ class ArenaMap;
 
 class GameCharacter;
 
-enum AnimationKeySteps {
+enum ReloadingAnimationKeySteps {
     ENDED = 0, ACTIVE, RELOADING, ORDERED_RELOADING,
 };
 

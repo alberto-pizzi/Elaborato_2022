@@ -76,6 +76,8 @@ public:
 
     void spawnLifePoints();
 
+    void despawnEnemy(int &enemyIndex, unsigned int &remainEnemies);
+
     void spawnBubble();
 
     void spawnArmor();

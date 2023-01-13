@@ -57,6 +57,8 @@ protected:
     std::vector<sf::IntRect> goDown;
     std::vector<sf::IntRect> goUp;
     std::vector<sf::IntRect> idle;
+    std::vector<sf::IntRect> death;
+    const int deathFrames = 8;
     sf::Vector2i fileTextureRectSkinSize;
 
     //hit attributes
@@ -66,7 +68,7 @@ protected:
     Dice randomDice;
 
     //the protected constructor is to make the class non-instantiable (like an abstract class)
-    GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
+    GameCharacter(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
                   float hitRange = 5, bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
@@ -78,6 +80,11 @@ public:
     bool attachedToNodes = false;
     sf::Vector2f target;
     bool achieved;
+
+    //death animation
+    bool despawnStarted = false;
+    bool isDeathAnimationActive = false;
+    bool isDeathAnimationEnded = false;
 
 
     sf::Clock hitColorClock; //FIXME getter
@@ -102,6 +109,8 @@ public:
     void updateCharacterColor();
 
     bool isDead() const;
+
+    void startDespawning();
 
     virtual void hit(GameCharacter &target);
 
@@ -146,6 +155,8 @@ public:
     const std::vector<sf::IntRect> &getGoDown() const;
 
     const std::vector<sf::IntRect> &getGoUp() const;
+
+    const std::vector<sf::IntRect> &getDeath() const;
 
     void setSpritePos(sf::Vector2f newPos);
 

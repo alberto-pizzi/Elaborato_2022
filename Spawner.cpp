@@ -67,7 +67,8 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
     //TODO implement enemies collision and AI deviation
 
-    if (!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) {
+    if ((!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) &&
+        (!enemies[enemyIndex]->isDead())) {
 
         //sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
         std::vector<Node> newPath;
@@ -123,7 +124,7 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
         enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
 
-    } else
+    } else if (!enemies[enemyIndex]->isDead())
         enemies[enemyIndex]->currentAnimation.update(dt); //enemies must be moving forever
 
     //enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
@@ -339,5 +340,11 @@ sf::Vector2i Spawner::calculateTileFromPos(sf::Vector2f pos) const {
 
 sf::Vector2f Spawner::calculatePosFromTile(sf::Vector2i tile) const {
     return {static_cast<float>(tile.x * tileSize.x), static_cast<float>(tile.y * tileSize.y)};
+}
+
+void Spawner::despawnEnemy(int &enemyIndex, unsigned int &remainEnemies) {
+    enemies.erase(enemies.begin() + enemyIndex);
+    enemyIndex--;
+    remainEnemies--;
 }
 

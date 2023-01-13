@@ -28,7 +28,7 @@ bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
     return false;
 }
 
-GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsigned int points,
+GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsigned int points,
                              const sf::Vector2i &tilePosition,
                              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
                              sf::Vector2f damageHit,
@@ -48,6 +48,17 @@ GameCharacter::GameCharacter(const sf::Texture &tex, int hp, float speed, unsign
             {0 * fileTextureRectSkinSize.x, 0 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
              fileTextureRectSkinSize.y},
     };
+
+    death.reserve(deathFrames);
+    for (int i = 0; i < deathFrames; i++) {
+        death.emplace_back(i * 32, 4 * 32, 32,
+                           32);
+    } //FIXME magic numbers
+
+
+
+
+
     if (animated)
         sprite.setTextureRect(currentAnimation.getCurrentRect());
     else
@@ -357,5 +368,16 @@ void GameCharacter::calculateEnemyMoveDirectionArray(sf::Vector2f offset) {
     if (offset.x >= 0)
         keyStates[RIGHT] = true;
 
+}
+
+const std::vector<sf::IntRect> &GameCharacter::getDeath() const {
+    return death;
+}
+
+void GameCharacter::startDespawning() {
+    if (!despawnStarted) {
+        currentAnimation.setNotCyclicalAnimation(death, 1.0f);
+        despawnStarted = true;
+    }
 }
 
