@@ -8,11 +8,29 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+    float speed = 1900;
+    float delta = 15; //delta degrees
 
-    //shoot ONE bullet
-    bullets.emplace_back(new ShotgunBullet(bulletTexture, 1900, barrelHole, weaponSprite.getPosition(),
+    sf::Vector2f newNormalizedDir1 = {normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (-delta)) / 180)) -
+                                      normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (-delta)) / 180)),
+                                      normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (-delta)) / 180)) +
+                                      normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (-delta)) / 180))};
+    sf::Vector2f newNormalizedDir3 = {normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (delta)) / 180)) -
+                                      normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (delta)) / 180)),
+                                      normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (delta)) / 180)) +
+                                      normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (delta)) / 180))};
+
+    //shoot THREE bullets
+    bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
                                            degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), normalizedBulletDir));
+                                           weaponSprite.getScale(), newNormalizedDir1, 1));
+    bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
+                                           degrees, weaponSprite.getOrigin(),
+                                           weaponSprite.getScale(), normalizedBulletDir, 2));
+    bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
+                                           degrees, weaponSprite.getOrigin(),
+                                           weaponSprite.getScale(), newNormalizedDir3, 3));
+
     shotClock.restart();
 
     //std::cout << " bullets: " << bullets.size() << std::endl;
