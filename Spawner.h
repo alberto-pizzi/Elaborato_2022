@@ -69,7 +69,7 @@ public:
     void updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
                      const sf::RectangleShape &obstacle);
 
-    void spawnCoin(sf::Vector2f spawnPos);
+    void spawnCoin(sf::Vector2f spawnPos, int value);
 
     void spawnNuke();
 

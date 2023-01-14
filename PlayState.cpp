@@ -332,6 +332,10 @@ void PlayState::updateBonuses(float dt) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
                         spawner->despawnBonus(i);
                         i--;
+                    } else if (spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
+                               spawner->bonuses[i]->getStayTime()) {
+                        spawner->despawnBonus(i);
+                        i--;
                     }
                     break;
                     /*
@@ -383,12 +387,13 @@ void PlayState::updateBonuses(float dt) {
                 break;
             else if (i == -1)
                 i = 0;
-            if (spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
-                spawner->bonuses[i]->getStayTime()) {
+            if ((!spawner->bonuses[i]->isInfiniteAnimation) && (spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
+                                                                spawner->bonuses[i]->getStayTime())) {
                 spawner->bonuses[i]->startDespawining();
                 spawner->bonuses[i]->isActiveAnimation = true;
-                if (spawner->bonuses[i]->isEndedAnimation || spawner->bonuses[i]->isInfiniteAnimation) {
+                if (spawner->bonuses[i]->isEndedAnimation) {
                     spawner->despawnBonus(i);
+                    i--;
                     std::cout << "DESPAWN" << std::endl;
                 }
             }
@@ -508,8 +513,10 @@ void PlayState::updateEnemies(float dt) {
 
             spawner->enemies[i]->startDespawning();
             spawner->enemies[i]->isDeathAnimationActive = true;
-            if (spawner->enemies[i]->isDeathAnimationEnded)
+            if (spawner->enemies[i]->isDeathAnimationEnded) {
+                spawner->spawnCoin(spawner->enemies[i]->getSpriteCenter(), spawner->enemies[i]->getCoins());
                 spawner->despawnEnemy(i, remainEnemies);
+            }
 
             if (spawner->enemies.empty())
                 break;

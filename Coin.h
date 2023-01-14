@@ -14,8 +14,8 @@ private:
     const int nFrames = 8;
     const sf::Vector2i frameSize = {32, 32};
 public:
-    Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 2,
-         sf::Time stayTime = sf::seconds(15));
+    Coin(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int value, int points = 2,
+         sf::Time stayTime = sf::seconds(10));
 
     void doSpecialAction(Mike &character) override;
 

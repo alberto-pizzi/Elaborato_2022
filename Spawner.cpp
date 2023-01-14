@@ -40,9 +40,9 @@ void Spawner::spawnWeapon(sf::Vector2f spawnPos) {
                                        {40 * 32, 24 * 32})); //TODO add random spawn (only for debug)
 }
 
-void Spawner::spawnCoin(sf::Vector2f spawnPos) {
+void Spawner::spawnCoin(sf::Vector2f spawnPos, int value) {
     bonuses.emplace_back(new Coin(bonusesTextures.getTextureRef("coin"),
-                                  {36 * 32, 24 * 32})); //TODO add random spawn (only for debug)
+                                  spawnPos, value)); //TODO add random spawn (only for debug)
 }
 
 void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
