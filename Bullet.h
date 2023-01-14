@@ -22,9 +22,10 @@ protected:
     sf::Texture bulletTexture;
     sf::Sprite bulletSprite;
     sf::Vector2f bulletDir;
+    float distanceTravelled;
 public:
     Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotationOrigin, float degrees,
-           const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir);
+           const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir); //FIXME protected constructor
 
     bool checkEnemyCollision(const GameCharacter &target);
 
@@ -40,6 +41,8 @@ public:
     const sf::Vector2f &getBulletDir() const;
 
     float getBulletSpeed() const;
+
+    float getDistanceTravelled() const;
 
 };
 

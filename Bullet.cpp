@@ -6,7 +6,8 @@
 
 Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotationOrigin, float degrees,
                const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir) : bulletSpeed(speed), bulletTexture(tex),
-                                                                                 bulletDir(bulletDir) {
+                                                                                 bulletDir(bulletDir),
+                                                                                 distanceTravelled(0) {
 
     bulletSprite.setTexture(tex);
     bulletSprite.setScale(weaponScale);
@@ -37,8 +38,14 @@ void Bullet::move(const sf::Vector2f &offset, float dt) {
     sf::Vector2f currentVelocity = offset * dt * bulletSpeed;
     bulletSprite.setPosition(bulletSprite.getPosition() + currentVelocity);
     updateGlobalPosition(bulletSprite.getGlobalBounds());
+
+    distanceTravelled += static_cast<float>(std::sqrt(std::pow(currentVelocity.x, 2) + std::pow(currentVelocity.y, 2)));
 }
 
 float Bullet::getBulletSpeed() const {
     return bulletSpeed;
+}
+
+float Bullet::getDistanceTravelled() const {
+    return distanceTravelled;
 }

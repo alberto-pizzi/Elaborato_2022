@@ -65,3 +65,15 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
     bulletTexture = shotgunBulletTexture;
 
 }
+
+void Shotgun::updateBullets(ArenaMap *map, GameCharacter &enemy) { //FIXME
+    Weapon::updateBullets(map, enemy);
+    for (int i = 0; i < bullets.size(); i++) {
+        if (bullets[i]->getDistanceTravelled() >= bulletRange) {
+            bullets.erase(bullets.begin() + i);
+            i--;
+        }
+        if (bullets.empty()) //if you make changes, it must be after each vector erase
+            break;
+    }
+}
