@@ -95,3 +95,21 @@ void Shotgun::updateBullets(ArenaMap *map, GameCharacter &enemy) { //FIXME
             break;
     }
 }
+
+bool Shotgun::reloadWeapon() {
+    int bulletsForFillMagazine;
+    float frameDuration = this->reloadTime;
+
+    if (((infiniteBullets) || (totalBullets > 0)) && (magazine.remainingBullets != magazine.totalCapacity)) {
+        currentAnimation.setNotCyclicalAnimation(reload, frameDuration);
+        if (infiniteBullets)
+            magazine.remainingBullets = magazine.totalCapacity;
+        else {
+            magazine.remainingBullets++;
+            totalBullets--;
+        }
+        return true;
+    } else
+        return false;
+
+}

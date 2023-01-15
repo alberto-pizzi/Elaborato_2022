@@ -27,6 +27,8 @@ public:
     void shoot(const sf::Vector2f &normalizedBulletDir) override;
 
     void updateBullets(ArenaMap *map, GameCharacter &enemy) override;
+
+    bool reloadWeapon() override;
 };
 
 
