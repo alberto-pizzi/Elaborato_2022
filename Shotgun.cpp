@@ -8,8 +8,8 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
-    float speed = 1900;
-    float delta = 15; //delta degrees
+    float speed = 1500;
+    float delta = deltaDegrees; //delta degrees
 
     sf::Vector2f newNormalizedDir1 = {normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (-delta)) / 180)) -
                                       normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (-delta)) / 180)),
@@ -19,6 +19,13 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
                                       normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (delta)) / 180)),
                                       normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (delta)) / 180)) +
                                       normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (delta)) / 180))};
+
+    //corrects west trajectory
+    if (weaponSprite.getScale().x < 0) {
+        sf::Vector2f tmpNewNormalizedDir = newNormalizedDir1;
+        newNormalizedDir1 = newNormalizedDir3;
+        newNormalizedDir3 = tmpNewNormalizedDir;
+    }
 
     //shoot THREE bullets
     bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
@@ -33,8 +40,7 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
 
     shotClock.restart();
 
-    //std::cout << " bullets: " << bullets.size() << std::endl;
-    magazine.remainingBullets--;
+    magazine.remainingBullets--; //three bullets are counted as one shot
 }
 
 Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &shotgunBulletTexture,

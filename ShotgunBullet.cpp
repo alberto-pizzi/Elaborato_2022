@@ -37,18 +37,18 @@ ShotgunBullet::ShotgunBullet(const sf::Texture &tex, float speed, const sf::Vect
     switch (whichBullet) {
         case 1:
             if (weaponScale.x > 0)
-                bulletSprite.setRotation(bulletSprite.getRotation() - 30);
+                bulletSprite.setRotation(bulletSprite.getRotation() - deltaDegrees);
             else
-                bulletSprite.setRotation(bulletSprite.getRotation() + 30);
+                bulletSprite.setRotation(bulletSprite.getRotation() + deltaDegrees);
             break;
         case 2:
             //standard trajectory (so rotation)
             break;
         case 3:
             if (weaponScale.x > 0)
-                bulletSprite.setRotation(bulletSprite.getRotation() + 30);
+                bulletSprite.setRotation(bulletSprite.getRotation() + deltaDegrees);
             else
-                bulletSprite.setRotation(bulletSprite.getRotation() - 30);
+                bulletSprite.setRotation(bulletSprite.getRotation() - deltaDegrees);
             break;
         default:
             std::cerr << "INVALID SELECTED BULLET" << std::endl;
@@ -57,3 +57,4 @@ ShotgunBullet::ShotgunBullet(const sf::Texture &tex, float speed, const sf::Vect
 
     bulletSprite.setPosition(bulletOrigin);
 }
+
