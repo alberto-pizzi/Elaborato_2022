@@ -15,11 +15,13 @@ bool Weapon::reloadWeapon() {
             magazine.remainingBullets = magazine.totalCapacity;
         else {
             bulletsForFillMagazine = magazine.totalCapacity - magazine.remainingBullets;
-            if (totalBullets >= bulletsForFillMagazine)
+            if (totalBullets >= bulletsForFillMagazine) {
                 magazine.remainingBullets += bulletsForFillMagazine;
-            else
+                totalBullets -= bulletsForFillMagazine;
+            } else {
                 magazine.remainingBullets += totalBullets;
-            totalBullets -= bulletsForFillMagazine;
+                totalBullets = 0;
+            }
         }
         return true;
     } else
