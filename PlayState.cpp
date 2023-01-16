@@ -181,7 +181,8 @@ void PlayState::handleInput() {
     mike->calculateDirectionVector();
 
     normalizedVector = mike->normalize(mike->direction_vector);
-    if (!arenaMap->collides(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds()))) {
+    if ((!mike->isDead()) &&
+        (!arenaMap->collides(mike->futureCharacterPosition(normalizedVector, frame_time.asSeconds())))) {
         mike->move(normalizedVector, frame_time.asSeconds());
         arenaMap->playerView.setCenter(arenaMap->legalViewCenter(mike->getSpriteCenter(), this->game->window.getSize(),
                                                                  {mike->getSprite().getGlobalBounds().width,
