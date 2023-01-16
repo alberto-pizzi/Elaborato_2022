@@ -13,47 +13,6 @@ Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawn
                 3,
                 animated,
                 coins, armor, bubble) {
-    this->sprite.setScale(sf::Vector2f(1.5, 1.5));
-    //WARNING: work here to edit frames
-    goDown.reserve(3);
-    goDown = {
-            {0 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
-
-    goLeft.reserve(3);
-    goLeft = {
-            {0 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
-
-    goRight.reserve(3);
-    goRight = {
-            {0 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
-
-    goUp.reserve(3);
-    goUp = {
-            {0 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
 
     //FIXME
     explosionArea.setRadius(56);

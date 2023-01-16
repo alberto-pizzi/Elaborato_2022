@@ -41,12 +41,56 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
           damageHit(damageHit) {
 
     sprite.setTexture(texture);
+    sprite.setScale(sf::Vector2f(1.5, 1.5));
 
     //mike's frame position (in pixel)
     idle.reserve(1);
     idle = {
             {0 * fileTextureRectSkinSize.x, 0 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
              fileTextureRectSkinSize.y},
+    };
+
+
+    //WARNING: work here to edit movement frames
+    //FIXME magic numbers
+    goDown.reserve(3);
+    goDown = {
+            {0 * this->fileTextureRectSkinSize.x, 0 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 0 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 0 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+    };
+
+    goLeft.reserve(3);
+    goLeft = {
+            {0 * this->fileTextureRectSkinSize.x, 1 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 1 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 1 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+    };
+
+    goRight.reserve(3);
+    goRight = {
+            {0 * this->fileTextureRectSkinSize.x, 2 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 2 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 2 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+    };
+
+    goUp.reserve(3);
+    goUp = {
+            {0 * this->fileTextureRectSkinSize.x, 3 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {1 * this->fileTextureRectSkinSize.x, 3 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
+            {2 * this->fileTextureRectSkinSize.x, 3 *
+                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
     };
 
     death.reserve(deathFrames);

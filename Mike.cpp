@@ -25,47 +25,6 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         bubble),
           killStreak(streak), gui(this->points, 1, 12, 12, true, startRoundCountdownSeconds, handgunTexture,
                                   guiTexManager) { //WARNING: Mike's damage hit never will be used
-    this->sprite.setScale(sf::Vector2f(1.5, 1.5));
-    //WARNING: work here to edit frames
-    goDown.reserve(3);
-    goDown = {
-            {0 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
-
-    goLeft.reserve(3);
-    goLeft = {
-            {0 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
-
-    goRight.reserve(3);
-    goRight = {
-            {0 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
-
-    goUp.reserve(3);
-    goUp = {
-            {0 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, handgunBulletTexture));
     gui.updateWeaponType(handgunTexture, weapon->currentAnimation.idleFrames[0], weapon->hitBox.getSize());

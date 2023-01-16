@@ -477,7 +477,6 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     spawner->spawnZombie(arenaMap->randomPassableTile(), 80);
-
     remainEnemies = 1;
 
 
