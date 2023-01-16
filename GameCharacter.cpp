@@ -252,17 +252,6 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
     }
 }
 
-bool GameCharacter::isAbleToHit(const GameCharacter &target) {
-    sf::FloatRect hitBox = {this->getPos().left - hitRange, this->getPos().top - hitRange,
-                            this->getPos().width + hitRange, this->getPos().height + hitRange};
-
-    if ((hitClock.getElapsedTime() >= nextHitTime) && (hitBox.intersects(target.getPos()))) {
-        hitClock.restart();
-        return true;
-    } else
-        return false;
-}
-
 bool GameCharacter::isHit1() const {
     return isHit;
 }

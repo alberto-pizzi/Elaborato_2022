@@ -15,16 +15,17 @@ class Enemy : public GameCharacter {
 private:
     std::atomic<bool> pathReady;
     std::vector<std::vector<Node>> nodeMap;
+    float hitProbability; //as percentage (form 0 to 100)
 protected:
+    //the protected constructor is to make the class non-instantiable (like an abstract class)
     Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
           const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
-          const std::vector<std::vector<Node>> &nodeMap, float hitRange = 5, bool animated = true,
+          const std::vector<std::vector<Node>> &nodeMap, float hitProbability, float hitRange = 5, bool animated = true,
           unsigned int coins = 0, int armor = 0, bool bubble = false);
 
 public:
     std::shared_ptr<AI> ai;
     std::vector<Node> path;
-    int pathIndex = 0;
     sf::Clock pathClock;
     sf::Time updatingPathTime = sf::seconds(1);
     bool firstTime = true;
@@ -45,6 +46,10 @@ public:
                                 std::atomic<bool> &pathReady);
 
     bool isPathReady();
+
+    virtual bool isAbleToHit(const GameCharacter &target, const Dice &hitDice); //as percentage (form 0 to 100)
+
+    float calculateHitChance(const Dice &hitDice) const;
 };
 
 

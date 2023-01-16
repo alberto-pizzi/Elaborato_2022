@@ -235,6 +235,9 @@ PlayState::PlayState(Game *game) : round(1) {
 
     localPosition = sf::Mouse::getPosition(this->game->window);
     worldPos = this->game->window.mapPixelToCoords(localPosition);
+
+    //hide mouse cursor
+    this->game->window.setMouseCursorVisible(false);
 }
 
 int PlayState::whichMap() {
@@ -465,13 +468,15 @@ void PlayState::initRound() {
     }
 
     //spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
+    //TODO implement crescent hitProbability
 
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
-    spawner->spawnArcher(arenaMap->randomPassableTile());
+    //spawner->spawnArcher(arenaMap->randomPassableTile());
+    spawner->spawnZombie(arenaMap->randomPassableTile(), 80);
 
     remainEnemies = 1;
 
@@ -520,8 +525,8 @@ void PlayState::updateEnemies(float dt) {
 
             if (spawner->enemies.empty())
                 break;
-        } else if ((spawner->enemies[i]->isAbleToHit(*mike)) ||
-                   (spawner->enemies[i]->getCharacterType() == ARCHER)) { //FIXME
+        } else if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->hitDice)) ||
+                   (spawner->enemies[i]->getCharacterType() == ARCHER)) { //FIXME random hit chance and improve archer
             if (spawner->enemies[i]->getCharacterType() == KAMIKAZE) {
                 spawner->enemies[i]->areaHit(spawner->enemies);
             } else {
@@ -550,15 +555,15 @@ bool PlayState::isInteger(float n) const {
 
 void PlayState::spawnEachTypeOfEnemies() {
     for (int i = 0; i < totEnemiesForType[ZOMBIE].numberOfEnemies; i++) {
-        spawner->spawnZombie(arenaMap->randomPassableTile()); //FIXME random enemy type
+        spawner->spawnZombie(arenaMap->randomPassableTile(), 0); //FIXME random enemy type and hit prob
     }
 
     for (int i = 0; i < totEnemiesForType[WARRIOR].numberOfEnemies; i++) {
-        spawner->spawnWarrior(arenaMap->randomPassableTile()); //FIXME random enemy type
+        spawner->spawnWarrior(arenaMap->randomPassableTile(), 0); //FIXME random enemy type and hit prob
     }
 
     for (int i = 0; i < totEnemiesForType[KAMIKAZE].numberOfEnemies; i++) {
-        spawner->spawnKamikaze(arenaMap->randomPassableTile()); //FIXME random enemy type
+        spawner->spawnKamikaze(arenaMap->randomPassableTile()); //FIXME random enemy type and hit prob
     }
 
     //TODO add archer

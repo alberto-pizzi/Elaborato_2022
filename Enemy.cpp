@@ -6,19 +6,20 @@
 
 Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
-             const std::vector<std::vector<Node>> &nodeMap, float hitRange, bool animated, unsigned int coins,
-             int armor,
-             bool bubble) : GameCharacter(tex, hp, speed,
-                                          points,
-                                          tilePosition,
-                                          tileSize,
-                                          rectSkin,
-                                          characterType,
-                                          damageHit,
-                                          hitRange,
-                                          animated, coins,
-                                          armor, bubble),
-                            nodeMap(nodeMap) {
+             const std::vector<std::vector<Node>> &nodeMap, float hitProbability, float hitRange, bool animated,
+             unsigned int coins, int armor, bool bubble) : GameCharacter(tex, hp, speed,
+                                                                         points,
+                                                                         tilePosition,
+                                                                         tileSize,
+                                                                         rectSkin,
+                                                                         characterType,
+                                                                         damageHit,
+                                                                         hitRange,
+                                                                         animated, coins,
+                                                                         armor, bubble),
+                                                           nodeMap(nodeMap), hitProbability(hitProbability) {
+    if (hitProbability >= 100)
+        this->hitProbability = 100;
 
 }
 
@@ -71,4 +72,23 @@ void Enemy::findPathWrapper(const std::shared_ptr<AI> &ai, sf::Vector2i startTil
 
 bool Enemy::isPathReady() {
     return pathReady;
+}
+
+bool Enemy::isAbleToHit(const GameCharacter &target, const Dice &hitDice) {
+    sf::FloatRect hitBox = {this->getPos().left - hitRange, this->getPos().top - hitRange,
+                            this->getPos().width + hitRange, this->getPos().height + hitRange};
+
+    if ((hitClock.getElapsedTime() >= nextHitTime) && (hitBox.intersects(target.getPos()))) {
+        hitClock.restart();
+        if (calculateHitChance(hitDice) < hitProbability)
+            return true;
+        else
+            return false;
+    } else
+        return false;
+}
+
+float Enemy::calculateHitChance(const Dice &hitDice) const {
+    int hitChance = hitDice.casualNumber(0, 100);
+    return static_cast<float>(hitChance);
 }

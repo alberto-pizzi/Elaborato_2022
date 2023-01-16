@@ -73,19 +73,14 @@ protected:
                   float hitRange = 5, bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
 
 public:
+    //character movement
     bool keyStates[4] = {false, false, false, false};
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
-
-    //enemy AI
-    bool attachedToNodes = false;
-    sf::Vector2f target;
-    bool achieved;
 
     //death animation
     bool despawnStarted = false;
     bool isDeathAnimationActive = false;
     bool isDeathAnimationEnded = false;
-
 
     sf::Clock hitColorClock; //FIXME getter
 
@@ -117,8 +112,6 @@ public:
     virtual void hit(GameCharacter &target);
 
     float damageWithArmor(float damagePoints) const;
-
-    virtual bool isAbleToHit(const GameCharacter &target);
 
     sf::Vector2f normalize(sf::Vector2f vector) const;
 

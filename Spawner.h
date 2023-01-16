@@ -38,9 +38,8 @@ private:
     TextureManager bonusesTextures;
     TextureManager weaponsTextures;
 
-    //enemies update
-    sf::Vector2f wantedDirection;
-    bool findCollideTile = false;
+    //random enemy hit
+    Dice hitDice;
 
     //node map
     std::vector<std::vector<Node>> nodeMap;
@@ -50,7 +49,7 @@ public:
             const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap,
             sf::Vector2i tileSize);
 
-    const std::vector<std::unique_ptr<Enemy>> & getEnemies() const;
+    const std::vector<std::unique_ptr<Enemy>> &getEnemies() const;
 
     const std::vector<std::unique_ptr<Bonus>> &getBonuses() const;
 
@@ -85,15 +84,15 @@ public:
 
     void spawnIncreasedDamage();
 
-    void spawnZombie(sf::Vector2i spawnTile);
+    void spawnZombie(sf::Vector2i spawnTile, float hitProbability);
 
     void spawnArcher(sf::Vector2i spawnTile);
 
     void spawnKamikaze(sf::Vector2i spawnTile);
 
-    void spawnWarrior(sf::Vector2i spawnTile);
+    void spawnWarrior(sf::Vector2i spawnTile, float hitProbability);
 
-    void spawnBoss(sf::Vector2i spawnTile);
+    void spawnBoss(sf::Vector2i spawnTile, float hitProbability);
 
     sf::Vector2f characterPositionRelativeToAnother(const GameCharacter &originCharacter,
                                                     const GameCharacter &targetCharacter) const;

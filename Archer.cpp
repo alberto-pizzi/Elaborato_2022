@@ -6,11 +6,11 @@
 
 Archer::Archer(const sf::Texture &archerTexture, const sf::Texture &bowTexture, const sf::Texture &arrowTexture,
                const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin,
-               sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap, bool animated, int hp,
+               sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap, bool animated, float hp,
                float speed,
                unsigned int points, unsigned int coins, int armor, bool bubble)
         : Enemy(archerTexture, hp, speed, points, spawnTile,
-                tileSize, rectSkin, ARCHER, damageHit, nodeMap, 200,
+                tileSize, rectSkin, ARCHER, damageHit, nodeMap, 100, 200,
                 animated,
                 coins, armor, bubble) {
     this->sprite.setScale(sf::Vector2f(1.5, 1.5));

@@ -161,12 +161,12 @@ void Spawner::spawnIncreasedDamage() {
 
 }
 
-void Spawner::spawnWarrior(sf::Vector2i spawnTile) {
+void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability) {
     sf::Vector2f damage = {3, 5};
 
     enemies.emplace_back(
             new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
-                        {32, 32}, {32, 32}, 10, damage, nodeMap,
+                        {32, 32}, {32, 32}, 10, damage, nodeMap, hitProbability,
                         true)); //TODO add correct texture and variable speed
 }
 
@@ -187,20 +187,21 @@ void Spawner::spawnArcher(sf::Vector2i spawnTile) {
                                     true)); //TODO add variable speed
 }
 
-void Spawner::spawnZombie(sf::Vector2i spawnTile) {
+void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability) {
     sf::Vector2f damage = {1, 3};
 
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("zombie"), spawnTile,
-                                    {32, 32}, {32, 32}, damage, nodeMap,
+                                    {32, 32}, {32, 32}, damage, nodeMap, hitProbability,
                                     true)); //TODO add variable speed
 }
 
-void Spawner::spawnBoss(sf::Vector2i spawnTile) {
+void Spawner::spawnBoss(sf::Vector2i spawnTile, float hitProbability) {
     sf::Vector2f damage = {8, 13};
 
     bosses.emplace_back(new Boss(enemiesTextures.getTextureRef("mike"), spawnTile,
                                  {32, 32}, {32, 32},
-                                 damage, nodeMap)); //TODO add correct texture, variable speed and variable size
+                                 damage, nodeMap,
+                                 hitProbability)); //TODO add correct texture, variable speed and variable size
 }
 
 sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &originCharacter,

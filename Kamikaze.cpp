@@ -9,7 +9,7 @@ Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawn
                    bool animated, int hp, float speed, unsigned int points, unsigned int coins, int armor, bool bubble)
         : Enemy(kamikazeTexture, hp, speed, points,
                 spawnTile,
-                tileSize, rectSkin, KAMIKAZE, damageHit, nodeMap,
+                tileSize, rectSkin, KAMIKAZE, damageHit, nodeMap, 100,
                 3,
                 animated,
                 coins, armor, bubble) {
@@ -94,7 +94,7 @@ void Kamikaze::drawEntity(sf::RenderWindow &window, bool gameOver) {
     GameCharacter::drawEntity(window, gameOver);
 }
 
-bool Kamikaze::isAbleToHit(const GameCharacter &target) {
+bool Kamikaze::isAbleToHit(const GameCharacter &target, const Dice &hitDice) {
     if (target.getSprite().getGlobalBounds().intersects(explosionArea.getGlobalBounds()))
         return true;
     else
@@ -113,8 +113,9 @@ void Kamikaze::areaHit(std::vector<std::unique_ptr<Enemy>> &targets) {
     }
     //kamikaze explosion
     if (explosionStarted && (explosionClock.getElapsedTime() >= explosionTime)) {
+        Dice tmpDice;
         for (int j = 0; j < targets.size(); j++) {
-            if (this->isAbleToHit(*(targets[j]))) {
+            if (this->isAbleToHit(*(targets[j]), tmpDice)) { //FIXME hitchance
                 targets[j]->setIsHit(true);
                 targets[j]->hitColorClock.restart();
                 targets[j]->receiveDamage(
