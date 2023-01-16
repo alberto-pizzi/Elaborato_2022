@@ -476,7 +476,16 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
-    spawner->spawnZombie(arenaMap->randomPassableTile(), 80);
+    sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
+    spawner->spawnZombie(tmpSpawnTile, 80);
+    /*
+    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+    spawner->spawnArcher(tmpSpawnTile);
+    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+    spawner->spawnKamikaze(tmpSpawnTile);
+    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+    spawner->spawnWarrior(tmpSpawnTile,80);
+     */
     remainEnemies = 1;
 
 
@@ -553,16 +562,21 @@ bool PlayState::isInteger(float n) const {
 }
 
 void PlayState::spawnEachTypeOfEnemies() {
+    sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
+
     for (int i = 0; i < totEnemiesForType[ZOMBIE].numberOfEnemies; i++) {
-        spawner->spawnZombie(arenaMap->randomPassableTile(), 0); //FIXME random enemy type and hit prob
+        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnZombie(tmpSpawnTile, 0); //FIXME random enemy type and hit prob
     }
 
     for (int i = 0; i < totEnemiesForType[WARRIOR].numberOfEnemies; i++) {
-        spawner->spawnWarrior(arenaMap->randomPassableTile(), 0); //FIXME random enemy type and hit prob
+        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnWarrior(tmpSpawnTile, 0); //FIXME random enemy type and hit prob
     }
 
     for (int i = 0; i < totEnemiesForType[KAMIKAZE].numberOfEnemies; i++) {
-        spawner->spawnKamikaze(arenaMap->randomPassableTile()); //FIXME random enemy type and hit prob
+        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnKamikaze(tmpSpawnTile); //FIXME random enemy type and hit prob
     }
 
     //TODO add archer

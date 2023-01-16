@@ -558,6 +558,16 @@ int ArenaMap::getTileSizeY() const {
     return tileSizeY;
 }
 
+sf::Vector2i ArenaMap::differentRandomPassableTileFromPreviousOne(sf::Vector2i previousTile) const {
+    sf::Vector2i returnTile;
+
+    do {
+        returnTile = randomPassableTile();
+    } while (returnTile == previousTile);
+
+    return returnTile;
+}
+
 
 
 

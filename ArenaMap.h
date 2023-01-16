@@ -146,6 +146,8 @@ public:
 
     int getTileSizeY() const;
 
+    sf::Vector2i differentRandomPassableTileFromPreviousOne(sf::Vector2i previousTile) const;
+
 
 };
 
