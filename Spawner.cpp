@@ -68,76 +68,78 @@ void Spawner::spawnNuke() {
 void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
                           const sf::RectangleShape &obstacle) {
 
-    sf::Vector2f normalizedVector, actualTarget = target.getSpriteCenter();
+    if (!enemies[enemyIndex]->isDead()) {
 
-    //FIXME clean code
-    if (!enemies[enemyIndex]->path.empty() && enemies[enemyIndex]->isPathReady())
-        enemies[enemyIndex]->followPath(dt, tileSize, enemies);
-    else
-        enemies[enemyIndex]->move(
-                enemies[enemyIndex]->normalize(characterPositionRelativeToAnother(*enemies[enemyIndex], target)),
-                dt); //FIXME
+        sf::Vector2f normalizedVector, actualTarget = target.getSpriteCenter();
 
-    if ((!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) &&
-        (!enemies[enemyIndex]->isDead())) {
+        //FIXME clean code
+        if (!enemies[enemyIndex]->path.empty() && enemies[enemyIndex]->isPathReady())
+            enemies[enemyIndex]->followPath(dt, tileSize, enemies);
+        else
+            enemies[enemyIndex]->move(
+                    enemies[enemyIndex]->normalize(characterPositionRelativeToAnother(*enemies[enemyIndex], target)),
+                    dt); //FIXME
 
-        //sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
-        std::vector<Node> newPath;
-        //if (collide) {
-        if ((enemies[enemyIndex]->pathClock.getElapsedTime() >= enemies[enemyIndex]->updatingPathTime) ||
-            enemies[enemyIndex]->firstTime) {
-            enemies[enemyIndex]->firstTime = false;
-            enemies[enemyIndex]->hasPath = true;
+        if ((!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds()))) {
+
+            //sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
+            std::vector<Node> newPath;
+            //if (collide) {
+            if ((enemies[enemyIndex]->pathClock.getElapsedTime() >= enemies[enemyIndex]->updatingPathTime) ||
+                enemies[enemyIndex]->firstTime) {
+                enemies[enemyIndex]->firstTime = false;
+                enemies[enemyIndex]->hasPath = true;
 
 /*
                 newPath = enemies[enemyIndex]->ai.findPath(calculateTileFromPos(enemies[enemyIndex]->getSpriteCenter()),
                                                            calculateTileFromPos(target.getSpriteCenter()));
                                                            */
-            enemies[enemyIndex]->startPathfindingThread(calculateTileFromPos(enemies[enemyIndex]->getSpriteCenter()),
-                                                        calculateTileFromPos(target.getSpriteCenter()));
-            //enemies[enemyIndex]->setPath(newPath);
-            enemies[enemyIndex]->pathClock.restart();
+                enemies[enemyIndex]->startPathfindingThread(calculateTileFromPos(enemies[enemyIndex]->getSpriteCenter()),
+                                                            calculateTileFromPos(target.getSpriteCenter()));
+                //enemies[enemyIndex]->setPath(newPath);
+                enemies[enemyIndex]->pathClock.restart();
+            }
+            /*
         }
-        /*
-    }
-    else
-    {
+        else
+        {
 
-        if (enemies[enemyIndex]->hasPath )
-            enemies[enemyIndex]->path.clear();
+            if (enemies[enemyIndex]->hasPath )
+                enemies[enemyIndex]->path.clear();
 
-        sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
-        normalizedVector = enemies[enemyIndex]->normalize(targetTranslatedPos);
-    }
-         */
-
-
-
-
-
-        //enemies[enemyIndex]->calculateEnemyMoveDirectionArray(targetTranslatedPos);
-
-        /*
-
-        if (collide) {
-            changeDirection(enemyIndex, obstacle);
-
-            enemies[enemyIndex]->calculateDirectionVector();
-            normalizedVector = enemies[enemyIndex]->direction_vector;
-        } else
+            sf::Vector2f targetTranslatedPos = characterPositionRelativeToAnother(*enemies[enemyIndex], target);
             normalizedVector = enemies[enemyIndex]->normalize(targetTranslatedPos);
-            */
+        }
+             */
 
 
 
-        //enemies[enemyIndex]->move(normalizedVector, dt); //move enemy (in each case)
 
-        enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
 
-    } else if (!enemies[enemyIndex]->isDead())
-        enemies[enemyIndex]->currentAnimation.update(dt); //enemies must be moving forever
+            //enemies[enemyIndex]->calculateEnemyMoveDirectionArray(targetTranslatedPos);
 
-    //enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
+            /*
+
+            if (collide) {
+                changeDirection(enemyIndex, obstacle);
+
+                enemies[enemyIndex]->calculateDirectionVector();
+                normalizedVector = enemies[enemyIndex]->direction_vector;
+            } else
+                normalizedVector = enemies[enemyIndex]->normalize(targetTranslatedPos);
+                */
+
+
+
+            //enemies[enemyIndex]->move(normalizedVector, dt); //move enemy (in each case)
+
+            enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
+
+        } else
+            enemies[enemyIndex]->currentAnimation.update(dt); //enemies must be moving forever
+
+        //enemies[enemyIndex]->characterSkinDirection(target.getSpriteCenter());
+    }
 }
 
 void Spawner::spawnAmmunition() {
