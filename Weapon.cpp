@@ -10,7 +10,8 @@ bool Weapon::reloadWeapon() {
     float frameDuration = this->reloadTime;
 
     if (((infiniteBullets) || (totalBullets > 0)) && (magazine.remainingBullets != magazine.totalCapacity)) {
-        currentAnimation.setNotCyclicalAnimation(reload, frameDuration);
+        if (!reload.empty())
+            currentAnimation.setNotCyclicalAnimation(reload, frameDuration);
         if (infiniteBullets)
             magazine.remainingBullets = magazine.totalCapacity;
         else {
