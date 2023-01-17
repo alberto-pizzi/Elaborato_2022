@@ -27,7 +27,7 @@ private:
         incrementableNumber = 5,
         stabilizationRound = 50,
         initialBossFrequency = 5,
-        baseNumberForBossRounds = 10,
+        baseNumberForBossRounds = 5,
         percentageIncrement = 5,
     };
 

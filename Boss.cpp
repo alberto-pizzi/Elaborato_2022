@@ -4,11 +4,13 @@
 
 #include "Boss.h"
 
+unsigned int Boss::roundCount = 0;
+
 Boss::Boss(const sf::Texture &bossTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
            const sf::Vector2i &rectSkin, sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap,
-           float hitProbability, sf::Vector2f scaleSize, bool animated, float hp, float speed, unsigned int points,
+           float hitProbability, float hp, sf::Vector2f scaleSize, bool animated, float speed, unsigned int points,
            unsigned int coins, int armor, bool bubble) : Enemy(bossTexture,
-                                                               hp, speed,
+                                                               hp * (static_cast<float>(roundCount) / 2), speed,
                                                                points,
                                                                spawnTile,
                                                                tileSize,
@@ -18,4 +20,5 @@ Boss::Boss(const sf::Texture &bossTexture, const sf::Vector2i &spawnTile, const 
                                                                coins, armor,
                                                                bubble) {
     this->sprite.setScale(sf::Vector2f(scaleSize));
+    roundCount++;
 }

@@ -455,6 +455,8 @@ void PlayState::initRound() {
     totEnemiesForType[ZOMBIE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
     sumEnemyTypes += totEnemiesForType[ZOMBIE].numberOfEnemies;
 
+    totEnemiesForType[BOSS].numberOfEnemies = remainBosses;
+
 
     //check total enemies spawn number correctness
     while (sumEnemyTypes != remainEnemies) {
@@ -464,7 +466,6 @@ void PlayState::initRound() {
 
     //spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
 
-    //TODO implement crescent hitProbability
 
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
@@ -581,6 +582,11 @@ void PlayState::spawnEachTypeOfEnemies() {
     for (int i = 0; i < totEnemiesForType[ARCHER].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnArcher(tmpSpawnTile, calculateDamageMultiplierPerRound());
+    }
+
+    for (int i = 0; i < totEnemiesForType[BOSS].numberOfEnemies; i++) {
+        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnBoss(tmpSpawnTile, calculateEnemyHitProbability(BOSS));
     }
 
 }
