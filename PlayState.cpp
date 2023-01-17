@@ -409,7 +409,8 @@ void PlayState::updateBonuses(float dt) {
 }
 
 void PlayState::initRound() {
-    float sum = 0;
+    float sumPercentages = 0;
+    unsigned int sumEnemyTypes = 0;
     float tmpPercentage, tmpNEnemies;
     bool extraEnemy = false;
 
@@ -426,49 +427,43 @@ void PlayState::initRound() {
         remainEnemies = baseNumberForNormalRounds + countVariableEnemiesForNormalRound;
     }
 
+    //WARNING: if you want to change the percentage of enemies, you need to change ONLY these numbers (percentage ranges)
+    //archer
+    totEnemiesForType[ARCHER].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(10, 20));
+    tmpNEnemies = (totEnemiesForType[ARCHER].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+    totEnemiesForType[ARCHER].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+    sumPercentages += totEnemiesForType[ARCHER].typePercentage;
+    sumEnemyTypes += totEnemiesForType[ARCHER].numberOfEnemies;
 
-    if (round < 30) {
-        //FIXME fix all percentages for each round
+    //warrior
+    totEnemiesForType[WARRIOR].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(15, 20));
+    tmpNEnemies = (totEnemiesForType[WARRIOR].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+    totEnemiesForType[WARRIOR].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+    sumPercentages += totEnemiesForType[WARRIOR].typePercentage;
+    sumEnemyTypes += totEnemiesForType[WARRIOR].numberOfEnemies;
 
-        //warrior
-        totEnemiesForType[WARRIOR].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(15, 25));
-        tmpNEnemies = (totEnemiesForType[WARRIOR].typePercentage / 100.f) * static_cast<float>(remainEnemies);
-        if (!isInteger(tmpNEnemies))
-            extraEnemy = true;
-        totEnemiesForType[WARRIOR].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
-        sum += totEnemiesForType[WARRIOR].typePercentage;
+    //kamikaze
+    totEnemiesForType[KAMIKAZE].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(5, 15));
+    tmpNEnemies = (totEnemiesForType[KAMIKAZE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+    totEnemiesForType[KAMIKAZE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+    sumPercentages += totEnemiesForType[KAMIKAZE].typePercentage;
+    sumEnemyTypes += totEnemiesForType[KAMIKAZE].numberOfEnemies;
 
-        //kamikaze
-        totEnemiesForType[KAMIKAZE].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(5, 15));
-        tmpNEnemies = (totEnemiesForType[KAMIKAZE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
-        if (!isInteger(tmpNEnemies))
-            extraEnemy = true;
-        totEnemiesForType[KAMIKAZE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
-        sum += totEnemiesForType[KAMIKAZE].typePercentage;
+    //zombie (most probable enemy must be the last)
+    totEnemiesForType[ZOMBIE].typePercentage = 100 - sumPercentages;
+    tmpNEnemies = (totEnemiesForType[ZOMBIE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
+    totEnemiesForType[ZOMBIE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
+    sumEnemyTypes += totEnemiesForType[ZOMBIE].numberOfEnemies;
 
-        //zombie (most probable enemy must be the last)
-        totEnemiesForType[ZOMBIE].typePercentage = 100 - sum;
-        tmpNEnemies = (totEnemiesForType[ZOMBIE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
-        if (!isInteger(tmpNEnemies))
-            extraEnemy = true;
-        totEnemiesForType[ZOMBIE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
 
-    }
-
-/*
-    std::cout << "ZOMBIE %: " << totEnemiesForType[ZOMBIE].numberOfEnemies << std::endl;
-    std::cout << "WARRIOR %: " << totEnemiesForType[WARRIOR].numberOfEnemies << std::endl;
-    std::cout << "KAMIKAZE %: " << totEnemiesForType[KAMIKAZE].numberOfEnemies << std::endl << std::endl;
-
-    //std::cout << "SUM: " << sum << std::endl;
-    */
-
-    if (extraEnemy) {
-        extraEnemy = false;
-        totEnemiesForType[ZOMBIE].numberOfEnemies++;
+    //check total enemies spawn number correctness
+    while (sumEnemyTypes != remainEnemies) {
+        totEnemiesForType[ZOMBIE].numberOfEnemies++; //add zombie
+        sumEnemyTypes++;
     }
 
     //spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
+
     //TODO implement crescent hitProbability
 
     //spawner->spawnZombie(arenaMap->randomPassableTile());
@@ -477,13 +472,11 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
-
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
     for (int i = 0; i < 20; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
-
     /*
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnArcher(tmpSpawnTile);
