@@ -11,7 +11,7 @@
 class Nuke : public Bonus {
 public:
     Nuke(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 35,
-         sf::Time stayTime = sf::seconds(25));
+         sf::Time stayTime = sf::seconds(15));
 
     void doSpecialAction(Mike &character) override;
 };

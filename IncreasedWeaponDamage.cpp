@@ -8,7 +8,7 @@ IncreasedWeaponDamage::IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf
                                              sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, INCREASED_DAMAGE, {64, 64},
                 1,
-                true,
+                false,
                 true,
                 true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
     duration = sf::seconds(20); //FIXME set random seconds

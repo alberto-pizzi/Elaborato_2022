@@ -8,7 +8,7 @@ ProtectionBubble::ProtectionBubble(const sf::Texture &bonusTexture, sf::Vector2f
                                    sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, PROTECTION_BUBBLE, {64, 64},
                 0,
-                true,
+                false,
                 true,
                 true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 

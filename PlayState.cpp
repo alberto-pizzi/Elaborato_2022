@@ -398,7 +398,6 @@ void PlayState::updateBonuses(float dt) {
                 if (spawner->bonuses[i]->isEndedAnimation) {
                     spawner->despawnBonus(i);
                     i--;
-                    std::cout << "DESPAWN" << std::endl;
                 }
             }
             if (spawner->bonuses.empty())
@@ -478,7 +477,8 @@ void PlayState::initRound() {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
-    //spawner->spawnNuke();
+    //spawner->spawnIncreasedDamage();
+    //spawner->spawnLifePoints();
     /*
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnArcher(tmpSpawnTile);
@@ -690,6 +690,7 @@ float PlayState::calculateDamageMultiplierPerRound() const {
 }
 
 void PlayState::spawnBonuses() {
+
 
 }
 

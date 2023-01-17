@@ -6,7 +6,7 @@
 
 LifePoints::LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, LIFE_POINTS, {64, 64}, 3,
-                true,
+                false,
                 false,
                 true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 
