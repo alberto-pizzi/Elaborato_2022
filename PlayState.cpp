@@ -414,16 +414,16 @@ void PlayState::initRound() {
     bool extraEnemy = false;
 
     if (round % bossRoundFrequency == 0) {
-        if (round <= 25)
-            remainBosses = round / bossRoundFrequency;
-        else
-            remainBosses = bossRoundFrequency + 1;
-        remainEnemies = baseNumber;
+        remainBosses = 1;
+        if (countVariableEnemiesForBossRound > stabilizationRound - baseNumberForBossRounds)
+            countVariableEnemiesForBossRound = 0;
+        remainEnemies = baseNumberForBossRounds + countVariableEnemiesForBossRound;
     } else {
         //growing enemies
         remainBosses = 0;
-        remainEnemies = baseNumber +
-                        (incrementableNumber * (static_cast<unsigned int>(std::log2(static_cast<float>(round))) + 1));
+        if (countVariableEnemiesForNormalRound > stabilizationRound - baseNumberForNormalRounds)
+            countVariableEnemiesForNormalRound = 0;
+        remainEnemies = baseNumberForNormalRounds + countVariableEnemiesForNormalRound;
     }
 
 
@@ -477,11 +477,13 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
+
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
     for (int i = 0; i < 20; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnZombie(tmpSpawnTile, 80);
+        spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
+
     /*
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnArcher(tmpSpawnTile);
@@ -570,20 +572,24 @@ void PlayState::spawnEachTypeOfEnemies() {
 
     for (int i = 0; i < totEnemiesForType[ZOMBIE].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnZombie(tmpSpawnTile, 0); //FIXME random enemy type and hit prob
+        spawner->spawnZombie(tmpSpawnTile, calculateEnemyHitProbability(ZOMBIE), calculateDamageMultiplierPerRound());
     }
 
     for (int i = 0; i < totEnemiesForType[WARRIOR].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnWarrior(tmpSpawnTile, 0); //FIXME random enemy type and hit prob
+        spawner->spawnWarrior(tmpSpawnTile, calculateEnemyHitProbability(WARRIOR), calculateDamageMultiplierPerRound());
     }
 
     for (int i = 0; i < totEnemiesForType[KAMIKAZE].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnKamikaze(tmpSpawnTile); //FIXME random enemy type and hit prob
+        spawner->spawnKamikaze(tmpSpawnTile, calculateDamageMultiplierPerRound());
     }
 
-    //TODO add archer
+    for (int i = 0; i < totEnemiesForType[ARCHER].numberOfEnemies; i++) {
+        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnArcher(tmpSpawnTile, calculateDamageMultiplierPerRound());
+    }
+
 }
 
 void PlayState::checkAndUpdateRound() {
@@ -636,6 +642,51 @@ void PlayState::checkMikeDead(float dt) {
             }
         }
     }
+}
+
+float PlayState::calculateEnemyHitProbability(int enemyType) const {
+    float baseHitProbability, hitProbability;
+
+    switch (enemyType) {
+        case ZOMBIE:
+            baseHitProbability = 70;
+            break;
+        case ARCHER:
+            baseHitProbability = 100;
+            break;
+        case KAMIKAZE:
+            baseHitProbability = 100;
+            break;
+        case BOSS:
+            baseHitProbability = 80;
+            break;
+        case WARRIOR:
+            baseHitProbability = 60;
+            break;
+        default:
+            std::cerr << "ENEMY SELECTED NOT EXIST" << std::endl;
+            break;
+    }
+    //FIXME fix calculus
+    if (round % bossRoundFrequency == 0)
+        hitProbability = baseHitProbability + static_cast<float>(countVariableEnemiesForBossRound);
+    else
+        hitProbability = baseHitProbability + static_cast<float>(countVariableEnemiesForNormalRound);
+
+    return hitProbability;
+}
+
+float PlayState::calculateDamageMultiplierPerRound() const {
+    float damageMultiplier;
+
+    if (round < stabilizationRound / 2)
+        return 1;
+    else if (round < stabilizationRound)
+        damageMultiplier = 1 + (damageIncrement / 2 * (static_cast<float>(round) - stabilizationRound / 2.f));
+    else
+        damageMultiplier = 1 + (damageIncrement * static_cast<float>(round - stabilizationRound));
+
+    return damageMultiplier;
 }
 
 /*

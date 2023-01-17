@@ -14,7 +14,7 @@ Archer::Archer(const sf::Texture &archerTexture, const sf::Texture &bowTexture, 
                 animated,
                 coins, armor, bubble) {
 
-    weapon = std::unique_ptr<Weapon>(new Bow(true, bowTexture, arrowTexture));
+    weapon = std::unique_ptr<Weapon>(new Bow(true, bowTexture, arrowTexture, damageHit.y)); //max value of damage hit
 }
 
 void Archer::hit(GameCharacter &target) {

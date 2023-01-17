@@ -28,7 +28,7 @@ bool Weapon::reloadWeapon() {
         return false;
 }
 
-Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, sf::Time shotDelay,
+Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, float damage, sf::Time shotDelay,
                float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
                std::string weaponName, bool infiniteBullets)
         : equipped(equipped), totalBullets(totBullets), damage(damage), nextShotDelay(shotDelay),

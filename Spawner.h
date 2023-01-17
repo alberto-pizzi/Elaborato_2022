@@ -84,13 +84,13 @@ public:
 
     void spawnIncreasedDamage();
 
-    void spawnZombie(sf::Vector2i spawnTile, float hitProbability);
+    void spawnZombie(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier);
 
-    void spawnArcher(sf::Vector2i spawnTile);
+    void spawnArcher(sf::Vector2i spawnTile, float damageMultiplier);
 
-    void spawnKamikaze(sf::Vector2i spawnTile);
+    void spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier);
 
-    void spawnWarrior(sf::Vector2i spawnTile, float hitProbability);
+    void spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier);
 
     void spawnBoss(sf::Vector2i spawnTile, float hitProbability);
 

@@ -23,7 +23,12 @@ const int nMap = 1;
 class PlayState : public GameState {
 private:
     enum nEnemies {
-        baseNumber = 15, incrementableNumber = 5,
+        baseNumberForNormalRounds = 15,
+        incrementableNumber = 5,
+        stabilizationRound = 50,
+        initialBossFrequency = 5,
+        baseNumberForBossRounds = 10,
+        percentageIncrement = 5,
     };
 
     sf::View gameView;
@@ -55,10 +60,13 @@ private:
         unsigned int numberOfEnemies;
         float typePercentage;
     };
-    const int bossRoundFrequency = 5; //FIXME
-    int round;
+    unsigned int bossRoundFrequency = initialBossFrequency;
+    unsigned int round;
     unsigned int remainEnemies;
     unsigned int remainBosses;
+    unsigned int countVariableEnemiesForNormalRound = 0;
+    unsigned int countVariableEnemiesForBossRound = 0;
+    const float damageIncrement = 0.25; //FIXME
     sf::Clock roundSleepClock;
     sf::Time afterRoundSleepTime = sf::seconds(3); //FIXME 20
     const sf::Time firstRoundStartingTime = sf::seconds(3); //FIXME 10
@@ -114,6 +122,10 @@ public:
     void updateViewfinderColor(const Enemy &enemy);
 
     void checkMikeDead(float dt);
+
+    float calculateEnemyHitProbability(int enemyType) const;
+
+    float calculateDamageMultiplierPerRound() const;
 };
 
 #endif //ELABORATO_PLAYSTATE_H

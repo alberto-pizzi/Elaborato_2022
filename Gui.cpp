@@ -201,7 +201,7 @@ const std::string &Gui::getPointsDisplayed() const {
     return pointsDisplayed;
 }
 
-void Gui::updateRound(int round) {
+void Gui::updateRound(unsigned int round) {
     std::string roundString = std::to_string(round);
     roundDisplayed = roundString;
 }

@@ -38,7 +38,7 @@ private:
     };
 
     sf::Vector2i fileTextureRectWeaponSize;
-    int defaultDamage;
+    float defaultDamage;
 protected:
     enum Directions {
         LEFT = 0, RIGHT, UP, DOWN,
@@ -73,7 +73,7 @@ public:
     sf::Vector2f startCenterForTranslation[4]; //4 directions
     Animation currentAnimation{idleWeapon, 10.0f};
 
-    Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, int damage, sf::Time shotDelay,
+    Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, float damage, sf::Time shotDelay,
            float reloadTime, int magazineCapacity, int remainingBullets, const sf::Vector2i &texRectWeapon,
            std::string weaponName, bool infiniteBullets = false);
 

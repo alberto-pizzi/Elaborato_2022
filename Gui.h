@@ -83,7 +83,7 @@ public:
 
     void updateArmor(int armor);
 
-    void updateRound(int round);
+    void updateRound(unsigned int round);
 
     void updatePoints(unsigned int points);
 

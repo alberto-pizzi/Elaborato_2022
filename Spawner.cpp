@@ -168,8 +168,9 @@ void Spawner::spawnIncreasedDamage() {
 
 }
 
-void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability) {
+void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier) {
     sf::Vector2f damage = {3, 5};
+    damage *= damageMultiplier;
 
     enemies.emplace_back(
             new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
@@ -177,16 +178,18 @@ void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability) {
                         true)); //TODO add correct texture and variable speed
 }
 
-void Spawner::spawnKamikaze(sf::Vector2i spawnTile) {
+void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
     sf::Vector2f damage = {7, 10};
+    damage *= damageMultiplier;
 
     enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("mike"), spawnTile,
                                       {32, 32}, {32, 32}, damage, nodeMap,
                                       true)); //TODO add correct texture and variable speed
 }
 
-void Spawner::spawnArcher(sf::Vector2i spawnTile) {
+void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {
     sf::Vector2f damage = {1, 3};
+    damage *= damageMultiplier;
 
     enemies.emplace_back(new Archer(enemiesTextures.getTextureRef("archer"), weaponsTextures.getTextureRef("bow"),
                                     weaponsTextures.getTextureRef("arrow"), spawnTile,
@@ -194,8 +197,9 @@ void Spawner::spawnArcher(sf::Vector2i spawnTile) {
                                     true)); //TODO add variable speed
 }
 
-void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability) {
+void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier) {
     sf::Vector2f damage = {1, 3};
+    damage *= damageMultiplier;
 
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("zombie"), spawnTile,
                                     {32, 32}, {32, 32}, damage, nodeMap, hitProbability,

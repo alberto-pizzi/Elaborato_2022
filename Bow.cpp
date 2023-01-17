@@ -19,9 +19,8 @@ void Bow::shoot(const sf::Vector2f &normalizedBulletDir) {
     animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
 }
 
-Bow::Bow(bool equipped, const sf::Texture &bowTexture, const sf::Texture &arrowTexture,
-         int totBullets,
-         int damage, sf::Time shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
+Bow::Bow(bool equipped, const sf::Texture &bowTexture, const sf::Texture &arrowTexture, float damage, int totBullets,
+         sf::Time shotDelay, float reloadTime, int magazineCapacity, int remainingBullets) : Weapon(
         equipped,
         bowTexture,
         totBullets,
