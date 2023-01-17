@@ -110,6 +110,8 @@ public:
 
     sf::Vector2f calculatePosFromTile(sf::Vector2i tile) const;
 
+    void despawnAllEnemies();
+
 
 };
 

@@ -370,3 +370,8 @@ void Spawner::despawnEnemy(int &enemyIndex, unsigned int &remainEnemies) {
     remainEnemies--;
 }
 
+void Spawner::despawnAllEnemies() {
+    for (int i = 0; i < enemies.size(); i++)
+        enemies[i]->setHp(0);
+}
+

@@ -126,6 +126,8 @@ public:
     float calculateEnemyHitProbability(int enemyType) const;
 
     float calculateDamageMultiplierPerRound() const;
+
+    void spawnBonuses();
 };
 
 #endif //ELABORATO_PLAYSTATE_H

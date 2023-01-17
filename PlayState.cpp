@@ -361,7 +361,7 @@ void PlayState::updateBonuses(float dt) {
                                                                                          spawner->bonuses[i]->isActiveAnimation);
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
-                        spawner->bonuses.clear(); //kill all enemies //FIXME death animations
+                        spawner->despawnAllEnemies();
                         spawner->despawnBonus(i);
                         i--;
                     }
@@ -478,6 +478,7 @@ void PlayState::initRound() {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
+    //spawner->spawnNuke();
     /*
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnArcher(tmpSpawnTile);
@@ -686,6 +687,10 @@ float PlayState::calculateDamageMultiplierPerRound() const {
         damageMultiplier = 1 + (damageIncrement * static_cast<float>(round - stabilizationRound));
 
     return damageMultiplier;
+}
+
+void PlayState::spawnBonuses() {
+
 }
 
 /*
