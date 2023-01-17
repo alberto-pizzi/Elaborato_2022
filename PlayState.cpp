@@ -478,7 +478,10 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
-    spawner->spawnZombie(tmpSpawnTile, 80);
+    for (int i = 0; i < 20; i++) {
+        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnZombie(tmpSpawnTile, 80);
+    }
     /*
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnArcher(tmpSpawnTile);
@@ -487,7 +490,7 @@ void PlayState::initRound() {
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
      */
-    remainEnemies = 1;
+    remainEnemies = 20;
 
 
     std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

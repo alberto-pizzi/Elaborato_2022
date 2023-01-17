@@ -23,18 +23,30 @@ Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points,
 
 }
 
-void Enemy::followPath(float dt, sf::Vector2i tileSize) {
+bool Enemy::isPositionOccupied(sf::Vector2f pos, const std::vector<std::unique_ptr<Enemy>> &enemies) {
+    for (const auto &e: enemies) {
+        if (e.get() == this) // skip itself
+            continue;
+
+        if (e->getSprite().getGlobalBounds().contains(pos))
+            return true;
+    }
+    return false;
+}
+
+void Enemy::followPath(float dt, sf::Vector2i tileSize, const std::vector<std::unique_ptr<Enemy>> &enemies) {
 
     if (!path.empty()) {
-
         sf::Vector2f currentPos = getSpriteCenter();
-
-        Node nextNode = path[0]; //first node
-        //FIXME diagonal collision movement
+        Node nextNode = path[0];
         sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x),
                                 static_cast<float>(nextNode.getTile().y * tileSize.y)};
         sf::Vector2f offset = nextPos - currentPos;
         sf::Vector2f normalizedVector = normalize(offset);
+
+        // If the next position is occupied, don't move the enemy
+        if (isPositionOccupied(nextPos, enemies))
+            return;
 
         this->move(normalizedVector, dt);
 

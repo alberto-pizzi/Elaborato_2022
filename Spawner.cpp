@@ -71,6 +71,12 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
     sf::Vector2f normalizedVector, actualTarget = target.getSpriteCenter();
 
     //FIXME clean code
+    if (!enemies[enemyIndex]->path.empty() && enemies[enemyIndex]->isPathReady())
+        enemies[enemyIndex]->followPath(dt, tileSize, enemies);
+    else
+        enemies[enemyIndex]->move(
+                enemies[enemyIndex]->normalize(characterPositionRelativeToAnother(*enemies[enemyIndex], target)),
+                dt); //FIXME
 
     if ((!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds())) &&
         (!enemies[enemyIndex]->isDead())) {
@@ -107,8 +113,7 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 
 
 
-        if (!enemies[enemyIndex]->path.empty() && enemies[enemyIndex]->isPathReady())
-            enemies[enemyIndex]->followPath(dt, tileSize);
+
 
         //enemies[enemyIndex]->calculateEnemyMoveDirectionArray(targetTranslatedPos);
 

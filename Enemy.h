@@ -33,7 +33,7 @@ public:
     std::thread pathfindingThread;
 
 
-    void followPath(float dt, sf::Vector2i tileSize);
+    void followPath(float dt, sf::Vector2i tileSize, const std::vector<std::unique_ptr<Enemy>> &enemies);
 
     void setPath(const std::vector<Node> &path);
 
@@ -50,6 +50,8 @@ public:
     virtual bool isAbleToHit(const GameCharacter &target, const Dice &hitDice); //as percentage (form 0 to 100)
 
     float calculateHitChance(const Dice &hitDice) const;
+
+    bool isPositionOccupied(sf::Vector2f pos, const std::vector<std::unique_ptr<Enemy>> &enemies);
 };
 
 
