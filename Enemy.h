@@ -47,9 +47,8 @@ public:
 
     bool isPathReady();
 
-    virtual bool isAbleToHit(const GameCharacter &target, const Dice &hitDice); //as percentage (form 0 to 100)
-
-    float calculateHitChance(const Dice &hitDice) const;
+    virtual bool
+    isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance); //as percentage (form 0 to 100)
 
     bool isPositionOccupied(sf::Vector2f pos, const std::vector<std::unique_ptr<Enemy>> &enemies);
 };

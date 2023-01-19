@@ -81,6 +81,8 @@ void PlayState::update(float dt) {
 
         //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
 
+        //spawn bonuses (with determining conditions)
+        spawnBonuses();
         //update bonuses (updates animation and despawn them)
         updateBonuses(dt);
 
@@ -490,10 +492,18 @@ void PlayState::initRound() {
     remainEnemies = 20;
 
 
-    std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
-    //for (int i = 0; i < remainBosses; i++) //TODO add boss spawn
+    //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
 
 
+    /*
+    if (spawner->bonuses.empty())
+        spawner->bonusTypeAlreadySpawned.clear(); //clear bonus type spawned
+        */
+    spawner->bonusTypeSpawnedInARound.clear(); //clear all (init each bonus to false) //FIXME
+
+    mike->setRoundKills(0); //reset mike round kills
+
+    roundClock.restart(); //restart round clock
 }
 
 void PlayState::updateEnemies(float dt) {
@@ -530,11 +540,16 @@ void PlayState::updateEnemies(float dt) {
             if (spawner->enemies[i]->isDeathAnimationEnded) {
                 spawner->spawnCoin(spawner->enemies[i]->getSpriteCenter(), spawner->enemies[i]->getCoins());
                 spawner->despawnEnemy(i, remainEnemies);
+
+                //update mike kills
+                mike->setKills(mike->getKills() + 1);
+                mike->setRoundKills(mike->getRoundKills() + 1);
             }
 
             if (spawner->enemies.empty())
                 break;
-        } else if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->hitDice)) ||
+        } else if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->chanceDice,
+                                                     spawner->calculateChance(spawner->chanceDice))) ||
                    (spawner->enemies[i]->getCharacterType() == ARCHER)) { //FIXME random hit chance and improve archer
             if (spawner->enemies[i]->getCharacterType() == KAMIKAZE) {
                 spawner->enemies[i]->areaHit(spawner->enemies);
@@ -691,18 +706,73 @@ float PlayState::calculateDamageMultiplierPerRound() const {
 
 void PlayState::spawnBonuses() {
 
+    //spawn probabilities (as percentage)
+    float lowSpawnProbability = 20;
+    float highSpawnProbability = 100;
+
+    //WARNING: the following numbers are seconds (of time) or UNIQUE values. If you want change them, there are no problem because its are just settings.
+
+    //life points
+    if ((!spawner->bonusTypeSpawnedInARound[LIFE_POINTS]) &&
+        (mike->getHp() < mike->getDefaultHp() / 2)) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   lowSpawnProbability))
+            spawner->spawnLifePoints(arenaMap->randomPassableTile());
+    }
+
+    //new weapon
+    if ((!spawner->bonusTypeSpawnedInARound[NEW_WEAPON]) &&
+        (((round % 3 == 0) && (roundClock.getElapsedTime() >= sf::seconds(1.5 * 60)) &&
+          (roundClock.getElapsedTime() <= sf::seconds((2 * 60) + 5))) ||
+         ((!mike->weapon->isInfiniteBullets()) && (mike->weapon->getTotalBullets() <= 0)))) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   lowSpawnProbability))
+            spawner->spawnWeapon(arenaMap->randomPassableTile());
+    }
+
+    //increased damage
+    if ((!spawner->bonusTypeSpawnedInARound[INCREASED_DAMAGE]) &&
+        (round % 2 == 0) &&
+        (remainEnemies == randomPercentageDice.casualNumber(15, 50))) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   lowSpawnProbability))
+            spawner->spawnIncreasedDamage(arenaMap->randomPassableTile());
+    }
+
+    //protection bubble
+    if ((!spawner->bonusTypeSpawnedInARound[PROTECTION_BUBBLE]) &&
+        ((round % 2 == 0) || (round % bossRoundFrequency == 0)) &&
+        (remainEnemies == randomPercentageDice.casualNumber(6, 12))) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   lowSpawnProbability))
+            spawner->spawnBubble(arenaMap->randomPassableTile());
+    }
+
+    //armor
+    if ((!spawner->bonusTypeSpawnedInARound[ARMOR]) && (mike->getPoints() >= 40 * round) &&
+        (mike->getHp() <= mike->getDefaultHp() * (3.f / 4)) && (roundClock.getElapsedTime() >= sf::seconds(1 * 60))) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   highSpawnProbability))
+            spawner->spawnArmor(arenaMap->randomPassableTile());
+    }
+
+    //nuke
+    if ((!spawner->bonusTypeSpawnedInARound[NUKE]) &&
+        (round % 3 == 0) && ((mike->getPoints() >= 70 * round) ||
+                             ((roundClock.getElapsedTime() >= sf::seconds(4 * 60)) && (mike->getRoundKills() <= 5)))) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   lowSpawnProbability))
+            spawner->spawnNuke(arenaMap->randomPassableTile());
+    }
+
+    //ammo
+    if ((!spawner->bonusTypeSpawnedInARound[AMMUNITION]) &&
+        (!mike->weapon->isInfiniteBullets()) &&
+        (((mike->weapon->getTotalBullets() <= 20) && (mike->weapon->getWeaponName() == "assaultRifle")) ||
+         ((mike->weapon->getTotalBullets() <= 10) && (mike->weapon->getWeaponName() == "shotgun")))) {
+        if (spawner->isAbleToSpawn(spawner->chanceDice, spawner->calculateChance(spawner->chanceDice),
+                                   highSpawnProbability))
+            spawner->spawnAmmunition(arenaMap->randomPassableTile());
+    }
 
 }
-
-/*
-bool PlayState::isRandomAbleTo(float percentage, int nRolls) {
-
-    float restPercentage = 1 - (percentage / 100);
-
-    int chance = dice.roll(nRolls);
-
-    if (static_cast<float>(chance) >= (static_cast<float>(nRolls * dice.getFaces())) * restPercentage)
-        return true;
-    return false;
-}
-*/

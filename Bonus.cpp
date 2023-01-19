@@ -12,7 +12,8 @@ void Bonus::addPoints(GameCharacter &target) const {
 
 Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
              const std::vector<sf::IntRect> &animationFrames, int bonusType, sf::Vector2i frameSize,
-             int textureRowIndex, bool isInfinite, bool ownable, bool hasDespawnAnimation)
+             int textureRowIndex,
+             bool isInfinite, bool ownable, bool hasDespawnAnimation)
         : bonusPoints(points), stayTime(stayTime), texture(texture), animationFrames(std::move(animationFrames)),
           bonusType(bonusType), isInfiniteAnimation(isInfinite), isOwnable(ownable), bonusFrameSize(frameSize),
           hasDespawnAnimation(hasDespawnAnimation) {

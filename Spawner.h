@@ -31,15 +31,19 @@ class Spawner {
 private:
     friend class PlayState;
 
+    //active entities
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Bonus>> bonuses;
     std::vector<std::unique_ptr<Enemy>> bosses;
+    std::map<int, bool> bonusTypeSpawnedInARound;
+
+    //texture managers
     TextureManager enemiesTextures;
     TextureManager bonusesTextures;
     TextureManager weaponsTextures;
 
-    //random enemy hit
-    Dice hitDice;
+    //random chance dice
+    Dice chanceDice;
 
     //node map
     std::vector<std::vector<Node>> nodeMap;
@@ -55,7 +59,7 @@ public:
 
     const std::vector<std::unique_ptr<Enemy>> & getBosses() const;
 
-    void spawnWeapon(sf::Vector2f spawnPos);
+    void spawnWeapon(sf::Vector2i spawnTile);
 
     void despawnBonus(int bonusIndex);
 
@@ -70,19 +74,19 @@ public:
 
     void spawnCoin(sf::Vector2f spawnPos, int value);
 
-    void spawnNuke();
+    void spawnNuke(sf::Vector2i spawnTile);
 
-    void spawnAmmunition();
+    void spawnAmmunition(sf::Vector2i spawnTile);
 
-    void spawnLifePoints();
+    void spawnLifePoints(sf::Vector2i spawnTile);
 
     void despawnEnemy(int &enemyIndex, unsigned int &remainEnemies);
 
-    void spawnBubble();
+    void spawnBubble(sf::Vector2i spawnTile);
 
-    void spawnArmor();
+    void spawnArmor(sf::Vector2i spawnTile);
 
-    void spawnIncreasedDamage();
+    void spawnIncreasedDamage(sf::Vector2i spawnTile);
 
     void spawnZombie(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier);
 
@@ -112,7 +116,9 @@ public:
 
     void despawnAllEnemies();
 
+    float calculateChance(const Dice &dice) const;
 
+    bool isAbleToSpawn(const Dice &dice, float spawnChance, float spawnProbability) const;
 };
 
 

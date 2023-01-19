@@ -68,6 +68,7 @@ private:
     unsigned int countVariableEnemiesForBossRound = 0;
     const float damageIncrement = 0.25; //FIXME
     sf::Clock roundSleepClock;
+    sf::Clock roundClock;
     sf::Time afterRoundSleepTime = sf::seconds(3); //FIXME 20
     const sf::Time firstRoundStartingTime = sf::seconds(3); //FIXME 10
     bool firstSpawnDone = false;
@@ -103,8 +104,6 @@ public:
 
     sf::Vector2f normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const GameCharacter &character);
 
-    //bool isRandomAbleTo(float percentage, int nRolls);
-
     void updateBonuses(float dt);
 
     void updateEnemies(float dt);
@@ -128,6 +127,7 @@ public:
     float calculateDamageMultiplierPerRound() const;
 
     void spawnBonuses();
+
 };
 
 #endif //ELABORATO_PLAYSTATE_H

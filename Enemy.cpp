@@ -86,13 +86,13 @@ bool Enemy::isPathReady() {
     return pathReady;
 }
 
-bool Enemy::isAbleToHit(const GameCharacter &target, const Dice &hitDice) {
+bool Enemy::isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance) {
     sf::FloatRect hitBox = {this->getPos().left - hitRange, this->getPos().top - hitRange,
                             this->getPos().width + hitRange, this->getPos().height + hitRange};
 
     if ((hitClock.getElapsedTime() >= nextHitTime) && (hitBox.intersects(target.getPos()))) {
         hitClock.restart();
-        if (calculateHitChance(hitDice) < hitProbability)
+        if (hitChance < hitProbability)
             return true;
         else
             return false;
@@ -100,7 +100,3 @@ bool Enemy::isAbleToHit(const GameCharacter &target, const Dice &hitDice) {
         return false;
 }
 
-float Enemy::calculateHitChance(const Dice &hitDice) const {
-    int hitChance = hitDice.casualNumber(0, 100);
-    return static_cast<float>(hitChance);
-}

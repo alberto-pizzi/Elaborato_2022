@@ -34,7 +34,7 @@ public:
 
     void drawEntity(sf::RenderWindow &window, bool gameOver) override;
 
-    bool isAbleToHit(const GameCharacter &target, const Dice &hitDice) override;
+    bool isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance) override;
 
     void hit(GameCharacter &target) override;
 

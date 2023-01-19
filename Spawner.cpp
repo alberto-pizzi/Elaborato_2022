@@ -35,14 +35,16 @@ void Spawner::drawBonuses(sf::RenderWindow &window) const {
         bonuses[i]->drawBonus(window);
 }
 
-void Spawner::spawnWeapon(sf::Vector2f spawnPos) {
+void Spawner::spawnWeapon(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new NewWeapon(weaponsTextures, bonusesTextures.getTextureRef("weaponBox"),
-                                       {40 * 32, 24 * 32})); //TODO add random spawn (only for debug)
+                                       calculatePosFromTile(spawnTile))); //TODO add random spawn (only for debug)
 }
 
 void Spawner::spawnCoin(sf::Vector2f spawnPos, int value) {
     bonuses.emplace_back(new Coin(bonusesTextures.getTextureRef("coin"),
                                   spawnPos, value)); //TODO add random spawn (only for debug)
+
+    bonusTypeSpawnedInARound[COINS] = true;
 }
 
 void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
@@ -60,9 +62,11 @@ void Spawner::updateSkinDirection(const sf::Vector2f &target) {
         enemies[i]->characterSkinDirection(target);
 }
 
-void Spawner::spawnNuke() {
+void Spawner::spawnNuke(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new Nuke(bonusesTextures.getTextureRef("bonusesBox"),
-                                  {36 * 32, 15 * 32})); //TODO set random tile
+                                  calculatePosFromTile(spawnTile)));
+
+    bonusTypeSpawnedInARound[NUKE] = true;
 }
 
 void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
@@ -142,30 +146,39 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
     }
 }
 
-void Spawner::spawnAmmunition() {
+void Spawner::spawnAmmunition(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new Ammunition(bonusesTextures.getTextureRef("bonusesBox"),
-                                        {36 * 32, 15 * 32})); //TODO set  random tile
+                                        calculatePosFromTile(spawnTile)));
+
+    bonusTypeSpawnedInARound[AMMUNITION] = true;
 }
 
-void Spawner::spawnLifePoints() {
+void Spawner::spawnLifePoints(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("bonusesBox"),
-                                        {36 * 32, 15 * 32})); //TODO set random tile
+                                        calculatePosFromTile(spawnTile), 0));
+
+    bonusTypeSpawnedInARound[LIFE_POINTS] = true;
 }
 
-void Spawner::spawnBubble() {
+void Spawner::spawnBubble(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new ProtectionBubble(bonusesTextures.getTextureRef("bonusesBox"),
-                                              {36 * 32, 15 * 32})); //TODO set  random tile
+                                              calculatePosFromTile(spawnTile)));
+
+    bonusTypeSpawnedInARound[PROTECTION_BUBBLE] = true;
 }
 
-void Spawner::spawnArmor() {
+void Spawner::spawnArmor(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new Armor(bonusesTextures.getTextureRef("bonusesBox"),
-                                   {36 * 32, 15 * 32})); //TODO  set random tile
+                                   calculatePosFromTile(spawnTile)));
+
+    bonusTypeSpawnedInARound[ARMOR] = true;
 }
 
-void Spawner::spawnIncreasedDamage() {
+void Spawner::spawnIncreasedDamage(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new IncreasedWeaponDamage(bonusesTextures.getTextureRef("bonusesBox"),
-                                                   {36 * 32, 15 * 32})); //TODO set crandom tile
+                                                   calculatePosFromTile(spawnTile)));
 
+    bonusTypeSpawnedInARound[INCREASED_DAMAGE] = true;
 }
 
 void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier) {
@@ -174,7 +187,8 @@ void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float d
 
     enemies.emplace_back(
             new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
-                        {32, 32}, {32, 32}, 10, damage, nodeMap, hitProbability,
+                        tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, 10, damage, nodeMap,
+                        hitProbability,
                         true)); //TODO add correct texture and variable speed
 }
 
@@ -183,7 +197,8 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
     damage *= damageMultiplier;
 
     enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("mike"), spawnTile,
-                                      {32, 32}, {32, 32}, damage, nodeMap,
+                                      tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
+                                      damage, nodeMap,
                                       true)); //TODO add correct texture and variable speed
 }
 
@@ -193,7 +208,8 @@ void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {
 
     enemies.emplace_back(new Archer(enemiesTextures.getTextureRef("archer"), weaponsTextures.getTextureRef("bow"),
                                     weaponsTextures.getTextureRef("arrow"), spawnTile,
-                                    {32, 32}, {32, 32}, damage, nodeMap,
+                                    tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, damage,
+                                    nodeMap,
                                     true)); //TODO add variable speed
 }
 
@@ -202,7 +218,8 @@ void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float da
     damage *= damageMultiplier;
 
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("zombie"), spawnTile,
-                                    {32, 32}, {32, 32}, damage, nodeMap, hitProbability,
+                                    tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, damage,
+                                    nodeMap, hitProbability,
                                     true)); //TODO add variable speed
 }
 
@@ -210,7 +227,7 @@ void Spawner::spawnBoss(sf::Vector2i spawnTile, float hitProbability) {
     sf::Vector2f damage = {8, 13};
 
     bosses.emplace_back(new Boss(enemiesTextures.getTextureRef("mike"), spawnTile,
-                                 {32, 32}, {32, 32},
+                                 tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
                                  damage, nodeMap,
                                  hitProbability)); //TODO add correct texture, variable speed and variable size
 }
@@ -373,5 +390,17 @@ void Spawner::despawnEnemy(int &enemyIndex, unsigned int &remainEnemies) {
 void Spawner::despawnAllEnemies() {
     for (int i = 0; i < enemies.size(); i++)
         enemies[i]->setHp(0);
+}
+
+float Spawner::calculateChance(const Dice &dice) const {
+    int chance = dice.casualNumber(0, 100);
+    return static_cast<float>(chance);
+}
+
+bool Spawner::isAbleToSpawn(const Dice &dice, float spawnChance, float spawnProbability) const {
+    if (spawnChance < spawnProbability)
+        return true;
+    else
+        return false;
 }
 

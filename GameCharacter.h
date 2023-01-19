@@ -32,6 +32,10 @@ enum GameCharacterType {
     MIKE = 0, ZOMBIE, ARCHER, BOSS, WARRIOR, KAMIKAZE
 };
 
+enum GameCharacterSize {
+    spriteSizeX = 32, spriteSizeY = 32,
+};
+
 const int nEnemyTypes = 3; //FIXME
 
 class GameCharacter : public PosEntity {
@@ -42,6 +46,7 @@ private:
     bool isHit = false;
     const sf::Color bubbleColor = sf::Color(0, 191, 255);
     const sf::Color hitColor = sf::Color(102, 0, 0);
+    float defaultHP;
 protected:
     float HP;
     int armor; //float
@@ -168,6 +173,8 @@ public:
     void calculateEnemyMoveDirectionArray(sf::Vector2f offset);
 
     const sf::Color &getHitColor() const;
+
+    float getDefaultHp() const;
 };
 
 

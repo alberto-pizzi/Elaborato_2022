@@ -123,7 +123,7 @@ public:
 
     void setDamageMultiplier(float damageMultiplier);
 
-    int getDefaultDamage() const;
+    float getDefaultDamage() const;
 
     void setDamage(float damage);
 

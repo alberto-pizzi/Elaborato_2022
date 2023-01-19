@@ -53,7 +53,7 @@ void Kamikaze::drawEntity(sf::RenderWindow &window, bool gameOver) {
     GameCharacter::drawEntity(window, gameOver);
 }
 
-bool Kamikaze::isAbleToHit(const GameCharacter &target, const Dice &hitDice) {
+bool Kamikaze::isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance) {
     if (target.getSprite().getGlobalBounds().intersects(explosionArea.getGlobalBounds()))
         return true;
     else
@@ -74,7 +74,7 @@ void Kamikaze::areaHit(std::vector<std::unique_ptr<Enemy>> &targets) {
     if (explosionStarted && (explosionClock.getElapsedTime() >= explosionTime)) {
         Dice tmpDice;
         for (int j = 0; j < targets.size(); j++) {
-            if (this->isAbleToHit(*(targets[j]), tmpDice)) { //FIXME hitchance
+            if (this->isAbleToHit(*(targets[j]), tmpDice, 0)) { //FIXME hitchance
                 targets[j]->setIsHit(true);
                 targets[j]->hitColorClock.restart();
                 targets[j]->receiveDamage(

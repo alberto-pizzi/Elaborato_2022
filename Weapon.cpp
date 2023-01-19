@@ -155,7 +155,7 @@ void Weapon::setDamageMultiplier(float damageMultiplier) {
     this->damageMultiplier = damageMultiplier;
 }
 
-int Weapon::getDefaultDamage() const {
+float Weapon::getDefaultDamage() const {
     return defaultDamage;
 }
 

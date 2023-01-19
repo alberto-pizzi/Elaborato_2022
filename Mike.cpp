@@ -3,6 +3,7 @@
 //
 
 #include "Mike.h"
+#include "Bonus.h"
 
 
 bool Mike::isKillStreak(GameCharacter &character) {
@@ -11,20 +12,19 @@ bool Mike::isKillStreak(GameCharacter &character) {
 
 Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
            const sf::Vector2i &spawnTile, const TextureManager &guiTexManager, const sf::Vector2i &tileSize,
-           const sf::Vector2i &rectSkin, float startRoundCountdownSeconds, bool animated, int hp, float speed,
-           unsigned int points, unsigned int coins, int armor, bool bubble, int streak)
+           const sf::Vector2i &rectSkin, float startRoundCountdownSeconds, float hp, float speed, int armor)
         : GameCharacter(mikeTexture, hp,
                         speed,
-                        points,
+                        0,
                         spawnTile,
                         tileSize,
                         rectSkin, MIKE, {0, 0}, 5,
-                        animated,
-                        coins,
+                        true,
+                        0,
                         armor,
-                        bubble),
-          killStreak(streak), gui(this->points, 1, 12, 12, true, startRoundCountdownSeconds, handgunTexture,
-                                  guiTexManager) { //WARNING: Mike's damage hit never will be used
+                        false),
+          gui(this->points, 1, 12, 12, true, startRoundCountdownSeconds, handgunTexture,
+              guiTexManager) { //WARNING: Mike's damage hit never will be used
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, handgunBulletTexture));
     gui.updateWeaponType(handgunTexture, weapon->currentAnimation.idleFrames[0], weapon->hitBox.getSize());
@@ -80,6 +80,22 @@ void Mike::drawEntity(sf::RenderWindow &window, bool gameOver) {
             weapon->drawWeapon(window);
         GameCharacter::drawEntity(window, gameOver);
     }
+}
+
+unsigned int Mike::getKills() const {
+    return kills;
+}
+
+void Mike::setKills(unsigned int kills) {
+    Mike::kills = kills;
+}
+
+unsigned int Mike::getRoundKills() const {
+    return roundKills;
+}
+
+void Mike::setRoundKills(unsigned int roundKills) {
+    Mike::roundKills = roundKills;
 }
 
 Mike::~Mike() = default;

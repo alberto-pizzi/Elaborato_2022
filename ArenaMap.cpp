@@ -191,7 +191,9 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     bool legalFirstCenter = false;
 
     mike = std::unique_ptr<Mike>(new Mike(mikeTexture, weaponTexture, bulletTexture, spawnTile, guiTexManager,
-                                          {tileSizeX, tileSizeY}, {32, 32}, firstRoundStartingTime, true));
+                                          {tileSizeX, tileSizeY},
+                                          {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
+                                          firstRoundStartingTime));
 
     firstViewCenter = mike->getSpriteCenter();
     sf::Vector2f distanceFromWindowCenter = {

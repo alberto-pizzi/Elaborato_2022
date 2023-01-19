@@ -9,9 +9,9 @@
 
 class LifePoints : public Bonus {
 private:
-    int quantity;
+    float quantity;
 public:
-    LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 8,
+    LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, float quantity, int points = 8,
                sf::Time stayTime = sf::seconds(25));
 
     void doSpecialAction(Mike &character) override;

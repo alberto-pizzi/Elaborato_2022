@@ -38,7 +38,7 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
           coins(coins),
           armor(armor),
           bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType),
-          damageHit(damageHit) {
+          damageHit(damageHit), defaultHP(hp) {
 
     sprite.setTexture(texture);
     sprite.setScale(sf::Vector2f(1.5, 1.5));
@@ -430,5 +430,9 @@ void GameCharacter::setWeaponPosToShouldersPos() {
                                          this->sprite.getPosition().y + weapon->startCenterForTranslation[DOWN].y);
 
     weapon->hitBox.setPosition(weapon->weaponSprite.getPosition());
+}
+
+float GameCharacter::getDefaultHp() const {
+    return defaultHP;
 }
 

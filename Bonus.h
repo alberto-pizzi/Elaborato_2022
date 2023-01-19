@@ -49,8 +49,8 @@ public:
     Animation currentAnimation{animationFrames, 10.f};
 
     Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vector2f spawnCoords,
-          const std::vector<sf::IntRect> &animationFrames, int bonusType, sf::Vector2i frameSize,
-          int textureRowIndex, bool isInfinite, bool ownable, bool hasDespawnAnimation);
+          const std::vector<sf::IntRect> &animationFrames, int bonusType, sf::Vector2i frameSize, int textureRowIndex,
+          bool isInfinite, bool ownable, bool hasDespawnAnimation);
 
     virtual void doSpecialAction(Mike &character) = 0;
 

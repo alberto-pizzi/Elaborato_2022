@@ -4,18 +4,21 @@
 
 #include "LifePoints.h"
 
-LifePoints::LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points, sf::Time stayTime)
+LifePoints::LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, float quantity, int points,
+                       sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, LIFE_POINTS, {64, 64}, 3,
                 false,
                 false,
-                true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
-
-    quantity = 2; //FIXME set random quantity
+                true), quantity(
+        quantity) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
 
     //stayTimer.restart();
 }
 
 void LifePoints::doSpecialAction(Mike &character) {
     addPoints(character);
-    character.setHp(character.getHp() + static_cast<float>(this->quantity));
+    if (character.getHp() + this->quantity <= character.getDefaultHp())
+        character.setHp(character.getHp() + this->quantity);
+    else
+        character.setHp(character.getDefaultHp());
 }
