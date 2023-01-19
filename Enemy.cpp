@@ -59,10 +59,6 @@ void Enemy::followPath(float dt, sf::Vector2i tileSize, const std::vector<std::u
 
 }
 
-void Enemy::areaHit(std::vector<std::unique_ptr<Enemy>> &targets) {
-
-}
-
 void Enemy::setPath(const std::vector<Node> &path) {
     this->path = path;
 }
@@ -98,5 +94,12 @@ bool Enemy::isAbleToHit(const GameCharacter &target, const Dice &hitDice, float 
             return false;
     } else
         return false;
+}
+
+void Enemy::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies) {
+    target.setIsHit(true);
+    target.receiveDamage(static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
+                                                                    static_cast<int>(this->getDamageHit().y))));
+    target.hitColorClock.restart();
 }
 

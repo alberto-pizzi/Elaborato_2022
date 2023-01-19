@@ -17,7 +17,7 @@ Archer::Archer(const sf::Texture &archerTexture, const sf::Texture &bowTexture, 
     weapon = std::unique_ptr<Weapon>(new Bow(true, bowTexture, arrowTexture, damageHit.y)); //max value of damage hit
 }
 
-void Archer::hit(GameCharacter &target) {
+void Archer::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies) {
     if (weapon->shotClock.getElapsedTime() >= weapon->getNextShotDelay()) {
         sf::Vector2f origin = spriteCenter;
         sf::Vector2f translation = target.getSpriteCenter() - spriteCenter;

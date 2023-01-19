@@ -37,7 +37,7 @@ public:
 
     void setPath(const std::vector<Node> &path);
 
-    virtual void areaHit(std::vector<std::unique_ptr<Enemy>> &targets);
+    virtual void hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies);
 
     void startPathfindingThread(sf::Vector2i startTile, sf::Vector2i targetTile);
 

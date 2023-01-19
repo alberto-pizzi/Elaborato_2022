@@ -114,8 +114,6 @@ public:
 
     void setWeaponPosToShouldersPos();
 
-    virtual void hit(GameCharacter &target);
-
     float damageWithArmor(float damagePoints) const;
 
     sf::Vector2f normalize(sf::Vector2f vector) const;

@@ -36,9 +36,8 @@ public:
 
     bool isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance) override;
 
-    void hit(GameCharacter &target) override;
+    void hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies) override;
 
-    void areaHit(std::vector<std::unique_ptr<Enemy>> &targets) override;
 };
 
 

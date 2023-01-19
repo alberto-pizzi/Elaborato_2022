@@ -333,13 +333,6 @@ int GameCharacter::getCharacterType() const {
     return characterType;
 }
 
-void GameCharacter::hit(GameCharacter &target) {
-    target.setIsHit(true);
-    target.receiveDamage(static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
-                                                                    static_cast<int>(this->getDamageHit().y))));
-    target.hitColorClock.restart();
-}
-
 
 const sf::Vector2f &GameCharacter::getDamageHit() const {
     return damageHit;

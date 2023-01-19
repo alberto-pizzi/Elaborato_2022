@@ -15,7 +15,7 @@ public:
            sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap, bool animated = true, float hp = 15,
            float speed = 200.f, unsigned int points = 5, unsigned int coins = 1, int armor = 0, bool bubble = false);
 
-    void hit(GameCharacter &target) override;
+    void hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies) override;
 };
 
 

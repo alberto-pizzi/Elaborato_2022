@@ -475,10 +475,12 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
+
     for (int i = 0; i < 20; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
+
     //spawner->spawnIncreasedDamage();
     //spawner->spawnLifePoints();
     /*
@@ -550,15 +552,9 @@ void PlayState::updateEnemies(float dt) {
                 break;
         } else if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->chanceDice,
                                                      spawner->calculateChance(spawner->chanceDice))) ||
-                   (spawner->enemies[i]->getCharacterType() == ARCHER)) { //FIXME random hit chance and improve archer
-            if (spawner->enemies[i]->getCharacterType() == KAMIKAZE) {
-                spawner->enemies[i]->areaHit(spawner->enemies);
-            } else {
-                //TODO implement hit chance
-                spawner->enemies[i]->hit(*mike);
-            }
+                   (spawner->enemies[i]->getCharacterType() == ARCHER)) {
+            spawner->enemies[i]->hit(*mike, spawner->enemies);
         }
-
     }
 }
 

@@ -60,30 +60,33 @@ bool Kamikaze::isAbleToHit(const GameCharacter &target, const Dice &hitDice, flo
         return false;
 }
 
-void Kamikaze::hit(GameCharacter &target) {
-
-}
-
-void Kamikaze::areaHit(std::vector<std::unique_ptr<Enemy>> &targets) {
+void Kamikaze::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies) {
     if (!explosionStarted) {
         explosionStarted = true;
         explosionClock.restart();
         std::cout << "START EXPLOSION COUNT" << std::endl;
     }
+
     //kamikaze explosion
     if (explosionStarted && (explosionClock.getElapsedTime() >= explosionTime)) {
         Dice tmpDice;
-        for (int j = 0; j < targets.size(); j++) {
-            if (this->isAbleToHit(*(targets[j]), tmpDice, 0)) { //FIXME hitchance
-                targets[j]->setIsHit(true);
-                targets[j]->hitColorClock.restart();
-                targets[j]->receiveDamage(
+        for (int j = 0; j < targetEnemies.size(); j++) {
+            if (this->isAbleToHit(*(targetEnemies[j]), tmpDice, 1)) {
+                targetEnemies[j]->setIsHit(true);
+                targetEnemies[j]->hitColorClock.restart();
+                targetEnemies[j]->receiveDamage(
                         static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
                                                                    static_cast<int>(this->getDamageHit().y))));
             }
         }
-        std::cout << "KABOOM" << std::endl;
-        this->HP = 0; //kill himself
+
+        //hit target (mike)
+        if (this->isAbleToHit(target, tmpDice, 1))
+            Enemy::hit(target, targetEnemies);
+
+        //kill himself
+        this->HP = 0;
         explosionStarted = false;
     }
 }
+
