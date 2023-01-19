@@ -263,6 +263,7 @@ void PlayState::loadTextures() {
     charactersTextures.loadTexture("shield", "res/textures/shield.png");
     charactersTextures.loadTexture("zombie", "res/textures/zombie.png");
     charactersTextures.loadTexture("archer", "res/textures/archer.png");
+    charactersTextures.loadTexture("kamikaze", "res/textures/kamikaze.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
@@ -475,12 +476,13 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
-
+/*
     for (int i = 0; i < 20; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
-
+*/
+    spawner->spawnKamikaze(tmpSpawnTile, 1);
     //spawner->spawnIncreasedDamage();
     //spawner->spawnLifePoints();
     /*
@@ -491,7 +493,7 @@ void PlayState::initRound() {
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
      */
-    remainEnemies = 20;
+    remainEnemies = 1;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

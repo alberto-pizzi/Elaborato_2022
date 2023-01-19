@@ -84,6 +84,9 @@ void Kamikaze::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &t
         if (this->isAbleToHit(target, tmpDice, 1))
             Enemy::hit(target, targetEnemies);
 
+        //expand sprite for explosion
+        sprite.setScale(sprite.getScale() * 2.f);
+
         //kill himself
         this->HP = 0;
         explosionStarted = false;

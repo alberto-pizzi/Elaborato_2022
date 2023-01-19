@@ -196,7 +196,7 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
     sf::Vector2f damage = {7, 10};
     damage *= damageMultiplier;
 
-    enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("mike"), spawnTile,
+    enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("kamikaze"), spawnTile,
                                       tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
                                       damage, nodeMap,
                                       true)); //TODO add correct texture and variable speed
