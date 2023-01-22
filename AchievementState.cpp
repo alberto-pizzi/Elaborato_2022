@@ -1,28 +1,38 @@
 //
-// Created by Alberto Pizzi on 30/12/22.
+// Created by alber on 22/01/2023.
 //
 
-#include "PauseState.h"
+#include "AchievementState.h"
 
 enum NameButton {
     //these numbers are related with nButtons
-    Resume = 0,
+    Back = 0,
     Stats = 1,
     Exit = 2,
 };
 
-void PauseState::draw(float dt) const {
+void AchievementState::draw(float dt) const {
     this->game->window.setView(this->view);
-    this->game->window.clear();
-    this->game->window.draw(this->game->background);
+    this->game->window.clear(sf::Color::Blue);
+    //this->game->window.draw(this->game->background);
+
     for (int i = 0; i < nButtons; i++)
         this->game->window.draw(mainMenu[i]);
+
 }
 
-void PauseState::update(float dt) {
+void AchievementState::update(float dt) {
+    /*
+    if (!printed) {
+        for (auto it = achievementManager->achievements.begin(); it != achievementManager->achievements.end(); it++)
+            std::cout << "KEY: " << it->first << " VALUE: " << it->second->getActualProgress() << std::endl;
+        std::cout<<"FINISH"<<std::endl;
+        printed = true;
+    }
+     */
 }
 
-void PauseState::handleInput() {
+void AchievementState::handleInput() {
     sf::Event event;
 
     while (this->game->window.pollEvent(event)) {
@@ -33,6 +43,7 @@ void PauseState::handleInput() {
                 game->window.close();
                 break;
                 // Resize the window
+                //FIXME check sizing in menu state (and background)
             case sf::Event::Resized:
                 this->view.setSize(event.size.width, event.size.height);
                 this->game->background.setPosition(this->game->window.mapPixelToCoords(sf::Vector2i(0, 0), this->view));
@@ -62,7 +73,7 @@ void PauseState::handleInput() {
     }
 }
 
-PauseState::PauseState(Game *game) {
+AchievementState::AchievementState(Game *game) {
     this->game = game;
 
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
@@ -77,11 +88,11 @@ PauseState::PauseState(Game *game) {
     } catch (GameException &e) {}
 
     //play
-    mainMenu[Resume].setFont(font);
-    mainMenu[Resume].setFillColor(sf::Color(102, 0, 0));
-    mainMenu[Resume].setString("Resume");
-    mainMenu[Resume].setCharacterSize(fontSize);
-    mainMenu[Resume].setPosition(
+    mainMenu[Back].setFont(font);
+    mainMenu[Back].setFillColor(sf::Color(102, 0, 0));
+    mainMenu[Back].setString("Back");
+    mainMenu[Back].setCharacterSize(fontSize);
+    mainMenu[Back].setPosition(
             sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
                          static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
 
@@ -105,10 +116,12 @@ PauseState::PauseState(Game *game) {
                                              static_cast<float>(fontSize)) * 2));
     //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
 
-    nButtonSelected = Resume;
+    nButtonSelected = Back;
+
+
 }
 
-void PauseState::moveUp() {
+void AchievementState::moveUp() {
     if (nButtonSelected - 1 >= -1) {
         mainMenu[nButtonSelected].setFillColor(sf::Color::White);
         nButtonSelected--;
@@ -118,7 +131,7 @@ void PauseState::moveUp() {
     }
 }
 
-void PauseState::moveDown() {
+void AchievementState::moveDown() {
     if (nButtonSelected + 1 <= nButtons) {
         mainMenu[nButtonSelected].setFillColor(sf::Color::White);
         nButtonSelected++;
@@ -128,15 +141,14 @@ void PauseState::moveDown() {
     }
 }
 
-void PauseState::select() {
+void AchievementState::select() {
     switch (nButtonSelected) {
-        case Resume:
+        case Back:
+            //this->loadPlay();
             this->game->popState();
             break;
         case Stats:
-            //TODO implement stats state
-            std::cout << "i'm stats in pause" << std::endl;
-            this->game->pushState(new AchievementState(this->game));
+            //std::cout << "i'm stats" << std::endl;
             break;
         case Exit:
             this->game->window.close();
@@ -146,4 +158,3 @@ void PauseState::select() {
             break;
     }
 }
-

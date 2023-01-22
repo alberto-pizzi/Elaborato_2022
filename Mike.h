@@ -7,12 +7,15 @@
 
 #include "GameCharacter.h"
 #include "Gui.h"
+#include "Subject.h"
+#include <list>
+#include "AchievementManager.h"
 
 enum typeOfWeapon {
     HANDGUN = 0, ASSAULT_RIFLE, SHOTGUN,
 };
 
-class Mike : public GameCharacter {
+class Mike : public GameCharacter, public Subject {
 private:
     int killStreak = 0;
     struct ActualBonus {
@@ -25,6 +28,10 @@ private:
     unsigned int roundKills = 0;
 public:
     Gui gui;
+
+    //observer
+    std::list<Observer *> observers;
+    AchievementManager achievementManager;
 
     Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
          const sf::Vector2i &spawnTile, const TextureManager &guiTexManager, const sf::Vector2i &tileSize,
@@ -51,6 +58,12 @@ public:
     unsigned int getRoundKills() const;
 
     void setRoundKills(unsigned int roundKills);
+
+    void registerObserver(Observer *observer) override;
+
+    void removeObserver(Observer *observer) override;
+
+    void notifyObserver(std::string achievementName, unsigned int value) const override;
 };
 
 

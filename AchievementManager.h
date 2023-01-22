@@ -12,6 +12,8 @@
 #include <map>
 #include <memory>
 
+class Mike;
+
 class AchievementManager : public Observer {
 private:
     sf::Texture boxTexture;

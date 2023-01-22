@@ -10,11 +10,10 @@
 #include <string>
 
 class Observer {
-protected:
-    virtual ~Observer() = default;
-
 public:
     virtual void update(std::string achievementName, unsigned int value) = 0;
+
+    virtual ~Observer() = default;
 };
 
 

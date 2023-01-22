@@ -775,15 +775,3 @@ void PlayState::spawnBonuses() {
 
 }
 
-void PlayState::registerObserver(Observer *observer) {
-    observers.push_back(observer);
-}
-
-void PlayState::removeObserver(Observer *observer) {
-    observers.remove(observer);
-}
-
-void PlayState::notifyObserver(std::string achievementName, unsigned int value) const {
-    for (auto itr = std::begin(observers); itr != std::end(observers); itr++)
-        (*itr)->update(achievementName, value);
-}

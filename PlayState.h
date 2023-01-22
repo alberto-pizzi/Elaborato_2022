@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#include <list>
+
 
 #include "GameState.h"
 #include "ArenaMap.h"
@@ -17,12 +17,12 @@
 #include "TextureManager.h"
 #include "Gui.h"
 #include "PauseState.h"
-#include "Subject.h"
+
 
 //WARNING: for adding other Map, you must updateNotCyclicalAnimation nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
 
-class PlayState : public GameState, public Subject {
+class PlayState : public GameState {
 private:
     enum nEnemies {
         baseNumberForNormalRounds = 15,
@@ -87,10 +87,6 @@ private:
     sf::Clock gameOverClock;
     sf::Time gameOverTime = sf::seconds(5);
 
-    //observer
-    std::list<Observer *> observers;
-
-
 public:
     explicit PlayState(Game *game);
 
@@ -134,11 +130,7 @@ public:
 
     void spawnBonuses();
 
-    void registerObserver(Observer *observer) override;
 
-    void removeObserver(Observer *observer) override;
-
-    void notifyObserver(std::string achievementName, unsigned int value) const override;
 
 
 };

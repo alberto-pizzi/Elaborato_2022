@@ -24,10 +24,13 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         armor,
                         false),
           gui(this->points, 1, 12, 12, true, startRoundCountdownSeconds, handgunTexture,
-              guiTexManager) { //WARNING: Mike's damage hit never will be used
+              guiTexManager),
+          achievementManager(this, texture, texture) { //WARNING: Mike's damage hit never will be used
 
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, handgunBulletTexture));
     gui.updateWeaponType(handgunTexture, weapon->currentAnimation.idleFrames[0], weapon->hitBox.getSize());
+
+    achievementManager.createAchievement("Kill 5 enemies", "Kill 5 enemies with a weapon", 5);
 }
 
 /*
@@ -88,6 +91,7 @@ unsigned int Mike::getKills() const {
 
 void Mike::setKills(unsigned int kills) {
     Mike::kills = kills;
+    notifyObserver("Kill 5 enemies", kills); //FIXME
 }
 
 unsigned int Mike::getRoundKills() const {
@@ -99,4 +103,17 @@ void Mike::setRoundKills(unsigned int roundKills) {
 }
 
 Mike::~Mike() = default;
+
+void Mike::registerObserver(Observer *observer) {
+    observers.push_back(observer);
+}
+
+void Mike::removeObserver(Observer *observer) {
+    observers.remove(observer);
+}
+
+void Mike::notifyObserver(std::string achievementName, unsigned int value) const {
+    for (auto itr = std::begin(observers); itr != std::end(observers); itr++)
+        (*itr)->update(achievementName, value);
+}
 

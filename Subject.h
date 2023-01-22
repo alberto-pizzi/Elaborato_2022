@@ -10,14 +10,14 @@
 #include "Observer.h"
 
 class Subject {
-protected:
-    virtual ~Subject() {};
 public:
     virtual void registerObserver(Observer *observer) = 0;
 
     virtual void removeObserver(Observer *observer) = 0;
 
     virtual void notifyObserver(std::string achievementName, unsigned int value) const = 0;
+
+    virtual ~Subject() = default;
 };
 
 

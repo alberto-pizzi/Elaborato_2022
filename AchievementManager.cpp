@@ -6,7 +6,9 @@
 
 AchievementManager::AchievementManager(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex)
         : boxTexture(boxTex), trophyTexture(trophyTex), subject(subject) {
-    this->subject->registerObserver(this);
+    std::cout << "Register Observer" << std::endl;
+    subject->registerObserver(this);
+    std::cout << "Registered Observer" << std::endl;
 }
 
 void AchievementManager::createAchievement(const std::string &name, std::string description, unsigned int target) {
@@ -23,5 +25,8 @@ void AchievementManager::update(std::string achievementName, unsigned int value)
 }
 
 AchievementManager::~AchievementManager() {
-    //subject->removeObserver(this);
+    std::cout << "Remove Observer" << std::endl;
+    subject->removeObserver(this);
+    std::cout << "Removed Observer" << std::endl;
+    //delete subject;
 }
