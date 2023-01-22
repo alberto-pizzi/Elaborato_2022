@@ -17,17 +17,25 @@
 
 class AchievementState : public GameState {
 private:
-    sf::View view;
+    //sf::View view;
 
     int nButtonSelected;
     unsigned int fontSize = 50;
     sf::Font font;
     const int nButtons = 3;
     sf::Text mainMenu[3];
-    //std::vector<std::unique_ptr<Achievement>> achievements;
-    //AchievementManager* achievementManager;
 
-    bool printed = false;
+    //colors
+    const sf::Color backgroundColor = sf::Color(79, 79, 79);
+
+    bool printed = false; //FIXME
+
+    sf::View achievementView;
+    const float scrollMove = 10;
+
+    bool firstTime = true;
+
+    //std::map<std::string, std::unique_ptr<Achievement>>::iterator localIt;
 
 public:
     explicit AchievementState(Game *game);

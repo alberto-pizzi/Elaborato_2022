@@ -29,9 +29,20 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     weapon = std::unique_ptr<Weapon>(new Handgun(true, handgunTexture, handgunBulletTexture));
     gui.updateWeaponType(handgunTexture, weapon->currentAnimation.idleFrames[0], weapon->hitBox.getSize());
 
-    AchievementManager::createInstance(this, texture, texture);
+    sf::Font progressFont;
+    std::string textFontFile = "res/fonts/arial.ttf";
+    try {
+        if (!progressFont.loadFromFile(textFontFile))
+            throw GameException("Error opening textFontFile file", textFontFile, false);
+    } catch (GameException &e) {
+        exit(1); //close all
+    }
+
+    AchievementManager::createInstance(this, guiTexManager);
 
     AchievementManager::getInstance()->createAchievement("Kill 5 enemies", "Kill 5 enemies with a weapon", 5);
+
+    AchievementManager::getInstance()->createAchievement("Kill 10 enemies", "Kill 10 enemies with a weapon", 10);
 }
 
 /*
@@ -114,6 +125,8 @@ void Mike::incrementKills(int enemyType) {
     roundKills++;
     kills++;
     notifyObserver("Kill 5 enemies", this->kills); //FIXME
+
+    notifyObserver("Kill 10 enemies", this->kills); //FIXME
 }
 
 void Mike::resetRoundKills() {

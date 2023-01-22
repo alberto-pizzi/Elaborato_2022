@@ -109,7 +109,7 @@ ArenaMap::~ArenaMap() = default;
 ArenaMap::ArenaMap(int chosenMap, sf::RenderWindow &window, std::unique_ptr<Mike> &mike, const sf::Texture &mikeTexture,
                    const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
                    const TextureManager &guiTexManager,
-                   float firstRoundStartingTime) {
+                   float firstRoundStartingTime, sf::Vector2f viewSize) : viewSize(viewSize) {
     loadMapFile(chosenMap);
     startingMap(window, mike, mikeTexture, weaponTexture, bulletTexture, guiTexManager, firstRoundStartingTime);
 
@@ -182,8 +182,8 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
     playerView.reset(
             sf::FloatRect(static_cast<float>(0 * tileSizeX),
                           static_cast<float>(0 * tileSizeX),
-                          static_cast<float>(tileView.x * tileSizeX),
-                          static_cast<float>(tileView.y * tileSizeY)));
+                          viewSize.x,
+                          viewSize.y));
 
     //random spawned
     sf::Vector2i spawnTile = randomPassableTile();

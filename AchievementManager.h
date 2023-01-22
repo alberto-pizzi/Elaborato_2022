@@ -11,17 +11,22 @@
 #include "Achievement.h"
 #include <map>
 #include <memory>
+#include "TextureManager.h"
 
 
 class AchievementManager : public Observer {
 private:
-    sf::Texture boxTexture;
-    sf::Texture trophyTexture;
     Subject *subject;
+
+    //textures
+    TextureManager guiTextures;
+
+    //fonts
+    sf::Font progressFont;
 
     static AchievementManager *instance;
 
-    AchievementManager(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex);
+    AchievementManager(Subject *subject, const TextureManager &guiTexManager);
 
 public:
     std::map<std::string, std::unique_ptr<Achievement>> achievements;
@@ -32,11 +37,13 @@ public:
 
     void saveAchievements();
 
+    static void drawAchievements(sf::RenderWindow &window);
+
     void update(std::string achievementName, unsigned int value) override;
 
     static AchievementManager *getInstance();
 
-    static void createInstance(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex);
+    static void createInstance(Subject *subject, const TextureManager &guiTexManager);
 
 
 };

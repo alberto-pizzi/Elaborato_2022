@@ -85,7 +85,7 @@ protected:
             "res/maps/desertMap.txt",
     };
     std::unique_ptr<PosEntity> entity;
-    sf::Vector2i tileView = {40, 23};
+    sf::Vector2f viewSize;
 public:
     std::vector<sf::RectangleShape> rectWalls;
 
@@ -99,7 +99,7 @@ public:
                       const sf::Texture &mikeTexture,
                       const sf::Texture &weaponTexture, const sf::Texture &bulletTexture,
                       const TextureManager &guiTexManager,
-                      float firstRoundStartingTime);
+                      float firstRoundStartingTime, sf::Vector2f viewSize);
 
     virtual ~ArenaMap();
 

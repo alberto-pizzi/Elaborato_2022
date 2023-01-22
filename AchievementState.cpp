@@ -12,26 +12,26 @@ enum NameButton {
 };
 
 void AchievementState::draw(float dt) const {
-    this->game->window.setView(this->view);
-    this->game->window.clear(sf::Color::Blue);
+    //this->game->window.setView(this->view);
+    this->game->window.setView(achievementView);
+    this->game->window.clear(backgroundColor);
+/*
+    sf::RectangleShape shape;
+    shape.setSize(sf::Vector2f(32,32));
+    shape.setPosition(achievementView.getCenter());
+    shape.setFillColor(sf::Color::Red);
+    this->game->window.draw(shape);
+    */
     //this->game->window.draw(this->game->background);
 
     for (int i = 0; i < nButtons; i++)
         this->game->window.draw(mainMenu[i]);
 
+    AchievementManager::drawAchievements(this->game->window);
+
 }
 
 void AchievementState::update(float dt) {
-
-    /*
-    if (!printed) {
-        for (auto it = AchievementManager::getInstance()->achievements.begin(); it != AchievementManager::getInstance()->achievements.end(); it++)
-            std::cout << "KEY: " << it->first << " VALUE: " << it->second->getActualProgress() << std::endl;
-        std::cout<<"FINISH"<<std::endl;
-        printed = true;
-    }
-     */
-
 }
 
 void AchievementState::handleInput() {
@@ -47,8 +47,8 @@ void AchievementState::handleInput() {
                 // Resize the window
                 //FIXME check sizing in menu state (and background)
             case sf::Event::Resized:
-                this->view.setSize(event.size.width, event.size.height);
-                this->game->background.setPosition(this->game->window.mapPixelToCoords(sf::Vector2i(0, 0), this->view));
+                //this->view.setSize(event.size.width, event.size.height);
+                //this->game->background.setPosition(this->game->window.mapPixelToCoords(sf::Vector2i(0, 0), this->view));
                 this->game->background.setScale(
                         float(event.size.width) / float(this->game->background.getTexture()->getSize().x),
                         float(event.size.height) / float(this->game->background.getTexture()->getSize().y));
@@ -57,13 +57,15 @@ void AchievementState::handleInput() {
                 //Take input
                 switch (event.key.code) {
                     case sf::Keyboard::Enter:
-                        select();
+                        //select();
                         break;
                     case sf::Keyboard::W:
-                        moveUp();
+                        //moveUp();
+                        achievementView.move(sf::Vector2f(0, scrollMove));
                         break;
                     case sf::Keyboard::S:
-                        moveDown();
+                        achievementView.move(sf::Vector2f(0, -scrollMove));
+                        //moveDown();
                         break;
                     case sf::Keyboard::Escape:
                         this->game->popState();
@@ -76,18 +78,19 @@ void AchievementState::handleInput() {
 
 AchievementState::AchievementState(Game *game) {
     this->game = game;
-
+/*
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->view.setSize(pos);
     pos *= 0.5f;
     this->view.setCenter(pos);
+    */
 
     std::string fontFile = "res/fonts/bloody.ttf";
     try {
         if (!font.loadFromFile(fontFile))
             throw GameException("Error opening numbersOrTitlesFont file", fontFile, false);
     } catch (GameException &e) {}
-
+/*
     //play
     mainMenu[Back].setFont(font);
     mainMenu[Back].setFillColor(sf::Color(102, 0, 0));
@@ -115,31 +118,63 @@ AchievementState::AchievementState(Game *game) {
     mainMenu[Exit].setPosition(sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
                                             (static_cast<float>(this->game->window.getSize().y) / 2 -
                                              static_cast<float>(fontSize)) * 2));
+    */
     //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
 
-    nButtonSelected = Back;
+    nButtonSelected = 0;
+
+
 
     //std::cout<<"Constructed"<<std::endl;
+
+
+
+    //view
+    achievementView.reset((sf::FloatRect(0, 0, viewSize.x, viewSize.y)));
+
+    achievementView.setCenter(sf::Vector2f(
+            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().x +
+            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().width / 2,
+            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().y +
+            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().height /
+            2));
+    this->game->window.setView(achievementView);
+
 }
 
 void AchievementState::moveUp() {
+    /*
     if (nButtonSelected - 1 >= -1) {
-        mainMenu[nButtonSelected].setFillColor(sf::Color::White);
+        //mainMenu[nButtonSelected].setFillColor(sf::Color::White);
         nButtonSelected--;
-        if (nButtonSelected == -1)
+        std::prev(localIt);
+        if (nButtonSelected == -1) {
             nButtonSelected = nButtons - 1;
-        mainMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+            localIt = AchievementManager::getInstance()->achievements.end();
+        }
+        //mainMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+        achievementView.setCenter(sf::Vector2f (localIt->second->getBoxSprite().getPosition().x + localIt->second->getBoxSprite().getGlobalBounds().width/2,
+                                                localIt->second->getBoxSprite().getPosition().y + localIt->second->getBoxSprite().getGlobalBounds().height/2));
+
     }
+     */
 }
 
 void AchievementState::moveDown() {
+    /*
     if (nButtonSelected + 1 <= nButtons) {
-        mainMenu[nButtonSelected].setFillColor(sf::Color::White);
+        //mainMenu[nButtonSelected].setFillColor(sf::Color::White);
         nButtonSelected++;
-        if (nButtonSelected == nButtons)
+        std::next(localIt);
+        if (nButtonSelected == nButtons) {
             nButtonSelected = 0;
-        mainMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+            localIt = AchievementManager::getInstance()->achievements.begin();
+        }
+        //mainMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+        achievementView.setCenter(sf::Vector2f (localIt->second->getBoxSprite().getPosition().x + localIt->second->getBoxSprite().getGlobalBounds().width/2,
+                                                localIt->second->getBoxSprite().getPosition().y + localIt->second->getBoxSprite().getGlobalBounds().height/2));
     }
+     */
 }
 
 void AchievementState::select() {

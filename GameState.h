@@ -8,6 +8,8 @@
 #include "Game.h"
 
 class GameState {
+protected:
+    const sf::Vector2f viewSize = {40 * 32, 23 * 32};
 public:
     GameState();
 

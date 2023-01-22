@@ -225,7 +225,7 @@ PlayState::PlayState(Game *game) : round(1) {
     //create random map
     arenaMap = new ArenaMap(whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
                             weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
-                            guiTextures, firstRoundStartingTime.asSeconds());
+                            guiTextures, firstRoundStartingTime.asSeconds(), viewSize);
 
     spawner = std::unique_ptr<Spawner>(
             new Spawner(charactersTextures, bonusesTextures, weaponsTextures, arenaMap->nodeMap,
@@ -283,6 +283,10 @@ void PlayState::loadTextures() {
     bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
     bonusesTextures.loadTexture("coin", "res/textures/coin.png");
     bonusesTextures.loadTexture("bonusesBox", "res/textures/bonuses.png");
+
+    //load achievements textures
+    guiTextures.loadTexture("box", "res/textures/message_box.png");
+    guiTextures.loadTexture("trophy", "res/textures/trophy.png");
 
     //add here all game textures...
 }
