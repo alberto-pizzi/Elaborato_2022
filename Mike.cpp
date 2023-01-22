@@ -91,7 +91,7 @@ unsigned int Mike::getKills() const {
 
 void Mike::setKills(unsigned int kills) {
     Mike::kills = kills;
-    notifyObserver("Kill 5 enemies", kills); //FIXME
+    notifyObserver("Kill 5 enemies", this->kills); //FIXME
 }
 
 unsigned int Mike::getRoundKills() const {

@@ -135,7 +135,8 @@ void PauseState::select() {
             break;
         case Stats:
             //TODO implement stats state
-            std::cout << "i'm stats in pause" << std::endl;
+            std::cout << "stack size: " << this->game->states.size() << std::endl;
+            std::cout << "AchievementState started" << std::endl;
             this->game->pushState(new AchievementState(this->game));
             break;
         case Exit:

@@ -51,7 +51,7 @@ void AchievementState::handleInput() {
                         float(event.size.width) / float(this->game->background.getTexture()->getSize().x),
                         float(event.size.height) / float(this->game->background.getTexture()->getSize().y));
                 break;
-            case sf::Event::KeyPressed: {
+            case sf::Event::KeyPressed:
                 //Take input
                 switch (event.key.code) {
                     case sf::Keyboard::Enter:
@@ -68,7 +68,6 @@ void AchievementState::handleInput() {
                         break;
                 }
                 break;
-            }
         }
     }
 }
@@ -118,7 +117,7 @@ AchievementState::AchievementState(Game *game) {
 
     nButtonSelected = Back;
 
-
+    //std::cout<<"Constructed"<<std::endl;
 }
 
 void AchievementState::moveUp() {
