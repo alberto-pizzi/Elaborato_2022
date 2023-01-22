@@ -53,6 +53,7 @@ Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex
 
     //trophy
     trophySprite.setScale(sf::Vector2f(2, 2));
+    trophySprite.setColor(tarnishColor);
 
 
 
@@ -113,10 +114,6 @@ void Achievement::drawAchievement(sf::RenderWindow &window) {
 
 
     //trophy
-    if (achieved)
-        trophySprite.setColor(sf::Color::White);
-    else
-        trophySprite.setColor(tarnishColor);
     sf::Vector2f trophyPos = {boxSprite.getPosition().x + boxSprite.getGlobalBounds().width - borderDistance.x -
                               trophySprite.getGlobalBounds().width, achievementPos.y};
     trophySprite.setPosition(trophyPos);
@@ -124,15 +121,23 @@ void Achievement::drawAchievement(sf::RenderWindow &window) {
     window.draw(trophySprite);
 }
 
-bool Achievement::isAchieved() const {
-    if (actualProgress >= targetProgress)
+bool Achievement::isAchieved() {
+    if (actualProgress >= targetProgress) {
+        actualProgress = targetProgress;
         return true;
-    else
+    } else
         return false;
 }
 
 void Achievement::update(unsigned int value) {
-    actualProgress += value;
+    //update progress
+    actualProgress = value;
+
+    if (isAchieved()) {
+        achieved = true;
+        progressText.setFillColor(achievedBarColor);
+        trophySprite.setColor(sf::Color::White);
+    }
 
     std::string actualProgressString = std::to_string(actualProgress);
     std::string goalProgressString = std::to_string(targetProgress);
@@ -143,12 +148,6 @@ void Achievement::update(unsigned int value) {
     progressBar.setSize(sf::Vector2f(
             (static_cast<float>(actualProgress) * shadowProgressBar.getSize().x) / static_cast<float>(targetProgress),
             shadowProgressBar.getSize().y));
-
-
-    if (isAchieved()) {
-        achieved = true;
-        progressText.setFillColor(achievedBarColor);
-    }
 }
 
 unsigned int Achievement::getActualProgress() const {

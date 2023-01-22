@@ -53,7 +53,7 @@ public:
                 const std::string &description,
                 unsigned int goal, const sf::Font &font);
 
-    bool isAchieved() const;
+    bool isAchieved();
 
     void update(unsigned int value);
 

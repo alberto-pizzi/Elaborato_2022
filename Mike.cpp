@@ -40,9 +40,9 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
 
     AchievementManager::createInstance(this, guiTexManager);
 
-    AchievementManager::getInstance()->createAchievement("Kill 5 enemies", "Kill 5 enemies with a weapon", 5);
+    AchievementManager::getInstance()->createAchievement("Kill 3 enemies", "Kill 3 enemies with a weapon", 3);
 
-    AchievementManager::getInstance()->createAchievement("Kill 10 enemies", "Kill 10 enemies with a weapon", 10);
+    AchievementManager::getInstance()->createAchievement("Kill 2 enemies", "Kill 2 enemies with a weapon", 2);
 }
 
 /*
@@ -124,9 +124,9 @@ void Mike::incrementKills(int enemyType) {
     enemyTypeKills[enemyType]++;
     roundKills++;
     kills++;
-    notifyObserver("Kill 5 enemies", this->kills); //FIXME
+    notifyObserver("Kill 3 enemies", this->kills); //FIXME
 
-    notifyObserver("Kill 10 enemies", this->kills); //FIXME
+    notifyObserver("Kill 2 enemies", this->kills); //FIXME
 }
 
 void Mike::resetRoundKills() {
