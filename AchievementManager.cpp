@@ -4,6 +4,8 @@
 
 #include "AchievementManager.h"
 
+AchievementManager *AchievementManager::instance = nullptr;
+
 AchievementManager::AchievementManager(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex)
         : boxTexture(boxTex), trophyTexture(trophyTex), subject(subject) {
     std::cout << "Register Observer" << std::endl;
@@ -28,5 +30,13 @@ AchievementManager::~AchievementManager() {
     std::cout << "Remove Observer" << std::endl;
     subject->removeObserver(this);
     std::cout << "Removed Observer" << std::endl;
-    //delete subject;
+}
+
+AchievementManager *AchievementManager::getInstance() {
+    return instance;
+}
+
+void AchievementManager::createInstance(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex) {
+    if (!instance)
+        instance = new AchievementManager(subject, boxTex, trophyTex);
 }

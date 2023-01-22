@@ -12,7 +12,7 @@
 //#include <iterator>
 
 //#include "Achievement.h"
-//#include "AchievementManager.h"
+#include "AchievementManager.h"
 
 
 class AchievementState : public GameState {

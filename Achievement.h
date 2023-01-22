@@ -16,8 +16,6 @@
 class Achievement {
 private:
 
-    sf::Texture boxTexture;
-    sf::Texture trophyTexture;
     sf::Sprite boxSprite;
     sf::Sprite trophySprite;
 

@@ -26,12 +26,15 @@ private:
     std::vector<ActualBonus> actualBonuses;
     unsigned int kills = 0;
     unsigned int roundKills = 0;
+    std::map<int, unsigned int> enemyTypeKills;
+
+    //observers
+    std::list<Observer *> observers;
+
+    //WARNING: Mike achievements are saved in AchievementManager (it is a singleton class, so it has just one instance)
 public:
     Gui gui;
 
-    //observer
-    std::list<Observer *> observers;
-    AchievementManager achievementManager;
 
     Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
          const sf::Vector2i &spawnTile, const TextureManager &guiTexManager, const sf::Vector2i &tileSize,
@@ -53,17 +56,17 @@ public:
 
     unsigned int getKills() const;
 
-    void setKills(unsigned int kills);
+    void resetRoundKills();
 
     unsigned int getRoundKills() const;
-
-    void setRoundKills(unsigned int roundKills);
 
     void registerObserver(Observer *observer) override;
 
     void removeObserver(Observer *observer) override;
 
     void notifyObserver(std::string achievementName, unsigned int value) const override;
+
+    void incrementKills(int enemyType);
 };
 
 

@@ -17,13 +17,14 @@ class AchievementManager : public Observer {
 private:
     sf::Texture boxTexture;
     sf::Texture trophyTexture;
-
-
     Subject *subject;
-public:
-    std::map<std::string, std::unique_ptr<Achievement>> achievements;
+
+    static AchievementManager *instance;
 
     AchievementManager(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex);
+
+public:
+    std::map<std::string, std::unique_ptr<Achievement>> achievements;
 
     virtual ~AchievementManager();
 
@@ -32,6 +33,10 @@ public:
     void saveAchievements();
 
     void update(std::string achievementName, unsigned int value) override;
+
+    static AchievementManager *getInstance();
+
+    static void createInstance(Subject *subject, const sf::Texture &boxTex, const sf::Texture &trophyTex);
 
 
 };

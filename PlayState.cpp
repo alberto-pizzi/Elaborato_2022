@@ -503,11 +503,14 @@ void PlayState::initRound() {
     if (spawner->bonuses.empty())
         spawner->bonusTypeAlreadySpawned.clear(); //clear bonus type spawned
         */
-    spawner->bonusTypeSpawnedInARound.clear(); //clear all (init each bonus to false) //FIXME
+    //clear all (init each bonus to false)
+    spawner->bonusTypeSpawnedInARound.clear();  //FIXME
 
-    mike->setRoundKills(0); //reset mike round kills
+    //reset mike round kills
+    mike->resetRoundKills();
 
-    roundClock.restart(); //restart round clock
+    //restart round clock
+    roundClock.restart();
 }
 
 void PlayState::updateEnemies(float dt) {
@@ -543,11 +546,12 @@ void PlayState::updateEnemies(float dt) {
             spawner->enemies[i]->isDeathAnimationActive = true;
             if (spawner->enemies[i]->isDeathAnimationEnded) {
                 spawner->spawnCoin(spawner->enemies[i]->getSpriteCenter(), spawner->enemies[i]->getCoins());
-                spawner->despawnEnemy(i, remainEnemies);
 
                 //update mike kills
-                mike->setKills(mike->getKills() + 1);
-                mike->setRoundKills(mike->getRoundKills() + 1);
+                mike->incrementKills(spawner->enemies[i]->getCharacterType());
+
+                //despawn enemy
+                spawner->despawnEnemy(i, remainEnemies);
             }
 
             if (spawner->enemies.empty())

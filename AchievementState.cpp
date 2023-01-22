@@ -22,14 +22,16 @@ void AchievementState::draw(float dt) const {
 }
 
 void AchievementState::update(float dt) {
+
     /*
     if (!printed) {
-        for (auto it = achievementManager->achievements.begin(); it != achievementManager->achievements.end(); it++)
+        for (auto it = AchievementManager::getInstance()->achievements.begin(); it != AchievementManager::getInstance()->achievements.end(); it++)
             std::cout << "KEY: " << it->first << " VALUE: " << it->second->getActualProgress() << std::endl;
         std::cout<<"FINISH"<<std::endl;
         printed = true;
     }
      */
+
 }
 
 void AchievementState::handleInput() {

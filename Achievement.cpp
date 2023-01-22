@@ -7,7 +7,7 @@
 Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex, std::string name,
                          std::string description,
                          unsigned int goal)
-        : boxTexture(boxTex), trophyTexture(trophyTex), name(std::move(name)), description(std::move(description)),
+        : name(std::move(name)), description(std::move(description)),
           targetProgress(goal) {
 
     //FIXME
