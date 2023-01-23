@@ -4,7 +4,7 @@
 
 #include "Achievement.h"
 
-float Achievement::previousBoxPosY = 0;
+float Achievement::previousBoxPosY = 0; //it is a temporary initialization. it will be as half window size thanks to AchievementState constructor
 
 Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex, const std::string &name,
                          const std::string &description,
@@ -164,5 +164,13 @@ const sf::Sprite &Achievement::getTrophySprite() const {
 
 const std::string &Achievement::getProgress() const {
     return progress;
+}
+
+float Achievement::getPreviousBoxPosY() {
+    return previousBoxPosY;
+}
+
+void Achievement::setPreviousBoxPosY(float previousBoxPosY) {
+    Achievement::previousBoxPosY = previousBoxPosY;
 }
 

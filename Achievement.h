@@ -67,6 +67,10 @@ public:
 
     const std::string &getProgress() const;
 
+    static float getPreviousBoxPosY();
+
+    static void setPreviousBoxPosY(float previousBoxPosY);
+
 };
 
 

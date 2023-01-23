@@ -4,34 +4,26 @@
 
 #include "AchievementState.h"
 
-enum NameButton {
-    //these numbers are related with nButtons
-    Back = 0,
-    Stats = 1,
-    Exit = 2,
-};
-
 void AchievementState::draw(float dt) const {
-    //this->game->window.setView(this->view);
     this->game->window.setView(achievementView);
     this->game->window.clear(backgroundColor);
-/*
+
     sf::RectangleShape shape;
-    shape.setSize(sf::Vector2f(32,32));
-    shape.setPosition(achievementView.getCenter());
+    shape.setSize(sf::Vector2f(32, 32));
+    sf::Vector2i shapePos = {0, 50};
+    sf::Vector2f worldShapePos = this->game->window.mapPixelToCoords(shapePos);
+    shape.setPosition(worldShapePos);
     shape.setFillColor(sf::Color::Red);
     this->game->window.draw(shape);
-    */
-    //this->game->window.draw(this->game->background);
 
-    for (int i = 0; i < nButtons; i++)
-        this->game->window.draw(mainMenu[i]);
+    //this->game->window.draw(this->game->background);
 
     AchievementManager::drawAchievements(this->game->window);
 
 }
 
 void AchievementState::update(float dt) {
+    //std::cout<<"Y view: "<<achievementView.getCenter().y<<std::endl;
 }
 
 void AchievementState::handleInput() {
@@ -78,56 +70,12 @@ void AchievementState::handleInput() {
 
 AchievementState::AchievementState(Game *game) {
     this->game = game;
-/*
-    sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
-    this->view.setSize(pos);
-    pos *= 0.5f;
-    this->view.setCenter(pos);
-    */
 
     std::string fontFile = "res/fonts/bloody.ttf";
     try {
         if (!font.loadFromFile(fontFile))
             throw GameException("Error opening numbersOrTitlesFont file", fontFile, false);
     } catch (GameException &e) {}
-/*
-    //play
-    mainMenu[Back].setFont(font);
-    mainMenu[Back].setFillColor(sf::Color(102, 0, 0));
-    mainMenu[Back].setString("Back");
-    mainMenu[Back].setCharacterSize(fontSize);
-    mainMenu[Back].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
-                         static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
-
-    //stats
-    mainMenu[Stats].setFont(font);
-    mainMenu[Stats].setFillColor(sf::Color::White);
-    mainMenu[Stats].setString("Stats");
-    mainMenu[Stats].setCharacterSize(50);
-    mainMenu[Stats].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
-                         (static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)) *
-                         1.5));
-
-    //exit
-    mainMenu[Exit].setFont(font);
-    mainMenu[Exit].setFillColor(sf::Color::White);
-    mainMenu[Exit].setString("Exit");
-    mainMenu[Exit].setCharacterSize(50);
-    mainMenu[Exit].setPosition(sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                                            (static_cast<float>(this->game->window.getSize().y) / 2 -
-                                             static_cast<float>(fontSize)) * 2));
-    */
-    //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
-
-    nButtonSelected = 0;
-
-
-
-    //std::cout<<"Constructed"<<std::endl;
-
-
 
     //view
     achievementView.reset((sf::FloatRect(0, 0, viewSize.x, viewSize.y)));
@@ -138,8 +86,16 @@ AchievementState::AchievementState(Game *game) {
             AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().y +
             AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().height /
             2));
+
+    //achievementView.setCenter(sf::Vector2f(-5*32,-5*32));
+    std::cout << "X: "
+              << AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().x <<
+              " Y: " << AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().y
+              << std::endl;
     this->game->window.setView(achievementView);
 
+    //init Y box pos as half window size
+    Achievement::setPreviousBoxPosY(static_cast<float>(this->game->window.getSize().y) / 2.f);
 }
 
 void AchievementState::moveUp() {
@@ -175,22 +131,4 @@ void AchievementState::moveDown() {
                                                 localIt->second->getBoxSprite().getPosition().y + localIt->second->getBoxSprite().getGlobalBounds().height/2));
     }
      */
-}
-
-void AchievementState::select() {
-    switch (nButtonSelected) {
-        case Back:
-            //this->loadPlay();
-            this->game->popState();
-            break;
-        case Stats:
-            //std::cout << "i'm stats" << std::endl;
-            break;
-        case Exit:
-            this->game->window.close();
-            break;
-        default:
-            std::cerr << "ERROR: SELECTED BUTTON NOT EXIST" << std::endl;
-            break;
-    }
 }
