@@ -20,6 +20,7 @@ Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points,
                                                            nodeMap(nodeMap), hitProbability(hitProbability) {
     if (hitProbability >= 100)
         this->hitProbability = 100;
+    //this->sprite.setScale(sf::Vector2f(1,1));
 
 }
 
@@ -36,11 +37,15 @@ bool Enemy::isPositionOccupied(sf::Vector2f pos, const std::vector<std::unique_p
 
 void Enemy::followPath(float dt, sf::Vector2i tileSize, const std::vector<std::unique_ptr<Enemy>> &enemies) {
 
+    //if (!isFollowingPath) return;
+
     if (!path.empty()) {
         sf::Vector2f currentPos = getSpriteCenter();
         Node nextNode = path[0];
-        sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x),
-                                static_cast<float>(nextNode.getTile().y * tileSize.y)};
+        sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x +
+                                                   (sprite.getGlobalBounds().width - tileSize.x + 4)),
+                                static_cast<float>(nextNode.getTile().y * tileSize.y +
+                                                   (sprite.getGlobalBounds().height - tileSize.y + 4))};
         sf::Vector2f offset = nextPos - currentPos;
         sf::Vector2f normalizedVector = normalize(offset);
 
@@ -56,7 +61,6 @@ void Enemy::followPath(float dt, sf::Vector2i tileSize, const std::vector<std::u
 
     if (path.empty())
         hasPath = false;
-
 }
 
 void Enemy::setPath(const std::vector<Node> &path) {
@@ -101,5 +105,36 @@ void Enemy::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targ
     target.receiveDamage(static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
                                                                     static_cast<int>(this->getDamageHit().y))));
     target.hitColorClock.restart();
+}
+
+float Enemy::distanceToObstacle(sf::Vector2f position, const sf::RectangleShape &obstacle) {
+    return std::sqrt((position.x - obstacle.getPosition().x) * (position.x - obstacle.getPosition().x) +
+                     (position.y - obstacle.getPosition().y) * (position.y - obstacle.getPosition().y));
+}
+
+sf::Vector2f Enemy::getPathReferencePoint(sf::Vector2i tileSize) const {
+    sf::FloatRect bounds = sprite.getGlobalBounds();
+    Node nextNode = path[0];
+    sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x),
+                            static_cast<float>(nextNode.getTile().y * tileSize.y)};
+    sf::Vector2f reference = {bounds.left + bounds.width / 2, bounds.top + bounds.height};
+    sf::Vector2f offset = nextPos - reference;
+    if (std::abs(offset.x) > std::abs(offset.y))
+        reference.x = bounds.left + (offset.x > 0 ? bounds.width : 0);
+    else
+        reference.y = bounds.top + (offset.y > 0 ? bounds.height : 0);
+    return reference;
+}
+
+float Enemy::length(sf::Vector2f vector) {
+    return std::sqrt(vector.x * vector.x + vector.y * vector.y);
+}
+
+bool Enemy::isColliding1() const {
+    return isColliding;
+}
+
+void Enemy::setIsColliding(bool isColliding) {
+    Enemy::isColliding = isColliding;
 }
 

@@ -69,8 +69,9 @@ public:
 
     void updateSkinDirection(const sf::Vector2f &target);
 
-    void updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
-                     const sf::RectangleShape &obstacle);
+    void
+    updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
+                const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos);
 
     void spawnCoin(sf::Vector2f spawnPos, int value);
 

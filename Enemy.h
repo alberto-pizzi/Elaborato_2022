@@ -16,6 +16,7 @@ private:
     std::atomic<bool> pathReady;
     std::vector<std::vector<Node>> nodeMap;
     float hitProbability; //as percentage (form 0 to 100)
+
 protected:
     //the protected constructor is to make the class non-instantiable (like an abstract class)
     Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
@@ -24,6 +25,10 @@ protected:
           unsigned int coins = 0, int armor = 0, bool bubble = false);
 
 public:
+    bool isColliding = false;
+    sf::Clock followPathClock;
+    sf::Time followPathOffset = sf::seconds(3);
+
     std::shared_ptr<AI> ai;
     std::vector<Node> path;
     sf::Clock pathClock;
@@ -51,6 +56,18 @@ public:
     isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance); //as percentage (form 0 to 100)
 
     bool isPositionOccupied(sf::Vector2f pos, const std::vector<std::unique_ptr<Enemy>> &enemies);
+
+    float distanceToObstacle(sf::Vector2f position, const sf::RectangleShape &obstacle);
+
+    sf::Vector2f getPathReferencePoint(sf::Vector2i tileSize) const;
+
+    float length(sf::Vector2f vector);
+
+    bool isColliding1() const;
+
+    void setIsColliding(bool isColliding);
+
+
 };
 
 

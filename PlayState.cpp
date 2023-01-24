@@ -41,6 +41,29 @@ void PlayState::draw(float dt) const {
         arenaMap->drawLayer(this->game->window, last_layer);
     }
 
+    //FIXME remove it
+    /*
+    sf::RectangleShape shape;
+    if (!spawner->enemies.empty()) {
+        for (int i = 0; i < spawner->enemies[0]->path.size(); i++) {
+            shape.setSize(sf::Vector2f(32, 32));
+            shape.setPosition(sf::Vector2f(spawner->enemies[0]->path[i].getTile().x * 32,
+                                           spawner->enemies[0]->path[i].getTile().y * 32));
+            shape.setFillColor(sf::Color::Blue);
+            //this->game->window.draw(shape);
+        }
+
+        for (int i = 0; i < spawner->enemies[1]->path.size(); i++) {
+            shape.setSize(sf::Vector2f(32, 32));
+            shape.setPosition(sf::Vector2f(spawner->enemies[1]->path[i].getTile().x * 32,
+                                           spawner->enemies[1]->path[i].getTile().y * 32));
+            shape.setFillColor(sf::Color::Green);
+            //this->game->window.draw(shape);
+        }
+    }
+     */
+
+
     //draw viewfinder
     this->game->window.draw(viewfinderSprite);
 
@@ -480,13 +503,13 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
-/*
+
     for (int i = 0; i < 20; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
-*/
-    spawner->spawnKamikaze(tmpSpawnTile, 1);
+
+    //spawner->spawnKamikaze(tmpSpawnTile, 1);
     //spawner->spawnIncreasedDamage();
     //spawner->spawnLifePoints();
     /*
@@ -497,7 +520,7 @@ void PlayState::initRound() {
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
      */
-    remainEnemies = 1;
+    remainEnemies = 20;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
@@ -527,10 +550,12 @@ void PlayState::updateEnemies(float dt) {
                                                                              spawner->enemies[i]->isDeathAnimationEnded,
                                                                              spawner->enemies[i]->isDeathAnimationActive);
 
-        spawner->updateEnemy(*mike, dt, i, arenaMap->collides(spawner->enemies[i]->futureCharacterPosition(
+        sf::FloatRect futurePos = spawner->enemies[i]->futureCharacterPosition(
                 spawner->enemies[i]->normalize(
                         spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
-                dt), obstacle), obstacle); //update animation and movement
+                dt);
+        spawner->updateEnemy(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
+                             futurePos); //update animation and movement
         mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
         if (spawner->enemies[i]->weapon) {
             spawner->enemies[i]->setWeaponPosToShouldersPos();
