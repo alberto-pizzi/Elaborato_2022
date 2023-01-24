@@ -67,8 +67,6 @@ public:
 
     void drawEnemies(sf::RenderWindow &window, bool gameOver, float dt);
 
-    void updateSkinDirection(const sf::Vector2f &target);
-
     void
     updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
                 const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos);

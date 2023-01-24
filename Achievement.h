@@ -26,7 +26,7 @@ private:
 
     //info
     std::string name;
-    std::string description;
+    std::string description; //FIXME
 
     //colors
     const sf::Color tarnishColor = sf::Color(47, 47, 47);
@@ -70,6 +70,18 @@ public:
     static float getPreviousBoxPosY();
 
     static void setPreviousBoxPosY(float previousBoxPosY);
+
+    void setBoxSprite(const sf::Sprite &boxSprite);
+
+    void setActualProgress(unsigned int actualProgress);
+
+    void setTargetProgress(unsigned int targetProgress);
+
+    void setName(const std::string &name);
+
+    const std::string &getName() const;
+
+    unsigned int getTargetProgress() const;
 
 };
 

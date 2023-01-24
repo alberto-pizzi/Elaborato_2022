@@ -32,6 +32,27 @@ void AchievementManager::createAchievement(const std::string &name, std::string 
 }
 
 void AchievementManager::saveAchievements() {
+    std::ofstream achievementFile;
+
+    achievementFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        achievementFile.open(fileName);
+    }
+    catch (std::ios_base::failure &e) {
+        throw GameException("Error opening achievement file", fileName, false);
+    }
+
+    //write total achievements
+    achievementFile << achievements.size() << std::endl;
+
+    for (auto it = achievements.begin(); it != achievements.end(); it++) {
+        achievementFile << it->second->getName() << std::endl;
+        achievementFile << it->second->getActualProgress() << std::endl;
+        achievementFile << it->second->getTargetProgress() << std::endl;
+    }
+
+    achievementFile.close();
+
 
 }
 
@@ -64,4 +85,38 @@ void AchievementManager::drawAchievements(sf::RenderWindow &window) {
          */
 
     }
+}
+
+void AchievementManager::loadAchievements() {
+    std::ifstream achievementFile;
+
+    achievementFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        achievementFile.open(fileName);
+    }
+    catch (std::ios_base::failure &e) {
+        throw GameException("Error opening achievement file", fileName, false);
+    }
+
+    int totalAchievements;
+    std::string achievementName, actualProgress, target, totalAchievementsString;
+
+    //read total achievements
+    std::getline(achievementFile, totalAchievementsString);
+    totalAchievements = std::stoi(totalAchievementsString);
+
+    //init map
+    achievements.clear();
+
+    //read each achievement
+    for (int i = 0; i < totalAchievements; i++) {
+        std::getline(achievementFile, achievementName);
+        std::getline(achievementFile, actualProgress);
+        std::getline(achievementFile, target);
+        achievements[achievementName]->setName(achievementName);
+        achievements[achievementName]->setActualProgress(std::stoul(actualProgress));
+        achievements[achievementName]->setTargetProgress(std::stoul(target));
+    }
+
+    achievementFile.close();
 }

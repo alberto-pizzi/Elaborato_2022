@@ -11,6 +11,7 @@
 #include "Achievement.h"
 #include <map>
 #include <memory>
+#include <fstream>
 #include "TextureManager.h"
 
 
@@ -20,6 +21,9 @@ private:
 
     //textures
     TextureManager guiTextures;
+
+    //file
+    std::string fileName = "res/achievements/achievements.txt";
 
     //fonts
     sf::Font progressFont;
@@ -36,6 +40,8 @@ public:
     void createAchievement(const std::string &name, std::string description, unsigned int target);
 
     void saveAchievements();
+
+    void loadAchievements();
 
     static void drawAchievements(sf::RenderWindow &window);
 

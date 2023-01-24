@@ -77,39 +77,34 @@ void PlayState::update(float dt) {
         this->game->window.setView(arenaMap->playerView);
         isPaused = false;
     }
-    if (gameOver && (gameOverClock.getElapsedTime() >= gameOverTime))
+    if (gameOver && (gameOverClock.getElapsedTime() >= gameOverTime)) {
+        AchievementManager::getInstance()->saveAchievements();
         this->game->popState();
-    else if (!gameOver) {
-        checkAndUpdateRound();
+    } else if (!gameOver) {
+        //auto-save achievements
+        autoSaveProgress();
 
-        //update enemies skin direction based on mike positioning
-        //spawner->updateSkinDirection(mike->getSpriteCenter()); //FIXME
+        //round management
+        checkAndUpdateRound();
 
         //update all enemies
         updateEnemies(dt);
-        checkMikeDead(dt);
 
-        /*
-        if ((!isSpawned) && isRandomAbleTo(40,100)){
-            this->spawner->spawnWeapon();
-            std::cout<<"SPAWNED"<<std::endl;
-            isSpawned = true;
-        }
-         */
+        //check mike dead
+        checkMikeDead(dt);
 
         //update active bonuses like bubble, increase damage...
         mike->updateActiveBonuses();
         //update mike skin color when damaged, etc...
         mike->updateCharacterColor();
 
-        //std::cout<<"Active Bonuses: "<<mike->getActualBonuses().size()<<std::endl;
 
         //spawn bonuses (with determining conditions)
         spawnBonuses();
         //update bonuses (updates animation and despawn them)
         updateBonuses(dt);
 
-        //updateNotCyclicalAnimation Gui
+        //update gui
         if (mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED])
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
@@ -806,5 +801,12 @@ void PlayState::spawnBonuses() {
             spawner->spawnAmmunition(arenaMap->randomPassableTile());
     }
 
+}
+
+void PlayState::autoSaveProgress() {
+    if (saveClock.getElapsedTime() >= saveGap) {
+        AchievementManager::getInstance()->saveAchievements();
+        saveClock.restart();
+    }
 }
 

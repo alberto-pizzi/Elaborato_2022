@@ -4,6 +4,7 @@
 
 #include "MenuState.h"
 #include "PlayState.h"
+#include "AchievementState.h"
 
 enum NameButton {
     //these numbers are related with nButtons
@@ -137,6 +138,7 @@ void MenuState::select() {
         case Stats:
             //TODO implement stats state
             std::cout << "i'm stats" << std::endl;
+            //this->game->pushState(new AchievementState(this->game));
             break;
         case Exit:
             this->game->window.close();

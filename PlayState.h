@@ -87,6 +87,10 @@ private:
     sf::Clock gameOverClock;
     sf::Time gameOverTime = sf::seconds(5);
 
+    //auto-save progress
+    sf::Clock saveClock;
+    sf::Time saveGap = sf::seconds(5 * 60); //every 5 minutes save achievement progress to a file
+
 public:
     explicit PlayState(Game *game);
 
@@ -130,7 +134,7 @@ public:
 
     void spawnBonuses();
 
-
+    void autoSaveProgress();
 
 
 };

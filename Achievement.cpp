@@ -174,3 +174,27 @@ void Achievement::setPreviousBoxPosY(float previousBoxPosY) {
     Achievement::previousBoxPosY = previousBoxPosY;
 }
 
+void Achievement::setBoxSprite(const sf::Sprite &boxSprite) {
+    Achievement::boxSprite = boxSprite;
+}
+
+void Achievement::setActualProgress(unsigned int actualProgress) {
+    Achievement::actualProgress = actualProgress;
+}
+
+void Achievement::setTargetProgress(unsigned int targetProgress) {
+    Achievement::targetProgress = targetProgress;
+}
+
+void Achievement::setName(const std::string &name) {
+    Achievement::name = name;
+}
+
+const std::string &Achievement::getName() const {
+    return name;
+}
+
+unsigned int Achievement::getTargetProgress() const {
+    return targetProgress;
+}
+

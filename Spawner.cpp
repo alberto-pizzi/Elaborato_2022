@@ -57,11 +57,6 @@ void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
     }
 }
 
-void Spawner::updateSkinDirection(const sf::Vector2f &target) {
-    for (int i = 0; i < enemies.size(); i++)
-        enemies[i]->characterSkinDirection(target);
-}
-
 void Spawner::spawnNuke(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new Nuke(bonusesTextures.getTextureRef("bonusesBox"),
                                   calculatePosFromTile(spawnTile)));

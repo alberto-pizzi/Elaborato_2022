@@ -8,6 +8,8 @@ void AchievementState::draw(float dt) const {
     this->game->window.setView(achievementView);
     this->game->window.clear(backgroundColor);
 
+    //FIXME remove it
+    /*
     sf::RectangleShape shape;
     shape.setSize(sf::Vector2f(32, 32));
     sf::Vector2i shapePos = {0, 50};
@@ -15,6 +17,7 @@ void AchievementState::draw(float dt) const {
     shape.setPosition(worldShapePos);
     shape.setFillColor(sf::Color::Red);
     this->game->window.draw(shape);
+     */
 
     //this->game->window.draw(this->game->background);
 
@@ -87,11 +90,14 @@ AchievementState::AchievementState(Game *game) {
             AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().height /
             2));
 
+    //FIXME remove it
     //achievementView.setCenter(sf::Vector2f(-5*32,-5*32));
+    /*
     std::cout << "X: "
               << AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().x <<
               " Y: " << AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().y
               << std::endl;
+              */
     this->game->window.setView(achievementView);
 
     //init Y box pos as half window size
