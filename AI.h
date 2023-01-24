@@ -34,6 +34,8 @@ public:
 
     void calculateNodeCosts(const std::shared_ptr<Node> &currentNode, sf::Vector2i targetTile);
 
+    bool checkForObliqueShortcuts(std::shared_ptr<Node> currentNode, std::shared_ptr<Node> adjacentNode);
+
 
 };
 

@@ -36,9 +36,12 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
         openList.erase(openList.begin() + currentIndex);
         closedList.push_back(currentNode);
 
+
         // check if current node is the target node, if so return path
         if (currentNode->tile == targetTile)
             return reconstructPath(startNode, currentNode);
+
+
 
         // expand neighbors of current node
         currentNode->expandNeighbors(map);
@@ -47,6 +50,9 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
         for (int j = 0; j < currentNode->adjacentNodes.size(); j++) {
             std::shared_ptr<Node> adjacentNode = currentNode->adjacentNodes[j];
             if (isInsideClosedList(adjacentNode))
+                continue;
+
+            if (checkForObliqueShortcuts(currentNode, adjacentNode))
                 continue;
 
             if (!isInsideOpenList(adjacentNode)) {
@@ -78,7 +84,6 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
 
 // if no path was found, return an empty vector
     return {};
-
 }
 
 int AI::calculateManhattanDistance(sf::Vector2i startTile, sf::Vector2i targetTile) const {
@@ -134,3 +139,20 @@ void AI::calculateNodeCosts(const std::shared_ptr<Node> &currentNode, sf::Vector
     }
 }
 
+bool AI::checkForObliqueShortcuts(std::shared_ptr<Node> currentNode, std::shared_ptr<Node> adjacentNode) {
+    // check if the adjacent node is diagonal to the current node
+    if (currentNode->tile.x != adjacentNode->tile.x && currentNode->tile.y != adjacentNode->tile.y) {
+        // check if the nodes orthogonally adjacent to the adjacent node are blocked
+        sf::Vector2i leftNode(adjacentNode->tile.x - 1, adjacentNode->tile.y);
+        sf::Vector2i rightNode(adjacentNode->tile.x + 1, adjacentNode->tile.y);
+        sf::Vector2i upNode(adjacentNode->tile.x, adjacentNode->tile.y - 1);
+        sf::Vector2i downNode(adjacentNode->tile.x, adjacentNode->tile.y + 1);
+        if (map[leftNode.y][leftNode.x].isWalkable() ||
+            map[rightNode.y][rightNode.x].isWalkable() ||
+            map[upNode.y][upNode.x].isWalkable() ||
+            map[downNode.y][downNode.x].isWalkable()) {
+            return true;
+        }
+    }
+    return false;
+}
