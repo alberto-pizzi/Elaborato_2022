@@ -8,7 +8,7 @@ Archer::Archer(const sf::Texture &archerTexture, const sf::Texture &bowTexture, 
                const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin,
                sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap, bool animated, float hp,
                float speed,
-               unsigned int points, unsigned int coins, float armor, bool bubble)
+               unsigned int points, unsigned int coins, float armor)
         : Enemy(archerTexture, hp, speed, points, spawnTile,
                 tileSize, rectSkin, ARCHER, damageHit, nodeMap, 100, 200,
                 animated,

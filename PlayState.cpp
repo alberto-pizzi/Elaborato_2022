@@ -101,7 +101,7 @@ void PlayState::update(float dt) {
 
 
         //spawn bonuses (with determining conditions)
-        spawnBonuses();
+        //spawnBonuses(); //FIXME active it
         //update bonuses (updates animation and despawn them)
         updateBonuses(dt);
 
@@ -502,10 +502,11 @@ void PlayState::initRound() {
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 5; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
+
 
     //spawner->spawnKamikaze(tmpSpawnTile, 1);
     //spawner->spawnIncreasedDamage();
@@ -518,7 +519,7 @@ void PlayState::initRound() {
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
      */
-    remainEnemies = 20;
+    remainEnemies = 5;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
