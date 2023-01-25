@@ -8,7 +8,7 @@ Warrior::Warrior(const sf::Texture &warriorTexture, const sf::Texture &shieldTex
                  const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, float defense, sf::Vector2f damageHit,
                  const std::vector<std::vector<Node>> &nodeMap, float hitProbability, bool animated, float hp,
                  float speed,
-                 unsigned int points, unsigned int coins, int armor, bool bubble)
+                 unsigned int points, unsigned int coins, float armor, bool bubble)
         : Enemy(warriorTexture, hp, speed, points, spawnTile,
                 tileSize, rectSkin, WARRIOR, damageHit, nodeMap, hitProbability, 2, animated,
                 coins, armor, bubble), shield(shieldTexture, defense) {

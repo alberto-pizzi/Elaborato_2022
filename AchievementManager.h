@@ -22,12 +22,13 @@ private:
     //textures
     TextureManager guiTextures;
 
-    //file
+    //achievements file
     std::string fileName = "res/achievements/achievements.txt";
 
     //fonts
     sf::Font progressFont;
 
+    //instance
     static AchievementManager *instance;
 
     AchievementManager(Subject *subject, const TextureManager &guiTexManager);

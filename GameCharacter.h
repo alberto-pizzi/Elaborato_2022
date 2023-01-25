@@ -49,7 +49,7 @@ private:
     float defaultHP;
 protected:
     float HP;
-    int armor; //float
+    float armor;
     float speed;
     sf::Vector2f damageHit; //damage is included between min and max values x = MIN y = MAX
     bool bubble;
@@ -75,7 +75,8 @@ protected:
     //the protected constructor is to make the class non-instantiable (like an abstract class)
     GameCharacter(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
-                  float hitRange = 5, bool animated = true, unsigned int coins = 0, int armor = 0, bool bubble = false);
+                  float hitRange = 5, bool animated = true, unsigned int coins = 0, float armor = 0,
+                  bool bubble = false);
 
 public:
     //character movement

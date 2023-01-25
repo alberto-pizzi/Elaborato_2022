@@ -7,17 +7,17 @@
 Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
              const std::vector<std::vector<Node>> &nodeMap, float hitProbability, float hitRange, bool animated,
-             unsigned int coins, int armor, bool bubble) : GameCharacter(tex, hp, speed,
-                                                                         points,
-                                                                         tilePosition,
-                                                                         tileSize,
-                                                                         rectSkin,
-                                                                         characterType,
-                                                                         damageHit,
-                                                                         hitRange,
-                                                                         animated, coins,
-                                                                         armor, bubble),
-                                                           nodeMap(nodeMap), hitProbability(hitProbability) {
+             unsigned int coins, float armor, bool bubble) : GameCharacter(tex, hp, speed,
+                                                                           points,
+                                                                           tilePosition,
+                                                                           tileSize,
+                                                                           rectSkin,
+                                                                           characterType,
+                                                                           damageHit,
+                                                                           hitRange,
+                                                                           animated, coins,
+                                                                           armor, bubble),
+                                                             nodeMap(nodeMap), hitProbability(hitProbability) {
     if (hitProbability >= 100)
         this->hitProbability = 100;
     //this->sprite.setScale(sf::Vector2f(1,1));

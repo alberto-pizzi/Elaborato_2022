@@ -6,7 +6,8 @@
 
 Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
                    const sf::Vector2i &rectSkin, sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap,
-                   bool animated, int hp, float speed, unsigned int points, unsigned int coins, int armor, bool bubble)
+                   bool animated, int hp, float speed, unsigned int points, unsigned int coins, float armor,
+                   bool bubble)
         : Enemy(kamikazeTexture, hp, speed, points,
                 spawnTile,
                 tileSize, rectSkin, KAMIKAZE, damageHit, nodeMap, 100,

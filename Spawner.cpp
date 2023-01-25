@@ -139,7 +139,7 @@ void Spawner::spawnAmmunition(sf::Vector2i spawnTile) {
 
 void Spawner::spawnLifePoints(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("bonusesBox"),
-                                        calculatePosFromTile(spawnTile), 0));
+                                        calculatePosFromTile(spawnTile), 5)); //FIXME random quantity
 
     bonusTypeSpawnedInARound[LIFE_POINTS] = true;
 }
@@ -194,7 +194,7 @@ void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {
                                     weaponsTextures.getTextureRef("arrow"), spawnTile,
                                     tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, damage,
                                     nodeMap,
-                                    true)); //TODO add variable speed
+                                    true));
 }
 
 void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier) {
@@ -204,7 +204,7 @@ void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float da
     enemies.emplace_back(new Zombie(enemiesTextures.getTextureRef("zombie"), spawnTile,
                                     tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, damage,
                                     nodeMap, hitProbability,
-                                    true)); //TODO add variable speed
+                                    true));
 }
 
 void Spawner::spawnBoss(sf::Vector2i spawnTile, float hitProbability) {
@@ -213,7 +213,7 @@ void Spawner::spawnBoss(sf::Vector2i spawnTile, float hitProbability) {
     bosses.emplace_back(new Boss(enemiesTextures.getTextureRef("mike"), spawnTile,
                                  tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
                                  damage, nodeMap,
-                                 hitProbability)); //TODO add correct texture, variable speed and variable size
+                                 hitProbability)); //TODO add correct texture
 }
 
 sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &originCharacter,

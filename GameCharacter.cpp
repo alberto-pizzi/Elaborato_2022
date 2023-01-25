@@ -32,7 +32,7 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
                              const sf::Vector2i &tilePosition,
                              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
                              sf::Vector2f damageHit,
-                             float hitRange, bool animated, unsigned int coins, int armor, bool bubble)
+                             float hitRange, bool animated, unsigned int coins, float armor, bool bubble)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
