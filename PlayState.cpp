@@ -81,6 +81,7 @@ void PlayState::update(float dt) {
         AchievementManager::getInstance()->saveAchievements();
         this->game->popState();
     } else if (!gameOver) {
+
         //auto-save achievements
         autoSaveProgress();
 
@@ -133,6 +134,8 @@ void PlayState::handleInput() {
         switch (event.type) {
             // Close the window
             case sf::Event::Closed: {
+                //save achievements
+                AchievementManager::getInstance()->saveAchievements();
                 this->game->window.close();
                 break;
             }

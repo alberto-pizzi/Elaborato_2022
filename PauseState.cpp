@@ -30,6 +30,8 @@ void PauseState::handleInput() {
         switch (event.type) {
             // Close the window
             case sf::Event::Closed:
+                //save achievements
+                AchievementManager::getInstance()->saveAchievements();
                 game->window.close();
                 break;
                 // Resize the window
