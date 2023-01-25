@@ -11,7 +11,7 @@ Warrior::Warrior(const sf::Texture &warriorTexture, const sf::Texture &shieldTex
                  unsigned int points, unsigned int coins, float armor, bool bubble)
         : Enemy(warriorTexture, hp, speed, points, spawnTile,
                 tileSize, rectSkin, WARRIOR, damageHit, nodeMap, hitProbability, 2, animated,
-                coins, armor, bubble), shield(shieldTexture, defense) {
+                coins, armor), shield(shieldTexture, defense) {
     this->sprite.setScale(sf::Vector2f(1.75, 1.75));
 }
 
@@ -23,10 +23,10 @@ void Warrior::receiveDamage(float damagePoints) {
         else {
             shield.defense = 0;
             shieldDamage *= -1; //if negative, set it to positive
-            GameCharacter::receiveDamage(shieldDamage);
+            Enemy::receiveDamage(shieldDamage);
         }
     } else
-        GameCharacter::receiveDamage(damagePoints);
+        Enemy::receiveDamage(damagePoints);
 }
 
 void Warrior::drawEntity(sf::RenderWindow &window, bool gameOver) {

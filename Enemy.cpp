@@ -7,17 +7,17 @@
 Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
              const std::vector<std::vector<Node>> &nodeMap, float hitProbability, float hitRange, bool animated,
-             unsigned int coins, float armor, bool bubble) : GameCharacter(tex, hp, speed,
-                                                                           points,
-                                                                           tilePosition,
-                                                                           tileSize,
-                                                                           rectSkin,
-                                                                           characterType,
-                                                                           damageHit,
-                                                                           hitRange,
-                                                                           animated, coins,
-                                                                           armor, bubble),
-                                                             nodeMap(nodeMap), hitProbability(hitProbability) {
+             unsigned int coins, float armor) : GameCharacter(tex, hp, speed,
+                                                              points,
+                                                              tilePosition,
+                                                              tileSize,
+                                                              rectSkin,
+                                                              characterType,
+                                                              damageHit,
+                                                              hitRange,
+                                                              animated, coins,
+                                                              armor),
+                                                nodeMap(nodeMap), hitProbability(hitProbability) {
     if (hitProbability >= 100)
         this->hitProbability = 100;
     //this->sprite.setScale(sf::Vector2f(1,1));
@@ -136,5 +136,25 @@ bool Enemy::isColliding1() const {
 
 void Enemy::setIsColliding(bool isColliding) {
     Enemy::isColliding = isColliding;
+}
+
+void Enemy::updateCharacterColor() {
+    if (isHit) {
+        sprite.setColor(hitColor);
+        if (hitColorClock.getElapsedTime() >= hitTimeColor)
+            isHit = false;
+    } else {
+        sprite.setColor(sf::Color::White);
+        if (weapon != nullptr)
+            weapon->weaponSprite.setColor(sf::Color::White);
+    }
+}
+
+void Enemy::receiveDamage(float damagePoints) {
+    if (armor > 0) {
+        damagePoints = damageWithArmor(damagePoints);
+        armor--;
+    }
+    HP -= damagePoints;
 }
 

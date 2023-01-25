@@ -13,7 +13,7 @@ Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawn
                 tileSize, rectSkin, KAMIKAZE, damageHit, nodeMap, 100,
                 3,
                 animated,
-                coins, armor, bubble) {
+                coins, armor) {
 
     //FIXME
     explosionArea.setRadius(56);

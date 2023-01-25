@@ -36,27 +36,22 @@ enum GameCharacterSize {
     spriteSizeX = 32, spriteSizeY = 32,
 };
 
-const int nEnemyTypes = 3; //FIXME
-
 class GameCharacter : public PosEntity {
 private:
     int characterType;
-    sf::Time hitTimeColor = sf::seconds(0.3);
-
-    bool isHit = false;
-    const sf::Color bubbleColor = sf::Color(0, 191, 255);
-    const sf::Color hitColor = sf::Color(102, 0, 0);
     float defaultHP;
 protected:
     float HP;
     float armor;
     float speed;
     sf::Vector2f damageHit; //damage is included between min and max values x = MIN y = MAX
-    bool bubble;
+    bool isHit = false;
     unsigned int points;
     unsigned int coins;
     sf::Texture texture;
     sf::Sprite sprite;
+
+    //animation
     std::vector<sf::IntRect> goRight;
     std::vector<sf::IntRect> goLeft;
     std::vector<sf::IntRect> goDown;
@@ -71,27 +66,29 @@ protected:
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
     Dice randomDice;
+    const sf::Color hitColor = sf::Color(102, 0, 0);
+    sf::Time hitTimeColor = sf::seconds(0.3);
+public:
+    sf::Clock hitColorClock;
 
-    //the protected constructor is to make the class non-instantiable (like an abstract class)
     GameCharacter(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
-                  float hitRange = 5, bool animated = true, unsigned int coins = 0, float armor = 0,
-                  bool bubble = false);
+                  float hitRange = 5, bool animated = true, unsigned int coins = 0, float armor = 0);
 
-public:
     //character movement
     bool keyStates[4] = {false, false, false, false};
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
+    bool skinDirection[4] = {false, false, false, false};
 
     //death animation
     bool despawnStarted = false;
     bool isDeathAnimationActive = false;
     bool isDeathAnimationEnded = false;
 
-    sf::Clock hitColorClock; //FIXME getter
-
-    bool skinDirection[4] = {false, false, false, false};
+    //weapon
     std::unique_ptr<Weapon> weapon;
+
+    //animation
     Animation currentAnimation{idle, 10.0f};
 
     const sf::Sprite &getSprite() const;
@@ -105,9 +102,9 @@ public:
 
     sf::FloatRect futureCharacterPosition(const sf::Vector2f &offset, float dt);
 
-    virtual void receiveDamage(float damagePoints);
+    virtual void receiveDamage(float damagePoints) = 0;
 
-    void updateCharacterColor();
+    virtual void updateCharacterColor() = 0;
 
     bool isDead() const;
 
@@ -119,15 +116,11 @@ public:
 
     sf::Vector2f normalize(sf::Vector2f vector) const;
 
-    bool isLegalFight(const GameCharacter &enemy) const;
-
     virtual void drawEntity(sf::RenderWindow &window, bool gameOver);
 
     float getHp() const;
 
     int getArmor() const;
-
-    bool isBubble() const;
 
     int getPoints() const;
 
@@ -140,8 +133,6 @@ public:
     void setArmor(int armor);
 
     void setSpeed(float speed);
-
-    void setBubble(bool bubble);
 
     void setPoints(int points);
 

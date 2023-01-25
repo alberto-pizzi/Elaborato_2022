@@ -22,7 +22,7 @@ protected:
     Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
           const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
           const std::vector<std::vector<Node>> &nodeMap, float hitProbability, float hitRange = 5, bool animated = true,
-          unsigned int coins = 0, float armor = 0, bool bubble = false);
+          unsigned int coins = 0, float armor = 0);
 
 public:
     bool isColliding = false;
@@ -66,6 +66,10 @@ public:
     bool isColliding1() const;
 
     void setIsColliding(bool isColliding);
+
+    void updateCharacterColor() override;
+
+    void receiveDamage(float damagePoints) override;
 
 
 };

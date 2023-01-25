@@ -12,7 +12,7 @@ Archer::Archer(const sf::Texture &archerTexture, const sf::Texture &bowTexture, 
         : Enemy(archerTexture, hp, speed, points, spawnTile,
                 tileSize, rectSkin, ARCHER, damageHit, nodeMap, 100, 200,
                 animated,
-                coins, armor, bubble) {
+                coins, armor) {
 
     weapon = std::unique_ptr<Weapon>(new Bow(true, bowTexture, arrowTexture, damageHit.y)); //max value of damage hit
 }

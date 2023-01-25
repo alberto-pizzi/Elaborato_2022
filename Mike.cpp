@@ -21,8 +21,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         rectSkin, MIKE, {0, 0}, 5,
                         true,
                         0,
-                        armor,
-                        false),
+                        armor),
           gui(this->points, 1, 12, 12, true, startRoundCountdownSeconds, handgunTexture,
               guiTexManager) { //WARNING: Mike's damage hit never will be used
 
@@ -131,5 +130,39 @@ void Mike::incrementKills(int enemyType) {
 
 void Mike::resetRoundKills() {
     roundKills = 0;
+}
+
+bool Mike::isBubble() const {
+    return bubble;
+}
+
+void Mike::setBubble(bool bubble) {
+    Mike::bubble = bubble;
+}
+
+void Mike::updateCharacterColor() {
+    if (isHit) {
+        sprite.setColor(hitColor);
+        if (hitColorClock.getElapsedTime() >= hitTimeColor)
+            isHit = false;
+    } else if (bubble) {
+        sprite.setColor(bubbleColor);
+        if (weapon != nullptr)
+            weapon->weaponSprite.setColor(bubbleColor);
+    } else {
+        sprite.setColor(sf::Color::White);
+        if (weapon != nullptr)
+            weapon->weaponSprite.setColor(sf::Color::White);
+    }
+}
+
+void Mike::receiveDamage(float damagePoints) {
+    if (!bubble) {
+        if (armor > 0) {
+            damagePoints = damageWithArmor(damagePoints);
+            armor--;
+        }
+        HP -= damagePoints;
+    }
 }
 

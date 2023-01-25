@@ -11,7 +11,7 @@ Zombie::Zombie(const sf::Texture &zombieTexture, const sf::Vector2i &spawnTile, 
         : Enemy(zombieTexture, hp, speed, points, spawnTile,
                 tileSize, rectSkin, ZOMBIE, damageHit, nodeMap, hitProbability, 2,
                 animated,
-                coins, armor, bubble) {
+                coins, armor) {
 
 }
 

@@ -17,6 +17,7 @@ enum typeOfWeapon {
 
 class Mike : public GameCharacter, public Subject {
 private:
+    bool bubble;
     int killStreak = 0;
     struct ActualBonus {
         int bonusType;
@@ -27,6 +28,9 @@ private:
     unsigned int kills = 0;
     unsigned int roundKills = 0;
     std::map<int, unsigned int> enemyTypeKills;
+
+    //colors
+    const sf::Color bubbleColor = sf::Color(0, 191, 255);
 
     //observers
     std::list<Observer *> observers;
@@ -48,6 +52,10 @@ public:
     //void drawEntity(sf::RenderWindow &window);
     void drawEntity(sf::RenderWindow &window, bool gameOver) override;
 
+    void updateCharacterColor() override;
+
+    void receiveDamage(float damagePoints) override;
+
     void addToOwnBonuses(int bonusType, sf::Time duration);
 
     void updateActiveBonuses();
@@ -67,6 +75,10 @@ public:
     void notifyObserver(std::string achievementName, unsigned int value) const override;
 
     void incrementKills(int enemyType);
+
+    bool isBubble() const;
+
+    void setBubble(bool bubble);
 };
 
 

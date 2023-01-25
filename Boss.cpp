@@ -17,8 +17,7 @@ Boss::Boss(const sf::Texture &bossTexture, const sf::Vector2i &spawnTile, const 
                                                                  rectSkin, BOSS,
                                                                  damageHit, nodeMap, hitProbability, 1,
                                                                  animated,
-                                                                 coins, armor,
-                                                                 bubble) {
+                                                                 coins, armor) {
     this->sprite.setScale(sf::Vector2f(scaleSize));
     roundCount++;
 }

@@ -4,17 +4,6 @@
 
 #include "GameCharacter.h"
 
-
-void GameCharacter::receiveDamage(float damagePoints) {
-    if (!bubble) {
-        if (armor > 0) {
-            damagePoints = damageWithArmor(damagePoints);
-            armor--;
-        }
-        HP -= damagePoints;
-    }
-}
-
 sf::Vector2f GameCharacter::normalize(sf::Vector2f vector) const {
     auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
     //Prevent division by zero
@@ -24,20 +13,15 @@ sf::Vector2f GameCharacter::normalize(sf::Vector2f vector) const {
         return vector / norm;
 }
 
-bool GameCharacter::isLegalFight(const GameCharacter &enemy) const {
-    return false;
-}
-
 GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsigned int points,
                              const sf::Vector2i &tilePosition,
                              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
                              sf::Vector2f damageHit,
-                             float hitRange, bool animated, unsigned int coins, float armor, bool bubble)
+                             float hitRange, bool animated, unsigned int coins, float armor)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
-          armor(armor),
-          bubble(bubble), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType),
+          armor(armor), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType),
           damageHit(damageHit), defaultHP(hp) {
 
     sprite.setTexture(texture);
@@ -124,10 +108,6 @@ int GameCharacter::getArmor() const {
     return armor;
 }
 
-bool GameCharacter::isBubble() const {
-    return bubble;
-}
-
 int GameCharacter::getPoints() const {
     return points;
 }
@@ -146,10 +126,6 @@ void GameCharacter::setArmor(int armor) {
 
 void GameCharacter::setSpeed(float speed) {
     GameCharacter::speed = speed;
-}
-
-void GameCharacter::setBubble(bool bubble) {
-    GameCharacter::bubble = bubble;
 }
 
 void GameCharacter::setPoints(int points) {
@@ -201,22 +177,6 @@ float GameCharacter::damageWithArmor(float damagePoints) const {
 void GameCharacter::drawEntity(sf::RenderWindow &window, bool gameOver) {
     sprite.setTextureRect(currentAnimation.getCurrentRect());
     window.draw(sprite);
-}
-
-void GameCharacter::updateCharacterColor() {
-    if (isHit) {
-        sprite.setColor(hitColor);
-        if (hitColorClock.getElapsedTime() >= hitTimeColor)
-            isHit = false;
-    } else if (bubble) {
-        sprite.setColor(bubbleColor);
-        if (weapon != nullptr)
-            weapon->weaponSprite.setColor(bubbleColor);
-    } else {
-        sprite.setColor(sf::Color::White);
-        if (weapon != nullptr)
-            weapon->weaponSprite.setColor(sf::Color::White);
-    }
 }
 
 void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
