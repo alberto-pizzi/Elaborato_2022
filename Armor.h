@@ -9,9 +9,9 @@
 
 class Armor : public Bonus {
 private:
-    int quantity;
+    float quantity;
 public:
-    Armor(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 6,
+    Armor(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, float quantity, int points = 6,
           sf::Time stayTime = sf::seconds(25));
 
     void doSpecialAction(Mike &character) override;

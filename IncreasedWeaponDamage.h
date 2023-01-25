@@ -11,7 +11,7 @@ class IncreasedWeaponDamage : public Bonus {
 private:
     float multiplier;
 public:
-    IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 10,
+    IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, float multiplier, int points = 10,
                           sf::Time stayTime = sf::seconds(25));
 
     void doSpecialAction(Mike &character) override;

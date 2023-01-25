@@ -12,7 +12,7 @@ class Ammunition : public Bonus {
 private:
     int quantity;
 public:
-    Ammunition(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points = 5,
+    Ammunition(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int quantity, int points = 5,
                sf::Time stayTime = sf::seconds(25));
 
     void doSpecialAction(Mike &character) override;

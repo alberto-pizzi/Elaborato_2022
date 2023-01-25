@@ -131,15 +131,21 @@ void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex,
 }
 
 void Spawner::spawnAmmunition(sf::Vector2i spawnTile) {
+    //casual ammo quantity (change follow line is you want to change min e max values)
+    int quantity = chanceDice.casualNumber(5, 40);
+
     bonuses.emplace_back(new Ammunition(bonusesTextures.getTextureRef("bonusesBox"),
-                                        calculatePosFromTile(spawnTile)));
+                                        calculatePosFromTile(spawnTile), quantity));
 
     bonusTypeSpawnedInARound[AMMUNITION] = true;
 }
 
 void Spawner::spawnLifePoints(sf::Vector2i spawnTile) {
+    //casual life points quantity (change follow line is you want to change min e max values)
+    float quantity = static_cast<float>(chanceDice.casualNumber(1, 8));
+
     bonuses.emplace_back(new LifePoints(bonusesTextures.getTextureRef("bonusesBox"),
-                                        calculatePosFromTile(spawnTile), 5)); //FIXME random quantity
+                                        calculatePosFromTile(spawnTile), quantity));
 
     bonusTypeSpawnedInARound[LIFE_POINTS] = true;
 }
@@ -152,15 +158,22 @@ void Spawner::spawnBubble(sf::Vector2i spawnTile) {
 }
 
 void Spawner::spawnArmor(sf::Vector2i spawnTile) {
+    //casual armor quantity (change follow line is you want to change min e max values)
+    float quantity = static_cast<float>(chanceDice.casualNumber(3, 15));
+
     bonuses.emplace_back(new Armor(bonusesTextures.getTextureRef("bonusesBox"),
-                                   calculatePosFromTile(spawnTile)));
+                                   calculatePosFromTile(spawnTile), quantity));
 
     bonusTypeSpawnedInARound[ARMOR] = true;
 }
 
 void Spawner::spawnIncreasedDamage(sf::Vector2i spawnTile) {
+    //casual multiplier (change follow line is you want to change min e max values)
+    float multiplier = static_cast<float>(chanceDice.casualNumber(12, 25));
+    multiplier /= 10; //from 1.2 to 2.5
+
     bonuses.emplace_back(new IncreasedWeaponDamage(bonusesTextures.getTextureRef("bonusesBox"),
-                                                   calculatePosFromTile(spawnTile)));
+                                                   calculatePosFromTile(spawnTile), multiplier));
 
     bonusTypeSpawnedInARound[INCREASED_DAMAGE] = true;
 }
@@ -169,11 +182,15 @@ void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float d
     sf::Vector2f damage = {3, 5};
     damage *= damageMultiplier;
 
+    //casual defense value (change follow line is you want to change min e max values)
+    float defense = static_cast<float>(chanceDice.casualNumber(5, 40));
+
     enemies.emplace_back(
             new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
-                        tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, 10, damage, nodeMap,
+                        tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, defense, damage,
+                        nodeMap,
                         hitProbability,
-                        true)); //TODO add correct texture and variable speed
+                        true)); //TODO add correct texture
 }
 
 void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
@@ -183,7 +200,7 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
     enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("kamikaze"), spawnTile,
                                       tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
                                       damage, nodeMap,
-                                      true)); //TODO add correct texture and variable speed
+                                      true)); //TODO add correct texture
 }
 
 void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {

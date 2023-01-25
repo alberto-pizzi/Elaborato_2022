@@ -4,15 +4,16 @@
 
 #include "IncreasedWeaponDamage.h"
 
-IncreasedWeaponDamage::IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords, int points,
+IncreasedWeaponDamage::IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
+                                             float multiplier, int points,
                                              sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, INCREASED_DAMAGE, {64, 64},
                 1,
                 false,
                 true,
-                true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
-    duration = sf::seconds(20); //FIXME set random seconds
-    multiplier = 1.3f; //FIXME set random multiplier
+                true), multiplier(
+        multiplier) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
+    duration = sf::seconds(20);
 }
 
 void IncreasedWeaponDamage::doSpecialAction(Mike &character) {
