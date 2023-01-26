@@ -61,13 +61,16 @@ protected:
     const int deathFrames = 8;
     sf::Vector2i fileTextureRectSkinSize;
 
+    //colors
+    const sf::Color bubbleColor = sf::Color(0, 191, 255);
+    const sf::Color hitColor = sf::Color(102, 0, 0);
+
     //hit attributes
     float hitRange; //in coords
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
     Dice randomDice;
-    const sf::Color hitColor = sf::Color(102, 0, 0);
-    sf::Time hitTimeColor = sf::seconds(0.3);
+    const sf::Time hitTimeColor = sf::seconds(0.3);
 public:
     sf::Clock hitColorClock;
 
@@ -165,6 +168,8 @@ public:
     const sf::Color &getHitColor() const;
 
     float getDefaultHp() const;
+
+    float calculateDistanceBetweenPositions(sf::Vector2f pos1, sf::Vector2f pos2) const;
 };
 
 

@@ -34,7 +34,7 @@ private:
     //active entities
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Bonus>> bonuses;
-    std::vector<std::unique_ptr<Enemy>> bosses;
+    std::vector<std::unique_ptr<Boss>> bosses;
     std::map<int, bool> bonusTypeSpawnedInARound;
 
     //texture managers
@@ -57,7 +57,7 @@ public:
 
     const std::vector<std::unique_ptr<Bonus>> &getBonuses() const;
 
-    const std::vector<std::unique_ptr<Enemy>> & getBosses() const;
+    const std::vector<std::unique_ptr<Boss>> &getBosses() const;
 
     void spawnWeapon(sf::Vector2i spawnTile);
 
@@ -70,6 +70,9 @@ public:
     void
     updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
                 const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos);
+
+    void updateBoss(const GameCharacter &target, float dt, int bossIndex, const std::vector<sf::RectangleShape> &walls,
+                    sf::FloatRect futurePos);
 
     void spawnCoin(sf::Vector2f spawnPos, int value);
 
@@ -95,7 +98,7 @@ public:
 
     void spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier);
 
-    void spawnBoss(sf::Vector2i spawnTile, float hitProbability);
+    void spawnBoss(sf::Vector2i spawnTile, float damageMultiplier);
 
     sf::Vector2f characterPositionRelativeToAnother(const GameCharacter &originCharacter,
                                                     const GameCharacter &targetCharacter) const;

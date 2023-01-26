@@ -90,6 +90,8 @@ void PlayState::update(float dt) {
 
         //update all enemies
         updateEnemies(dt);
+        //update all bosses
+        updateBosses(dt); //FIXME
 
         //check mike dead
         checkMikeDead(dt);
@@ -101,7 +103,7 @@ void PlayState::update(float dt) {
 
 
         //spawn bonuses (with determining conditions)
-        //spawnBonuses(); //FIXME active it
+        spawnBonuses();
         //update bonuses (updates animation and despawn them)
         updateBonuses(dt);
 
@@ -110,7 +112,7 @@ void PlayState::update(float dt) {
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
         mike->gui.updatePoints(mike->getPoints());
-        mike->gui.updateHealthBar(mike->getHp());
+        mike->gui.updateHealthBar(mike->getHp(), mike->getDefaultHp());
     }
 }
 
@@ -285,6 +287,7 @@ void PlayState::loadTextures() {
     charactersTextures.loadTexture("zombie", "res/textures/zombie.png");
     charactersTextures.loadTexture("archer", "res/textures/archer.png");
     charactersTextures.loadTexture("kamikaze", "res/textures/kamikaze.png");
+    charactersTextures.loadTexture("boss", "res/textures/boss.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
@@ -295,10 +298,12 @@ void PlayState::loadTextures() {
     weaponsTextures.loadTexture("assaultRifle", "res/textures/assault_rifle.png");
     weaponsTextures.loadTexture("shotgun", "res/textures/shotgun.png");
     weaponsTextures.loadTexture("bow", "res/textures/bow.png");
+    weaponsTextures.loadTexture("scepter", "res/textures/scepter.png");
 
     //load bullets
     weaponsTextures.loadTexture("bullet", "res/textures/bullet.png");
     weaponsTextures.loadTexture("arrow", "res/textures/arrow.png");
+    weaponsTextures.loadTexture("energy", "res/textures/energy.png");
 
     //load bonuses textures
     bonusesTextures.loadTexture("weaponBox", "res/textures/bonus_weapons.png");
@@ -502,11 +507,12 @@ void PlayState::initRound() {
     //spawner->spawnArcher(arenaMap->randomPassableTile());
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
 
+    /*
     for (int i = 0; i < 5; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnZombie(tmpSpawnTile, 80, 1);
     }
-
+*/
 
     //spawner->spawnKamikaze(tmpSpawnTile, 1);
     //spawner->spawnIncreasedDamage();
@@ -519,7 +525,9 @@ void PlayState::initRound() {
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
      */
-    remainEnemies = 5;
+    remainEnemies = 0;
+    spawner->spawnBoss({35, 20}, 1);
+    remainBosses = 1;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
@@ -632,7 +640,7 @@ void PlayState::spawnEachTypeOfEnemies() {
 
     for (int i = 0; i < totEnemiesForType[BOSS].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnBoss(tmpSpawnTile, calculateEnemyHitProbability(BOSS));
+        spawner->spawnBoss(tmpSpawnTile, calculateDamageMultiplierPerRound());
     }
 
 }
@@ -665,7 +673,7 @@ void PlayState::checkAndUpdateRound() {
     }
 }
 
-void PlayState::updateViewfinderColor(const Enemy &enemy) {
+void PlayState::updateViewfinderColor(const GameCharacter &enemy) {
     if (enemy.isHit1())
         viewfinderSprite.setColor(enemy.getHitColor());
     else
@@ -811,6 +819,59 @@ void PlayState::autoSaveProgress() {
     if (saveClock.getElapsedTime() >= saveGap) {
         AchievementManager::getInstance()->saveAchievements();
         saveClock.restart();
+    }
+}
+
+void PlayState::updateBosses(float dt) {
+    for (int i = 0; i < spawner->bosses.size(); i++) {
+
+        if (spawner->bosses[i]->isDeathAnimationActive)
+            spawner->bosses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                            spawner->bosses[i]->isDeathAnimationEnded,
+                                                                            spawner->bosses[i]->isDeathAnimationActive);
+
+        sf::FloatRect futurePos = spawner->bosses[i]->futureCharacterPosition(
+                spawner->bosses[i]->normalize(
+                        spawner->characterPositionRelativeToAnother(*spawner->bosses[i], *mike)),
+                dt);
+        spawner->updateBoss(*mike, dt, i, arenaMap->rectWalls, futurePos); //update animation and movement
+        mike->weapon->updateBullets(arenaMap, *(spawner->bosses[i]));
+        if (spawner->bosses[i]->weapon) {
+            spawner->bosses[i]->setWeaponPosToShouldersPos();
+
+            spawner->bosses[i]->weapon->updateBullets(arenaMap, *mike);
+            if (!mike->isDead())
+                spawner->bosses[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                        spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
+                                                                                        spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
+        }
+        spawner->bosses[i]->updateCharacterColor();
+        updateViewfinderColor(*spawner->bosses[i]);
+
+        if (spawner->bosses[i]->isDead()) {
+
+            spawner->bosses[i]->startDespawning();
+            spawner->bosses[i]->isDeathAnimationActive = true;
+            if (spawner->bosses[i]->isDeathAnimationEnded) {
+                spawner->spawnCoin(spawner->bosses[i]->getSpriteCenter(), spawner->bosses[i]->getCoins());
+
+                //update mike kills
+                mike->incrementKills(spawner->bosses[i]->getCharacterType());
+
+                //despawn enemy
+                spawner->despawnEnemy(i, remainEnemies);
+            }
+
+            if (spawner->bosses.empty())
+                break;
+        } else {
+            if (spawner->bosses[i]->weapon->shotClock.getElapsedTime() >=
+                spawner->bosses[i]->weapon->getNextShotDelay()) {
+                sf::Vector2f origin = spawner->bosses[i]->getSpriteCenter();
+                sf::Vector2f translation = mike->getSpriteCenter() - origin;
+                spawner->bosses[i]->weapon->shoot(spawner->bosses[i]->normalize(translation));
+            }
+        }
     }
 }
 

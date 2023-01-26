@@ -29,9 +29,6 @@ private:
     unsigned int roundKills = 0;
     std::map<int, unsigned int> enemyTypeKills;
 
-    //colors
-    const sf::Color bubbleColor = sf::Color(0, 191, 255);
-
     //observers
     std::list<Observer *> observers;
 

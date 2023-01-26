@@ -12,7 +12,7 @@ const std::vector<std::unique_ptr<Bonus>> &Spawner::getBonuses() const {
     return bonuses;
 }
 
-const std::vector<std::unique_ptr<Enemy>> & Spawner::getBosses() const {
+const std::vector<std::unique_ptr<Boss>> &Spawner::getBosses() const {
     return bosses;
 }
 
@@ -51,8 +51,15 @@ void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
     for (int i = 0; i < enemies.size(); i++) {
         enemies[i]->drawEntity(window, gameOver);
         if (enemies[i]->weapon && !enemies[i]->isDead()) {
-            enemies[i]->weapon->drawWeapon(window);
+            //enemies[i]->weapon->drawWeapon(window);
             enemies[i]->weapon->drawBullets(window, dt);
+        }
+    }
+    for (int i = 0; i < bosses.size(); i++) {
+        bosses[i]->drawEntity(window, gameOver);
+        if (bosses[i]->weapon && !bosses[i]->isDead()) {
+            //bosses[i]->weapon->drawWeapon(window);
+            bosses[i]->weapon->drawBullets(window, dt);
         }
     }
 }
@@ -224,13 +231,14 @@ void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float da
                                     true));
 }
 
-void Spawner::spawnBoss(sf::Vector2i spawnTile, float hitProbability) {
+void Spawner::spawnBoss(sf::Vector2i spawnTile, float damageMultiplier) {
     sf::Vector2f damage = {8, 13};
+    damage *= damageMultiplier;
 
-    bosses.emplace_back(new Boss(enemiesTextures.getTextureRef("mike"), spawnTile,
+    bosses.emplace_back(new Boss(enemiesTextures.getTextureRef("boss"), weaponsTextures.getTextureRef("scepter"),
+                                 weaponsTextures.getTextureRef("energy"), spawnTile,
                                  tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
-                                 damage, nodeMap,
-                                 hitProbability)); //TODO add correct texture
+                                 damage));
 }
 
 sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &originCharacter,
@@ -403,5 +411,37 @@ bool Spawner::isAbleToSpawn(const Dice &dice, float spawnChance, float spawnProb
         return true;
     else
         return false;
+}
+
+void
+Spawner::updateBoss(const GameCharacter &target, float dt, int bossIndex, const std::vector<sf::RectangleShape> &walls,
+                    sf::FloatRect futurePos) {
+
+    if (!bosses[bossIndex]->isDead()) {
+
+        //check map collision
+        bool collision = false;
+
+        for (int i = 0; i < walls.size(); i++) {
+            if (futurePos.intersects(walls[i].getGlobalBounds())) {
+                collision = true;
+                break;
+            }
+        }
+
+        sf::Vector2f futureSpriteCenter = {futurePos.left + futurePos.width / 2, futurePos.top + futurePos.height / 2};
+
+        if (!collision && (bosses[bossIndex]->calculateDistanceBetweenPositions(bosses[bossIndex]->getSpawnOrigin(),
+                                                                                futureSpriteCenter) <=
+                           bosses[bossIndex]->getMaxMovingRange()))
+            // move the enemy in a straight line towards the target
+            bosses[bossIndex]->move(
+                    bosses[bossIndex]->normalize(characterPositionRelativeToAnother(*bosses[bossIndex], target)),
+                    dt);
+        bosses[bossIndex]->characterSkinDirection(target.getSpriteCenter());
+
+    } else
+        bosses[bossIndex]->currentAnimation.update(dt); //enemies must be moving forever
+
 }
 

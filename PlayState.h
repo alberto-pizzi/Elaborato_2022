@@ -114,6 +114,8 @@ public:
 
     void updateEnemies(float dt);
 
+    void updateBosses(float dt);
+
     void initRound();
 
     void spawnEachTypeOfEnemies();
@@ -124,7 +126,7 @@ public:
 
     void checkAndUpdateRound();
 
-    void updateViewfinderColor(const Enemy &enemy);
+    void updateViewfinderColor(const GameCharacter &enemy);
 
     void checkMikeDead(float dt);
 

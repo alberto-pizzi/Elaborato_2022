@@ -54,8 +54,8 @@ void Weapon::drawWeapon(sf::RenderWindow &window) {
         tmp.width = currentAnimation.getOriginalAnimationSizeX();
     //weaponSprite.setTextureRect(currentAnimation.getCurrentRect());
     weaponSprite.setTextureRect(tmp);
-    window.draw(weaponSprite);
     //window.draw(hitBox);
+    window.draw(weaponSprite);
 }
 
 bool Weapon::thereAreRemainingBullets() const {

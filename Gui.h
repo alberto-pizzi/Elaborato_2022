@@ -76,7 +76,7 @@ public:
 
     void message(std::string message);
 
-    void updateHealthBar(float hp);
+    void updateHealthBar(float HP, float maxHP);
 
     void
     updateWeaponType(const sf::Texture &newWeaponTexture, const sf::IntRect &idleFrame, const sf::Vector2f &hitboxSize);

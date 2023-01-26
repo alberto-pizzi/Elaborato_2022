@@ -176,7 +176,15 @@ float GameCharacter::damageWithArmor(float damagePoints) const {
 
 void GameCharacter::drawEntity(sf::RenderWindow &window, bool gameOver) {
     sprite.setTextureRect(currentAnimation.getCurrentRect());
-    window.draw(sprite);
+    if (!skinDirection[UP]) {
+        window.draw(sprite);
+        if (weapon)
+            window.draw(weapon->weaponSprite);
+    } else {
+        if (weapon)
+            window.draw(weapon->weaponSprite);
+        window.draw(sprite);
+    }
 }
 
 void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
@@ -195,7 +203,8 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
     //when mouse exceeds bisects (+- 45°) of all quadrants, character changes body direction
     if (targetPos.x >= origin.x) {
         if (weapon != nullptr)
-            weapon->weaponSprite.setScale(sf::Vector2f(1, 1));
+            weapon->weaponSprite.setScale(
+                    sf::Vector2f(std::abs(weapon->weaponSprite.getScale().x), weapon->weaponSprite.getScale().y));
         if ((translation.y < translation.x) && (translation.y > -(translation.x))) {
             currentAnimation.setMovementAnimation(goRight, frameDuration, RIGHT);
             skinDirection[UP] = false;
@@ -217,7 +226,8 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
         }
     } else if (targetPos.x < origin.x) {
         if (weapon != nullptr)
-            weapon->weaponSprite.setScale(sf::Vector2f(-1, 1));
+            weapon->weaponSprite.setScale(
+                    sf::Vector2f(-std::abs(weapon->weaponSprite.getScale().x), weapon->weaponSprite.getScale().y));
         if ((translation.y > translation.x) && (translation.y < -(translation.x))) {
             currentAnimation.setMovementAnimation(goLeft, frameDuration, LEFT);
             skinDirection[UP] = false;
@@ -246,6 +256,8 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
             weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
         else if (weapon->getWeaponName() == "shotgun")
             weapon->weaponSprite.setOrigin(sf::Vector2f(21, 10));
+        else if (weapon->getWeaponName() == "scepter")
+            weapon->weaponSprite.setOrigin(sf::Vector2f(7, 8));
 
         weapon->weaponSprite.setRotation(degrees);
         weapon->setDegrees(degrees);
@@ -253,6 +265,7 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
         //hit box
         weapon->hitBox.setScale(weapon->weaponSprite.getScale());
         weapon->hitBox.setRotation(degrees);
+        //weapon->hitBox.setOrigin(weapon->weaponSprite.getOrigin()); //FIXME remove it
     }
 }
 
@@ -387,5 +400,12 @@ void GameCharacter::setWeaponPosToShouldersPos() {
 
 float GameCharacter::getDefaultHp() const {
     return defaultHP;
+}
+
+float GameCharacter::calculateDistanceBetweenPositions(sf::Vector2f pos1, sf::Vector2f pos2) const {
+    float distance;
+    distance = static_cast<float>(std::sqrt(std::pow(pos2.x - pos1.x, 2) + std::pow(pos2.y - pos1.y, 2)));
+    return distance;
+
 }
 
