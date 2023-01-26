@@ -327,6 +327,8 @@ PlayState::normalizedViewfinderPos(const sf::Vector2f &viewfinderPos, const Game
 void PlayState::updateBonuses(float dt) {
     if (!spawner->bonuses.empty()) {
         for (int i = 0; i < spawner->bonuses.size(); i++) {
+            bool collect = false;
+            int bonusType;
 
             switch (spawner->bonuses[i]->getBonusType()) {
                 case NEW_WEAPON:
@@ -343,50 +345,22 @@ void PlayState::updateBonuses(float dt) {
                         mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
                                                   mike->weapon->getTotalBullets(),
                                                   mike->weapon->isInfiniteBullets());
-                        spawner->despawnBonus(i);
-                        i--;
+                        collect = true;
                     }
                     break;
-                    /*
-                case AMMUNITION:
-                    spawner->bonuses[i]->currentAnimation.update(dt);
-                    //collect ammo
-                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
-                        spawner->bonuses[i]->doSpecialAction(*mike);
-                        spawner->despawnBonus(i);
-                        i--;
-                        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
-                                                  mike->weapon->getTotalBullets(),
-                                                  mike->weapon->isInfiniteBullets());
-                    }
-                    break;
-                    */
                 case COINS:
                     spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect coin
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         //std::cout << "COLLECTED COIN!" << std::endl;
                         spawner->bonuses[i]->doSpecialAction(*mike);
-                        spawner->despawnBonus(i);
-                        i--;
+                        collect = true;
                     } else if (spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
                                spawner->bonuses[i]->getStayTime()) {
                         spawner->despawnBonus(i);
                         i--;
                     }
                     break;
-                    /*
-                case PROTECTION_BUBBLE:
-                    spawner->bonuses[i]->currentAnimation.update(dt);
-                    //collect protection bubble
-                    if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
-                        spawner->bonuses[i]->doSpecialAction(*mike);
-                        mike->addToOwnBonuses(PROTECTION_BUBBLE, spawner->bonuses[i]->getDuration());
-                        spawner->despawnBonus(i);
-                        i--;
-                    }
-                    break;
-                     */
                 case NUKE:
                     if (spawner->bonuses[i]->isActiveAnimation)
                         spawner->bonuses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
@@ -395,8 +369,8 @@ void PlayState::updateBonuses(float dt) {
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
                         spawner->despawnAllEnemies();
-                        spawner->despawnBonus(i);
-                        i--;
+                        collect = true;
+
                     }
                     break;
                     //the next bonuses have the same functioning
@@ -411,8 +385,7 @@ void PlayState::updateBonuses(float dt) {
                                                                                          spawner->bonuses[i]->isActiveAnimation);
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
-                        spawner->despawnBonus(i);
-                        i--;
+                        collect = true;
                     }
                     break;
                     //TODO add other bonuses updates
@@ -420,6 +393,13 @@ void PlayState::updateBonuses(float dt) {
                     std::cerr << "ERROR: SELECTED BONUS NOT EXIST" << std::endl;
                     break;
             }
+            //increment collected bonuses
+            if (collect) {
+                mike->incrementBonusCollected(spawner->bonuses[i]->getBonusType());
+                spawner->despawnBonus(i);
+                i--;
+            }
+
             if (spawner->bonuses.empty()) //these are for prevent memory leak
                 break;
             else if (i == -1)
@@ -525,9 +505,11 @@ void PlayState::initRound() {
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
      */
-    remainEnemies = 0;
-    spawner->spawnBoss({35, 20}, 1);
-    remainBosses = 1;
+    spawner->spawnLifePoints({40, 23});
+    spawner->spawnZombie(tmpSpawnTile, 80, 1);
+    remainEnemies = 1;
+    //spawner->spawnBoss({35, 20}, 1);
+    remainBosses = 0;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

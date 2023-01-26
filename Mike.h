@@ -24,10 +24,16 @@ private:
         sf::Clock effectTimer;
         sf::Time effectTime;
     };
-    std::vector<ActualBonus> actualBonuses;
+
+    //kills
     unsigned int kills = 0;
     unsigned int roundKills = 0;
     std::map<int, unsigned int> enemyTypeKills;
+
+    //bonuses
+    std::map<int, unsigned int> bonusTypeCollected;
+    unsigned int bonusesCollected = 0;
+    std::vector<ActualBonus> actualBonuses;
 
     //observers
     std::list<Observer *> observers;
@@ -76,6 +82,8 @@ public:
     bool isBubble() const;
 
     void setBubble(bool bubble);
+
+    void incrementBonusCollected(int bonusType);
 };
 
 
