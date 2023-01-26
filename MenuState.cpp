@@ -84,16 +84,18 @@ MenuState::MenuState(Game *game) {
     mainMenu[Play].setString("Play");
     mainMenu[Play].setCharacterSize(fontSize);
     mainMenu[Play].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
-                         static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
+            sf::Vector2f(
+                    static_cast<float>(this->game->window.getSize().x) / 2 - mainMenu[Play].getGlobalBounds().width / 2,
+                    static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
 
     //stats
     mainMenu[Stats].setFont(font);
     mainMenu[Stats].setFillColor(sf::Color::White);
-    mainMenu[Stats].setString("Stats");
+    mainMenu[Stats].setString("Achievements");
     mainMenu[Stats].setCharacterSize(50);
     mainMenu[Stats].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 -
+                         mainMenu[Stats].getGlobalBounds().width / 2,
                          (static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)) *
                          1.5));
 
@@ -102,9 +104,10 @@ MenuState::MenuState(Game *game) {
     mainMenu[Exit].setFillColor(sf::Color::White);
     mainMenu[Exit].setString("Exit");
     mainMenu[Exit].setCharacterSize(50);
-    mainMenu[Exit].setPosition(sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                                            (static_cast<float>(this->game->window.getSize().y) / 2 -
-                                             static_cast<float>(fontSize)) * 2));
+    mainMenu[Exit].setPosition(sf::Vector2f(
+            static_cast<float>(this->game->window.getSize().x) / 2 - mainMenu[Exit].getGlobalBounds().width / 2,
+            (static_cast<float>(this->game->window.getSize().y) / 2 -
+             static_cast<float>(fontSize)) * 2));
     //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
 
     nButtonSelected = Play;
@@ -136,9 +139,7 @@ void MenuState::select() {
             this->loadPlay();
             break;
         case Stats:
-            //TODO implement stats state
-            std::cout << "i'm stats" << std::endl;
-            //this->game->pushState(new AchievementState(this->game));
+            this->game->pushState(new AchievementState(this->game));
             break;
         case Exit:
             this->game->window.close();

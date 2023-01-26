@@ -20,8 +20,10 @@ void AchievementState::draw(float dt) const {
      */
 
     //this->game->window.draw(this->game->background);
-
-    AchievementManager::drawAchievements(this->game->window);
+    if (AchievementManager::getInstance())
+        AchievementManager::drawAchievements(this->game->window);
+    else
+        drawAchievementsFromFile();
 
 }
 
@@ -76,6 +78,7 @@ void AchievementState::handleInput() {
 AchievementState::AchievementState(Game *game) {
     this->game = game;
 
+
     std::string fontFile = "res/fonts/bloody.ttf";
     try {
         if (!font.loadFromFile(fontFile))
@@ -85,12 +88,32 @@ AchievementState::AchievementState(Game *game) {
     //view
     achievementView.reset((sf::FloatRect(0, 0, viewSize.x, viewSize.y)));
 
-    achievementView.setCenter(sf::Vector2f(
-            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().x +
-            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().width / 2,
-            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().y +
-            AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().height /
-            2));
+    //load font
+    std::string textFontFile = "res/fonts/arial.ttf";
+    try {
+        if (!progressFont.loadFromFile(textFontFile))
+            throw GameException("Error opening textFontFile file", textFontFile, false);
+    } catch (GameException &e) {
+        exit(1); //close all
+    }
+
+    if (!AchievementManager::getInstance()) {
+        loadTextures();
+        loadAchievements();
+        achievementView.setCenter(sf::Vector2f(
+                achievements.begin()->second->getBoxSprite().getPosition().x +
+                achievements.begin()->second->getBoxSprite().getGlobalBounds().width / 2,
+                achievements.begin()->second->getBoxSprite().getPosition().y +
+                achievements.begin()->second->getBoxSprite().getGlobalBounds().height /
+                2));
+    } else
+        achievementView.setCenter(sf::Vector2f(
+                AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().x +
+                AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().width /
+                2,
+                AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getPosition().y +
+                AchievementManager::getInstance()->achievements.begin()->second->getBoxSprite().getGlobalBounds().height /
+                2));
 
     //FIXME remove it
     //achievementView.setCenter(sf::Vector2f(-5*32,-5*32));
@@ -139,4 +162,51 @@ void AchievementState::moveDown() {
                                                 localIt->second->getBoxSprite().getPosition().y + localIt->second->getBoxSprite().getGlobalBounds().height/2));
     }
      */
+}
+
+void AchievementState::loadAchievements() {
+    std::ifstream achievementFile;
+
+    achievementFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        achievementFile.open(achievementFileName);
+    }
+    catch (std::ios_base::failure &e) {
+        throw GameException("Error opening achievement file", achievementFileName, false);
+    }
+
+    int totalAchievements;
+    std::string achievementName, actualProgress, target, totalAchievementsString;
+
+    //read total achievements
+    std::getline(achievementFile, totalAchievementsString);
+    totalAchievements = std::stoi(totalAchievementsString);
+
+    //init map
+    achievements.clear();
+
+    //read each achievement
+    for (int i = 0; i < totalAchievements; i++) {
+        std::getline(achievementFile, achievementName);
+        std::getline(achievementFile, actualProgress);
+        std::getline(achievementFile, target);
+        achievements[achievementName] = std::unique_ptr<Achievement>(
+                new Achievement(achievementsTextures.getTextureRef("box"), achievementsTextures.getTextureRef("trophy"),
+                                achievementName, std::stoul(target), progressFont));
+        achievements[achievementName]->update(std::stoul(actualProgress));
+    }
+
+    achievementFile.close();
+}
+
+void AchievementState::drawAchievementsFromFile() const {
+    for (auto it = achievements.begin();
+         it != achievements.end(); it++) {
+        it->second->drawAchievement(this->game->window);
+    }
+}
+
+void AchievementState::loadTextures() {
+    achievementsTextures.loadTexture("box", "res/textures/message_box.png");
+    achievementsTextures.loadTexture("trophy", "res/textures/trophy.png");
 }

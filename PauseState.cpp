@@ -84,16 +84,18 @@ PauseState::PauseState(Game *game) {
     mainMenu[Resume].setString("Resume");
     mainMenu[Resume].setCharacterSize(fontSize);
     mainMenu[Resume].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 -
+                         mainMenu[Resume].getGlobalBounds().width / 2,
                          static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
 
     //stats
     mainMenu[Stats].setFont(font);
     mainMenu[Stats].setFillColor(sf::Color::White);
-    mainMenu[Stats].setString("Stats");
+    mainMenu[Stats].setString("Achievements");
     mainMenu[Stats].setCharacterSize(50);
     mainMenu[Stats].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - static_cast<float>(fontSize),
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 -
+                         mainMenu[Stats].getGlobalBounds().width / 2,
                          (static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)) *
                          1.5));
 
@@ -102,9 +104,10 @@ PauseState::PauseState(Game *game) {
     mainMenu[Exit].setFillColor(sf::Color::White);
     mainMenu[Exit].setString("Exit");
     mainMenu[Exit].setCharacterSize(50);
-    mainMenu[Exit].setPosition(sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - 50,
-                                            (static_cast<float>(this->game->window.getSize().y) / 2 -
-                                             static_cast<float>(fontSize)) * 2));
+    mainMenu[Exit].setPosition(sf::Vector2f(
+            static_cast<float>(this->game->window.getSize().x) / 2 - mainMenu[Exit].getGlobalBounds().width / 2,
+            (static_cast<float>(this->game->window.getSize().y) / 2 -
+             static_cast<float>(fontSize)) * 2));
     //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
 
     nButtonSelected = Resume;
@@ -136,12 +139,10 @@ void PauseState::select() {
             this->game->popState();
             break;
         case Stats:
-            //TODO implement stats state
-            std::cout << "stack size: " << this->game->states.size() << std::endl;
-            std::cout << "AchievementState started" << std::endl;
             this->game->pushState(new AchievementState(this->game));
             break;
         case Exit:
+            AchievementManager::getInstance()->saveAchievements();
             this->game->window.close();
             break;
         default:

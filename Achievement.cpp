@@ -7,12 +7,10 @@
 float Achievement::previousBoxPosY = 0; //it is a temporary initialization. it will be as half window size thanks to AchievementState constructor
 
 Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex, const std::string &name,
-                         const std::string &description,
-                         unsigned int goal, const sf::Font &font)
-        : name(name), description(description),
+                         unsigned int goal,
+                         const sf::Font &font)
+        : name(name),
           targetProgress(goal), progressTextFont(font) {
-
-    //FIXME
 
     std::string actualProgressString = std::to_string(actualProgress);
     std::string goalProgressString = std::to_string(goal);
@@ -55,14 +53,6 @@ Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex
     trophySprite.setScale(sf::Vector2f(2, 2));
     trophySprite.setColor(tarnishColor);
 
-
-
-
-
-
-
-
-    //boxSprite.setScale(sf::Vector2f(1.5,1.5));
 
 }
 
@@ -186,7 +176,7 @@ void Achievement::setTargetProgress(unsigned int targetProgress) {
     Achievement::targetProgress = targetProgress;
 }
 
-void Achievement::setName(const std::string &name) {
+void Achievement::setName(std::string name) {
     Achievement::name = name;
 }
 

@@ -26,7 +26,6 @@ private:
 
     //info
     std::string name;
-    std::string description; //FIXME
 
     //colors
     const sf::Color tarnishColor = sf::Color(47, 47, 47);
@@ -49,9 +48,8 @@ private:
     bool achieved = false;
 
 public:
-    Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex, const std::string &name,
-                const std::string &description,
-                unsigned int goal, const sf::Font &font);
+    Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex, const std::string &name, unsigned int goal,
+                const sf::Font &font);
 
     bool isAchieved();
 
@@ -77,7 +75,7 @@ public:
 
     void setTargetProgress(unsigned int targetProgress);
 
-    void setName(const std::string &name);
+    void setName(std::string name);
 
     const std::string &getName() const;
 

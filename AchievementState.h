@@ -22,9 +22,18 @@ private:
     //colors
     const sf::Color backgroundColor = sf::Color(79, 79, 79);
 
+    //textures
+    TextureManager achievementsTextures;
+
+    //font
+    sf::Font progressFont;
+
     //view
     sf::View achievementView;
     const float scrollMove = 10;
+
+    //achievements from file
+    std::map<std::string, std::unique_ptr<Achievement>> achievements;
 
 public:
     explicit AchievementState(Game *game);
@@ -32,6 +41,12 @@ public:
     void moveUp();
 
     void moveDown();
+
+    void loadTextures();
+
+    void loadAchievements();
+
+    void drawAchievementsFromFile() const;
 
     void draw(float dt) const override;
 

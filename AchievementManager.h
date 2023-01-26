@@ -14,6 +14,8 @@
 #include <fstream>
 #include "TextureManager.h"
 
+//achievements file
+const std::string achievementFileName = "res/achievements/achievements.txt";
 
 class AchievementManager : public Observer {
 private:
@@ -21,9 +23,6 @@ private:
 
     //textures
     TextureManager guiTextures;
-
-    //achievements file
-    std::string fileName = "res/achievements/achievements.txt";
 
     //fonts
     sf::Font progressFont;
@@ -34,6 +33,7 @@ private:
     AchievementManager(Subject *subject, const TextureManager &guiTexManager);
 
 public:
+    //achievements from current game
     std::map<std::string, std::unique_ptr<Achievement>> achievements;
 
     virtual ~AchievementManager();
@@ -42,8 +42,6 @@ public:
 
     void saveAchievements();
 
-    void loadAchievements();
-
     static void drawAchievements(sf::RenderWindow &window);
 
     void update(std::string achievementName, unsigned int value) override;
@@ -51,7 +49,6 @@ public:
     static AchievementManager *getInstance();
 
     static void createInstance(Subject *subject, const TextureManager &guiTexManager);
-
 
 };
 
