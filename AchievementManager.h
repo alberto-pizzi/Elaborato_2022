@@ -38,7 +38,7 @@ public:
 
     virtual ~AchievementManager();
 
-    void createAchievement(const std::string &name, std::string description, unsigned int target);
+    void createAchievement(const std::string &name, unsigned int target);
 
     void saveAchievements();
 

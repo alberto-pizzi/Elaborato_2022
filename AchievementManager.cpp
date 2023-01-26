@@ -25,7 +25,7 @@ AchievementManager::AchievementManager(Subject *subject, const TextureManager &g
     std::cout << "Registered Observer" << std::endl;
 }
 
-void AchievementManager::createAchievement(const std::string &name, std::string description, unsigned int target) {
+void AchievementManager::createAchievement(const std::string &name, unsigned int target) {
     achievements[name] = std::unique_ptr<Achievement>(
             new Achievement(guiTextures.getTextureRef("box"), guiTextures.getTextureRef("trophy"), name, target,
                             progressFont));

@@ -137,9 +137,9 @@ public:
 
     void setSpeed(float speed);
 
-    void setPoints(int points);
+    virtual void setPoints(int points);
 
-    void setCoins(int coins);
+    virtual void setCoins(int coins);
 
     const std::vector<sf::IntRect> &getGoRight() const;
 

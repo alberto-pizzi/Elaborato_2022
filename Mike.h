@@ -79,11 +79,17 @@ public:
 
     void incrementKills(int enemyType);
 
+    void setPoints(int points) override;
+
+    void setCoins(int coins) override;
+
     bool isBubble() const;
 
     void setBubble(bool bubble);
 
     void incrementBonusCollected(int bonusType);
+
+    void initAchievements(const TextureManager &guiTexManager);
 };
 
 

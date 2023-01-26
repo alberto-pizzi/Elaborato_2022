@@ -123,21 +123,27 @@ void Achievement::update(unsigned int value) {
     //update progress
     actualProgress = value;
 
+    if (!achieved) {
+
+        std::string actualProgressString = std::to_string(actualProgress);
+        std::string goalProgressString = std::to_string(targetProgress);
+        progress = actualProgressString + " / " + goalProgressString;
+        progressText.setString(progress);
+
+        //update progress bar
+        progressBar.setSize(sf::Vector2f(
+                (static_cast<float>(actualProgress) * shadowProgressBar.getSize().x) /
+                static_cast<float>(targetProgress),
+                shadowProgressBar.getSize().y));
+    }
+
     if (isAchieved()) {
         achieved = true;
         progressText.setFillColor(achievedBarColor);
         trophySprite.setColor(sf::Color::White);
+        progressBar.setFillColor(sf::Color::Green);
     }
 
-    std::string actualProgressString = std::to_string(actualProgress);
-    std::string goalProgressString = std::to_string(targetProgress);
-    progress = actualProgressString + " / " + goalProgressString;
-    progressText.setString(progress);
-
-    //update progress bar
-    progressBar.setSize(sf::Vector2f(
-            (static_cast<float>(actualProgress) * shadowProgressBar.getSize().x) / static_cast<float>(targetProgress),
-            shadowProgressBar.getSize().y));
 }
 
 unsigned int Achievement::getActualProgress() const {

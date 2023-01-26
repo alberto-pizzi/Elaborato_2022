@@ -37,11 +37,8 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
         exit(1); //close all
     }
 
-    AchievementManager::createInstance(this, guiTexManager);
-
-    AchievementManager::getInstance()->createAchievement("Kill 3 enemies", "Kill 3 enemies with a weapon", 3);
-
-    AchievementManager::getInstance()->createAchievement("Kill 2 enemies", "Kill 2 enemies with a weapon", 2);
+    //init achievements (create instance and create each achievement)
+    initAchievements(guiTexManager);
 }
 
 /*
@@ -124,9 +121,27 @@ void Mike::incrementKills(int enemyType) {
     enemyTypeKills[enemyType]++;
     roundKills++;
     kills++;
-    notifyObserver("Kill 3 enemies", this->kills); //FIXME
 
-    notifyObserver("Kill 2 enemies", this->kills); //FIXME
+    //notify oberver
+    notifyObserver("Kill 150 enemies", this->kills);
+    notifyObserver("Kill 250 enemies", this->kills);
+    notifyObserver("Kill 500 enemies", this->kills);
+    notifyObserver("Kill 1000 enemies", this->kills);
+    notifyObserver("Kill 1500 enemies", this->kills);
+    notifyObserver("Kill 2000 enemies", this->kills);
+
+    if (enemyType == BOSS) {
+        notifyObserver("Kill 2 bosses", enemyTypeKills[BOSS]);
+        notifyObserver("Kill 5 bosses", enemyTypeKills[BOSS]);
+        notifyObserver("Kill 10 bosses", enemyTypeKills[BOSS]);
+    } else if (enemyType == KAMIKAZE) {
+        notifyObserver("Kill 10 kamikaze", enemyTypeKills[KAMIKAZE]);
+        notifyObserver("Kill 30 kamikaze", enemyTypeKills[KAMIKAZE]);
+        notifyObserver("Kill 60 kamikaze", enemyTypeKills[KAMIKAZE]);
+        notifyObserver("Kill 100 kamikaze", enemyTypeKills[KAMIKAZE]);
+    }
+
+
 }
 
 void Mike::resetRoundKills() {
@@ -172,5 +187,65 @@ void Mike::incrementBonusCollected(int bonusType) {
     bonusesCollected++;
     std::cout << "BONUS INCREMENTED: " << bonusType << std::endl;
     //TODO add observer notifier
+}
+
+void Mike::initAchievements(const TextureManager &guiTexManager) {
+    AchievementManager::createInstance(this, guiTexManager);
+
+    //kills
+    AchievementManager::getInstance()->createAchievement("Kill 150 enemies", 150);
+    AchievementManager::getInstance()->createAchievement("Kill 250 enemies", 250);
+    AchievementManager::getInstance()->createAchievement("Kill 500 enemies", 500);
+    AchievementManager::getInstance()->createAchievement("Kill 1000 enemies", 1000);
+    AchievementManager::getInstance()->createAchievement("Kill 1500 enemies", 1500);
+    AchievementManager::getInstance()->createAchievement("Kill 2000 enemies", 2000);
+
+    //kills specific enemy type
+    //bosses
+    AchievementManager::getInstance()->createAchievement("Kill 2 bosses", 2);
+    AchievementManager::getInstance()->createAchievement("Kill 5 bosses", 5);
+    AchievementManager::getInstance()->createAchievement("Kill 10 bosses", 10);
+    //kamikaze
+    AchievementManager::getInstance()->createAchievement("Kill 10 kamikaze", 10);
+    AchievementManager::getInstance()->createAchievement("Kill 30 kamikaze", 30);
+    AchievementManager::getInstance()->createAchievement("Kill 60 kamikaze", 60);
+    AchievementManager::getInstance()->createAchievement("Kill 100 kamikaze", 100);
+
+    //points
+    AchievementManager::getInstance()->createAchievement("Accumulate 100 points", 100);
+    AchievementManager::getInstance()->createAchievement("Accumulate 500 points", 500);
+    AchievementManager::getInstance()->createAchievement("Accumulate 1500 points", 1500);
+    AchievementManager::getInstance()->createAchievement("Accumulate 3000 points", 3000);
+    AchievementManager::getInstance()->createAchievement("Accumulate 10000 points", 10000);
+
+    //coins
+    AchievementManager::getInstance()->createAchievement("Collect 100 coins", 100);
+    AchievementManager::getInstance()->createAchievement("Collect 500 coins", 500);
+    AchievementManager::getInstance()->createAchievement("Collect 1000 coins", 1000);
+    AchievementManager::getInstance()->createAchievement("Collect 2000 coins", 2000);
+    AchievementManager::getInstance()->createAchievement("Collect 6000 coins", 6000);
+
+}
+
+void Mike::setPoints(int points) {
+    GameCharacter::setPoints(points);
+
+    //notify observer
+    notifyObserver("Accumulate 100 points", this->points);
+    notifyObserver("Accumulate 500 points", this->points);
+    notifyObserver("Accumulate 1500 points", this->points);
+    notifyObserver("Accumulate 3000 points", this->points);
+    notifyObserver("Accumulate 10000 points", this->points);
+}
+
+void Mike::setCoins(int coins) {
+    GameCharacter::setCoins(coins);
+
+    //notify observer
+    notifyObserver("Collect 100 coins", this->coins);
+    notifyObserver("Collect 500 coins", this->coins);
+    notifyObserver("Collect 1000 coins", this->coins);
+    notifyObserver("Collect 2000 coins", this->coins);
+    notifyObserver("Collect 6000 coins", this->coins);
 }
 

@@ -55,15 +55,12 @@ void AchievementState::handleInput() {
             case sf::Event::KeyPressed:
                 //Take input
                 switch (event.key.code) {
-                    case sf::Keyboard::Enter:
-                        //select();
-                        break;
                     case sf::Keyboard::W:
                         //moveUp();
-                        achievementView.move(sf::Vector2f(0, scrollMove));
+                        achievementView.move(sf::Vector2f(0, -scrollMove));
                         break;
                     case sf::Keyboard::S:
-                        achievementView.move(sf::Vector2f(0, -scrollMove));
+                        achievementView.move(sf::Vector2f(0, scrollMove));
                         //moveDown();
                         break;
                     case sf::Keyboard::Escape:
@@ -72,6 +69,11 @@ void AchievementState::handleInput() {
                 }
                 break;
         }
+
+        //mouse scrolling
+        float delta = event.mouseWheelScroll.delta;
+        if (delta != 0)
+            achievementView.move(sf::Vector2f(0, -delta * scrollMove));
     }
 }
 

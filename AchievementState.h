@@ -9,6 +9,7 @@
 #include "GameState.h"
 #include "GameException.h"
 #include <memory>
+#include <SFML/Window/Event.hpp>
 //#include <iterator>
 
 //#include "Achievement.h"
@@ -30,7 +31,7 @@ private:
 
     //view
     sf::View achievementView;
-    const float scrollMove = 10;
+    const float scrollMove = 50;
 
     //achievements from file
     std::map<std::string, std::unique_ptr<Achievement>> achievements;
