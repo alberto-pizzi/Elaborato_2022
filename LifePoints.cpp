@@ -10,9 +10,8 @@ LifePoints::LifePoints(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords
                 false,
                 false,
                 true), quantity(
-        quantity) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
+        quantity) { //those values are the sprite frame size
 
-    //stayTimer.restart();
 }
 
 void LifePoints::doSpecialAction(Mike &character) {

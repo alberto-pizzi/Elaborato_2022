@@ -12,7 +12,7 @@ IncreasedWeaponDamage::IncreasedWeaponDamage(const sf::Texture &bonusTexture, sf
                 false,
                 true,
                 true), multiplier(
-        multiplier) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
+        multiplier) { //those values are the sprite frame size
     duration = sf::seconds(20);
 }
 

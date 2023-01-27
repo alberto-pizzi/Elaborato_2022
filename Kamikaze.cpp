@@ -14,9 +14,8 @@ Kamikaze::Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawn
                 animated,
                 coins, armor) {
 
-    //FIXME
-    explosionArea.setRadius(56);
-    explosionArea.setFillColor(sf::Color::Blue);
+
+    explosionArea.setRadius(explosionRadius);
     explosionArea.setPosition(getSpriteCenter().x - explosionArea.getRadius(),
                               getSpriteCenter().y - explosionArea.getRadius());
 

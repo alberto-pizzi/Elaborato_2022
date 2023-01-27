@@ -37,12 +37,12 @@ void Spawner::drawBonuses(sf::RenderWindow &window) const {
 
 void Spawner::spawnWeapon(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new NewWeapon(weaponsTextures, bonusesTextures.getTextureRef("weaponBox"),
-                                       calculatePosFromTile(spawnTile))); //TODO add random spawn (only for debug)
+                                       calculatePosFromTile(spawnTile)));
 }
 
 void Spawner::spawnCoin(sf::Vector2f spawnPos, int value) {
     bonuses.emplace_back(new Coin(bonusesTextures.getTextureRef("coin"),
-                                  spawnPos, value)); //TODO add random spawn (only for debug)
+                                  spawnPos, value));
 
     bonusTypeSpawnedInARound[COINS] = true;
 }
@@ -207,7 +207,7 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
     enemies.emplace_back(new Kamikaze(enemiesTextures.getTextureRef("kamikaze"), spawnTile,
                                       tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY},
                                       damage, nodeMap,
-                                      true)); //TODO add correct texture
+                                      true));
 }
 
 void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {
@@ -372,13 +372,12 @@ void Spawner::changeDirection(int enemyIndex, const sf::RectangleShape &obstacle
         }
     } else {
 
-        //TODO random decision
 
         if (targetDirection[UP] || targetDirection[DOWN])
-            enemies[enemyIndex]->keyStates[RIGHT] = true; //go right //FIXME
+            enemies[enemyIndex]->keyStates[RIGHT] = true; //go right
 
         if (targetDirection[LEFT] || targetDirection[RIGHT])
-            enemies[enemyIndex]->keyStates[DOWN] = true; //go right //FIXME
+            enemies[enemyIndex]->keyStates[DOWN] = true; //go right
     }
 }
 

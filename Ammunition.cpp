@@ -10,9 +10,8 @@ Ammunition::Ammunition(const sf::Texture &bonusTexture, sf::Vector2f spawnCoords
                 false,
                 false,
                 true), quantity(
-        quantity) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
+        quantity) { //those values are the sprite frame size
 
-    //FIXME set random quantity
 }
 
 void Ammunition::doSpecialAction(Mike &character) {

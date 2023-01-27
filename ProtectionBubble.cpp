@@ -10,10 +10,10 @@ ProtectionBubble::ProtectionBubble(const sf::Texture &bonusTexture, sf::Vector2f
                 0,
                 false,
                 true,
-                true) { //those values are the sprite frame size //FIXME correct with the correct texture frame values
+                true) { //those values are the sprite frame size
 
 
-    duration = sf::seconds(15); //FIXME set random seconds
+    duration = sf::seconds(15);
 
 }
 

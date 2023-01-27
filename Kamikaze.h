@@ -13,6 +13,7 @@ private:
     sf::Time explosionTime = sf::seconds(2);
     bool explosionStarted = false;
     sf::CircleShape explosionArea;
+    const float explosionRadius = 56;
 public:
     //FIXME fix speed because after some time the sprites overlap them
     Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,

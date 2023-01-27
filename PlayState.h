@@ -69,7 +69,7 @@ private:
     unsigned int remainBosses;
     unsigned int countVariableEnemiesForNormalRound = 0;
     unsigned int countVariableEnemiesForBossRound = 0;
-    const float damageIncrement = 0.25; //FIXME
+    const float damageIncrement = 0.25;
     sf::Clock roundSleepClock;
     sf::Clock roundClock;
     sf::Time afterRoundSleepTime = sf::seconds(3); //FIXME 20

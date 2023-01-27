@@ -392,7 +392,6 @@ void PlayState::updateBonuses(float dt) {
                         collect = true;
                     }
                     break;
-                    //TODO add other bonuses updates
                 default:
                     std::cerr << "ERROR: SELECTED BONUS NOT EXIST" << std::endl;
                     break;
@@ -513,7 +512,6 @@ void PlayState::initRound() {
     spawner->spawnZombie(tmpSpawnTile, 80, 1);
     remainEnemies = 1;
     //spawner->spawnBoss({35, 20}, 1);
-    remainBosses = 0;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

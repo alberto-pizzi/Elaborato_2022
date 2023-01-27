@@ -268,7 +268,6 @@ void GameCharacter::characterSkinDirection(const sf::Vector2f &targetPos) {
         //hit box
         weapon->hitBox.setScale(weapon->weaponSprite.getScale());
         weapon->hitBox.setRotation(degrees);
-        //weapon->hitBox.setOrigin(weapon->weaponSprite.getOrigin()); //FIXME remove it
     }
 }
 
