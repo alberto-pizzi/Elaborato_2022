@@ -28,7 +28,7 @@ public:
 
     void receiveDamage(float damagePoints) override;
 
-    void drawEntity(sf::RenderWindow &window, bool gameOver) override;
+    void drawEntity(sf::RenderWindow &window) override;
 
 };
 

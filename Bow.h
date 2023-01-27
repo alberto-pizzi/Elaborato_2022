@@ -6,7 +6,6 @@
 #define ELABORATO_BOW_H
 
 #include "Weapon.h"
-#include "Arrow.h"
 
 class Bow : public Weapon {
 private:

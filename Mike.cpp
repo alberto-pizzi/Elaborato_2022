@@ -81,19 +81,6 @@ std::vector<Mike::ActualBonus> Mike::getActualBonuses() const {
     return actualBonuses;
 }
 
-void Mike::drawEntity(sf::RenderWindow &window, bool gameOver) {
-    sprite.setTextureRect(currentAnimation.getCurrentRect());
-    if (!skinDirection[UP]) {
-        window.draw(sprite);
-        if (!gameOver && weapon)
-            weapon->drawWeapon(window);
-    } else {
-        if (!gameOver && weapon)
-            weapon->drawWeapon(window);
-        window.draw(sprite);
-    }
-}
-
 unsigned int Mike::getKills() const {
     return kills;
 }

@@ -65,7 +65,7 @@ public:
 
     void drawBonuses(sf::RenderWindow &window) const;
 
-    void drawEnemies(sf::RenderWindow &window, bool gameOver, float dt);
+    void drawEnemies(sf::RenderWindow &window, float dt);
 
     void
     updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
@@ -83,6 +83,8 @@ public:
     void spawnLifePoints(sf::Vector2i spawnTile);
 
     void despawnEnemy(int &enemyIndex, unsigned int &remainEnemies);
+
+    void despawnBoss(int &bossIndex, unsigned int &remainBosses);
 
     void spawnBubble(sf::Vector2i spawnTile);
 

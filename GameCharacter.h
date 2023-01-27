@@ -122,7 +122,7 @@ public:
 
     sf::Vector2f normalize(sf::Vector2f vector) const;
 
-    virtual void drawEntity(sf::RenderWindow &window, bool gameOver);
+    virtual void drawEntity(sf::RenderWindow &window);
 
     float getHp() const;
 

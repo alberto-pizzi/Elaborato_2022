@@ -177,14 +177,14 @@ float GameCharacter::damageWithArmor(float damagePoints) const {
     return damagePoints;
 }
 
-void GameCharacter::drawEntity(sf::RenderWindow &window, bool gameOver) {
+void GameCharacter::drawEntity(sf::RenderWindow &window) {
     sprite.setTextureRect(currentAnimation.getCurrentRect());
     if (!skinDirection[UP]) {
         window.draw(sprite);
-        if (weapon)
+        if (!despawnStarted && weapon)
             window.draw(weapon->weaponSprite);
     } else {
-        if (weapon)
+        if (!despawnStarted && weapon)
             window.draw(weapon->weaponSprite);
         window.draw(sprite);
     }

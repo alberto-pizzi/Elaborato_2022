@@ -47,16 +47,16 @@ void Spawner::spawnCoin(sf::Vector2f spawnPos, int value) {
     bonusTypeSpawnedInARound[COINS] = true;
 }
 
-void Spawner::drawEnemies(sf::RenderWindow &window, bool gameOver, float dt) {
+void Spawner::drawEnemies(sf::RenderWindow &window, float dt) {
     for (int i = 0; i < enemies.size(); i++) {
-        enemies[i]->drawEntity(window, gameOver);
+        enemies[i]->drawEntity(window);
         if (enemies[i]->weapon && !enemies[i]->isDead()) {
             //enemies[i]->weapon->drawWeapon(window);
             enemies[i]->weapon->drawBullets(window, dt);
         }
     }
     for (int i = 0; i < bosses.size(); i++) {
-        bosses[i]->drawEntity(window, gameOver);
+        bosses[i]->drawEntity(window);
         if (bosses[i]->weapon && !bosses[i]->isDead()) {
             //bosses[i]->weapon->drawWeapon(window);
             bosses[i]->weapon->drawBullets(window, dt);
@@ -442,5 +442,11 @@ Spawner::updateBoss(const GameCharacter &target, float dt, int bossIndex, const 
     } else
         bosses[bossIndex]->currentAnimation.update(dt); //enemies must be moving forever
 
+}
+
+void Spawner::despawnBoss(int &bossIndex, unsigned int &remainBosses) {
+    bosses.erase(bosses.begin() + bossIndex);
+    bossIndex--;
+    remainBosses--;
 }
 

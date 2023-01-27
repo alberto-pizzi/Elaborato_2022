@@ -33,7 +33,7 @@ public:
 
     void setExplosionStarted(bool explosionStarted);
 
-    void drawEntity(sf::RenderWindow &window, bool gameOver) override;
+    void drawEntity(sf::RenderWindow &window) override;
 
     bool isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance) override;
 

@@ -6,7 +6,6 @@
 #define ELABORATO_SCEPTER_H
 
 #include "Weapon.h"
-#include "AssaultRifleBullet.h"
 
 class Scepter : public Weapon {
 private:

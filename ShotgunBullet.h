@@ -11,9 +11,10 @@ const float deltaDegrees = 15;
 
 class ShotgunBullet : public Bullet {
 public:
-    ShotgunBullet(const sf::Texture &tex, float speed, const sf::Vector2f &barrelHole, const sf::Vector2f &weaponPos,
-                  float degrees, const sf::Vector2f &rotationOrigin, const sf::Vector2f &weaponScale,
-                  const sf::Vector2f &bulletDir, int whichBullet);
+    ShotgunBullet(const sf::Texture &tex, float speed, const sf::Vector2f &barrelHole,
+                  const sf::Vector2f &weaponPos, float degrees, const sf::Vector2f &rotationOrigin,
+                  const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir,
+                  sf::Vector2f bulletScale, int whichBullet);
 
 };
 

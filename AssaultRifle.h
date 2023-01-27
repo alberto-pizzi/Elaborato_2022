@@ -6,7 +6,6 @@
 #define ELABORATO_ASSAULTRIFLE_H
 
 #include "Weapon.h"
-#include "AssaultRifleBullet.h"
 
 class AssaultRifle : public Weapon {
 private:

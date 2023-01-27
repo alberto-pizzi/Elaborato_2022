@@ -10,13 +10,14 @@ void Scepter::shoot(const sf::Vector2f &normalizedBulletDir) {
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
     //shoot ONE bullet
-
+    sf::Vector2f bulletScale = {2, 2};
     //TODO implement critic bullet
     //FIXME chance bullet type
 
-    bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 600, barrelHole, weaponSprite.getPosition(),
-                                                degrees, weaponSprite.getOrigin(),
-                                                weaponSprite.getScale(), normalizedBulletDir));
+
+    bullets.emplace_back(new Bullet(bulletTexture, 600, weaponSprite.getOrigin(), degrees,
+                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                    barrelHole, bulletScale));
 
 
     shotClock.restart();

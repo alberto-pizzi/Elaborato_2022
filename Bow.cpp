@@ -11,9 +11,11 @@ void Bow::shoot(const sf::Vector2f &normalizedBulletDir) {
 
     //shoot ONE bullet
 
-    bullets.emplace_back(new Arrow(bulletTexture, 900, barrelHole, weaponSprite.getPosition(),
-                                   degrees, weaponSprite.getOrigin(),
-                                   weaponSprite.getScale(), normalizedBulletDir));
+    sf::Vector2f bulletScale = weaponSprite.getScale();
+
+    bullets.emplace_back(new Bullet(bulletTexture, 900, weaponSprite.getOrigin(), degrees,
+                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                    barrelHole, bulletScale));
 
     //load shot sound
     audioManager.playSound("bowShot");

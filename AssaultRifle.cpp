@@ -9,15 +9,17 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
+    sf::Vector2f bulletScale = weaponSprite.getScale();
+
     //shoot ONE bullet
-    bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 1700, barrelHole, weaponSprite.getPosition(),
-                                                degrees, weaponSprite.getOrigin(),
-                                                weaponSprite.getScale(), normalizedBulletDir));
+    bullets.emplace_back(new Bullet(bulletTexture, 1700, weaponSprite.getOrigin(), degrees,
+                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                    barrelHole, bulletScale));
+
     //load sound effect
     audioManager.playSound("rifleShot");
 
     shotClock.restart();
-
     magazine.remainingBullets--;
 }
 

@@ -15,22 +15,22 @@ Accumulate 500 points
 4
 500
 Collect 100 coins
-2
+13
 100
 Collect 1000 coins
-2
+13
 1000
 Collect 2000 coins
-2
+13
 2000
 Collect 500 coins
-2
+13
 500
 Collect 6000 coins
-2
+13
 6000
 Kill 10 bosses
-0
+1
 10
 Kill 10 kamikaze
 0
@@ -39,31 +39,31 @@ Kill 100 kamikaze
 0
 100
 Kill 1000 enemies
-2
+3
 1000
 Kill 150 enemies
-2
+3
 150
 Kill 1500 enemies
-2
+3
 1500
 Kill 2 bosses
-0
+1
 2
 Kill 2000 enemies
-2
+3
 2000
 Kill 250 enemies
-2
+3
 250
 Kill 30 kamikaze
 0
 30
 Kill 5 bosses
-0
+1
 5
 Kill 500 enemies
-2
+3
 500
 Kill 60 kamikaze
 0

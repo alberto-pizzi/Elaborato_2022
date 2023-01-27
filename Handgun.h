@@ -6,7 +6,6 @@
 #define ELABORATO_HANDGUN_H
 
 #include "Weapon.h"
-#include "HandgunBullet.h"
 
 
 class Handgun : public Weapon {

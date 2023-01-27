@@ -25,10 +25,10 @@ protected:
     float distanceTravelled;
 public:
     Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotationOrigin, float degrees,
-           const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir); //FIXME protected constructor
+           const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir, const sf::Vector2f &weaponPos,
+           const sf::Vector2f &barrelHole, sf::Vector2f bulletScale);
 
     bool checkEnemyCollision(const GameCharacter &target);
-
 
     virtual void move(const sf::Vector2f &offset, float dt); // NOLINT(modernize-use-override)
 

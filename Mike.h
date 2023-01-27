@@ -52,9 +52,6 @@ public:
 
     bool isKillStreak(GameCharacter &character);
 
-    //void drawEntity(sf::RenderWindow &window);
-    void drawEntity(sf::RenderWindow &window, bool gameOver) override;
-
     void updateCharacterColor() override;
 
     void receiveDamage(float damagePoints) override;

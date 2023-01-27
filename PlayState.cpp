@@ -26,11 +26,11 @@ void PlayState::draw(float dt) const {
     spawner->drawBonuses(this->game->window);
 
     //draw enemies
-    spawner->drawEnemies(this->game->window, startedGameOver, dt);
+    spawner->drawEnemies(this->game->window, dt);
 
     //draw mike and his weapon
     if (!gameOver)
-        mike->drawEntity(this->game->window, startedGameOver);
+        mike->drawEntity(this->game->window);
 
     //draw bullets
     mike->weapon->drawBullets(this->game->window, dt);
@@ -511,7 +511,6 @@ void PlayState::initRound() {
     spawner->spawnLifePoints({40, 23});
     spawner->spawnZombie(tmpSpawnTile, 80, 1);
     remainEnemies = 1;
-    //spawner->spawnBoss({35, 20}, 1);
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
@@ -843,7 +842,7 @@ void PlayState::updateBosses(float dt) {
                 mike->incrementKills(spawner->bosses[i]->getCharacterType());
 
                 //despawn enemy
-                spawner->despawnEnemy(i, remainEnemies);
+                spawner->despawnBoss(i, remainBosses);
             }
 
             if (spawner->bosses.empty())

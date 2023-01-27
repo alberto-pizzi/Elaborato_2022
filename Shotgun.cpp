@@ -26,16 +26,18 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
         newNormalizedDir3 = tmpNewNormalizedDir;
     }
 
+    sf::Vector2f bulletScale = weaponSprite.getScale();
+
     //shoot THREE bullets
     bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
                                            degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), newNormalizedDir1, 1));
+                                           weaponSprite.getScale(), newNormalizedDir1, bulletScale, 1));
     bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
                                            degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), normalizedBulletDir, 2));
+                                           weaponSprite.getScale(), normalizedBulletDir, bulletScale, 2));
     bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
                                            degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), newNormalizedDir3, 3));
+                                           weaponSprite.getScale(), newNormalizedDir3, bulletScale, 3));
 
     //play audio effect
     audioManager.playSound("shotgunShot");

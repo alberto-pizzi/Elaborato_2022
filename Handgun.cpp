@@ -8,10 +8,12 @@ void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
+    sf::Vector2f bulletScale = weaponSprite.getScale();
+
     //shoot ONE bullet
-    bullets.emplace_back(new HandgunBullet(bulletTexture, 1200, barrelHole, weaponSprite.getPosition(),
-                                           degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), normalizedBulletDir));
+    bullets.emplace_back(new Bullet(bulletTexture, 1200, weaponSprite.getOrigin(), degrees,
+                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                    barrelHole, bulletScale));
     //play audio effect
     audioManager.playSound("handgunShot");
 
