@@ -16,11 +16,6 @@ AssaultRifleBullet::AssaultRifleBullet(const sf::Texture &tex, float speed, cons
     sf::Vector2f bulletOrigin;
 
     if (weaponScale.x > 0)
-        bulletSprite.setScale(sf::Vector2f(2, 2)); //FIXME remove it
-    else
-        bulletSprite.setScale(sf::Vector2f(-2, 2)); //FIXME remove it
-
-    if (weaponScale.x > 0)
         bulletOrigin = {static_cast<float>(weaponPos.x +
                                            (barrelHole.x - rotationOrigin.x) * std::cos((M_PI * (-degrees)) / 180) +
                                            (tex.getSize().y - rotationOrigin.y) * std::sin((M_PI * (-degrees)) / 180)),

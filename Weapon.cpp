@@ -38,8 +38,13 @@ Weapon::Weapon(bool equipped, const sf::Texture &weaponTexture, int totBullets, 
           weaponName(weaponName), weaponTexture(weaponTexture), infiniteBullets(infiniteBullets),
           defaultDamage(damage) {
 
+    //load sounds
+    loadSounds();
+
     this->weaponSprite.setTexture(this->weaponTexture);
 
+    //play the weapon picked up sound
+    playWeaponPickedUpSound();
 }
 
 Weapon::~Weapon() {
@@ -161,6 +166,31 @@ float Weapon::getDefaultDamage() const {
 
 void Weapon::setDamage(float damage) {
     this->damage = damage;
+}
+
+void Weapon::loadSounds() {
+    //handgun
+    audioManager.loadSound("handgunClick", "res/sounds/handgun_click.ogg");
+    audioManager.loadSound("handgunShot", "res/sounds/handgun_shot.ogg");
+
+    //assault rifle
+    audioManager.loadSound("rifleClick", "res/sounds/rifle_click.ogg");
+    audioManager.loadSound("rifleShot", "res/sounds/rifle_shot.ogg");
+
+    //shotgun
+    audioManager.loadSound("shotgunClick", "res/sounds/shotgun_click.ogg");
+    audioManager.loadSound("shotgunShot", "res/sounds/shotgun_shot.ogg");
+}
+
+void Weapon::playWeaponPickedUpSound() {
+    if (equipped) {
+        if (weaponName == "handgun")
+            audioManager.playSound("handgunClick");
+        else if (weaponName == "assaultRifle")
+            audioManager.playSound("rifleClick");
+        else if (weaponName == "shotgun")
+            audioManager.playSound("shotgunClick");
+    }
 }
 
 

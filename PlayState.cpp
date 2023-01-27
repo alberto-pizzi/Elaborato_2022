@@ -73,6 +73,7 @@ void PlayState::draw(float dt) const {
 }
 
 void PlayState::update(float dt) {
+    audioManager.updateMusicStatus();
     if (isPaused) {
         this->game->window.setView(arenaMap->playerView);
         isPaused = false;
@@ -264,6 +265,9 @@ PlayState::PlayState(Game *game) : round(1) {
 
     //hide mouse cursor
     this->game->window.setMouseCursorVisible(false);
+
+    //load audio
+    loadAudio();
 }
 
 int PlayState::whichMap() {
@@ -855,5 +859,18 @@ void PlayState::updateBosses(float dt) {
             }
         }
     }
+}
+
+void PlayState::loadAudio() {
+    //musics
+    audioManager.loadMusic("deepDubstep", "res/musics/deep_dubstep.ogg");
+
+
+    //sound effects
+
+
+
+    //start first playlist song
+    audioManager.startPlaylist();
 }
 

@@ -17,6 +17,7 @@
 #include "TextureManager.h"
 #include "Gui.h"
 #include "PauseState.h"
+#include "AudioManager.h"
 
 
 //WARNING: for adding other Map, you must updateNotCyclicalAnimation nMap/loadMap and enum in ArenaMap.h
@@ -91,6 +92,8 @@ private:
     sf::Clock saveClock;
     sf::Time saveGap = sf::seconds(5 * 60); //every 5 minutes save achievement progress to a file
 
+    //audio
+    AudioManager audioManager;
 public:
     explicit PlayState(Game *game);
 
@@ -137,6 +140,8 @@ public:
     void spawnBonuses();
 
     void autoSaveProgress();
+
+    void loadAudio();
 
 
 };

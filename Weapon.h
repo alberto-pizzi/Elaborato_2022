@@ -17,6 +17,7 @@
 #include "Animation.h"
 #include "TextureManager.h"
 #include "Bullet.h"
+#include "AudioManager.h"
 
 class ArenaMap;
 
@@ -63,6 +64,9 @@ protected:
     //bullet
     std::vector<std::unique_ptr<Bullet>> bullets;
     sf::Texture bulletTexture;
+
+    //audio
+    AudioManager audioManager;
 public:
     bool animationKeyStep[4] = {false, false, false, false};
     sf::Clock shotClock;
@@ -126,6 +130,10 @@ public:
     float getDefaultDamage() const;
 
     void setDamage(float damage);
+
+    void loadSounds();
+
+    void playWeaponPickedUpSound();
 
 };
 

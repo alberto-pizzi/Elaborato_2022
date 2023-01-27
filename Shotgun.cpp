@@ -5,7 +5,6 @@
 #include "Shotgun.h"
 
 void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
-    std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
     float speed = 1500;
@@ -37,6 +36,9 @@ void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
                                            degrees, weaponSprite.getOrigin(),
                                            weaponSprite.getScale(), newNormalizedDir3, 3));
+
+    //play audio effect
+    audioManager.playSound("shotgunShot");
 
     shotClock.restart();
 

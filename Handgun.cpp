@@ -5,7 +5,6 @@
 #include "Handgun.h"
 
 void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
-    std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
@@ -13,6 +12,9 @@ void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
     bullets.emplace_back(new HandgunBullet(bulletTexture, 1200, barrelHole, weaponSprite.getPosition(),
                                            degrees, weaponSprite.getOrigin(),
                                            weaponSprite.getScale(), normalizedBulletDir));
+    //play audio effect
+    audioManager.playSound("handgunShot");
+
     shotClock.restart();
     magazine.remainingBullets--;
 }

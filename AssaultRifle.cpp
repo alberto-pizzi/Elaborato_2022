@@ -5,7 +5,7 @@
 #include "AssaultRifle.h"
 
 void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
-    std::cout << "SHOOT!" << std::endl;
+
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
@@ -13,6 +13,9 @@ void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
     bullets.emplace_back(new AssaultRifleBullet(bulletTexture, 1700, barrelHole, weaponSprite.getPosition(),
                                                 degrees, weaponSprite.getOrigin(),
                                                 weaponSprite.getScale(), normalizedBulletDir));
+    //load sound effect
+    audioManager.playSound("rifleShot");
+
     shotClock.restart();
 
     magazine.remainingBullets--;

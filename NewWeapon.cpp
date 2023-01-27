@@ -9,6 +9,9 @@ void NewWeapon::doSpecialAction(Mike &character) {
     //replace current weapon with a new weapon
     character.weapon = std::move(newWeapon);
     character.weapon->setEquipped(true);
+
+    //play the weapon picked up sound
+    character.weapon->playWeaponPickedUpSound();
 }
 
 void NewWeapon::selectWeaponToSpawn(int selected) {

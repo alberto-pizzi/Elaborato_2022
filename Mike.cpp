@@ -185,7 +185,6 @@ void Mike::receiveDamage(float damagePoints) {
 void Mike::incrementBonusCollected(int bonusType) {
     bonusTypeCollected[bonusType]++;
     bonusesCollected++;
-    std::cout << "BONUS INCREMENTED: " << bonusType << std::endl;
     //TODO add observer notifier
 }
 
