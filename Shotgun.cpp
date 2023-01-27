@@ -117,6 +117,8 @@ bool Shotgun::reloadWeapon() {
             magazine.remainingBullets++;
             totalBullets--;
         }
+        //shotgun reload sound
+        audioManager.playSound("bulletInsert");
         return true;
     } else
         return false;

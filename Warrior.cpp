@@ -25,6 +25,8 @@ void Warrior::receiveDamage(float damagePoints) {
             shieldDamage *= -1; //if negative, set it to positive
             Enemy::receiveDamage(shieldDamage);
         }
+        //play bullet metal hit sound
+        audioManager.playSound("metalHit");
     } else
         Enemy::receiveDamage(damagePoints);
 }

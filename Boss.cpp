@@ -25,7 +25,8 @@ Boss::Boss(const sf::Texture &bossTexture, const sf::Texture &scepterTex, const 
     weapon = std::unique_ptr<Weapon>(
             new Scepter(true, scepterTex, energyTex, scaleSize, damageHit.y)); //max value of damage hit
 
-
+    //load boss spawning sound
+    audioManager.playSound("bossSpawning");
 }
 
 void Boss::updateCharacterColor() {

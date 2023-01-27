@@ -15,6 +15,9 @@ void Bow::shoot(const sf::Vector2f &normalizedBulletDir) {
                                    degrees, weaponSprite.getOrigin(),
                                    weaponSprite.getScale(), normalizedBulletDir));
 
+    //load shot sound
+    audioManager.playSound("bowShot");
+
     shotClock.restart();
     animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
 }

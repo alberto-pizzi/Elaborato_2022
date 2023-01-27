@@ -24,6 +24,9 @@ bool Weapon::reloadWeapon() {
                 totalBullets = 0;
             }
         }
+        //reload sound
+        audioManager.playSound("reloadMagazine");
+
         return true;
     } else
         return false;
@@ -169,6 +172,9 @@ void Weapon::setDamage(float damage) {
 }
 
 void Weapon::loadSounds() {
+    //magazine weapon
+    audioManager.loadSound("reloadMagazine", "res/sounds/magazine_in.ogg");
+
     //handgun
     audioManager.loadSound("handgunClick", "res/sounds/handgun_click.ogg");
     audioManager.loadSound("handgunShot", "res/sounds/handgun_shot.ogg");
@@ -180,6 +186,10 @@ void Weapon::loadSounds() {
     //shotgun
     audioManager.loadSound("shotgunClick", "res/sounds/shotgun_click.ogg");
     audioManager.loadSound("shotgunShot", "res/sounds/shotgun_shot.ogg");
+    audioManager.loadSound("bulletInsert", "res/sounds/bullet_insert.ogg");
+
+    //bow
+    audioManager.loadSound("bowShot", "res/sounds/bow_shot.ogg");
 }
 
 void Weapon::playWeaponPickedUpSound() {

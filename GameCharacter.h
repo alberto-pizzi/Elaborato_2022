@@ -71,6 +71,9 @@ protected:
     sf::Time nextHitTime = sf::seconds(1);
     Dice randomDice;
     const sf::Time hitTimeColor = sf::seconds(0.3);
+
+    //audio
+    AudioManager audioManager;
 public:
     sf::Clock hitColorClock;
 
@@ -170,6 +173,8 @@ public:
     float getDefaultHp() const;
 
     float calculateDistanceBetweenPositions(sf::Vector2f pos1, sf::Vector2f pos2) const;
+
+    void loadSounds();
 };
 
 

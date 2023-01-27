@@ -93,6 +93,9 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
 
     updateGlobalPosition(sprite.getGlobalBounds()); //this updates coordinates in PosEntity
 
+    //load sounds
+    loadSounds();
+
 }
 
 
@@ -373,6 +376,12 @@ void GameCharacter::startDespawning() {
     if (!despawnStarted) {
         currentAnimation.setNotCyclicalAnimation(death, 1.0f);
         despawnStarted = true;
+
+        //play death sound
+        audioManager.playSound("death");
+
+        if (characterType == KAMIKAZE)
+            audioManager.playSound("explosion");
     }
 }
 
@@ -406,6 +415,23 @@ float GameCharacter::calculateDistanceBetweenPositions(sf::Vector2f pos1, sf::Ve
     float distance;
     distance = static_cast<float>(std::sqrt(std::pow(pos2.x - pos1.x, 2) + std::pow(pos2.y - pos1.y, 2)));
     return distance;
+
+}
+
+void GameCharacter::loadSounds() {
+    //character death
+    audioManager.loadSound("death", "res/sounds/splatter.ogg");
+
+    //enemy hit
+    audioManager.loadSound("hit", "res/sounds/injured_grunts.ogg");
+    audioManager.loadSound("metalHit", "res/sounds/bullet_metal_hit.ogg");
+    audioManager.loadSound("kick", "res/sounds/kick.ogg");
+
+    //explosion
+    audioManager.loadSound("explosion", "res/sounds/explosion.ogg");
+
+    //boss
+    audioManager.loadSound("bossSpawning", "res/sounds/boss_spawning.ogg");
 
 }
 

@@ -105,6 +105,9 @@ void Enemy::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targ
     target.receiveDamage(static_cast<float>(randomDice.casualNumber(static_cast<int>(this->getDamageHit().x),
                                                                     static_cast<int>(this->getDamageHit().y))));
     target.hitColorClock.restart();
+
+    //load kick sound
+    audioManager.playSound("kick");
 }
 
 float Enemy::distanceToObstacle(sf::Vector2f position, const sf::RectangleShape &obstacle) {
@@ -156,5 +159,8 @@ void Enemy::receiveDamage(float damagePoints) {
         armor--;
     }
     HP -= damagePoints;
+
+    //load hit sound
+    audioManager.playSound("hit");
 }
 
