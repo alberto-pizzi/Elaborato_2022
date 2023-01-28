@@ -39,10 +39,6 @@ private:
 public:
     explicit AchievementState(Game *game);
 
-    void moveUp();
-
-    void moveDown();
-
     void loadTextures();
 
     void loadAchievements();

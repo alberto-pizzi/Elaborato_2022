@@ -111,41 +111,6 @@ AchievementState::AchievementState(Game *game) {
     Achievement::setPreviousBoxPosY(static_cast<float>(this->game->window.getSize().y) / 2.f);
 }
 
-void AchievementState::moveUp() {
-    /*
-    if (nButtonSelected - 1 >= -1) {
-        //textMenu[nButtonSelected].setFillColor(sf::Color::White);
-        nButtonSelected--;
-        std::prev(localIt);
-        if (nButtonSelected == -1) {
-            nButtonSelected = nButtons - 1;
-            localIt = AchievementManager::getInstance()->achievements.end();
-        }
-        //textMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
-        achievementView.setCenter(sf::Vector2f (localIt->second->getBoxSprite().getPosition().x + localIt->second->getBoxSprite().getGlobalBounds().width/2,
-                                                localIt->second->getBoxSprite().getPosition().y + localIt->second->getBoxSprite().getGlobalBounds().height/2));
-
-    }
-     */
-}
-
-void AchievementState::moveDown() {
-    /*
-    if (nButtonSelected + 1 <= nButtons) {
-        //textMenu[nButtonSelected].setFillColor(sf::Color::White);
-        nButtonSelected++;
-        std::next(localIt);
-        if (nButtonSelected == nButtons) {
-            nButtonSelected = 0;
-            localIt = AchievementManager::getInstance()->achievements.begin();
-        }
-        //textMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
-        achievementView.setCenter(sf::Vector2f (localIt->second->getBoxSprite().getPosition().x + localIt->second->getBoxSprite().getGlobalBounds().width/2,
-                                                localIt->second->getBoxSprite().getPosition().y + localIt->second->getBoxSprite().getGlobalBounds().height/2));
-    }
-     */
-}
-
 void AchievementState::loadAchievements() {
     std::ifstream achievementFile;
 

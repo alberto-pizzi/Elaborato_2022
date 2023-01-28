@@ -193,11 +193,12 @@ void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float d
     float defense = static_cast<float>(chanceDice.casualNumber(5, 40));
 
     enemies.emplace_back(
-            new Warrior(enemiesTextures.getTextureRef("mike"), enemiesTextures.getTextureRef("shield"), spawnTile,
+            new Warrior(enemiesTextures.getTextureRef("unshieldedWarrior"),
+                        enemiesTextures.getTextureRef("shieldedWarrior"), spawnTile,
                         tileSize, {GameCharacterSize::spriteSizeX, GameCharacterSize::spriteSizeY}, defense, damage,
                         nodeMap,
                         hitProbability,
-                        true)); //TODO add correct texture
+                        true));
 }
 
 void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {

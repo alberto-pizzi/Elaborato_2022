@@ -292,6 +292,8 @@ void PlayState::loadTextures() {
     charactersTextures.loadTexture("archer", "res/textures/archer.png");
     charactersTextures.loadTexture("kamikaze", "res/textures/kamikaze.png");
     charactersTextures.loadTexture("boss", "res/textures/boss.png");
+    charactersTextures.loadTexture("unshieldedWarrior", "res/textures/unshielded_warrior.png");
+    charactersTextures.loadTexture("shieldedWarrior", "res/textures/shielded_warrior.png");
 
     //load gui textures
     guiTextures.loadTexture("viewfinder", "res/textures/viewfinder.png");
@@ -513,9 +515,11 @@ void PlayState::initRound() {
     spawner->spawnZombie(tmpSpawnTile, 80, 1);
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnArcher(tmpSpawnTile, 1);
-    spawner->spawnBoss({35, 23}, 1);
-    remainBosses = 1;
-    remainEnemies = 2;
+    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+    spawner->spawnWarrior(tmpSpawnTile, 80, 1);
+    //spawner->spawnBoss({35, 23}, 1);
+
+    remainEnemies = 3;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
