@@ -356,7 +356,8 @@ void PlayState::updateBonuses(float dt) {
                     spawner->bonuses[i]->currentAnimation.update(dt);
                     //collect coin
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
-                        //std::cout << "COLLECTED COIN!" << std::endl;
+                        //play collect coin sound
+                        audioManager.playSound("collectCoin");
                         spawner->bonuses[i]->doSpecialAction(*mike);
                         collect = true;
                     } else if (spawner->bonuses[i]->getStayTimer().getElapsedTime() >=
@@ -870,7 +871,7 @@ void PlayState::loadAudio() {
 
 
     //sound effects
-
+    audioManager.loadSound("collectCoin", "res/sounds/collect_coin.ogg");
 
 
     //start first playlist song

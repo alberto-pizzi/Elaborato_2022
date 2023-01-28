@@ -17,6 +17,9 @@ Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vect
         : bonusPoints(points), stayTime(stayTime), texture(texture), animationFrames(std::move(animationFrames)),
           bonusType(bonusType), isInfiniteAnimation(isInfinite), isOwnable(ownable), bonusFrameSize(frameSize),
           hasDespawnAnimation(hasDespawnAnimation) {
+    //load sounds
+    loadSounds();
+
     sprite.setTexture(texture);
     sprite.setPosition(spawnCoords);
     //updateGlobalPosition(sprite.getGlobalBounds());
@@ -79,11 +82,19 @@ void Bonus::startDespawining() {
         currentAnimation.setNotCyclicalAnimation(despawnFrames, 1.0f);
         sprite.setPosition(sprite.getPosition() - translation);
         despawnStarted = true;
+
+        //play destroy wooden box sound
+        audioManager.playSound("destroyBox");
     }
 }
 
 const sf::Time &Bonus::getDuration() const {
     return duration;
+}
+
+void Bonus::loadSounds() {
+    //despawn bonus (over time)
+    audioManager.loadSound("destroyBox", "res/sounds/destroy_box.ogg");
 }
 
 

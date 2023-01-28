@@ -40,6 +40,9 @@ protected:
     std::vector<sf::IntRect> idleBonusBox;
     std::vector<sf::IntRect> despawnFrames;
     const sf::Vector2i animationFrameSize = {64, 64};
+
+    //audio
+    AudioManager audioManager;
 public:
     bool isActiveAnimation = false;
     bool isEndedAnimation = false;
@@ -70,6 +73,8 @@ public:
     const sf::Clock &getStayTimer() const;
 
     const sf::Time &getDuration() const;
+
+    void loadSounds();
 
 
 };
