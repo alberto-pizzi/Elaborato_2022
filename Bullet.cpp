@@ -6,9 +6,10 @@
 
 Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotationOrigin, float degrees,
                const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir, const sf::Vector2f &weaponPos,
-               const sf::Vector2f &barrelHole, sf::Vector2f bulletScale) : bulletSpeed(speed), bulletTexture(tex),
-                                                                           bulletDir(bulletDir),
-                                                                           distanceTravelled(0) {
+               const sf::Vector2f &barrelHole, sf::Vector2f bulletScale, bool criticalBullet)
+        : bulletSpeed(speed), bulletTexture(tex),
+          bulletDir(bulletDir),
+          distanceTravelled(0), critical(criticalBullet) {
     bulletSprite.setTexture(tex);
     bulletSprite.setRotation(degrees);
 
@@ -32,6 +33,9 @@ Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotation
                                            std::cos((M_PI * (degrees)) / 180))};
         bulletScale.x = -std::abs(bulletScale.x);
     }
+
+    if (criticalBullet)
+        bulletSprite.setColor(sf::Color::Magenta);
 
     bulletSprite.setScale(bulletScale);
     bulletSprite.setPosition(bulletOrigin);
@@ -71,4 +75,8 @@ float Bullet::getBulletSpeed() const {
 
 float Bullet::getDistanceTravelled() const {
     return distanceTravelled;
+}
+
+bool Bullet::isCritical() const {
+    return critical;
 }

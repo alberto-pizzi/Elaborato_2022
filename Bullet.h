@@ -23,10 +23,11 @@ protected:
     sf::Sprite bulletSprite;
     sf::Vector2f bulletDir;
     float distanceTravelled;
+    bool critical;
 public:
     Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotationOrigin, float degrees,
            const sf::Vector2f &weaponScale, const sf::Vector2f &bulletDir, const sf::Vector2f &weaponPos,
-           const sf::Vector2f &barrelHole, sf::Vector2f bulletScale);
+           const sf::Vector2f &barrelHole, sf::Vector2f bulletScale, bool criticalBullet = false);
 
     bool checkEnemyCollision(const GameCharacter &target);
 
@@ -43,6 +44,8 @@ public:
     float getBulletSpeed() const;
 
     float getDistanceTravelled() const;
+
+    bool isCritical() const;
 
 };
 

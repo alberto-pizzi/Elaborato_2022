@@ -9,14 +9,25 @@ void Scepter::shoot(const sf::Vector2f &normalizedBulletDir) {
         float frameDuration = 0.35f;
         currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
+        //critical bullet
+        float bulletSpeed;
+        bool critical;
+
+        if (timesCount < afterManyTimesIsCritical) {
+            critical = false;
+            bulletSpeed = 600;
+            timesCount++;
+        } else {
+            timesCount = 0;
+            bulletSpeed = 250;
+            critical = true;
+        }
+
         //shoot ONE bullet
         sf::Vector2f bulletScale = {2, 2};
-        //TODO implement critic bullet
-        //FIXME chance bullet type
-
-        bullets.emplace_back(new Bullet(bulletTexture, 600, weaponSprite.getOrigin(), degrees,
+        bullets.emplace_back(new Bullet(bulletTexture, bulletSpeed, weaponSprite.getOrigin(), degrees,
                                         weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
-                                        barrelHole, bulletScale));
+                                        barrelHole, bulletScale, critical));
 
         //play scepter shot sound
         audioManager.playSound("scepterShot");

@@ -40,6 +40,7 @@ private:
 
     sf::Vector2i fileTextureRectWeaponSize;
     float defaultDamage;
+    const float criticalBulletDamageMultiplier = 2;
 protected:
     enum Directions {
         LEFT = 0, RIGHT, UP, DOWN,

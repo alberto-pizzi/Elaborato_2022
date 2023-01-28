@@ -11,14 +11,9 @@
 #include <list>
 #include "AchievementManager.h"
 
-enum typeOfWeapon {
-    HANDGUN = 0, ASSAULT_RIFLE, SHOTGUN,
-};
-
 class Mike : public GameCharacter, public Subject {
 private:
     bool bubble;
-    int killStreak = 0;
     struct ActualBonus {
         int bonusType;
         sf::Clock effectTimer;
@@ -49,8 +44,6 @@ public:
          float armor = 0);
 
     virtual ~Mike();
-
-    bool isKillStreak(GameCharacter &character);
 
     void updateCharacterColor() override;
 

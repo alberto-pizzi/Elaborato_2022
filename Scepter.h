@@ -14,6 +14,8 @@ private:
     };
     const sf::Vector2i fileTextureRectScepterSize = {32, 32};
     const sf::Vector2f barrelHole = {23, 15};
+    const int afterManyTimesIsCritical = 5;
+    int timesCount = 0;
 public:
     Scepter(bool equipped, const sf::Texture &scepterTex, const sf::Texture &energyBulletTex, sf::Vector2f bossScale,
             float damage = 5, int totBullets = -999, sf::Time shotDelay = sf::seconds(3), float reloadTime = 1,
