@@ -5,23 +5,24 @@
 #include "Bow.h"
 
 void Bow::shoot(const sf::Vector2f &normalizedBulletDir) {
-    std::cout << "SHOOT!" << std::endl;
-    float frameDuration = 0.35f;
-    currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+    if (shotClock.getElapsedTime() >= nextShotDelay) {
+        float frameDuration = 0.35f;
+        currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
-    //shoot ONE bullet
+        //shoot ONE bullet
 
-    sf::Vector2f bulletScale = weaponSprite.getScale();
+        sf::Vector2f bulletScale = weaponSprite.getScale();
 
-    bullets.emplace_back(new Bullet(bulletTexture, 900, weaponSprite.getOrigin(), degrees,
-                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
-                                    barrelHole, bulletScale));
+        bullets.emplace_back(new Bullet(bulletTexture, 900, weaponSprite.getOrigin(), degrees,
+                                        weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                        barrelHole, bulletScale));
 
-    //load shot sound
-    audioManager.playSound("bowShot");
+        //load shot sound
+        audioManager.playSound("bowShot");
 
-    shotClock.restart();
-    animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+        shotClock.restart();
+        animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+    }
 }
 
 Bow::Bow(bool equipped, const sf::Texture &bowTexture, const sf::Texture &arrowTexture, float damage, int totBullets,

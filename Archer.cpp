@@ -18,9 +18,7 @@ Archer::Archer(const sf::Texture &archerTexture, const sf::Texture &bowTexture, 
 }
 
 void Archer::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &targetEnemies) {
-    if (weapon->shotClock.getElapsedTime() >= weapon->getNextShotDelay()) {
-        sf::Vector2f origin = spriteCenter;
-        sf::Vector2f translation = target.getSpriteCenter() - spriteCenter;
-        weapon->shoot(normalize(translation));
-    }
+    sf::Vector2f origin = spriteCenter;
+    sf::Vector2f translation = target.getSpriteCenter() - spriteCenter;
+    weapon->shoot(normalize(translation));
 }

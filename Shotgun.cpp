@@ -5,46 +5,55 @@
 #include "Shotgun.h"
 
 void Shotgun::shoot(const sf::Vector2f &normalizedBulletDir) {
-    float frameDuration = 0.35f;
-    currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
-    float speed = 1500;
-    float delta = deltaDegrees; //delta degrees
+    if (shotClock.getElapsedTime() >= nextShotDelay) {
+        if (thereAreRemainingBullets()) {
+            float frameDuration = 0.35f;
+            currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+            float speed = 1500;
+            float delta = deltaDegrees; //delta degrees
 
-    sf::Vector2f newNormalizedDir1 = {normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (-delta)) / 180)) -
-                                      normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (-delta)) / 180)),
-                                      normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (-delta)) / 180)) +
-                                      normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (-delta)) / 180))};
-    sf::Vector2f newNormalizedDir3 = {normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (delta)) / 180)) -
-                                      normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (delta)) / 180)),
-                                      normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (delta)) / 180)) +
-                                      normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (delta)) / 180))};
+            sf::Vector2f newNormalizedDir1 = {
+                    normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (-delta)) / 180)) -
+                    normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (-delta)) / 180)),
+                    normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (-delta)) / 180)) +
+                    normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (-delta)) / 180))};
+            sf::Vector2f newNormalizedDir3 = {
+                    normalizedBulletDir.x * static_cast<float>(std::cos((M_PI * (delta)) / 180)) -
+                    normalizedBulletDir.y * static_cast<float>(std::sin((M_PI * (delta)) / 180)),
+                    normalizedBulletDir.x * static_cast<float>(std::sin((M_PI * (delta)) / 180)) +
+                    normalizedBulletDir.y * static_cast<float>(std::cos((M_PI * (delta)) / 180))};
 
-    //corrects west trajectory
-    if (weaponSprite.getScale().x < 0) {
-        sf::Vector2f tmpNewNormalizedDir = newNormalizedDir1;
-        newNormalizedDir1 = newNormalizedDir3;
-        newNormalizedDir3 = tmpNewNormalizedDir;
+            //corrects west trajectory
+            if (weaponSprite.getScale().x < 0) {
+                sf::Vector2f tmpNewNormalizedDir = newNormalizedDir1;
+                newNormalizedDir1 = newNormalizedDir3;
+                newNormalizedDir3 = tmpNewNormalizedDir;
+            }
+
+            sf::Vector2f bulletScale = weaponSprite.getScale();
+
+            //shoot THREE bullets
+            bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
+                                                   degrees, weaponSprite.getOrigin(),
+                                                   weaponSprite.getScale(), newNormalizedDir1, bulletScale, 1));
+            bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
+                                                   degrees, weaponSprite.getOrigin(),
+                                                   weaponSprite.getScale(), normalizedBulletDir, bulletScale, 2));
+            bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
+                                                   degrees, weaponSprite.getOrigin(),
+                                                   weaponSprite.getScale(), newNormalizedDir3, bulletScale, 3));
+
+            //play audio effect
+            audioManager.playSound("shotgunShot");
+
+            shotClock.restart();
+
+            magazine.remainingBullets--; //three bullets are counted as one shot
+            animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+        } else
+            //play gun dry sound
+            audioManager.playSound("gunDry");
     }
-
-    sf::Vector2f bulletScale = weaponSprite.getScale();
-
-    //shoot THREE bullets
-    bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
-                                           degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), newNormalizedDir1, bulletScale, 1));
-    bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
-                                           degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), normalizedBulletDir, bulletScale, 2));
-    bullets.emplace_back(new ShotgunBullet(bulletTexture, speed, barrelHole, weaponSprite.getPosition(),
-                                           degrees, weaponSprite.getOrigin(),
-                                           weaponSprite.getScale(), newNormalizedDir3, bulletScale, 3));
-
-    //play audio effect
-    audioManager.playSound("shotgunShot");
-
-    shotClock.restart();
-
-    magazine.remainingBullets--; //three bullets are counted as one shot
 }
 
 Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &shotgunBulletTexture,

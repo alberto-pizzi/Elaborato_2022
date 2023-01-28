@@ -44,12 +44,10 @@ void AchievementState::handleInput() {
                 //Take input
                 switch (event.key.code) {
                     case sf::Keyboard::W:
-                        //moveUp();
                         achievementView.move(sf::Vector2f(0, -scrollMove));
                         break;
                     case sf::Keyboard::S:
                         achievementView.move(sf::Vector2f(0, scrollMove));
-                        //moveDown();
                         break;
                     case sf::Keyboard::Escape:
                         this->game->popState();

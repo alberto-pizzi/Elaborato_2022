@@ -174,6 +174,7 @@ void Weapon::setDamage(float damage) {
 void Weapon::loadSounds() {
     //magazine weapon
     audioManager.loadSound("reloadMagazine", "res/sounds/magazine_in.ogg");
+    audioManager.loadSound("gunDry", "res/sounds/gun_dry.ogg");
 
     //handgun
     audioManager.loadSound("handgunClick", "res/sounds/handgun_click.ogg");

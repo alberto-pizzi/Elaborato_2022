@@ -156,11 +156,8 @@ void PlayState::handleInput() {
             case sf::Event::MouseButtonPressed:
                 if ((mike->weapon->getWeaponName() != "assaultRifle") &&
                     (event.mouseButton.button == sf::Mouse::Left)) {
-                    if ((!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) &&
-                        (mike->weapon->thereAreRemainingBullets()) &&
-                        (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
+                    if (!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) {
                         mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
-                        mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
                     }
                 }
                 break;
@@ -173,7 +170,6 @@ void PlayState::handleInput() {
                         mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
                         mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ORDERED_RELOADING] = true;
                         mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING] = true;
-                        std::cout << "RELOAD DONE!" << std::endl;
                     }
                 }
                 break;
@@ -196,12 +192,10 @@ void PlayState::handleInput() {
     //repeated input (automatic fire, assault rifle)
     if ((mike->weapon->getWeaponName() == "assaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
         if ((!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) &&
-            (mike->weapon->thereAreRemainingBullets()) &&
             (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
             mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
                                       mike->weapon->isInfiniteBullets());
-            mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
         }
 
     mike->calculateDirectionVector();
@@ -855,12 +849,10 @@ void PlayState::updateBosses(float dt) {
             if (spawner->bosses.empty())
                 break;
         } else {
-            if (spawner->bosses[i]->weapon->shotClock.getElapsedTime() >=
-                spawner->bosses[i]->weapon->getNextShotDelay()) {
-                sf::Vector2f origin = spawner->bosses[i]->getSpriteCenter();
-                sf::Vector2f translation = mike->getSpriteCenter() - origin;
-                spawner->bosses[i]->weapon->shoot(spawner->bosses[i]->normalize(translation));
-            }
+            sf::Vector2f origin = spawner->bosses[i]->getSpriteCenter();
+            sf::Vector2f translation = mike->getSpriteCenter() - origin;
+            spawner->bosses[i]->weapon->shoot(spawner->bosses[i]->normalize(translation));
+
             spawner->bosses[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
                                                                                     spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
                                                                                     spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);

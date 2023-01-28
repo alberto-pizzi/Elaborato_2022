@@ -5,23 +5,25 @@
 #include "Scepter.h"
 
 void Scepter::shoot(const sf::Vector2f &normalizedBulletDir) {
-    float frameDuration = 0.35f;
-    currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+    if (shotClock.getElapsedTime() >= nextShotDelay) {
+        float frameDuration = 0.35f;
+        currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
-    //shoot ONE bullet
-    sf::Vector2f bulletScale = {2, 2};
-    //TODO implement critic bullet
-    //FIXME chance bullet type
+        //shoot ONE bullet
+        sf::Vector2f bulletScale = {2, 2};
+        //TODO implement critic bullet
+        //FIXME chance bullet type
 
-    bullets.emplace_back(new Bullet(bulletTexture, 600, weaponSprite.getOrigin(), degrees,
-                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
-                                    barrelHole, bulletScale));
+        bullets.emplace_back(new Bullet(bulletTexture, 600, weaponSprite.getOrigin(), degrees,
+                                        weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                        barrelHole, bulletScale));
 
-    //play scepter shot sound
-    audioManager.playSound("scepterShot");
+        //play scepter shot sound
+        audioManager.playSound("scepterShot");
 
-    shotClock.restart();
-    animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+        shotClock.restart();
+        animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+    }
 }
 
 Scepter::Scepter(bool equipped, const sf::Texture &scepterTex, const sf::Texture &energyBulletTex,

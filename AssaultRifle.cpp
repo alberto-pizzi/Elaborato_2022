@@ -5,22 +5,28 @@
 #include "AssaultRifle.h"
 
 void AssaultRifle::shoot(const sf::Vector2f &normalizedBulletDir) {
+    if (shotClock.getElapsedTime() >= nextShotDelay) {
+        if (thereAreRemainingBullets()) {
+            float frameDuration = 0.35f;
+            currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
-    float frameDuration = 0.35f;
-    currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+            sf::Vector2f bulletScale = weaponSprite.getScale();
 
-    sf::Vector2f bulletScale = weaponSprite.getScale();
+            //shoot ONE bullet
+            bullets.emplace_back(new Bullet(bulletTexture, 1700, weaponSprite.getOrigin(), degrees,
+                                            weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                            barrelHole, bulletScale));
 
-    //shoot ONE bullet
-    bullets.emplace_back(new Bullet(bulletTexture, 1700, weaponSprite.getOrigin(), degrees,
-                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
-                                    barrelHole, bulletScale));
+            //load sound effect
+            audioManager.playSound("rifleShot");
 
-    //load sound effect
-    audioManager.playSound("rifleShot");
-
-    shotClock.restart();
-    magazine.remainingBullets--;
+            shotClock.restart();
+            magazine.remainingBullets--;
+            animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+        } else
+            //play gun dry sound
+            audioManager.playSound("gunDry");
+    }
 }
 
 AssaultRifle::AssaultRifle(bool equipped, const sf::Texture &handgunTexture,

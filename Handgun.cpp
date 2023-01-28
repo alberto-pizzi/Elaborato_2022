@@ -5,20 +5,27 @@
 #include "Handgun.h"
 
 void Handgun::shoot(const sf::Vector2f &normalizedBulletDir) {
-    float frameDuration = 0.35f;
-    currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
+    if (shotClock.getElapsedTime() >= nextShotDelay) {
+        if (thereAreRemainingBullets()) {
+            float frameDuration = 0.35f;
+            currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
-    sf::Vector2f bulletScale = weaponSprite.getScale();
+            sf::Vector2f bulletScale = weaponSprite.getScale();
 
-    //shoot ONE bullet
-    bullets.emplace_back(new Bullet(bulletTexture, 1200, weaponSprite.getOrigin(), degrees,
-                                    weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
-                                    barrelHole, bulletScale));
-    //play audio effect
-    audioManager.playSound("handgunShot");
+            //shoot ONE bullet
+            bullets.emplace_back(new Bullet(bulletTexture, 1200, weaponSprite.getOrigin(), degrees,
+                                            weaponSprite.getScale(), normalizedBulletDir, weaponSprite.getPosition(),
+                                            barrelHole, bulletScale));
+            //play audio effect
+            audioManager.playSound("handgunShot");
 
-    shotClock.restart();
-    magazine.remainingBullets--;
+            shotClock.restart();
+            magazine.remainingBullets--;
+            animationKeyStep[ReloadingAnimationKeySteps::ACTIVE] = true;
+        } else
+            //play gun dry sound
+            audioManager.playSound("gunDry");
+    }
 }
 
 Handgun::Handgun(bool equipped, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
