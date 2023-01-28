@@ -146,15 +146,17 @@ void Mike::setBubble(bool bubble) {
 void Mike::updateCharacterColor() {
     if (isHit) {
         sprite.setColor(hitColor);
+        if (weapon)
+            weapon->weaponSprite.setColor(hitColor);
         if (hitColorClock.getElapsedTime() >= hitTimeColor)
             isHit = false;
     } else if (bubble) {
         sprite.setColor(bubbleColor);
-        if (weapon != nullptr)
+        if (weapon)
             weapon->weaponSprite.setColor(bubbleColor);
     } else {
         sprite.setColor(sf::Color::White);
-        if (weapon != nullptr)
+        if (weapon)
             weapon->weaponSprite.setColor(sf::Color::White);
     }
 }
