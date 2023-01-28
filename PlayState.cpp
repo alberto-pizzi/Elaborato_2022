@@ -605,6 +605,7 @@ bool PlayState::isInteger(float n) const {
 
 void PlayState::spawnEachTypeOfEnemies() {
     sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
+    sf::Vector2i mapCenter = {35, 23};
 
     for (int i = 0; i < totEnemiesForType[ZOMBIE].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
@@ -627,8 +628,8 @@ void PlayState::spawnEachTypeOfEnemies() {
     }
 
     for (int i = 0; i < totEnemiesForType[BOSS].numberOfEnemies; i++) {
-        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnBoss(tmpSpawnTile, calculateDamageMultiplierPerRound());
+        //tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        spawner->spawnBoss(mapCenter, calculateDamageMultiplierPerRound());
     }
 
 }
