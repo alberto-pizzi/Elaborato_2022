@@ -510,7 +510,11 @@ void PlayState::initRound() {
      */
     spawner->spawnLifePoints({40, 23});
     spawner->spawnZombie(tmpSpawnTile, 80, 1);
-    remainEnemies = 1;
+    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+    spawner->spawnArcher(tmpSpawnTile, 1);
+    spawner->spawnBoss({35, 23}, 1);
+    remainBosses = 1;
+    remainEnemies = 2;
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
@@ -551,10 +555,6 @@ void PlayState::updateEnemies(float dt) {
             spawner->enemies[i]->setWeaponPosToShouldersPos();
 
             spawner->enemies[i]->weapon->updateBullets(arenaMap, *mike);
-            if (!mike->isDead())
-                spawner->enemies[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                                         spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
-                                                                                         spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
         }
         spawner->enemies[i]->updateCharacterColor();
         updateViewfinderColor(*spawner->enemies[i]);
@@ -575,10 +575,16 @@ void PlayState::updateEnemies(float dt) {
 
             if (spawner->enemies.empty())
                 break;
-        } else if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->chanceDice,
-                                                     spawner->calculateChance(spawner->chanceDice))) ||
-                   (spawner->enemies[i]->getCharacterType() == ARCHER)) {
-            spawner->enemies[i]->hit(*mike, spawner->enemies);
+        } else {
+            if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->chanceDice,
+                                                  spawner->calculateChance(spawner->chanceDice))) ||
+                (spawner->enemies[i]->getCharacterType() == ARCHER)) {
+                spawner->enemies[i]->hit(*mike, spawner->enemies);
+                if (spawner->enemies[i]->weapon)
+                    spawner->enemies[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                             spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
+                                                                                             spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
+            }
         }
     }
 }
@@ -823,10 +829,6 @@ void PlayState::updateBosses(float dt) {
             spawner->bosses[i]->setWeaponPosToShouldersPos();
 
             spawner->bosses[i]->weapon->updateBullets(arenaMap, *mike);
-            if (!mike->isDead())
-                spawner->bosses[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                                        spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
-                                                                                        spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
         }
         spawner->bosses[i]->updateCharacterColor();
         updateViewfinderColor(*spawner->bosses[i]);
@@ -854,6 +856,10 @@ void PlayState::updateBosses(float dt) {
                 sf::Vector2f translation = mike->getSpriteCenter() - origin;
                 spawner->bosses[i]->weapon->shoot(spawner->bosses[i]->normalize(translation));
             }
+            spawner->bosses[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                    spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
+                                                                                    spawner->bosses[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
+
         }
     }
 }

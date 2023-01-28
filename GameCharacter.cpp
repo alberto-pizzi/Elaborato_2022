@@ -182,10 +182,10 @@ void GameCharacter::drawEntity(sf::RenderWindow &window) {
     if (!skinDirection[UP]) {
         window.draw(sprite);
         if (!despawnStarted && weapon)
-            window.draw(weapon->weaponSprite);
+            weapon->drawWeapon(window);
     } else {
         if (!despawnStarted && weapon)
-            window.draw(weapon->weaponSprite);
+            weapon->drawWeapon(window);
         window.draw(sprite);
     }
 }
