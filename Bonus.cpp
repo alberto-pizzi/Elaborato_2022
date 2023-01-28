@@ -43,7 +43,8 @@ Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vect
 
         this->sprite.setScale(sf::Vector2f(1.5, 1.5));
 
-
+        //play spawn bonus sound
+        audioManager.playSound("spawnBonus");
     }
 
 
@@ -95,6 +96,9 @@ const sf::Time &Bonus::getDuration() const {
 void Bonus::loadSounds() {
     //despawn bonus (over time)
     audioManager.loadSound("destroyBox", "res/sounds/destroy_box.ogg");
+
+    //spawn bonus
+    audioManager.loadSound("spawnBonus", "res/sounds/spawn_bonus.ogg");
 }
 
 
