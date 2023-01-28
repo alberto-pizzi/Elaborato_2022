@@ -24,8 +24,7 @@ Bonus::Bonus(const sf::Texture &texture, int points, sf::Time stayTime, sf::Vect
     sprite.setPosition(spawnCoords);
     //updateGlobalPosition(sprite.getGlobalBounds());
 
-    if (hasDespawnAnimation && (bonusType !=
-                                NEW_WEAPON)) { //bonuses with infinite animation (like coins) have a different animation comportment than the others
+    if (hasDespawnAnimation) { //bonuses with infinite animation (like coins) have a different animation comportment than the others
 
 
         despawnFrames.reserve(DESPAWN);

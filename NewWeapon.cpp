@@ -15,7 +15,6 @@ void NewWeapon::doSpecialAction(Mike &character) {
 }
 
 void NewWeapon::selectWeaponToSpawn(int selected) {
-    int totBullets;
 
     switch (selected) {
         case HANDGUN:
@@ -44,16 +43,18 @@ void NewWeapon::selectWeaponToSpawn(int selected) {
 }
 
 NewWeapon::NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
-                     int points, sf::Time stayTime)
+                     const Dice &chanceDice, int points, sf::Time stayTime)
         : Bonus(bonusTexture, points, stayTime, spawnCoords, {{0, 64, 64, 64}}, NEW_WEAPON, {64, 64}, 0,
                 false,
                 false, true) {
 
-    Dice dice(totalWeapons - 1); //TODO optimize it when will be implemented random spawning algorithm
-
     sprite.setScale(sf::Vector2f(2, 2));
     this->weaponsTextures = weaponsTextures;
 
-    selectWeaponToSpawn(dice.roll(1));
+    selectWeaponToSpawn(chanceDice.casualNumber(0, totalWeapons - 1));
 
+    if (!idleBonusBox.empty())
+        sprite.setTextureRect(idleBonusBox[0]);
+
+    currentAnimation.setNotCyclicalAnimation(idleBonusBox, 10);
 }

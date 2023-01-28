@@ -37,7 +37,7 @@ void Spawner::drawBonuses(sf::RenderWindow &window) const {
 
 void Spawner::spawnWeapon(sf::Vector2i spawnTile) {
     bonuses.emplace_back(new NewWeapon(weaponsTextures, bonusesTextures.getTextureRef("weaponBox"),
-                                       calculatePosFromTile(spawnTile)));
+                                       calculatePosFromTile(spawnTile), chanceDice));
 }
 
 void Spawner::spawnCoin(sf::Vector2f spawnPos, int value) {

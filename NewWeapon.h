@@ -28,7 +28,7 @@ private:
     const int totalWeapons = 3; //WARNING: it must be updated when you add new weapon
 public:
     NewWeapon(const TextureManager &weaponsTextures, const sf::Texture &bonusTexture, sf::Vector2f spawnCoords,
-              int points = 10, sf::Time stayTime = sf::seconds(50));
+              const Dice &chanceDice, int points = 10, sf::Time stayTime = sf::seconds(50));
 
     //WARNING: call this when you want despawning a new weapon (for startDespawining animation)
 
