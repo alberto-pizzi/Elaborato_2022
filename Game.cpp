@@ -60,4 +60,6 @@ Game::~Game() {
 
 void Game::loadTextures() {
     textureManager.loadTexture("background", "res/textures/main_menu_background.jpg");
+    textureManager.loadTexture("button", "res/textures/menu_button.png");
+    textureManager.loadTexture("mike", "res/textures/mike.png");
 }

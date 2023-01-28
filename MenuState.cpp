@@ -65,8 +65,6 @@ void MenuState::loadPlay() {
 }
 
 MenuState::MenuState(Game *game) {
-    loadTextures();
-
     this->game = game;
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->view.setSize(pos);
@@ -80,24 +78,26 @@ MenuState::MenuState(Game *game) {
 
     //set box
     for (int i = 0; i < nButtons; i++)
-        menuButton[i].setTexture(textureManager.getTextureRef("button"));
+        menuButton[i].setTexture(this->game->textureManager.getTextureRef("button"));
 
     menuButton[Play].setPosition(sf::Vector2f(
             static_cast<float>(this->game->window.getSize().x) / 2 - menuButton[Play].getGlobalBounds().width / 2,
             static_cast<float>(this->game->window.getSize().y) / 2 - menuButton[Play].getGlobalBounds().height / 2));
-    menuButton[Stats].setPosition(sf::Vector2f(
-            static_cast<float>(this->game->window.getSize().x) / 2 - menuButton[Stats].getGlobalBounds().width / 2,
+    menuButton[Achievements].setPosition(sf::Vector2f(
+            static_cast<float>(this->game->window.getSize().x) / 2 -
+            menuButton[Achievements].getGlobalBounds().width / 2,
             menuButton[Play].getPosition().y + menuButton[Play].getGlobalBounds().height + buttonDistance));
     menuButton[Exit].setPosition(sf::Vector2f(
             static_cast<float>(this->game->window.getSize().x) / 2 - menuButton[Exit].getGlobalBounds().width / 2,
-            menuButton[Stats].getPosition().y + menuButton[Stats].getGlobalBounds().height + buttonDistance));
+            menuButton[Achievements].getPosition().y + menuButton[Achievements].getGlobalBounds().height +
+            buttonDistance));
 
     //set characters
 
-    rightCharacter.setTexture(textureManager.getTextureRef("mike"));
+    rightCharacter.setTexture(this->game->textureManager.getTextureRef("mike"));
     rightCharacter.setTextureRect(
             {characterTextureSize.x, 1 * characterTextureSize.y, characterTextureSize.x, characterTextureSize.y});
-    leftCharacter.setTexture(textureManager.getTextureRef("mike"));
+    leftCharacter.setTexture(this->game->textureManager.getTextureRef("mike"));
     leftCharacter.setTextureRect(
             {characterTextureSize.x, 2 * characterTextureSize.y, characterTextureSize.x, characterTextureSize.y});
 
@@ -130,13 +130,13 @@ MenuState::MenuState(Game *game) {
                     textMenu[Play].getGlobalBounds().height / 2 + alignValue));
 
     //stats
-    textMenu[Stats].setString("Achievements");
-    textMenu[Stats].setPosition(
+    textMenu[Achievements].setString("Achievements");
+    textMenu[Achievements].setPosition(
             sf::Vector2f(
-                    menuButton[Stats].getPosition().x + menuButton[Stats].getGlobalBounds().width / 2 -
-                    textMenu[Stats].getGlobalBounds().width / 2,
-                    menuButton[Stats].getPosition().y + menuButton[Stats].getGlobalBounds().height / 2 -
-                    textMenu[Stats].getGlobalBounds().height / 2 + alignValue));
+                    menuButton[Achievements].getPosition().x + menuButton[Achievements].getGlobalBounds().width / 2 -
+                    textMenu[Achievements].getGlobalBounds().width / 2,
+                    menuButton[Achievements].getPosition().y + menuButton[Achievements].getGlobalBounds().height / 2 -
+                    textMenu[Achievements].getGlobalBounds().height / 2 + alignValue));
 
     //exit
     textMenu[Exit].setString("Exit");
@@ -157,7 +157,7 @@ void MenuState::moveUp() {
         nButtonSelected--;
         if (nButtonSelected == -1)
             nButtonSelected = nButtons - 1;
-        textMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+        textMenu[nButtonSelected].setFillColor(selectedColor);
     }
 }
 
@@ -167,7 +167,7 @@ void MenuState::moveDown() {
         nButtonSelected++;
         if (nButtonSelected == nButtons)
             nButtonSelected = 0;
-        textMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+        textMenu[nButtonSelected].setFillColor(selectedColor);
     }
 }
 
@@ -176,7 +176,7 @@ void MenuState::select() {
         case Play:
             this->loadPlay();
             break;
-        case Stats:
+        case Achievements:
             this->game->pushState(new AchievementState(this->game));
             break;
         case Exit:
@@ -188,7 +188,3 @@ void MenuState::select() {
     }
 }
 
-void MenuState::loadTextures() {
-    textureManager.loadTexture("button", "res/textures/menu_button.png");
-    textureManager.loadTexture("mike", "res/textures/mike.png");
-}

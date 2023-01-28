@@ -4,19 +4,17 @@
 
 #include "PauseState.h"
 
-enum NameButton {
-    //these numbers are related with nButtons
-    Resume = 0,
-    Stats = 1,
-    Exit = 2,
-};
+
 
 void PauseState::draw(float dt) const {
     this->game->window.setView(this->view);
     this->game->window.clear();
     this->game->window.draw(this->game->background);
-    for (int i = 0; i < nButtons; i++)
-        this->game->window.draw(mainMenu[i]);
+    this->game->window.draw(pauseMenu);
+    for (int i = 0; i < nButtons; i++) {
+        this->game->window.draw(menuButton[i]);
+        this->game->window.draw(textMenu[i]);
+    }
 }
 
 void PauseState::update(float dt) {
@@ -65,71 +63,98 @@ void PauseState::handleInput() {
 }
 
 PauseState::PauseState(Game *game) {
-    this->game = game;
 
+    this->game = game;
     sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
     this->view.setSize(pos);
     pos *= 0.5f;
     this->view.setCenter(pos);
-
-    std::string fontFile = "res/fonts/bloody.ttf";
+    std::string fontFile = "res/fonts/fffforwa.ttf";
     try {
         if (!font.loadFromFile(fontFile))
             throw GameException("Error opening numbersOrTitlesFont file", fontFile, false);
     } catch (GameException &e) {}
 
+    //set box
+    for (int i = 0; i < nButtonsPause; i++)
+        menuButton[i].setTexture(this->game->textureManager.getTextureRef("button"));
+
+    menuButton[Resume].setPosition(sf::Vector2f(
+            static_cast<float>(this->game->window.getSize().x) / 2 - menuButton[Resume].getGlobalBounds().width / 2,
+            static_cast<float>(this->game->window.getSize().y) / 2 - menuButton[Resume].getGlobalBounds().height / 2));
+    menuButton[Achievements].setPosition(sf::Vector2f(
+            static_cast<float>(this->game->window.getSize().x) / 2 -
+            menuButton[Achievements].getGlobalBounds().width / 2,
+            menuButton[Resume].getPosition().y + menuButton[Resume].getGlobalBounds().height + buttonDistance));
+    menuButton[Exit].setPosition(sf::Vector2f(
+            static_cast<float>(this->game->window.getSize().x) / 2 - menuButton[Exit].getGlobalBounds().width / 2,
+            menuButton[Achievements].getPosition().y + menuButton[Achievements].getGlobalBounds().height +
+            buttonDistance));
+
+
+    //set texts
+    for (int i = 0; i < nButtonsPause; i++) {
+        textMenu[i].setFont(font);
+        textMenu[i].setCharacterSize(fontSize);
+        textMenu[i].setFillColor(sf::Color::White);
+    }
+    pauseMenu.setFont(font);
+    pauseMenu.setCharacterSize(titleFontSize);
+    pauseMenu.setString("Pause");
+    pauseMenu.setFillColor(sf::Color::Yellow);
+    pauseMenu.setPosition(
+            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - pauseMenu.getGlobalBounds().width / 2,
+                         buttonDistance * 2));
+
     //play
-    mainMenu[Resume].setFont(font);
-    mainMenu[Resume].setFillColor(sf::Color(102, 0, 0));
-    mainMenu[Resume].setString("Resume");
-    mainMenu[Resume].setCharacterSize(fontSize);
-    mainMenu[Resume].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 -
-                         mainMenu[Resume].getGlobalBounds().width / 2,
-                         static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)));
+    textMenu[Resume].setFillColor(selectedColor);
+    textMenu[Resume].setString("Resume");
+    textMenu[Resume].setPosition(
+            sf::Vector2f(
+                    menuButton[Resume].getPosition().x + menuButton[Resume].getGlobalBounds().width / 2 -
+                    textMenu[Resume].getGlobalBounds().width / 2,
+                    menuButton[Resume].getPosition().y + menuButton[Resume].getGlobalBounds().height / 2 -
+                    textMenu[Resume].getGlobalBounds().height / 2 + alignValue));
 
     //stats
-    mainMenu[Stats].setFont(font);
-    mainMenu[Stats].setFillColor(sf::Color::White);
-    mainMenu[Stats].setString("Achievements");
-    mainMenu[Stats].setCharacterSize(50);
-    mainMenu[Stats].setPosition(
-            sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 -
-                         mainMenu[Stats].getGlobalBounds().width / 2,
-                         (static_cast<float>(this->game->window.getSize().y) / 2 - static_cast<float>(fontSize)) *
-                         1.5));
+    textMenu[Achievements].setString("Achievements");
+    textMenu[Achievements].setPosition(
+            sf::Vector2f(
+                    menuButton[Achievements].getPosition().x + menuButton[Achievements].getGlobalBounds().width / 2 -
+                    textMenu[Achievements].getGlobalBounds().width / 2,
+                    menuButton[Achievements].getPosition().y + menuButton[Achievements].getGlobalBounds().height / 2 -
+                    textMenu[Achievements].getGlobalBounds().height / 2 + alignValue));
 
     //exit
-    mainMenu[Exit].setFont(font);
-    mainMenu[Exit].setFillColor(sf::Color::White);
-    mainMenu[Exit].setString("Exit");
-    mainMenu[Exit].setCharacterSize(50);
-    mainMenu[Exit].setPosition(sf::Vector2f(
-            static_cast<float>(this->game->window.getSize().x) / 2 - mainMenu[Exit].getGlobalBounds().width / 2,
-            (static_cast<float>(this->game->window.getSize().y) / 2 -
-             static_cast<float>(fontSize)) * 2));
-    //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
+    textMenu[Exit].setString("Exit");
+    textMenu[Exit].setPosition(
+            sf::Vector2f(
+                    menuButton[Exit].getPosition().x + menuButton[Exit].getGlobalBounds().width / 2 -
+                    textMenu[Exit].getGlobalBounds().width / 2,
+                    menuButton[Exit].getPosition().y + menuButton[Exit].getGlobalBounds().height / 2 -
+                    textMenu[Exit].getGlobalBounds().height / 2 + alignValue));
 
+    //if you add more buttons, you must updateNotCyclicalAnimation "nButtons" in the header file and unit testing
     nButtonSelected = Resume;
 }
 
 void PauseState::moveUp() {
     if (nButtonSelected - 1 >= -1) {
-        mainMenu[nButtonSelected].setFillColor(sf::Color::White);
+        textMenu[nButtonSelected].setFillColor(sf::Color::White);
         nButtonSelected--;
         if (nButtonSelected == -1)
-            nButtonSelected = nButtons - 1;
-        mainMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+            nButtonSelected = nButtonsPause - 1;
+        textMenu[nButtonSelected].setFillColor(selectedColor);
     }
 }
 
 void PauseState::moveDown() {
-    if (nButtonSelected + 1 <= nButtons) {
-        mainMenu[nButtonSelected].setFillColor(sf::Color::White);
+    if (nButtonSelected + 1 <= nButtonsPause) {
+        textMenu[nButtonSelected].setFillColor(sf::Color::White);
         nButtonSelected++;
-        if (nButtonSelected == nButtons)
+        if (nButtonSelected == nButtonsPause)
             nButtonSelected = 0;
-        mainMenu[nButtonSelected].setFillColor(sf::Color(102, 0, 0));
+        textMenu[nButtonSelected].setFillColor(selectedColor);
     }
 }
 
@@ -138,7 +163,7 @@ void PauseState::select() {
         case Resume:
             this->game->popState();
             break;
-        case Stats:
+        case Achievements:
             this->game->pushState(new AchievementState(this->game));
             break;
         case Exit:
