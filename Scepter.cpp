@@ -5,7 +5,6 @@
 #include "Scepter.h"
 
 void Scepter::shoot(const sf::Vector2f &normalizedBulletDir) {
-    std::cout << "SHOOT!" << std::endl;
     float frameDuration = 0.35f;
     currentAnimation.setNotCyclicalAnimation(shot, frameDuration);
 
