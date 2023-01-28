@@ -9,14 +9,11 @@ Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotation
                const sf::Vector2f &barrelHole, sf::Vector2f bulletScale) : bulletSpeed(speed), bulletTexture(tex),
                                                                            bulletDir(bulletDir),
                                                                            distanceTravelled(0) {
-
     bulletSprite.setTexture(tex);
-    bulletSprite.setScale(bulletScale);
     bulletSprite.setRotation(degrees);
 
     sf::Vector2f bulletOrigin;
-
-    if (weaponScale.x > 0)
+    if (weaponScale.x > 0) {
         bulletOrigin = {static_cast<float>(weaponPos.x +
                                            (barrelHole.x - rotationOrigin.x) * std::cos((M_PI * (-degrees)) / 180) +
                                            (tex.getSize().y - rotationOrigin.y) * std::sin((M_PI * (-degrees)) / 180)),
@@ -24,7 +21,8 @@ Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotation
                                            (barrelHole.x - rotationOrigin.x) * std::sin((M_PI * (degrees)) / 180) +
                                            (tex.getSize().y + tex.getSize().y / 2 - rotationOrigin.y) *
                                            std::cos((M_PI * (-degrees)) / 180))};
-    else
+        bulletScale.x = std::abs(bulletScale.x);
+    } else {
         bulletOrigin = {static_cast<float>(weaponPos.x -
                                            (barrelHole.x - rotationOrigin.x) * std::cos((M_PI * (degrees)) / 180) -
                                            (tex.getSize().y - rotationOrigin.y) * std::sin((M_PI * (degrees)) / 180)),
@@ -32,10 +30,11 @@ Bullet::Bullet(const sf::Texture &tex, float speed, const sf::Vector2f &rotation
                                            (barrelHole.x - rotationOrigin.x) * std::sin((M_PI * (-degrees)) / 180) +
                                            (tex.getSize().y + tex.getSize().y / 2 - rotationOrigin.y) *
                                            std::cos((M_PI * (degrees)) / 180))};
+        bulletScale.x = -std::abs(bulletScale.x);
+    }
 
+    bulletSprite.setScale(bulletScale);
     bulletSprite.setPosition(bulletOrigin);
-
-
 }
 
 bool Bullet::checkEnemyCollision(const GameCharacter &target) {

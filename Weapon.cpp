@@ -190,6 +190,9 @@ void Weapon::loadSounds() {
 
     //bow
     audioManager.loadSound("bowShot", "res/sounds/bow_shot.ogg");
+
+    //scepter
+    audioManager.loadSound("scepterShot", "res/sounds/scepter_shot.ogg");
 }
 
 void Weapon::playWeaponPickedUpSound() {
