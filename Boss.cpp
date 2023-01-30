@@ -27,6 +27,8 @@ Boss::Boss(const sf::Texture &bossTexture, const sf::Texture &scepterTex, const 
 
     //load boss spawning sound
     audioManager.playSound("bossSpawning");
+
+    bubbleClock.restart();
 }
 
 void Boss::updateCharacterColor() {
@@ -63,4 +65,24 @@ float Boss::getMaxMovingRange() const {
 
 const sf::Vector2f &Boss::getSpawnOrigin() const {
     return spawnOrigin;
+}
+
+bool Boss::isBubble() const {
+    return bubble;
+}
+
+void Boss::setBubble(bool bubble) {
+    Boss::bubble = bubble;
+    if (bubble)
+        durationClock.restart();
+    else
+        bubbleClock.restart();
+}
+
+const sf::Time &Boss::getBubbleDuration() const {
+    return bubbleDuration;
+}
+
+const sf::Time &Boss::getBubbleOffset() const {
+    return bubbleOffset;
 }

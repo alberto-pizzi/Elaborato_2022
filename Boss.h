@@ -15,7 +15,12 @@ private:
     bool bubble = false;
     float maxMovingRange = 5 * 32;
     sf::Vector2f spawnOrigin;
+    sf::Time bubbleDuration = sf::seconds(5);
+    sf::Time bubbleOffset = sf::seconds(15);
 public:
+    sf::Clock bubbleClock;
+    sf::Clock durationClock;
+
     Boss(const sf::Texture &bossTexture, const sf::Texture &scepterTex, const sf::Texture &energyTex,
          const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin,
          sf::Vector2f damageHit, float hp = 80, bool animated = true, float speed = 200.f, unsigned int points = 100,
@@ -28,6 +33,14 @@ public:
     float getMaxMovingRange() const;
 
     const sf::Vector2f &getSpawnOrigin() const;
+
+    bool isBubble() const;
+
+    void setBubble(bool bubble);
+
+    const sf::Time &getBubbleDuration() const;
+
+    const sf::Time &getBubbleOffset() const;
 };
 
 

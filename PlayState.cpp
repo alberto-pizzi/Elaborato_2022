@@ -814,6 +814,15 @@ void PlayState::autoSaveProgress() {
 void PlayState::updateBosses(float dt) {
     for (int i = 0; i < spawner->bosses.size(); i++) {
 
+        //set boss bubble
+        if (spawner->bosses[i]->isBubble() &&
+            (spawner->bosses[i]->durationClock.getElapsedTime() >= spawner->bosses[i]->getBubbleDuration()))
+            spawner->bosses[i]->setBubble(false);
+
+        if (!spawner->bosses[i]->isBubble() &&
+            (spawner->bosses[i]->bubbleClock.getElapsedTime() >= spawner->bosses[i]->getBubbleOffset()))
+            spawner->bosses[i]->setBubble(true);
+
         if (spawner->bosses[i]->isDeathAnimationActive)
             spawner->bosses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
                                                                             spawner->bosses[i]->isDeathAnimationEnded,
@@ -866,10 +875,8 @@ void PlayState::loadAudio() {
     //musics
     audioManager.loadMusic("deepDubstep", "res/musics/deep_dubstep.ogg");
 
-
     //sound effects
     audioManager.loadSound("collectCoin", "res/sounds/collect_coin.ogg");
-
 
     //start first playlist song
     audioManager.startPlaylist();
