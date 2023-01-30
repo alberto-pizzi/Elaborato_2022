@@ -35,8 +35,6 @@ private:
 
     //achievements from file
     std::map<int, std::unique_ptr<AchievementType>> achievements;
-    bool drawed = false;
-
 public:
     explicit AchievementState(Game *game);
 

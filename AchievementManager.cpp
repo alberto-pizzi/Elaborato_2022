@@ -47,7 +47,10 @@ void AchievementManager::saveAchievements() {
     }
 
     //write total achievements
-    achievementFile << achievements.size() << std::endl;
+    unsigned int totalAchievements = 0;
+    for (int i = 0; i < achievements.size(); i++)
+        totalAchievements += achievements[i]->getAchievements().size();
+    achievementFile << totalAchievements << std::endl;
 
     for (auto it = achievements.begin(); it != achievements.end(); it++) {
         for (int i = 0; i < it->second->getAchievements().size(); i++) {

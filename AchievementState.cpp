@@ -107,6 +107,8 @@ AchievementState::AchievementState(Game *game) {
 
 void AchievementState::loadAchievements() {
     std::ifstream achievementFile;
+    bool firstTime = true;
+
 
     achievementFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try {
@@ -117,7 +119,7 @@ void AchievementState::loadAchievements() {
     }
 
     int totalAchievements, achievementTypeInt;
-    std::string achievementName, actualProgress, target, totalAchievementsString, achievementType;
+    std::string achievementName, actualProgress, target, totalAchievementsString, achievementType, previousAchievementType;
 
     //read total achievements
     std::getline(achievementFile, totalAchievementsString);
@@ -129,15 +131,23 @@ void AchievementState::loadAchievements() {
     //read each achievement
     for (int i = 0; i < totalAchievements; i++) {
         std::getline(achievementFile, achievementType);
+        if (firstTime)
+            previousAchievementType = achievementType;
         std::getline(achievementFile, achievementName);
         std::getline(achievementFile, actualProgress);
         std::getline(achievementFile, target);
         achievementTypeInt = std::stoi(achievementType);
-        achievements[achievementTypeInt] = std::unique_ptr<AchievementType>(
-                new AchievementType(achievementsTextures.getTextureRef("box"),
-                                    achievementsTextures.getTextureRef("trophy"),
-                                    achievementName, std::stoul(target), progressFont, achievementTypeInt));
+
+        if ((achievementType != previousAchievementType) || firstTime) {
+            achievements[achievementTypeInt] = std::unique_ptr<AchievementType>(
+                    new AchievementType(achievementsTextures.getTextureRef("box"),
+                                        achievementsTextures.getTextureRef("trophy"),
+                                        achievementName, std::stoul(target), progressFont, achievementTypeInt));
+            firstTime = false;
+        } else
+            achievements[achievementTypeInt]->createAchievement(achievementName, std::stoul(target));
         achievements[achievementTypeInt]->update(std::stoul(actualProgress));
+        previousAchievementType = achievementType;
     }
 
     achievementFile.close();

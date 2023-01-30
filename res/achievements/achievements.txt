@@ -1,70 +1,69 @@
-23
-Accumulate 100 points
-4
-100
-Accumulate 10000 points
-4
-10000
-Accumulate 1500 points
-4
-1500
-Accumulate 3000 points
-4
-3000
-Accumulate 500 points
-4
-500
-Collect 100 coins
-13
-100
-Collect 1000 coins
-13
-1000
-Collect 2000 coins
-13
-2000
-Collect 500 coins
-13
-500
-Collect 6000 coins
-13
-6000
-Kill 10 bosses
-1
-10
-Kill 10 kamikaze
+17
+0
+Kill 10 enemies
 0
 10
-Kill 100 kamikaze
 0
-100
-Kill 1000 enemies
-3
-1000
 Kill 150 enemies
-3
+0
 150
-Kill 1500 enemies
-3
-1500
-Kill 2 bosses
-1
-2
-Kill 2000 enemies
-3
-2000
+0
 Kill 250 enemies
-3
+0
 250
-Kill 30 kamikaze
 0
-30
-Kill 5 bosses
-1
-5
 Kill 500 enemies
-3
-500
-Kill 60 kamikaze
 0
-60
+500
+0
+Kill 1000 enemies
+0
+1000
+0
+Kill 1500 enemies
+0
+1500
+0
+Kill 2000 enemies
+0
+2000
+1
+Collect 100 coins
+0
+100
+1
+Collect 500 coins
+0
+500
+1
+Collect 1000 coins
+0
+1000
+1
+Collect 2000 coins
+0
+2000
+1
+Collect 6000 coins
+0
+6000
+2
+Accumulate 100 points
+0
+100
+2
+Accumulate 500 points
+0
+500
+2
+Accumulate 1500 points
+0
+1500
+2
+Accumulate 3000 points
+0
+3000
+2
+Accumulate 10000 points
+0
+10000
