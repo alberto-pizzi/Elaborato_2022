@@ -212,3 +212,19 @@ void Mike::setCoins(int coins) {
     notifyObserver(AchievementTypes::Collect_coins, this->coins);
 }
 
+void Mike::calculateDirectionVector() {
+
+    if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
+        direction_vector.x = 0.f;
+    else if (keyStates[LEFT])
+        direction_vector.x = -1.f;
+    else if (keyStates[RIGHT])
+        direction_vector.x = 1.f;
+    if ((keyStates[UP] && keyStates[DOWN]) || (!keyStates[UP] && !keyStates[DOWN]))
+        direction_vector.y = 0.f;
+    else if (keyStates[UP])
+        direction_vector.y = -1.f;
+    else if (keyStates[DOWN])
+        direction_vector.y = 1.f;
+
+}

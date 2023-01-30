@@ -25,6 +25,7 @@ private:
     unsigned int roundKills = 0;
     std::map<int, unsigned int> enemyTypeKills;
 
+
     //bonuses
     std::map<int, unsigned int> bonusTypeCollected;
     unsigned int bonusesCollected = 0;
@@ -37,6 +38,9 @@ private:
 public:
     Gui gui;
 
+    //character movement
+    bool keyStates[4] = {false, false, false, false};
+    sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
 
     Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
          const sf::Vector2i &spawnTile, const TextureManager &guiTexManager, const sf::Vector2i &tileSize,
@@ -80,6 +84,8 @@ public:
     void incrementBonusCollected(int bonusType);
 
     void initAchievements(const TextureManager &guiTexManager);
+
+    void calculateDirectionVector();
 };
 
 

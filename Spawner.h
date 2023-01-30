@@ -112,8 +112,6 @@ public:
 
     sf::Vector2f straightVector(sf::Vector2f actualTargetPos, sf::Vector2f actualCharacterPos);
 
-    void changeDirection(int enemyIndex, const sf::RectangleShape &obstacle);
-
     sf::Vector2i calculateTileFromPos(sf::Vector2f pos) const;
 
     sf::Vector2f calculatePosFromTile(sf::Vector2i tile) const;

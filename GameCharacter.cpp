@@ -332,41 +332,6 @@ sf::FloatRect GameCharacter::futureCharacterPosition(const sf::Vector2f &offset,
 
 }
 
-void GameCharacter::calculateDirectionVector() {
-
-    if ((keyStates[LEFT] && keyStates[RIGHT]) || (!keyStates[LEFT] && !keyStates[RIGHT]))
-        direction_vector.x = 0.f;
-    else if (keyStates[LEFT])
-        direction_vector.x = -1.f;
-    else if (keyStates[RIGHT])
-        direction_vector.x = 1.f;
-    if ((keyStates[UP] && keyStates[DOWN]) || (!keyStates[UP] && !keyStates[DOWN]))
-        direction_vector.y = 0.f;
-    else if (keyStates[UP])
-        direction_vector.y = -1.f;
-    else if (keyStates[DOWN])
-        direction_vector.y = 1.f;
-
-}
-
-void GameCharacter::calculateEnemyMoveDirectionArray(sf::Vector2f offset) {
-    for (int i = 0; i < 4; i++) //set no input in all keyStates
-        keyStates[i] = false;
-
-    if (offset.y < 0)
-        keyStates[UP] = true;
-
-    if (offset.y >= 0)
-        keyStates[DOWN] = true;
-
-    if (offset.x < 0)
-        keyStates[LEFT] = true;
-
-    if (offset.x >= 0)
-        keyStates[RIGHT] = true;
-
-}
-
 const std::vector<sf::IntRect> &GameCharacter::getDeath() const {
     return death;
 }

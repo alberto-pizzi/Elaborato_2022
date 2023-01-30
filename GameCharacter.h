@@ -81,9 +81,6 @@ public:
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
                   float hitRange = 5, bool animated = true, unsigned int coins = 0, float armor = 0);
 
-    //character movement
-    bool keyStates[4] = {false, false, false, false};
-    sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     bool skinDirection[4] = {false, false, false, false};
 
     //death animation
@@ -163,10 +160,6 @@ public:
     int getCharacterType() const;
 
     const sf::Vector2f &getDamageHit() const;
-
-    void calculateDirectionVector();
-
-    void calculateEnemyMoveDirectionArray(sf::Vector2f offset);
 
     const sf::Color &getHitColor() const;
 
