@@ -6,13 +6,11 @@
 #define ELABORATO_ACHIEVEMENTSTATE_H
 
 
-#include "GameState.h"
-#include "GameException.h"
 #include <memory>
 #include <SFML/Window/Event.hpp>
-//#include <iterator>
 
-//#include "AchievementType.h"
+#include "GameState.h"
+#include "GameException.h"
 #include "AchievementManager.h"
 
 

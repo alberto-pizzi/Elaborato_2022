@@ -9,7 +9,7 @@
 
 class Scepter : public Weapon {
 private:
-    enum totFramesHandgun {
+    enum totFramesScepter {
         IDLE = 1, SHOT = 4, RELOAD = 0,
     };
     const sf::Vector2i fileTextureRectScepterSize = {32, 32};

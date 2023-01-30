@@ -11,9 +11,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <cmath>
+
 #include "GameException.h"
 
-
+//WARNING: if you want to add new achievements types, update the following enum
 enum AchievementTypes {
     Kills = 0, Collect_coins, Points,
 };

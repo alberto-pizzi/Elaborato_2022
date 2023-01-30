@@ -5,10 +5,11 @@
 #ifndef ELABORATO_MIKE_H
 #define ELABORATO_MIKE_H
 
+#include <list>
+
 #include "GameCharacter.h"
 #include "Gui.h"
 #include "Subject.h"
-#include <list>
 #include "AchievementManager.h"
 
 class Mike : public GameCharacter, public Subject {

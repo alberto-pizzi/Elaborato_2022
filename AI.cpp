@@ -9,18 +9,20 @@ AI::AI(const std::vector<std::vector<Node>> &map) {
 }
 
 std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) {
-//init lists
+    //based on A* algorithm
+
+    //init lists
     openList.clear();
     closedList.clear();
 
-//add starting node into open list
+    //add starting node into open list
     std::shared_ptr<Node> startNode = std::make_shared<Node>(startTile.x, startTile.y, true);
     startNode->gCost = 0;
     startNode->hCost = calculateManhattanDistance(startTile, targetTile);
     startNode->fCost = startNode->gCost + startNode->hCost;
     openList.push_back(startNode);
 
-// loop until path is found or no more nodes to evaluate
+    // loop until path is found or no more nodes to evaluate
     while (!openList.empty()) {
         // find node with lowest fCost in openList
         std::shared_ptr<Node> currentNode = openList[0];
@@ -36,12 +38,9 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
         openList.erase(openList.begin() + currentIndex);
         closedList.push_back(currentNode);
 
-
         // check if current node is the target node, if so return path
         if (currentNode->tile == targetTile)
             return reconstructPath(startNode, currentNode);
-
-
 
         // expand neighbors of current node
         currentNode->expandNeighbors(map);
@@ -63,7 +62,7 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
                 adjacentNode->parent = currentNode;
                 openList.push_back(adjacentNode);
             } else {
-// check if using the current gCost to get to this node is better than the previous one
+                // check if using the current gCost to get to this node is better than the previous one
                 int newGCost = currentNode->gCost +
                                calculateManhattanDistance(currentNode->tile, currentNode->adjacentNodes[j]->tile);
                 if (newGCost < currentNode->adjacentNodes[j]->gCost) {
@@ -71,7 +70,6 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
                     currentNode->adjacentNodes[j]->fCost =
                             currentNode->adjacentNodes[j]->gCost + currentNode->adjacentNodes[j]->hCost;
                     currentNode->adjacentNodes[j]->parent = currentNode;
-
 
                     // if the adjacent node is not in the open list, add it
                     if (!isInsideOpenList(currentNode->adjacentNodes[j])) {
@@ -82,7 +80,7 @@ std::vector<Node> AI::findPath(sf::Vector2i startTile, sf::Vector2i targetTile) 
         }
     }
 
-// if no path was found, return an empty vector
+    // if no path was found, return an empty vector
     return {};
 }
 
@@ -143,10 +141,10 @@ bool AI::checkForObliqueShortcuts(std::shared_ptr<Node> currentNode, std::shared
     // check if the adjacent node is diagonal to the current node
     if (currentNode->tile.x != adjacentNode->tile.x && currentNode->tile.y != adjacentNode->tile.y) {
         // check if the nodes orthogonally adjacent to the adjacent node are blocked
-        sf::Vector2i leftNode(adjacentNode->tile.x - 1, adjacentNode->tile.y);
-        sf::Vector2i rightNode(adjacentNode->tile.x + 1, adjacentNode->tile.y);
-        sf::Vector2i upNode(adjacentNode->tile.x, adjacentNode->tile.y - 1);
-        sf::Vector2i downNode(adjacentNode->tile.x, adjacentNode->tile.y + 1);
+        sf::Vector2i leftNode = {adjacentNode->tile.x - 1, adjacentNode->tile.y};
+        sf::Vector2i rightNode = {adjacentNode->tile.x + 1, adjacentNode->tile.y};
+        sf::Vector2i upNode = {adjacentNode->tile.x, adjacentNode->tile.y - 1};
+        sf::Vector2i downNode = {adjacentNode->tile.x, adjacentNode->tile.y + 1};
         if (map[leftNode.y][leftNode.x].isWalkable() ||
             map[rightNode.y][rightNode.x].isWalkable() ||
             map[upNode.y][upNode.x].isWalkable() ||

@@ -15,8 +15,6 @@
 #include "Mike.h"
 
 
-
-
 class NewWeapon : public Bonus {
 private:
     enum WeaponType {

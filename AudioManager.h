@@ -5,7 +5,6 @@
 #ifndef ELABORATO_AUDIOMANAGER_H
 #define ELABORATO_AUDIOMANAGER_H
 
-#include "GameException.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -15,6 +14,8 @@
 #include <vector>
 #include <map>
 #include <iterator>
+
+#include "GameException.h"
 
 class AudioManager {
 private:

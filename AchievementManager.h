@@ -5,13 +5,13 @@
 #ifndef ELABORATO_ACHIEVEMENTMANAGER_H
 #define ELABORATO_ACHIEVEMENTMANAGER_H
 
+#include <map>
+#include <memory>
+#include <fstream>
 
 #include "Observer.h"
 #include "Subject.h"
 #include "AchievementType.h"
-#include <map>
-#include <memory>
-#include <fstream>
 #include "TextureManager.h"
 
 //achievements file

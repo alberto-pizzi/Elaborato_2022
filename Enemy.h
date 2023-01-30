@@ -5,11 +5,12 @@
 #ifndef ELABORATO_ENEMY_H
 #define ELABORATO_ENEMY_H
 
-#include "GameCharacter.h"
 #include "AI.h"
 #include <thread>
 #include <atomic>
 #include <memory>
+
+#include "GameCharacter.h"
 
 class Enemy : public GameCharacter {
 private:

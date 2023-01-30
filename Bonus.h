@@ -5,9 +5,10 @@
 #ifndef ELABORATO_BONUS_H
 #define ELABORATO_BONUS_H
 
+#include <memory>
+
 #include "GameCharacter.h"
 #include "GameException.h"
-#include <memory>
 #include "Dice.h"
 #include "Mike.h"
 
