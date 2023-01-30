@@ -44,7 +44,7 @@ public:
 
     Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,
          const sf::Vector2i &spawnTile, const TextureManager &guiTexManager, const sf::Vector2i &tileSize,
-         const sf::Vector2i &rectSkin, float startRoundCountdownSeconds, float hp = 20, float speed = 220.f,
+         const sf::Vector2i &rectSkin, float startRoundCountdownSeconds, float hp = 50, float speed = 220.f,
          float armor = 0);
 
     virtual ~Mike();

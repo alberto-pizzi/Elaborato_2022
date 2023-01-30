@@ -438,6 +438,9 @@ void PlayState::initRound() {
         remainEnemies = baseNumberForNormalRounds + countVariableEnemiesForNormalRound;
     }
 
+    if (round % everyRoundEnemeyIncrement == 0)
+        countVariableEnemiesForNormalRound++;
+
     //WARNING: if you want to change the percentage of enemies, you need to change ONLY these numbers (percentage ranges)
     //archer
     totEnemiesForType[ARCHER].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(10, 20));
@@ -475,7 +478,7 @@ void PlayState::initRound() {
         sumEnemyTypes++;
     }
 
-    //spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
+    spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
 
 
     //spawner->spawnZombie(arenaMap->randomPassableTile());
@@ -484,7 +487,7 @@ void PlayState::initRound() {
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnZombie(arenaMap->randomPassableTile());
     //spawner->spawnArcher(arenaMap->randomPassableTile());
-    sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
+    //sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
 
     /*
     for (int i = 0; i < 5; i++) {
@@ -503,7 +506,7 @@ void PlayState::initRound() {
     spawner->spawnKamikaze(tmpSpawnTile);
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
     spawner->spawnWarrior(tmpSpawnTile,80);
-     */
+
     spawner->spawnLifePoints({40, 23});
     spawner->spawnZombie(tmpSpawnTile, 80, 1);
     tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
@@ -513,6 +516,7 @@ void PlayState::initRound() {
     //spawner->spawnBoss({35, 23}, 1);
 
     remainEnemies = 3;
+     */
 
 
     //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;

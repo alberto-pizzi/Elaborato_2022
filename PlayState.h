@@ -24,12 +24,13 @@ const int nMap = 1;
 class PlayState : public GameState {
 private:
     enum nEnemies {
-        baseNumberForNormalRounds = 15,
+        baseNumberForNormalRounds = 3,
         incrementableNumber = 5,
-        stabilizationRound = 50,
+        stabilizationRound = 35,
         initialBossFrequency = 5,
-        baseNumberForBossRounds = 5,
+        baseNumberForBossRounds = 1,
         percentageIncrement = 5,
+        everyRoundEnemeyIncrement = 2,
     };
 
     sf::View gameView;
