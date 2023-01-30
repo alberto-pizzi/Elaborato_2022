@@ -13,7 +13,7 @@
 
 class Mike : public GameCharacter, public Subject {
 private:
-    bool bubble;
+    bool bubble = false;
     struct ActualBonus {
         int bonusType;
         sf::Clock effectTimer;

@@ -253,51 +253,6 @@ sf::Vector2f Spawner::characterPositionRelativeToAnother(const GameCharacter &or
     return translation;
 }
 
-sf::Vector2f
-Spawner::calculateNextNodeTarget(int enemyIndex, const sf::RectangleShape &obstacle,
-                                 sf::Vector2f finalTargetPos) { //TODO remove it
-    sf::Vector2f nodes[4] = {{obstacle.getGlobalBounds().left -
-                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 - 2,
-                                     obstacle.getGlobalBounds().top -
-                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                     2 - 2},
-                             {obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width +
-                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 +
-                              1,     obstacle.getGlobalBounds().top -
-                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                     2 - 2},
-                             {obstacle.getGlobalBounds().left + obstacle.getGlobalBounds().width +
-                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 +
-                              1,     obstacle.getGlobalBounds().top +
-                                     obstacle.getGlobalBounds().height +
-                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                     2 + 2},
-                             {obstacle.getGlobalBounds().left -
-                              enemies[enemyIndex]->getSprite().getGlobalBounds().width / 2 -
-                              1,     obstacle.getGlobalBounds().top +
-                                     obstacle.getGlobalBounds().height +
-                                     enemies[enemyIndex]->getSprite().getGlobalBounds().height /
-                                     2 + 2},
-    };
-
-
-    double distance = std::sqrt((std::pow(nodes[0].x - enemies[enemyIndex]->getSpriteCenter().x, 2)) +
-                                (std::pow(nodes[0].y - enemies[enemyIndex]->getSpriteCenter().y, 2)));
-    double newDistance, min = distance;
-    int index = 0;
-
-    for (int i = 1; i < 4; i++) {
-        newDistance = std::sqrt((std::pow(nodes[i].x - enemies[enemyIndex]->getSpriteCenter().x, 2)) +
-                                (std::pow(nodes[i].y - enemies[enemyIndex]->getSpriteCenter().y, 2)));
-        if ((newDistance < min) && (newDistance > 2)) {
-            min = newDistance;
-            index = i;
-        }
-    }
-    return nodes[index];
-
-}
-
 sf::Vector2f Spawner::calculateTranslation(sf::Vector2f origin, sf::Vector2f target) const {
     sf::Vector2f translation;
     translation = target - origin;

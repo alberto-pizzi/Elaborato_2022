@@ -36,52 +36,30 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
 
 
     //WARNING: work here to edit movement frames
-    //FIXME magic numbers
-    goDown.reserve(3);
-    goDown = {
-            {0 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 0 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
+    goDown.reserve(directionMovementAnimationFrames);
+    for (int i = 0; i < directionMovementAnimationFrames; i++)
+        goDown.emplace_back(i * fileTextureRectSkinSize.x, 0 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
+                            fileTextureRectSkinSize.y);
 
-    goLeft.reserve(3);
-    goLeft = {
-            {0 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 1 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
+    goLeft.reserve(directionMovementAnimationFrames);
+    for (int i = 0; i < directionMovementAnimationFrames; i++)
+        goLeft.emplace_back(i * fileTextureRectSkinSize.x, 1 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
+                            fileTextureRectSkinSize.y);
 
-    goRight.reserve(3);
-    goRight = {
-            {0 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 2 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
+    goRight.reserve(directionMovementAnimationFrames);
+    for (int i = 0; i < directionMovementAnimationFrames; i++)
+        goRight.emplace_back(i * fileTextureRectSkinSize.x, 2 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
+                             fileTextureRectSkinSize.y);
 
-    goUp.reserve(3);
-    goUp = {
-            {0 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {1 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-            {2 * this->fileTextureRectSkinSize.x, 3 *
-                                                  this->fileTextureRectSkinSize.y, this->fileTextureRectSkinSize.x, this->fileTextureRectSkinSize.y},
-    };
+    goUp.reserve(directionMovementAnimationFrames);
+    for (int i = 0; i < directionMovementAnimationFrames; i++)
+        goUp.emplace_back(i * fileTextureRectSkinSize.x, 3 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
+                          fileTextureRectSkinSize.y);
 
     death.reserve(deathFrames);
-    for (int i = 0; i < deathFrames; i++) {
+    for (int i = 0; i < deathFrames; i++)
         death.emplace_back(i * fileTextureRectSkinSize.x, 4 * fileTextureRectSkinSize.y, fileTextureRectSkinSize.x,
                            fileTextureRectSkinSize.y);
-    }
 
     if (animated)
         sprite.setTextureRect(currentAnimation.getCurrentRect());

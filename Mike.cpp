@@ -166,7 +166,6 @@ void Mike::receiveDamage(float damagePoints) {
 void Mike::incrementBonusCollected(int bonusType) {
     bonusTypeCollected[bonusType]++;
     bonusesCollected++;
-    //TODO add observer notifier
 }
 
 void Mike::initAchievements(const TextureManager &guiTexManager) {

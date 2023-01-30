@@ -53,9 +53,6 @@ private:
     float startNumber;
     bool countdownVisible = true;
 
-    //message box //TODO implement it (texture already been loaded)
-    sf::Text messageDisplayed;
-
     std::string pointsDisplayed;
     std::string roundDisplayed;
     const int totalDigits = 10;
@@ -74,14 +71,10 @@ public:
 
     const sf::Sprite &getHealthBar() const;
 
-    void message(std::string message);
-
     void updateHealthBar(float HP, float maxHP);
 
     void
     updateWeaponType(const sf::Texture &newWeaponTexture, const sf::IntRect &idleFrame, const sf::Vector2f &hitboxSize);
-
-    void updateArmor(int armor);
 
     void updateRound(unsigned int round);
 

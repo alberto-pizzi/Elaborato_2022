@@ -26,11 +26,12 @@ private:
     enum nEnemies {
         baseNumberForNormalRounds = 3,
         incrementableNumber = 5,
-        stabilizationRound = 35,
+        stabilizationRound = 25,
         initialBossFrequency = 5,
         baseNumberForBossRounds = 1,
         percentageIncrement = 5,
-        everyRoundEnemeyIncrement = 2,
+        everyRoundEnemeyIncrement = 3,
+
     };
 
     sf::View gameView;
@@ -66,8 +67,8 @@ private:
     const float damageIncrement = 0.25;
     sf::Clock roundSleepClock;
     sf::Clock roundClock;
-    sf::Time afterRoundSleepTime = sf::seconds(3); //FIXME 20
-    const sf::Time firstRoundStartingTime = sf::seconds(3); //FIXME 10
+    sf::Time afterRoundSleepTime = sf::seconds(5);
+    const sf::Time firstRoundStartingTime = sf::seconds(3);
     bool firstSpawnDone = false;
     bool endRoundCountStarted = false;
     Dice randomPercentageDice;

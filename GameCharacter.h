@@ -61,6 +61,7 @@ protected:
     std::vector<sf::IntRect> idle;
     std::vector<sf::IntRect> death;
     const int deathFrames = 8;
+    const int directionMovementAnimationFrames = 3;
     sf::Vector2i fileTextureRectSkinSize;
 
     //colors

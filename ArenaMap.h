@@ -63,10 +63,6 @@ private:
     Dice rowDice;
     Dice columnDice;
 protected:
-    struct Walls {
-        sf::Vector2f begin;
-        sf::Vector2f end;
-    };
     int maxColumnTiles;
     int maxRowTiles;
     int tileSizeX;
@@ -79,7 +75,6 @@ protected:
     std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> tileMap;
     std::vector<std::shared_ptr<Tile>> solidTiles;
     std::vector<std::shared_ptr<Tile>> notPassableTiles;
-    std::vector<Walls> walls;
     //WARNING: updateNotCyclicalAnimation this string array and enum for adding other Map
     std::string mapList[1] = {
             "res/maps/desertMap.txt",
@@ -129,8 +124,6 @@ public:
     bool isWeaponOverTheWall(const GameCharacter &character);
 
     bool isRealWall(int chosenMap, int nTile);
-
-    void findWallsCoordinates(); //TODO check if it is useful
 
     bool collidesWithSolidsOrBounds(sf::FloatRect bulletGlobalPos) const;
 

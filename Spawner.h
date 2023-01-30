@@ -105,9 +105,6 @@ public:
     sf::Vector2f characterPositionRelativeToAnother(const GameCharacter &originCharacter,
                                                     const GameCharacter &targetCharacter) const;
 
-    sf::Vector2f
-    calculateNextNodeTarget(int enemyIndex, const sf::RectangleShape &obstacle, sf::Vector2f finalTargetPos);
-
     sf::Vector2f calculateTranslation(sf::Vector2f origin, sf::Vector2f target) const;
 
     sf::Vector2f straightVector(sf::Vector2f actualTargetPos, sf::Vector2f actualCharacterPos);

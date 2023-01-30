@@ -239,7 +239,6 @@ void ArenaMap::startingMap(sf::RenderWindow &window, std::unique_ptr<Mike> &mike
                                           mike->getSprite().getGlobalBounds().height}, firstViewCenter));
     window.setView(playerView);
 
-    findWallsCoordinates();
     fillRectsVector();
 
     //create node map (for AI)
@@ -413,31 +412,6 @@ bool ArenaMap::isRealWall(int chosenMap, int nTile) {
             break;
     }
     return false;
-}
-
-void ArenaMap::findWallsCoordinates() {
-
-    sf::Vector2f begin = solidTiles[0]->tileSprite.getPosition();
-    sf::Vector2f end = {solidTiles[0]->tileSprite.getPosition().x + solidTiles[0]->tileSprite.getGlobalBounds().width,
-                        solidTiles[0]->tileSprite.getPosition().y + solidTiles[0]->tileSprite.getGlobalBounds().height};
-    sf::Vector2i tmpTile = {solidTiles[0]->cellColumn, solidTiles[0]->cellRow};
-
-    for (int i = 1; i < solidTiles.size(); i++) {
-        if ((solidTiles[i]->cellColumn == tmpTile.x + 1) && (solidTiles[i]->cellRow == tmpTile.y)) {
-            end = {solidTiles[i]->tileSprite.getPosition().x + solidTiles[i]->tileSprite.getGlobalBounds().width,
-                   solidTiles[i]->tileSprite.getPosition().y + solidTiles[i]->tileSprite.getGlobalBounds().height};
-            tmpTile.x = solidTiles[i]->cellColumn;
-        } else {
-            walls.push_back({begin, end});
-            begin = solidTiles[i]->tileSprite.getPosition();
-            tmpTile = {solidTiles[i]->cellColumn, solidTiles[i]->cellRow};
-        }
-        if (i == solidTiles.size() - 1) {
-            end = {solidTiles[i]->tileSprite.getPosition().x + solidTiles[i]->tileSprite.getGlobalBounds().width,
-                   solidTiles[i]->tileSprite.getPosition().y + solidTiles[i]->tileSprite.getGlobalBounds().height};
-            walls.push_back({begin, end});
-        }
-    }
 }
 
 void ArenaMap::drawLayer(sf::RenderWindow &window, int layer) const {

@@ -41,29 +41,6 @@ void PlayState::draw(float dt) const {
         arenaMap->drawLayer(this->game->window, last_layer);
     }
 
-    //FIXME remove it
-    /*
-    sf::RectangleShape shape;
-    if (!spawner->enemies.empty()) {
-        for (int i = 0; i < spawner->enemies[0]->path.size(); i++) {
-            shape.setSize(sf::Vector2f(32, 32));
-            shape.setPosition(sf::Vector2f(spawner->enemies[0]->path[i].getTile().x * 32,
-                                           spawner->enemies[0]->path[i].getTile().y * 32));
-            shape.setFillColor(sf::Color::Blue);
-            //this->game->window.draw(shape);
-        }
-
-        for (int i = 0; i < spawner->enemies[1]->path.size(); i++) {
-            shape.setSize(sf::Vector2f(32, 32));
-            shape.setPosition(sf::Vector2f(spawner->enemies[1]->path[i].getTile().x * 32,
-                                           spawner->enemies[1]->path[i].getTile().y * 32));
-            shape.setFillColor(sf::Color::Green);
-            //this->game->window.draw(shape);
-        }
-    }
-     */
-
-
     //draw viewfinder
     this->game->window.draw(viewfinderSprite);
 
@@ -92,7 +69,7 @@ void PlayState::update(float dt) {
         //update all enemies
         updateEnemies(dt);
         //update all bosses
-        updateBosses(dt); //FIXME
+        updateBosses(dt);
 
         //check mike dead
         checkMikeDead(dt);
@@ -423,7 +400,9 @@ void PlayState::initRound() {
     float sumPercentages = 0;
     unsigned int sumEnemyTypes = 0;
     float tmpPercentage, tmpNEnemies;
-    bool extraEnemy = false;
+
+    if (round % everyRoundEnemeyIncrement == 0)
+        countVariableEnemiesForNormalRound++;
 
     if (round % bossRoundFrequency == 0) {
         remainBosses = 1;
@@ -438,26 +417,24 @@ void PlayState::initRound() {
         remainEnemies = baseNumberForNormalRounds + countVariableEnemiesForNormalRound;
     }
 
-    if (round % everyRoundEnemeyIncrement == 0)
-        countVariableEnemiesForNormalRound++;
 
     //WARNING: if you want to change the percentage of enemies, you need to change ONLY these numbers (percentage ranges)
     //archer
-    totEnemiesForType[ARCHER].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(10, 20));
+    totEnemiesForType[ARCHER].typePercentage = 20;
     tmpNEnemies = (totEnemiesForType[ARCHER].typePercentage / 100.f) * static_cast<float>(remainEnemies);
     totEnemiesForType[ARCHER].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
     sumPercentages += totEnemiesForType[ARCHER].typePercentage;
     sumEnemyTypes += totEnemiesForType[ARCHER].numberOfEnemies;
 
     //warrior
-    totEnemiesForType[WARRIOR].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(15, 20));
+    totEnemiesForType[WARRIOR].typePercentage = 25;
     tmpNEnemies = (totEnemiesForType[WARRIOR].typePercentage / 100.f) * static_cast<float>(remainEnemies);
     totEnemiesForType[WARRIOR].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
     sumPercentages += totEnemiesForType[WARRIOR].typePercentage;
     sumEnemyTypes += totEnemiesForType[WARRIOR].numberOfEnemies;
 
     //kamikaze
-    totEnemiesForType[KAMIKAZE].typePercentage = static_cast<float>(randomPercentageDice.casualNumber(5, 15));
+    totEnemiesForType[KAMIKAZE].typePercentage = 15;
     tmpNEnemies = (totEnemiesForType[KAMIKAZE].typePercentage / 100.f) * static_cast<float>(remainEnemies);
     totEnemiesForType[KAMIKAZE].numberOfEnemies = static_cast<unsigned int>(tmpNEnemies);
     sumPercentages += totEnemiesForType[KAMIKAZE].typePercentage;
@@ -478,56 +455,11 @@ void PlayState::initRound() {
         sumEnemyTypes++;
     }
 
-    spawnEachTypeOfEnemies(); //FIXME uncomment this and remove the lines below
+    //spawn enemies
+    spawnEachTypeOfEnemies();
 
-
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnZombie(arenaMap->randomPassableTile());
-    //spawner->spawnArcher(arenaMap->randomPassableTile());
-    //sf::Vector2i tmpSpawnTile = arenaMap->randomPassableTile();
-
-    /*
-    for (int i = 0; i < 5; i++) {
-        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-        spawner->spawnZombie(tmpSpawnTile, 80, 1);
-    }
-*/
-
-    //spawner->spawnKamikaze(tmpSpawnTile, 1);
-    //spawner->spawnIncreasedDamage();
-    //spawner->spawnLifePoints();
-    /*
-    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-    spawner->spawnArcher(tmpSpawnTile);
-    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-    spawner->spawnKamikaze(tmpSpawnTile);
-    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-    spawner->spawnWarrior(tmpSpawnTile,80);
-
-    spawner->spawnLifePoints({40, 23});
-    spawner->spawnZombie(tmpSpawnTile, 80, 1);
-    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-    spawner->spawnArcher(tmpSpawnTile, 1);
-    tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
-    spawner->spawnWarrior(tmpSpawnTile, 80, 1);
-    //spawner->spawnBoss({35, 23}, 1);
-
-    remainEnemies = 3;
-     */
-
-
-    //std::cout << "VECTOR SIZE: " << spawner->enemies.size() << " REMAINING: " << remainEnemies << std::endl;
-
-
-    /*
-    if (spawner->bonuses.empty())
-        spawner->bonusTypeAlreadySpawned.clear(); //clear bonus type spawned
-        */
     //clear all (init each bonus to false)
-    spawner->bonusTypeSpawnedInARound.clear();  //FIXME
+    spawner->bonusTypeSpawnedInARound.clear();
 
     //reset mike round kills
     mike->resetRoundKills();
@@ -712,11 +644,14 @@ float PlayState::calculateEnemyHitProbability(int enemyType) const {
             std::cerr << "ENEMY SELECTED NOT EXIST" << std::endl;
             break;
     }
-    //FIXME fix calculus
+
     if (round % bossRoundFrequency == 0)
         hitProbability = baseHitProbability + static_cast<float>(countVariableEnemiesForBossRound);
     else
         hitProbability = baseHitProbability + static_cast<float>(countVariableEnemiesForNormalRound);
+
+    if (hitProbability >= 100)
+        hitProbability = 100;
 
     return hitProbability;
 }

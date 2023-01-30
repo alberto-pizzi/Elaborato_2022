@@ -16,7 +16,7 @@ void AudioManager::updateMusicStatus() {
         //restart from playlist begin
         songsIter->second.stop();
         songsIter->second.play();
-        //FIXME check if the volume must be set
+
     }
 }
 
