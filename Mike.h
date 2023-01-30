@@ -39,7 +39,7 @@ public:
     Gui gui;
 
     //character movement
-    bool keyStates[4] = {false, false, false, false};
+    bool keyStates[totalDirections] = {false, false, false, false};
     sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
 
     Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, const sf::Texture &handgunBulletTexture,

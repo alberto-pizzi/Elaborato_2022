@@ -36,6 +36,8 @@ enum GameCharacterSize {
     spriteSizeX = 32, spriteSizeY = 32,
 };
 
+const int totalDirections = 4;
+
 class GameCharacter : public PosEntity {
 private:
     int characterType;
@@ -81,7 +83,7 @@ public:
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
                   float hitRange = 5, bool animated = true, unsigned int coins = 0, float armor = 0);
 
-    bool skinDirection[4] = {false, false, false, false};
+    bool skinDirection[totalDirections] = {false, false, false, false};
 
     //death animation
     bool despawnStarted = false;

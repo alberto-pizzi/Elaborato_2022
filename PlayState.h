@@ -9,7 +9,6 @@
 #include <ctime>
 #include <cmath>
 
-
 #include "GameState.h"
 #include "ArenaMap.h"
 #include "Spawner.h"
@@ -18,7 +17,6 @@
 #include "Gui.h"
 #include "PauseState.h"
 #include "AudioManager.h"
-
 
 //WARNING: for adding other Map, you must updateNotCyclicalAnimation nMap/loadMap and enum in ArenaMap.h
 const int nMap = 1;
@@ -40,12 +38,7 @@ private:
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
 
-    //bool keyStates[4] = {false, false, false, false};
-    //sf::Vector2f direction_vector = sf::Vector2f(0.f, 0.f);
     sf::Clock frame_clock;
-
-    //random (number of dice faces in PlayState constructor)
-    //Dice dice;
 
     //mouse input positioning
     sf::Vector2i localPosition;
