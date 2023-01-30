@@ -32,16 +32,16 @@ Boss::Boss(const sf::Texture &bossTexture, const sf::Texture &scepterTex, const 
 }
 
 void Boss::updateCharacterColor() {
-    if (isHit) {
+    if (bubble) {
+        sprite.setColor(bubbleColor);
+        if (weapon)
+            weapon->weaponSprite.setColor(bubbleColor);
+    } else if (isHit) {
         sprite.setColor(hitColor);
         if (weapon)
             weapon->weaponSprite.setColor(hitColor);
         if (hitColorClock.getElapsedTime() >= hitTimeColor)
             isHit = false;
-    } else if (bubble) {
-        sprite.setColor(bubbleColor);
-        if (weapon)
-            weapon->weaponSprite.setColor(bubbleColor);
     } else {
         sprite.setColor(sf::Color::White);
         if (weapon)

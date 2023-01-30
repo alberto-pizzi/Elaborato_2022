@@ -12,21 +12,29 @@ void PlayState::draw(float dt) const {
 
     bool isOver = arenaMap->isWeaponOverTheWall(*mike);
 
+    if (isOver) {
+        arenaMap->drawLayer(this->game->window, design_elements);
 
-    //TODO check layer 3d rendering when will be implement the enemies
-    if (isOver) { //FIXME drawing enemy when mike's weapon is over
+        //draw bonuses
+        spawner->drawBonuses(this->game->window);
+
+        //draw enemies
+        spawner->drawEnemies(this->game->window, dt);
+
         arenaMap->drawLayer(this->game->window, solid_elements);
         arenaMap->drawLayer(this->game->window, layer_3d);
         arenaMap->drawLayer(this->game->window, last_layer);
     }
 
-    arenaMap->drawLayer(this->game->window, design_elements);
+    if (!isOver) {
+        arenaMap->drawLayer(this->game->window, design_elements);
 
-    //draw bonuses
-    spawner->drawBonuses(this->game->window);
+        //draw bonuses
+        spawner->drawBonuses(this->game->window);
 
-    //draw enemies
-    spawner->drawEnemies(this->game->window, dt);
+        //draw enemies
+        spawner->drawEnemies(this->game->window, dt);
+    }
 
     //draw mike and his weapon
     if (!gameOver)
@@ -44,7 +52,7 @@ void PlayState::draw(float dt) const {
     //draw viewfinder
     this->game->window.draw(viewfinderSprite);
 
-    //draw gui
+    //draw gui (always the last one)
     mike->gui.drawGui(this->game->window);
 
 }
@@ -133,7 +141,8 @@ void PlayState::handleInput() {
             case sf::Event::MouseButtonPressed:
                 if ((mike->weapon->getWeaponName() != "assaultRifle") &&
                     (event.mouseButton.button == sf::Mouse::Left)) {
-                    if (!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) {
+                    if (!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING] &&
+                        !mike->weapon->isCut) {
                         mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
                     }
                 }
@@ -168,7 +177,7 @@ void PlayState::handleInput() {
 
     //repeated input (automatic fire, assault rifle)
     if ((mike->weapon->getWeaponName() == "assaultRifle") && (sf::Mouse::isButtonPressed(sf::Mouse::Left)))
-        if ((!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) &&
+        if ((!mike->weapon->animationKeyStep[ReloadingAnimationKeySteps::RELOADING]) && !mike->weapon->isCut &&
             (mike->weapon->shotClock.getElapsedTime() >= mike->weapon->getNextShotDelay())) {
             mike->weapon->shoot(normalizedViewfinderPos(worldPos, *mike));
             mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets, mike->weapon->getTotalBullets(),
