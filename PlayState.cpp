@@ -351,8 +351,8 @@ void PlayState::updateBonuses(float dt) {
                     }
                     break;
                     //the next bonuses have the same functioning
-                case INCREASED_DAMAGE:
                 case AMMUNITION:
+                case INCREASED_DAMAGE:
                 case ARMOR:
                 case LIFE_POINTS:
                 case PROTECTION_BUBBLE:
@@ -363,6 +363,9 @@ void PlayState::updateBonuses(float dt) {
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
                         collect = true;
+                        mike->gui.updateMagazines(mike->weapon->getMagazine().remainingBullets,
+                                                  mike->weapon->getTotalBullets(),
+                                                  mike->weapon->isInfiniteBullets());
                     }
                     break;
                 default:
