@@ -8,7 +8,6 @@ Gui::Gui(unsigned int points, int round, int remainingBullets, int totalBullets,
          float startRoundCountdownSecond, const sf::Texture &weaponTexture, const TextureManager &guiTexManager)
         : weaponTexture(weaponTexture) {
     guiTextures = guiTexManager;
-    std::cout << "i'm GUI constructor" << std::endl;
 
     //health bar
     healthBar.setTexture(guiTextures.getTextureRef("healthBar"));

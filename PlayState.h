@@ -138,6 +138,8 @@ public:
 
     void loadAudio();
 
+    const std::unique_ptr<Spawner> &getSpawner() const;
+
 
 };
 

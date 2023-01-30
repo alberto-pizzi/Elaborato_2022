@@ -105,22 +105,8 @@ void Mike::incrementKills(int enemyType) {
     roundKills++;
     kills++;
 
-    //notify oberver
+    //notify observer
     notifyObserver(AchievementTypes::Kills, this->kills);
-
-    /*
-    if (enemyType == BOSS) {
-        notifyObserver("Kill 2 bosses", enemyTypeKills[BOSS]);
-        notifyObserver("Kill 5 bosses", enemyTypeKills[BOSS]);
-        notifyObserver("Kill 10 bosses", enemyTypeKills[BOSS]);
-    } else if (enemyType == KAMIKAZE) {
-        notifyObserver("Kill 10 kamikaze", enemyTypeKills[KAMIKAZE]);
-        notifyObserver("Kill 30 kamikaze", enemyTypeKills[KAMIKAZE]);
-        notifyObserver("Kill 60 kamikaze", enemyTypeKills[KAMIKAZE]);
-        notifyObserver("Kill 100 kamikaze", enemyTypeKills[KAMIKAZE]);
-    }
-*/
-
 }
 
 void Mike::resetRoundKills() {

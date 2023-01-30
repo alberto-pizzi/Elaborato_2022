@@ -134,3 +134,48 @@ TEST_F (GameCharacterFixture, TestBulletsVectorFillingCorrectness) {
     EXPECT_EQ(mike->weapon->getBullets().size(), 3);
 }
 
+TEST_F(GameCharacterFixture, TestEnemyHits) {
+    PlayState *play;
+    Game game;
+    play = new PlayState(&game);
+
+    //test zombie
+    play->getSpawner()->spawnZombie(spawnTile, 100, 1);
+    ASSERT_EQ(play->getSpawner()->getEnemies().size(), 1);
+    float actualHP = mike->getHp();
+    std::vector<std::unique_ptr<Enemy>> emptyVector;
+    play->getSpawner()->getEnemies().begin()->get()->hit(*mike, emptyVector);
+    EXPECT_LT(mike->getHp(), actualHP);
+
+    mike->setHp(mike->getDefaultHp());
+
+    //test warrior
+    play->getSpawner()->spawnWarrior(spawnTile, 100, 1);
+    ASSERT_EQ(play->getSpawner()->getEnemies().size(), 2);
+    actualHP = mike->getHp();
+    play->getSpawner()->getEnemies()[1]->hit(*mike, emptyVector);
+    EXPECT_LT(mike->getHp(), actualHP);
+
+    mike->setHp(mike->getDefaultHp());
+
+    //test archer
+    play->getSpawner()->spawnArcher(spawnTile, 1);
+    ASSERT_EQ(play->getSpawner()->getEnemies().size(), 3);
+    actualHP = mike->getHp();
+    play->getSpawner()->getEnemies()[2]->weapon->setNextShotDelay(sf::seconds(0));
+    play->getSpawner()->getEnemies()[2]->hit(*mike, emptyVector);
+    EXPECT_GT(play->getSpawner()->getEnemies()[2]->weapon->getBullets().size(), 0);
+
+    mike->setHp(mike->getDefaultHp());
+
+    //test boss
+    play->getSpawner()->spawnBoss(spawnTile, 1);
+    ASSERT_EQ(play->getSpawner()->getBosses().size(), 1);
+    actualHP = mike->getHp();
+    play->getSpawner()->getBosses().begin()->get()->weapon->setNextShotDelay(sf::seconds(0));
+    play->getSpawner()->getBosses().begin()->get()->weapon->shoot({1, 1});
+    EXPECT_GT(play->getSpawner()->getBosses().begin()->get()->weapon->getBullets().size(), 0);
+
+    delete play;
+}
+

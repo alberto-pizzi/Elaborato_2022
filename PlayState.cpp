@@ -836,3 +836,7 @@ const std::shared_ptr<ArenaMap> &PlayState::getArenaMap() const {
     return arenaMap;
 }
 
+const std::unique_ptr<Spawner> &PlayState::getSpawner() const {
+    return spawner;
+}
+
