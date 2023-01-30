@@ -108,7 +108,7 @@ public:
 
     void drawBullets(sf::RenderWindow &window, float dt) const;
 
-    virtual void updateBullets(ArenaMap *map, GameCharacter &enemy);
+    virtual void updateBullets(std::shared_ptr<ArenaMap> &map, GameCharacter &enemy);
 
     const sf::Vector2i &getFileTextureRectWeaponSize() const;
 

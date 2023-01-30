@@ -26,7 +26,7 @@ public:
 
     void shoot(const sf::Vector2f &normalizedBulletDir) override;
 
-    void updateBullets(ArenaMap *map, GameCharacter &enemy) override;
+    void updateBullets(std::shared_ptr<ArenaMap> &map, GameCharacter &enemy) override;
 
     bool reloadWeapon() override;
 };

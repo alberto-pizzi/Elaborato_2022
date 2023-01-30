@@ -34,7 +34,7 @@ private:
 
     sf::View gameView;
     sf::View guiView;
-    ArenaMap *arenaMap;
+    std::shared_ptr<ArenaMap> arenaMap;
     std::unique_ptr<Spawner> spawner;
     std::unique_ptr<Mike> mike;
 
@@ -92,7 +92,7 @@ public:
 
     virtual ~PlayState();
 
-    ArenaMap *getArenaMap() const;
+    const std::shared_ptr<ArenaMap> &getArenaMap() const;
 
     void draw(float dt) const override;
 

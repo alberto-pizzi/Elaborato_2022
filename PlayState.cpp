@@ -241,9 +241,11 @@ PlayState::PlayState(Game *game) : round(1) {
 
 
     //create random map
-    arenaMap = new ArenaMap(whichMap(), this->game->window, mike, charactersTextures.getTextureRef("mike"),
-                            weaponsTextures.getTextureRef("handgun"), weaponsTextures.getTextureRef("bullet"),
-                            guiTextures, firstRoundStartingTime.asSeconds(), viewSize);
+    arenaMap = std::make_shared<ArenaMap>(whichMap(), this->game->window, mike,
+                                          charactersTextures.getTextureRef("mike"),
+                                          weaponsTextures.getTextureRef("handgun"),
+                                          weaponsTextures.getTextureRef("bullet"),
+                                          guiTextures, firstRoundStartingTime.asSeconds(), viewSize);
 
     spawner = std::unique_ptr<Spawner>(
             new Spawner(charactersTextures, bonusesTextures, weaponsTextures, arenaMap->nodeMap,
@@ -270,12 +272,9 @@ int PlayState::whichMap() {
     return map;
 }
 
-ArenaMap *PlayState::getArenaMap() const {
-    return arenaMap;
-}
 
 PlayState::~PlayState() {
-    delete arenaMap;
+    //delete arenaMap;
 }
 
 void PlayState::loadTextures() {
@@ -880,5 +879,9 @@ void PlayState::loadAudio() {
 
     //start first playlist song
     audioManager.startPlaylist();
+}
+
+const std::shared_ptr<ArenaMap> &PlayState::getArenaMap() const {
+    return arenaMap;
 }
 

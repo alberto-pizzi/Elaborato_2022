@@ -103,7 +103,7 @@ Shotgun::Shotgun(bool equipped, const sf::Texture &handgunTexture, const sf::Tex
 
 }
 
-void Shotgun::updateBullets(ArenaMap *map, GameCharacter &enemy) {
+void Shotgun::updateBullets(std::shared_ptr<ArenaMap> &map, GameCharacter &enemy) {
     Weapon::updateBullets(map, enemy);
     for (int i = 0; i < bullets.size(); i++) {
         if (bullets[i]->getDistanceTravelled() >= bulletRange) {
