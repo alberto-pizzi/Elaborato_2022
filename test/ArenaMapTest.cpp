@@ -16,6 +16,8 @@ TEST_F (ArenaMapFixture, TestBulletsDirection) {
     sf::Vector2f translation = viewfinderPos - origin;
     auto norm = std::sqrt((translation.x * translation.x) + (translation.y * translation.y));
 
+    mike->weapon->setNextShotDelay(sf::seconds(0));
+
     mike->weapon->shoot(translation / norm);
     ASSERT_EQ(mike->weapon->getBullets().size(), 1);
     //mike->weapon->getBullets().begin()->get()->move(mike->weapon->getBullets().begin()->get()->getBulletDir(), dt);

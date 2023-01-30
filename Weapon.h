@@ -136,6 +136,8 @@ public:
 
     void playWeaponPickedUpSound();
 
+    void setNextShotDelay(const sf::Time &nextShotDelay);
+
 };
 
 

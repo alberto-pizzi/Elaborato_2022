@@ -210,6 +210,10 @@ void Weapon::playWeaponPickedUpSound() {
     }
 }
 
+void Weapon::setNextShotDelay(const sf::Time &nextShotDelay) {
+    Weapon::nextShotDelay = nextShotDelay;
+}
+
 
 Weapon::Magazine::Magazine(int magazineCapacity, int remainingBullets) : totalCapacity(magazineCapacity),
                                                                          remainingBullets(remainingBullets) {

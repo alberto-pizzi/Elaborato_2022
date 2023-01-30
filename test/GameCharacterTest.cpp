@@ -78,6 +78,7 @@ TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikePoints) {
 
 TEST_F (GameCharacterFixture, TestMagazineAfterShot) {
 
+    mike->weapon->setNextShotDelay(sf::seconds(0));
     //handgun magazine test
     ASSERT_EQ(12, mike->weapon->getMagazine().remainingBullets);
     ASSERT_EQ(12, mike->weapon->getMagazine().totalCapacity);
@@ -124,6 +125,7 @@ TEST_F (GameCharacterFixture, TestSkinSideCorrectnessnDuringMouseInput) {
 }
 
 TEST_F (GameCharacterFixture, TestBulletsVectorFillingCorrectness) {
+    mike->weapon->setNextShotDelay(sf::seconds(0));
     mike->weapon->shoot({1, 0});
     ASSERT_EQ(mike->weapon->getBullets().size(), 1);
 
