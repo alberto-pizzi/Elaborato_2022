@@ -354,6 +354,7 @@ void PlayState::updateBonuses(float dt) {
                                                                                          spawner->bonuses[i]->isActiveAnimation);
                     if (spawner->bonuses[i]->isAbove(mike->getSprite().getGlobalBounds())) {
                         spawner->bonuses[i]->doSpecialAction(*mike);
+                        audioManager.playSound("explosion");
                         spawner->despawnAllEnemies();
                         collect = true;
 
@@ -827,6 +828,7 @@ void PlayState::loadAudio() {
 
     //sound effects
     audioManager.loadSound("collectCoin", "res/sounds/collect_coin.ogg");
+    audioManager.loadSound("explosion", "res/sounds/explosion.ogg");
 
     //start first playlist song
     audioManager.startPlaylist();
