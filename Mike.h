@@ -65,7 +65,7 @@ public:
 
     void removeObserver(Observer *observer) override;
 
-    void notifyObserver(std::string achievementName, unsigned int value) const override;
+    void notifyObserver(int achievementType, unsigned int value) const override;
 
     void incrementKills(int enemyType);
 

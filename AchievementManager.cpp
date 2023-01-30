@@ -20,15 +20,19 @@ AchievementManager::AchievementManager(Subject *subject, const TextureManager &g
     }
 
     //register observer
-    std::cout << "Register Observer" << std::endl;
     subject->registerObserver(this);
-    std::cout << "Registered Observer" << std::endl;
 }
 
-void AchievementManager::createAchievement(const std::string &name, unsigned int target) {
-    achievements[name] = std::unique_ptr<Achievement>(
-            new Achievement(guiTextures.getTextureRef("box"), guiTextures.getTextureRef("trophy"), name, target,
-                            progressFont));
+void AchievementManager::createAchievement(int achievementType, const std::string &name, unsigned int target) {
+    if (achievements.count(achievementType) > 0) {
+        achievements[achievementType]->createAchievement(name, target);
+
+    } else {
+        achievements[achievementType] = std::unique_ptr<AchievementType>(
+                new AchievementType(guiTextures.getTextureRef("box"), guiTextures.getTextureRef("trophy"), name,
+                                    target,
+                                    progressFont, achievementType));
+    }
 }
 
 void AchievementManager::saveAchievements() {
@@ -46,24 +50,24 @@ void AchievementManager::saveAchievements() {
     achievementFile << achievements.size() << std::endl;
 
     for (auto it = achievements.begin(); it != achievements.end(); it++) {
-        achievementFile << it->second->getName() << std::endl;
-        achievementFile << it->second->getActualProgress() << std::endl;
-        achievementFile << it->second->getTargetProgress() << std::endl;
+        for (int i = 0; i < it->second->getAchievements().size(); i++) {
+            achievementFile << it->second->getAchievementType() << std::endl;
+            achievementFile << it->second->getAchievements()[i]->getName() << std::endl;
+            achievementFile << it->second->getAchievements()[i]->getActualProgress() << std::endl;
+            achievementFile << it->second->getAchievements()[i]->getTargetProgress() << std::endl;
+        }
     }
 
     achievementFile.close();
 
-
 }
 
-void AchievementManager::update(std::string achievementName, unsigned int value) {
-    achievements[achievementName]->update(value);
+void AchievementManager::update(int achievementType, unsigned int value) {
+    achievements[achievementType]->update(value);
 }
 
 AchievementManager::~AchievementManager() {
-    std::cout << "Remove Observer" << std::endl;
     subject->removeObserver(this);
-    std::cout << "Removed Observer" << std::endl;
 }
 
 AchievementManager *AchievementManager::getInstance() {
@@ -78,7 +82,7 @@ void AchievementManager::createInstance(Subject *subject, const TextureManager &
 void AchievementManager::drawAchievements(sf::RenderWindow &window) {
     for (auto it = AchievementManager::getInstance()->achievements.begin();
          it != AchievementManager::getInstance()->achievements.end(); it++) {
-        it->second->drawAchievement(window);
+        it->second->drawAchievements(window);
     }
 }
 

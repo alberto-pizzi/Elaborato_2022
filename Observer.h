@@ -11,7 +11,7 @@
 
 class Observer {
 public:
-    virtual void update(std::string achievementName, unsigned int value) = 0;
+    virtual void update(int achievementType, unsigned int value) = 0;
 
     virtual ~Observer() = default;
 };

@@ -12,7 +12,7 @@
 #include <SFML/Window/Event.hpp>
 //#include <iterator>
 
-//#include "Achievement.h"
+//#include "AchievementType.h"
 #include "AchievementManager.h"
 
 
@@ -34,7 +34,8 @@ private:
     const float scrollMove = 50;
 
     //achievements from file
-    std::map<std::string, std::unique_ptr<Achievement>> achievements;
+    std::map<int, std::unique_ptr<AchievementType>> achievements;
+    bool drawed = false;
 
 public:
     explicit AchievementState(Game *game);

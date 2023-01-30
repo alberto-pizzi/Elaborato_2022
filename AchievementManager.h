@@ -8,7 +8,7 @@
 
 #include "Observer.h"
 #include "Subject.h"
-#include "Achievement.h"
+#include "AchievementType.h"
 #include <map>
 #include <memory>
 #include <fstream>
@@ -34,17 +34,17 @@ private:
 
 public:
     //achievements from current game
-    std::map<std::string, std::unique_ptr<Achievement>> achievements;
+    std::map<int, std::unique_ptr<AchievementType>> achievements;
 
     virtual ~AchievementManager();
 
-    void createAchievement(const std::string &name, unsigned int target);
+    void createAchievement(int achievementType, const std::string &name, unsigned int target);
 
     void saveAchievements();
 
     static void drawAchievements(sf::RenderWindow &window);
 
-    void update(std::string achievementName, unsigned int value) override;
+    void update(int achievementType, unsigned int value) override;
 
     static AchievementManager *getInstance();
 

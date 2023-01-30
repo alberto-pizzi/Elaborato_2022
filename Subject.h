@@ -15,7 +15,7 @@ public:
 
     virtual void removeObserver(Observer *observer) = 0;
 
-    virtual void notifyObserver(std::string achievementName, unsigned int value) const = 0;
+    virtual void notifyObserver(int achievementType, unsigned int value) const = 0;
 
     virtual ~Subject() = default;
 };

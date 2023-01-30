@@ -2,13 +2,15 @@
 // Created by alber on 21/01/2023.
 //
 
-#include "Achievement.h"
+#include "AchievementType.h"
 
-float Achievement::previousBoxPosY = 0; //it is a temporary initialization. it will be as half window size thanks to AchievementState constructor
+float AchievementType::Achievement::previousBoxPosY = 0; //it is a temporary initialization. it will be as half window size thanks to AchievementState constructor
+bool AchievementType::Achievement::firstTime = true;
 
-Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex, const std::string &name,
-                         unsigned int goal,
-                         const sf::Font &font)
+AchievementType::Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex,
+                                          const std::string &name,
+                                          unsigned int goal,
+                                          const sf::Font &font)
         : name(name),
           targetProgress(goal), progressTextFont(font) {
 
@@ -56,28 +58,24 @@ Achievement::Achievement(const sf::Texture &boxTex, const sf::Texture &trophyTex
 
 }
 
-void Achievement::drawAchievement(sf::RenderWindow &window) {
+void AchievementType::Achievement::drawAchievement(sf::RenderWindow &window) {
 
-    //static_cast<float>(window.getSize().y)/2.f - boxSprite.getGlobalBounds().height/2
-    //box
-    /*
-    sf::Vector2f boxPos = {static_cast<float>(window.getSize().x)/2.f - boxSprite.getGlobalBounds().width/2,
-                           previousBoxPosY + borderDistance.y};
-                           */
+
     if (firstTime) {
-        sf::Vector2i boxPos = {static_cast<int>((window.getSize().x) / 2.f - boxSprite.getGlobalBounds().width / 2),
-                               static_cast<int>(previousBoxPosY + borderDistance.y)};
-        sf::Vector2f worldBoxPos = window.mapPixelToCoords(boxPos);
-        boxSprite.setPosition(worldBoxPos);
+        previousBoxPosY = static_cast<float>(window.getSize().y) / 2.f;
         firstTime = false;
     }
-    window.draw(boxSprite);
 
-    //update previousBoxBounds
     if (!posAlreadySet) {
-        previousBoxPosY = boxSprite.getPosition().y + boxSprite.getGlobalBounds().height;
+        sf::Vector2i boxPos = {
+                static_cast<int>(static_cast<float>(window.getSize().x) / 2.f - boxSprite.getGlobalBounds().width / 2),
+                static_cast<int>(previousBoxPosY + borderDistance.y)};
+        sf::Vector2f worldBoxPos = window.mapPixelToCoords(boxPos);
+        boxSprite.setPosition(worldBoxPos);
+        previousBoxPosY = boxPos.y + boxSprite.getGlobalBounds().height;
         posAlreadySet = true;
     }
+    window.draw(boxSprite);
 
     //progress bar
     sf::Vector2f barPos = {boxSprite.getPosition().x + borderDistance.x,
@@ -111,7 +109,7 @@ void Achievement::drawAchievement(sf::RenderWindow &window) {
     window.draw(trophySprite);
 }
 
-bool Achievement::isAchieved() {
+bool AchievementType::Achievement::isAchieved() {
     if (actualProgress >= targetProgress) {
         actualProgress = targetProgress;
         return true;
@@ -119,7 +117,7 @@ bool Achievement::isAchieved() {
         return false;
 }
 
-void Achievement::update(unsigned int value) {
+void AchievementType::Achievement::update(unsigned int value) {
     //update progress
     actualProgress = value;
 
@@ -146,51 +144,49 @@ void Achievement::update(unsigned int value) {
 
 }
 
-unsigned int Achievement::getActualProgress() const {
-    return actualProgress;
-}
-
-const sf::Sprite &Achievement::getBoxSprite() const {
+const sf::Sprite &AchievementType::Achievement::getBoxSprite() const {
     return boxSprite;
 }
 
-const sf::Sprite &Achievement::getTrophySprite() const {
-    return trophySprite;
-}
-
-const std::string &Achievement::getProgress() const {
-    return progress;
-}
-
-float Achievement::getPreviousBoxPosY() {
-    return previousBoxPosY;
-}
-
-void Achievement::setPreviousBoxPosY(float previousBoxPosY) {
-    Achievement::previousBoxPosY = previousBoxPosY;
-}
-
-void Achievement::setBoxSprite(const sf::Sprite &boxSprite) {
-    Achievement::boxSprite = boxSprite;
-}
-
-void Achievement::setActualProgress(unsigned int actualProgress) {
-    Achievement::actualProgress = actualProgress;
-}
-
-void Achievement::setTargetProgress(unsigned int targetProgress) {
-    Achievement::targetProgress = targetProgress;
-}
-
-void Achievement::setName(std::string name) {
-    Achievement::name = name;
-}
-
-const std::string &Achievement::getName() const {
+const std::string &AchievementType::Achievement::getName() const {
     return name;
 }
 
-unsigned int Achievement::getTargetProgress() const {
+unsigned int AchievementType::Achievement::getActualProgress() const {
+    return actualProgress;
+}
+
+unsigned int AchievementType::Achievement::getTargetProgress() const {
     return targetProgress;
+}
+
+AchievementType::AchievementType(const sf::Texture &boxTex, const sf::Texture &trophyTex, const std::string &name,
+                                 unsigned int goal, const sf::Font &font, int achievementType) : achievementType(
+        achievementType), boxTexture(boxTex), trophyTexture(trophyTex), font(font) {
+
+    createAchievement(name, goal);
+}
+
+void AchievementType::createAchievement(const std::string &name, unsigned int goal) {
+    achievements.emplace_back(new Achievement(boxTexture, trophyTexture, name, goal, font));
+}
+
+void AchievementType::drawAchievements(sf::RenderWindow &window) {
+    for (int i = 0; i < achievements.size(); i++) {
+        achievements[i]->drawAchievement(window);
+    }
+}
+
+int AchievementType::getAchievementType() const {
+    return achievementType;
+}
+
+void AchievementType::update(unsigned int value) {
+    for (int i = 0; i < achievements.size(); i++)
+        achievements[i]->update(value);
+}
+
+const std::vector<std::unique_ptr<AchievementType::Achievement>> &AchievementType::getAchievements() const {
+    return achievements;
 }
 
