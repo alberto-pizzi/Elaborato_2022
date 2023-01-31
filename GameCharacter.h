@@ -73,7 +73,7 @@ protected:
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
     Dice randomDice;
-    const sf::Time hitTimeColor = sf::seconds(0.3);
+    const sf::Time hitTime = sf::seconds(0.3);
 
     //audio
     AudioManager audioManager;

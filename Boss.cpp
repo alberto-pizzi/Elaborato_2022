@@ -40,7 +40,7 @@ void Boss::updateCharacterColor() {
         sprite.setColor(hitColor);
         if (weapon)
             weapon->weaponSprite.setColor(hitColor);
-        if (hitColorClock.getElapsedTime() >= hitTimeColor)
+        if (hitColorClock.getElapsedTime() >= hitTime)
             isHit = false;
     } else {
         sprite.setColor(sf::Color::White);
@@ -85,4 +85,14 @@ const sf::Time &Boss::getBubbleDuration() const {
 
 const sf::Time &Boss::getBubbleOffset() const {
     return bubbleOffset;
+}
+
+void Boss::bossBubble() {
+    if (isBubble() &&
+        (durationClock.getElapsedTime() >= getBubbleDuration()))
+        setBubble(false);
+
+    if (!isBubble() &&
+        (bubbleClock.getElapsedTime() >= getBubbleOffset()))
+        setBubble(true);
 }

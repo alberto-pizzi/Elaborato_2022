@@ -146,7 +146,7 @@ void Enemy::updateCharacterColor() {
         sprite.setColor(hitColor);
         if (weapon)
             weapon->weaponSprite.setColor(hitColor);
-        if (hitColorClock.getElapsedTime() >= hitTimeColor)
+        if (hitColorClock.getElapsedTime() >= hitTime)
             isHit = false;
     } else {
         sprite.setColor(sf::Color::White);

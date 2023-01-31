@@ -126,7 +126,7 @@ void Mike::updateCharacterColor() {
         sprite.setColor(hitColor);
         if (weapon)
             weapon->weaponSprite.setColor(hitColor);
-        if (hitColorClock.getElapsedTime() >= hitTimeColor)
+        if (hitColorClock.getElapsedTime() >= hitTime)
             isHit = false;
     } else if (bubble) {
         sprite.setColor(bubbleColor);

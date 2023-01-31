@@ -79,14 +79,14 @@ void PlayState::update(float dt) {
         //update all bosses
         updateBosses(dt);
 
+        //update mike skin color when damaged, etc...
+        mike->updateCharacterColor();
+
         //check mike dead
         checkMikeDead(dt);
 
         //update active bonuses like bubble, increase damage...
         mike->updateActiveBonuses();
-        //update mike skin color when damaged, etc...
-        mike->updateCharacterColor();
-
 
         //spawn bonuses (with determining conditions)
         spawnBonuses();
@@ -484,32 +484,15 @@ void PlayState::initRound() {
 void PlayState::updateEnemies(float dt) {
 
     for (int i = 0; i < spawner->enemies.size(); i++) {
-        sf::RectangleShape obstacle;
 
-        if (spawner->enemies[i]->isDeathAnimationActive)
-            spawner->enemies[i]->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                             spawner->enemies[i]->isDeathAnimationEnded,
-                                                                             spawner->enemies[i]->isDeathAnimationActive);
-
-        sf::FloatRect futurePos = spawner->enemies[i]->futureCharacterPosition(
-                spawner->enemies[i]->normalize(
-                        spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
-                dt);
-        spawner->updateEnemy(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
-                             futurePos); //update animation and movement
-        mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
-        if (spawner->enemies[i]->weapon) {
-            spawner->enemies[i]->setWeaponPosToShouldersPos();
-
-            spawner->enemies[i]->weapon->updateBullets(arenaMap, *mike);
-        }
-        spawner->enemies[i]->updateCharacterColor();
-        updateViewfinderColor(*spawner->enemies[i]);
 
         if (spawner->enemies[i]->isDead()) {
-
-            spawner->enemies[i]->startDespawning();
-            spawner->enemies[i]->isDeathAnimationActive = true;
+            if (spawner->enemies[i]->isDeathAnimationActive)
+                spawner->enemies[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                 spawner->enemies[i]->isDeathAnimationEnded,
+                                                                                 spawner->enemies[i]->isDeathAnimationActive);
+            else
+                spawner->enemies[i]->startDespawning();
             if (spawner->enemies[i]->isDeathAnimationEnded) {
                 spawner->spawnCoin(spawner->enemies[i]->getSpriteCenter(), spawner->enemies[i]->getCoins());
 
@@ -520,9 +503,29 @@ void PlayState::updateEnemies(float dt) {
                 spawner->despawnEnemy(i, remainEnemies);
             }
 
-            if (spawner->enemies.empty())
+            if (spawner->enemies.empty()) {
+                viewfinderSprite.setColor(sf::Color::White);
                 break;
+            }
         } else {
+
+            sf::RectangleShape obstacle;
+
+            sf::FloatRect futurePos = spawner->enemies[i]->futureCharacterPosition(
+                    spawner->enemies[i]->normalize(
+                            spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
+                    dt);
+            spawner->updateEnemy(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
+                                 futurePos); //update animation and movement
+            mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
+            if (spawner->enemies[i]->weapon) {
+                spawner->enemies[i]->setWeaponPosToShouldersPos();
+
+                spawner->enemies[i]->weapon->updateBullets(arenaMap, *mike);
+            }
+            spawner->enemies[i]->updateCharacterColor();
+            updateViewfinderColor(*spawner->enemies[i]);
+
             if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->chanceDice,
                                                   spawner->calculateChance(spawner->chanceDice))) ||
                 (spawner->enemies[i]->getCharacterType() == ARCHER)) {
@@ -611,20 +614,29 @@ void PlayState::checkAndUpdateRound() {
 }
 
 void PlayState::updateViewfinderColor(const GameCharacter &enemy) {
-    if (enemy.isHit1())
-        viewfinderSprite.setColor(enemy.getHitColor());
+    if (!viewFinderHit && enemy.isHit1()) {
+        viewFinderHit = true;
+        hitViewFinder.restart();
+    }
+
+    if (viewFinderHit && (hitViewFinder.getElapsedTime() >= viewFinderHitTime))
+        viewFinderHit = false;
+
+    if (viewFinderHit)
+        viewfinderSprite.setColor(hitColor);
     else
         viewfinderSprite.setColor(sf::Color::White);
 }
 
 void PlayState::checkMikeDead(float dt) {
     if (mike->isDead()) {
+        if (mike->isDeathAnimationActive)
+            mike->currentAnimation.updateNotCyclicalAnimation(dt, mike->isDeathAnimationEnded,
+                                                              mike->isDeathAnimationActive);
+        else
+            mike->startDespawning();
         startedGameOver = true;
-        mike->startDespawning();
-        mike->isDeathAnimationActive = true;
         mike->gui.updateGameOver(true);
-        mike->currentAnimation.updateNotCyclicalAnimation(dt, mike->isDeathAnimationEnded,
-                                                          mike->isDeathAnimationActive);
         if (mike->isDeathAnimationEnded) {
             if (!gameOver) {
                 gameOverClock.restart();
@@ -765,38 +777,13 @@ void PlayState::autoSaveProgress() {
 void PlayState::updateBosses(float dt) {
     for (int i = 0; i < spawner->bosses.size(); i++) {
 
-        //set boss bubble
-        if (spawner->bosses[i]->isBubble() &&
-            (spawner->bosses[i]->durationClock.getElapsedTime() >= spawner->bosses[i]->getBubbleDuration()))
-            spawner->bosses[i]->setBubble(false);
-
-        if (!spawner->bosses[i]->isBubble() &&
-            (spawner->bosses[i]->bubbleClock.getElapsedTime() >= spawner->bosses[i]->getBubbleOffset()))
-            spawner->bosses[i]->setBubble(true);
-
-        if (spawner->bosses[i]->isDeathAnimationActive)
-            spawner->bosses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
-                                                                            spawner->bosses[i]->isDeathAnimationEnded,
-                                                                            spawner->bosses[i]->isDeathAnimationActive);
-
-        sf::FloatRect futurePos = spawner->bosses[i]->futureCharacterPosition(
-                spawner->bosses[i]->normalize(
-                        spawner->characterPositionRelativeToAnother(*spawner->bosses[i], *mike)),
-                dt);
-        spawner->updateBoss(*mike, dt, i, arenaMap->rectWalls, futurePos); //update animation and movement
-        mike->weapon->updateBullets(arenaMap, *(spawner->bosses[i]));
-        if (spawner->bosses[i]->weapon) {
-            spawner->bosses[i]->setWeaponPosToShouldersPos();
-
-            spawner->bosses[i]->weapon->updateBullets(arenaMap, *mike);
-        }
-        spawner->bosses[i]->updateCharacterColor();
-        updateViewfinderColor(*spawner->bosses[i]);
-
         if (spawner->bosses[i]->isDead()) {
-
-            spawner->bosses[i]->startDespawning();
-            spawner->bosses[i]->isDeathAnimationActive = true;
+            if (spawner->bosses[i]->isDeathAnimationActive)
+                spawner->bosses[i]->currentAnimation.updateNotCyclicalAnimation(dt,
+                                                                                spawner->bosses[i]->isDeathAnimationEnded,
+                                                                                spawner->bosses[i]->isDeathAnimationActive);
+            else
+                spawner->bosses[i]->startDespawning();
             if (spawner->bosses[i]->isDeathAnimationEnded) {
                 spawner->spawnCoin(spawner->bosses[i]->getSpriteCenter(), spawner->bosses[i]->getCoins());
 
@@ -807,9 +794,32 @@ void PlayState::updateBosses(float dt) {
                 spawner->despawnBoss(i, remainBosses);
             }
 
-            if (spawner->bosses.empty())
+            if (spawner->bosses.empty()) {
+                viewfinderSprite.setColor(sf::Color::White);
                 break;
+            }
         } else {
+
+            //set boss bubble
+            spawner->bosses[i]->bossBubble();
+
+            sf::FloatRect futurePos = spawner->bosses[i]->futureCharacterPosition(
+                    spawner->bosses[i]->normalize(
+                            spawner->characterPositionRelativeToAnother(*spawner->bosses[i], *mike)),
+                    dt);
+            //update animation and movement
+            spawner->updateBoss(*mike, dt, i, arenaMap->rectWalls, futurePos);
+
+            mike->weapon->updateBullets(arenaMap, *(spawner->bosses[i]));
+            if (spawner->bosses[i]->weapon) {
+                spawner->bosses[i]->setWeaponPosToShouldersPos();
+
+                spawner->bosses[i]->weapon->updateBullets(arenaMap, *mike);
+            }
+            spawner->bosses[i]->updateCharacterColor();
+            updateViewfinderColor(*spawner->bosses[i]);
+
+            //hit
             sf::Vector2f origin = spawner->bosses[i]->getSpriteCenter();
             sf::Vector2f translation = mike->getSpriteCenter() - origin;
             spawner->bosses[i]->weapon->shoot(spawner->bosses[i]->normalize(translation));

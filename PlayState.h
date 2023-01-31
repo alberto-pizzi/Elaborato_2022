@@ -46,6 +46,11 @@ private:
     sf::Vector2i localPosition;
     sf::Vector2f worldPos;
     sf::Sprite viewfinderSprite;
+    sf::Clock hitViewFinder;
+    bool viewFinderHit = false;
+    bool firstHitTime = true;
+    const sf::Time viewFinderHitTime = sf::seconds(0.3);
+    const sf::Color hitColor = sf::Color(102, 0, 0);
 
     //texture managers
     TextureManager weaponsTextures;

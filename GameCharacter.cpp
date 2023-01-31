@@ -318,6 +318,7 @@ void GameCharacter::startDespawning() {
     if (!despawnStarted) {
         currentAnimation.setNotCyclicalAnimation(death, 1.0f);
         despawnStarted = true;
+        isDeathAnimationActive = true;
 
         //play death sound
         audioManager.playSound("death");
