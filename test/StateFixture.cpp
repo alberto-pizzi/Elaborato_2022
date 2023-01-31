@@ -2,13 +2,13 @@
 // Created by alber on 01/12/2022.
 //
 
-#include "MenuFixture.h"
+#include "StateFixture.h"
 
 
-MenuFixture::~MenuFixture() {
+StateFixture::~StateFixture() {
     delete play;
 }
 
-MenuFixture::MenuFixture() {
+StateFixture::StateFixture() {
     play = new PlayState(&game);
 }

@@ -109,6 +109,15 @@ void AchievementState::loadAchievements() {
     std::ifstream achievementFile;
     bool firstTime = true;
 
+    /*
+     the achievements file has the following structure:
+     - total achievements
+     for each achievement:
+     - achievement type
+     - achievement name
+     - last progress
+     - target value
+     */
 
     achievementFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try {

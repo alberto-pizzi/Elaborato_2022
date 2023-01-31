@@ -145,6 +145,18 @@ public:
 
     const std::unique_ptr<Spawner> &getSpawner() const;
 
+    unsigned int getRound() const;
+
+    void setRound(unsigned int round);
+
+    unsigned int getRemainEnemies() const;
+
+    void setRemainEnemies(unsigned int remainEnemies);
+
+    unsigned int getRemainBosses() const;
+
+    void setRemainBosses(unsigned int remainBosses);
+
 
 };
 

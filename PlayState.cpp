@@ -851,3 +851,27 @@ const std::unique_ptr<Spawner> &PlayState::getSpawner() const {
     return spawner;
 }
 
+unsigned int PlayState::getRound() const {
+    return round;
+}
+
+void PlayState::setRound(unsigned int round) {
+    PlayState::round = round;
+}
+
+unsigned int PlayState::getRemainEnemies() const {
+    return remainEnemies;
+}
+
+void PlayState::setRemainEnemies(unsigned int remainEnemies) {
+    PlayState::remainEnemies = remainEnemies;
+}
+
+unsigned int PlayState::getRemainBosses() const {
+    return remainBosses;
+}
+
+void PlayState::setRemainBosses(unsigned int remainBosses) {
+    PlayState::remainBosses = remainBosses;
+}
+

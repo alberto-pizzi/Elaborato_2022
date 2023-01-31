@@ -2,24 +2,24 @@
 // Created by alber on 01/12/2022.
 //
 
-#ifndef ELABORATO_MENUFIXTURE_H
-#define ELABORATO_MENUFIXTURE_H
+#ifndef ELABORATO_STATEFIXTURE_H
+#define ELABORATO_STATEFIXTURE_H
 
 #include "gtest/gtest.h"
 #include "../PlayState.h"
 #include "../Game.h"
 
 
-class MenuFixture : public ::testing::Test {
+class StateFixture : public ::testing::Test {
 protected:
     Game game;
     PlayState *play;
     sf::Context context;
 public:
-    MenuFixture();
+    StateFixture();
 
-    virtual ~MenuFixture();
+    virtual ~StateFixture();
 };
 
 
-#endif //ELABORATO_MENUFIXTURE_H
+#endif //ELABORATO_STATEFIXTURE_H
