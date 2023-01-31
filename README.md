@@ -1,4 +1,4 @@
-# Elaborato_2022
+# Elaborato Programmazione 2022
 
 ## Credits:
 Some multimedia files (textures and audio) are downloaded from the internet. Others, however, are of my production.
