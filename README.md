@@ -8,6 +8,8 @@ All downloaded resources have a free license.
 
 The game is my design and production. It was written in C++11 with the SFML library.
 
+**Alberto Pizzi, Italy.**
+
 ## Gallery
 
 ![](/screenshots/menu.jpg)
