@@ -17,6 +17,7 @@ private:
     std::atomic<bool> pathReady;
     std::vector<std::vector<Node>> nodeMap;
     float hitProbability; //as percentage (form 0 to 100)
+    const float marginPath = 4;
 
 protected:
     //the protected constructor is to make the class non-instantiable (like an abstract class)

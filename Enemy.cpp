@@ -42,10 +42,18 @@ void Enemy::followPath(float dt, sf::Vector2i tileSize, const std::vector<std::u
     if (!path.empty()) {
         sf::Vector2f currentPos = getSpriteCenter();
         Node nextNode = path[0];
+
+        float margin = marginPath;
+
+        if (currentPos.x > static_cast<float>(nextNode.getTile().x * tileSize.x))
+            margin = -marginPath;
+
         sf::Vector2f nextPos = {static_cast<float>(nextNode.getTile().x * tileSize.x +
-                                                   (sprite.getGlobalBounds().width - tileSize.x + 4)),
+                                                   (sprite.getGlobalBounds().width - static_cast<float>(tileSize.x) +
+                                                    margin)),
                                 static_cast<float>(nextNode.getTile().y * tileSize.y +
-                                                   (sprite.getGlobalBounds().height - tileSize.y + 4))};
+                                                   (sprite.getGlobalBounds().height - static_cast<float>(tileSize.y) +
+                                                    marginPath))};
         sf::Vector2f offset = nextPos - currentPos;
         sf::Vector2f normalizedVector = normalize(offset);
 
