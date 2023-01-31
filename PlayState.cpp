@@ -518,11 +518,6 @@ void PlayState::updateEnemies(float dt) {
             spawner->updateEnemy(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
                                  futurePos); //update animation and movement
             mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
-            if (spawner->enemies[i]->weapon) {
-                spawner->enemies[i]->setWeaponPosToShouldersPos();
-
-                spawner->enemies[i]->weapon->updateBullets(arenaMap, *mike);
-            }
             spawner->enemies[i]->updateCharacterColor();
             updateViewfinderColor(*spawner->enemies[i]);
 
@@ -530,10 +525,14 @@ void PlayState::updateEnemies(float dt) {
                                                   spawner->calculateChance(spawner->chanceDice))) ||
                 (spawner->enemies[i]->getCharacterType() == ARCHER)) {
                 spawner->enemies[i]->hit(*mike, spawner->enemies);
-                if (spawner->enemies[i]->weapon)
+                if (spawner->enemies[i]->weapon) {
                     spawner->enemies[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
                                                                                              spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ENDED],
                                                                                              spawner->enemies[i]->weapon->animationKeyStep[ReloadingAnimationKeySteps::ACTIVE]);
+                    spawner->enemies[i]->setWeaponPosToShouldersPos();
+                    spawner->enemies[i]->weapon->updateBullets(arenaMap, *mike);
+                }
+
             }
         }
     }

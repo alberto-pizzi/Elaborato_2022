@@ -17,7 +17,7 @@ private:
 public:
     Kamikaze(const sf::Texture &kamikazeTexture, const sf::Vector2i &spawnTile, const sf::Vector2i &tileSize,
              const sf::Vector2i &rectSkin, sf::Vector2f damageHit, const std::vector<std::vector<Node>> &nodeMap,
-             bool animated = true, int hp = 10, float speed = 190.f, unsigned int points = 8, unsigned int coins = 2,
+             bool animated = true, int hp = 10, float speed = 240.f, unsigned int points = 8, unsigned int coins = 2,
              float armor = 0);
 
     const sf::Clock &getExplosionClock() const;

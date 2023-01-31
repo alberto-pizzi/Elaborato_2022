@@ -18,7 +18,7 @@ private:
     int timesCount = 0;
 public:
     Scepter(bool equipped, const sf::Texture &scepterTex, const sf::Texture &energyBulletTex, sf::Vector2f bossScale,
-            float damage = 5, int totBullets = -999, sf::Time shotDelay = sf::seconds(3), float reloadTime = 1,
+            float damage = 5, int totBullets = -999, sf::Time shotDelay = sf::seconds(1.75), float reloadTime = 1,
             int magazineCapacity = 3, int remainingBullets = 3); //scepter has infinite bullets (-999)
     void shoot(const sf::Vector2f &normalizedBulletDir) override;
 };
