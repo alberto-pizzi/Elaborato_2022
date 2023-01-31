@@ -63,7 +63,6 @@ void Kamikaze::hit(GameCharacter &target, std::vector<std::unique_ptr<Enemy>> &t
     if (!explosionStarted) {
         explosionStarted = true;
         explosionClock.restart();
-        std::cout << "START EXPLOSION COUNT" << std::endl;
     }
 
     //kamikaze explosion

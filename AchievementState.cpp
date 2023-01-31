@@ -16,7 +16,7 @@ void AchievementState::draw(float dt) const {
 }
 
 void AchievementState::update(float dt) {
-    //std::cout<<"Y view: "<<achievementView.getCenter().y<<std::endl;
+
 }
 
 void AchievementState::handleInput() {

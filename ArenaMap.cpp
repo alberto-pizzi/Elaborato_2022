@@ -429,7 +429,6 @@ bool ArenaMap::isWeaponOverTheWall(const GameCharacter &character) {
              solidTiles[i]->posTile.y + static_cast<float>(tileSizeY) - 5))
             if (character.weapon->hitBox.getGlobalBounds().intersects(solidTiles[i]->tileSprite.getGlobalBounds(),
                                                                       delta)) {
-                //std::cout<<"Left: "<<delta.left<<" Top: "<<delta.top<<" Width: "<<delta.width<<" Height: "<<delta.height<<std::endl;
                 if (delta.top + delta.height - 2 == solidTiles[i]->tileSprite.getGlobalBounds().top +
                                                     solidTiles[i]->tileSprite.getGlobalBounds().height - 2)
                     return true;
