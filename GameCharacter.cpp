@@ -316,7 +316,7 @@ const std::vector<sf::IntRect> &GameCharacter::getDeath() const {
 
 void GameCharacter::startDespawning() {
     if (!despawnStarted) {
-        currentAnimation.setNotCyclicalAnimation(death, 1.0f);
+        currentAnimation.setNotCyclicalAnimation(death, 0.5f);
         despawnStarted = true;
         isDeathAnimationActive = true;
 
