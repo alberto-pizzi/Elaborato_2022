@@ -25,10 +25,11 @@ private:
 
     //texts
     int nButtonSelected;
-    unsigned int fontSize = 24;
+    unsigned int fontSize = 18;
     const float buttonDistance = 64;
-    const float alignValue = 8;
-    const sf::Color selectedColor = sf::Color(102, 0, 0);
+    const float alignValue = 6;
+    //const sf::Color selectedColor = sf::Color(102, 0, 0);
+    const sf::Color selectedColor = sf::Color::Yellow;
     sf::Font font;
     sf::Text textMenu[nButtons];
 

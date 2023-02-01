@@ -101,7 +101,9 @@ PauseState::PauseState(Game *game) {
     pauseMenu.setFont(font);
     pauseMenu.setCharacterSize(titleFontSize);
     pauseMenu.setString("Pause");
-    pauseMenu.setFillColor(sf::Color::Yellow);
+    pauseMenu.setFillColor(titleColor);
+    pauseMenu.setOutlineThickness(2);
+    pauseMenu.setOutlineColor(sf::Color::Black);
     pauseMenu.setPosition(
             sf::Vector2f(static_cast<float>(this->game->window.getSize().x) / 2 - pauseMenu.getGlobalBounds().width / 2,
                          buttonDistance * 2));

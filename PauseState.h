@@ -26,14 +26,17 @@ private:
     //texts
     int nButtonSelected;
     const int nButtons = 3;
-    const unsigned int fontSize = 24;
+    const unsigned int fontSize = 18;
     const unsigned int titleFontSize = 64;
     const float buttonDistance = 64;
-    const float alignValue = 8;
-    const sf::Color selectedColor = sf::Color(102, 0, 0);
+    const float alignValue = 6;
     sf::Font font;
     sf::Text textMenu[nButtonsPause];
     sf::Text pauseMenu;
+
+    //colors
+    const sf::Color selectedColor = sf::Color::Yellow;
+    const sf::Color titleColor = sf::Color(102, 0, 0);
 
     //sprites
     sf::Sprite menuButton[nButtonsPause];
