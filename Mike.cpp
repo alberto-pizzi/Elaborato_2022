@@ -14,7 +14,7 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
                         0,
                         spawnTile,
                         tileSize,
-                        rectSkin, MIKE, {0, 0}, 5,
+                        rectSkin, MIKE, {0, 0},
                         true,
                         0,
                         armor),

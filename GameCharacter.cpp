@@ -17,12 +17,12 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
                              const sf::Vector2i &tilePosition,
                              const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType,
                              sf::Vector2f damageHit,
-                             float hitRange, bool animated, unsigned int coins, float armor)
+                             bool animated, unsigned int coins, float armor)
         : HP(hp), speed(speed),
           points(points),
           coins(coins),
           armor(armor), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType),
-          damageHit(damageHit), defaultHP(hp), hitRange(hitRange) {
+          damageHit(damageHit), defaultHP(hp) {
 
     sprite.setTexture(texture);
     sprite.setScale(sf::Vector2f(1.5, 1.5));

@@ -14,10 +14,9 @@ Enemy::Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points,
                                                               rectSkin,
                                                               characterType,
                                                               damageHit,
-                                                              hitRange,
                                                               animated, coins,
                                                               armor),
-                                                nodeMap(nodeMap), hitProbability(hitProbability) {
+                                                nodeMap(nodeMap), hitProbability(hitProbability), hitRange(hitRange) {
     if (hitProbability >= 100)
         this->hitProbability = 100;
     //this->sprite.setScale(sf::Vector2f(1,1));

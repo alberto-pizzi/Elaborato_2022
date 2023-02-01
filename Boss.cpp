@@ -14,7 +14,7 @@ Boss::Boss(const sf::Texture &bossTexture, const sf::Texture &scepterTex, const 
                                         points,
                                         spawnTile,
                                         tileSize,
-                                        rectSkin, BOSS, damageHit, 5,
+                                        rectSkin, BOSS, damageHit,
                                         animated,
                                         coins,
                                         armor) {

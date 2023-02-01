@@ -69,7 +69,7 @@ protected:
     const sf::Color hitColor = sf::Color(102, 0, 0);
 
     //hit attributes
-    float hitRange; //in coords
+
     sf::Clock hitClock;
     sf::Time nextHitTime = sf::seconds(1);
     Dice randomDice;
@@ -82,7 +82,7 @@ public:
 
     GameCharacter(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
                   const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
-                  float hitRange = 5, bool animated = true, unsigned int coins = 0, float armor = 0);
+                  bool animated = true, unsigned int coins = 0, float armor = 0);
 
     bool skinDirection[totalDirections] = {false, false, false, false};
 

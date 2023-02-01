@@ -20,6 +20,7 @@ private:
     const float marginPath = 4;
 
 protected:
+    float hitRange; //in coords
     //the protected constructor is to make the class non-instantiable (like an abstract class)
     Enemy(const sf::Texture &tex, float hp, float speed, unsigned int points, const sf::Vector2i &tilePosition,
           const sf::Vector2i &tileSize, const sf::Vector2i &rectSkin, int characterType, sf::Vector2f damageHit,
