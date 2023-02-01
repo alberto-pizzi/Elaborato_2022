@@ -20,7 +20,7 @@ SFML library.
 ![](/screenshots/screen8.jpg)
 ![](/screenshots/screen11.jpg)
 ![](/screenshots/screen10.jpg)
-![](/screenshots/screen1.jpg)
 ![](/screenshots/screen13.jpg)
 ![](/screenshots/screen12.jpg)
+![](/screenshots/screen1.jpg)
 ![](/screenshots/screen2.jpg)
