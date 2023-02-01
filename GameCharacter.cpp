@@ -22,7 +22,7 @@ GameCharacter::GameCharacter(const sf::Texture &tex, float hp, float speed, unsi
           points(points),
           coins(coins),
           armor(armor), texture(tex), fileTextureRectSkinSize(rectSkin), characterType(characterType),
-          damageHit(damageHit), defaultHP(hp) {
+          damageHit(damageHit), defaultHP(hp), hitRange(hitRange) {
 
     sprite.setTexture(texture);
     sprite.setScale(sf::Vector2f(1.5, 1.5));

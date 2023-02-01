@@ -508,22 +508,13 @@ void PlayState::updateEnemies(float dt) {
                 break;
             }
         } else {
-
-            sf::RectangleShape obstacle;
-
-            sf::FloatRect futurePos = spawner->enemies[i]->futureCharacterPosition(
-                    spawner->enemies[i]->normalize(
-                            spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
-                    dt);
-            spawner->updateEnemy(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
-                                 futurePos); //update animation and movement
             mike->weapon->updateBullets(arenaMap, *(spawner->enemies[i]));
             spawner->enemies[i]->updateCharacterColor();
             updateViewfinderColor(*spawner->enemies[i]);
 
             if ((spawner->enemies[i]->isAbleToHit(*mike, spawner->chanceDice,
                                                   spawner->calculateChance(spawner->chanceDice))) ||
-                (spawner->enemies[i]->getCharacterType() == ARCHER)) {
+                (spawner->enemies[i]->weapon)) {
                 spawner->enemies[i]->hit(*mike, spawner->enemies);
                 if (spawner->enemies[i]->weapon) {
                     spawner->enemies[i]->weapon->currentAnimation.updateNotCyclicalAnimation(dt,
@@ -534,6 +525,14 @@ void PlayState::updateEnemies(float dt) {
                 }
 
             }
+            sf::RectangleShape obstacle;
+            sf::FloatRect futurePos = spawner->enemies[i]->futureCharacterPosition(
+                    spawner->enemies[i]->normalize(
+                            spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
+                    dt);
+            //update animation and movement
+            spawner->updateEnemyPos(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
+                                    futurePos);
         }
     }
 }
@@ -807,7 +806,7 @@ void PlayState::updateBosses(float dt) {
                             spawner->characterPositionRelativeToAnother(*spawner->bosses[i], *mike)),
                     dt);
             //update animation and movement
-            spawner->updateBoss(*mike, dt, i, arenaMap->rectWalls, futurePos);
+            spawner->updateBossPos(*mike, dt, i, arenaMap->rectWalls, futurePos);
 
             mike->weapon->updateBullets(arenaMap, *(spawner->bosses[i]));
             if (spawner->bosses[i]->weapon) {

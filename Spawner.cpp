@@ -71,8 +71,8 @@ void Spawner::spawnNuke(sf::Vector2i spawnTile) {
     bonusTypeSpawnedInARound[NUKE] = true;
 }
 
-void Spawner::updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
-                          const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos) {
+void Spawner::updateEnemyPos(const GameCharacter &target, float dt, int enemyIndex, bool collide,
+                             const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos) {
 
 
     if (!enemies[enemyIndex]->isDead()) {
@@ -304,8 +304,9 @@ bool Spawner::isAbleToSpawn(const Dice &dice, float spawnChance, float spawnProb
 }
 
 void
-Spawner::updateBoss(const GameCharacter &target, float dt, int bossIndex, const std::vector<sf::RectangleShape> &walls,
-                    sf::FloatRect futurePos) {
+Spawner::updateBossPos(const GameCharacter &target, float dt, int bossIndex,
+                       const std::vector<sf::RectangleShape> &walls,
+                       sf::FloatRect futurePos) {
 
     if (!bosses[bossIndex]->isDead()) {
 

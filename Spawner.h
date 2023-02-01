@@ -68,11 +68,12 @@ public:
     void drawEnemies(sf::RenderWindow &window, float dt);
 
     void
-    updateEnemy(const GameCharacter &target, float dt, int enemyIndex, bool collide,
-                const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos);
+    updateEnemyPos(const GameCharacter &target, float dt, int enemyIndex, bool collide,
+                   const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos);
 
-    void updateBoss(const GameCharacter &target, float dt, int bossIndex, const std::vector<sf::RectangleShape> &walls,
-                    sf::FloatRect futurePos);
+    void
+    updateBossPos(const GameCharacter &target, float dt, int bossIndex, const std::vector<sf::RectangleShape> &walls,
+                  sf::FloatRect futurePos);
 
     void spawnCoin(sf::Vector2f spawnPos, int value);
 

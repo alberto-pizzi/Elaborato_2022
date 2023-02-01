@@ -95,6 +95,7 @@ bool Enemy::isPathReady() {
 }
 
 bool Enemy::isAbleToHit(const GameCharacter &target, const Dice &hitDice, float hitChance) {
+
     sf::FloatRect hitBox = {sprite.getGlobalBounds().left - hitRange, sprite.getGlobalBounds().top - hitRange,
                             sprite.getGlobalBounds().width + hitRange, sprite.getGlobalBounds().height + hitRange};
 
