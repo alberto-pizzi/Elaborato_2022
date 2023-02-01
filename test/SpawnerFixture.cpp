@@ -5,9 +5,9 @@
 #include "SpawnerFixture.h"
 
 SpawnerFixture::SpawnerFixture() {
-    std::vector<std::vector<Node>> fakeNodeMap;
+    std::vector<std::vector<Node>> nodeMap;
     spawner = std::unique_ptr<Spawner>(
-            new Spawner(fakeTexManager, fakeTexManager, fakeTexManager, fakeNodeMap, {32, 32}));
+            new Spawner(texManager, texManager, texManager, nodeMap, {32, 32}));
 }
 
 SpawnerFixture::~SpawnerFixture() {

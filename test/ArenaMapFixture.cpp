@@ -15,6 +15,6 @@ ArenaMapFixture::ArenaMapFixture() {
         std::cerr << "Error opening mike texture" << std::endl;
     else {
 
-        map = new ArenaMap(0, fakeWindow, mike, mikeTex, weaponTex, bulletTex, fakeTexManager, 10, {40 * 32, 23 * 32});
+        map = new ArenaMap(0, fakeWindow, mike, mikeTex, weaponTex, bulletTex, textureManager, 10, {40 * 32, 23 * 32});
     }
 }

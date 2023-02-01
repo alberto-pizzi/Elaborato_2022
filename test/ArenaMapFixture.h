@@ -19,7 +19,7 @@ protected:
     sf::Context context;
     std::unique_ptr<Mike> mike;
     sf::RenderWindow fakeWindow;
-    TextureManager fakeTexManager;
+    TextureManager textureManager;
 public:
     ArenaMapFixture();
 

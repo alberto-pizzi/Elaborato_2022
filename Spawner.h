@@ -48,6 +48,9 @@ private:
     //node map
     std::vector<std::vector<Node>> nodeMap;
     sf::Vector2i tileSize;
+
+    //tile already spawned
+    std::vector<sf::Vector2i> tileAlreadySpawned;
 public:
     Spawner(const TextureManager &enemiesTextures, const TextureManager &bonusesTextures,
             const TextureManager &weaponsTextures, const std::vector<std::vector<Node>> &nodeMap,
@@ -68,7 +71,7 @@ public:
     void drawEnemies(sf::RenderWindow &window, float dt);
 
     void
-    updateEnemyPos(const GameCharacter &target, float dt, int enemyIndex, bool collide,
+    updateEnemyPos(const GameCharacter &target, float dt, int enemyIndex,
                    const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos);
 
     void

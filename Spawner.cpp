@@ -71,9 +71,8 @@ void Spawner::spawnNuke(sf::Vector2i spawnTile) {
     bonusTypeSpawnedInARound[NUKE] = true;
 }
 
-void Spawner::updateEnemyPos(const GameCharacter &target, float dt, int enemyIndex, bool collide,
+void Spawner::updateEnemyPos(const GameCharacter &target, float dt, int enemyIndex,
                              const std::vector<sf::RectangleShape> &walls, sf::FloatRect futurePos) {
-
 
     if (!enemies[enemyIndex]->isDead()) {
 
@@ -88,7 +87,6 @@ void Spawner::updateEnemyPos(const GameCharacter &target, float dt, int enemyInd
                 break;
             }
         }
-
 
         if ((!enemies[enemyIndex]->getSprite().getGlobalBounds().intersects(target.getSprite().getGlobalBounds()))) {
 

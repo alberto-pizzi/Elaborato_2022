@@ -531,7 +531,7 @@ void PlayState::updateEnemies(float dt) {
                             spawner->characterPositionRelativeToAnother(*spawner->enemies[i], *mike)),
                     dt);
             //update animation and movement
-            spawner->updateEnemyPos(*mike, dt, i, arenaMap->collides(futurePos, obstacle), arenaMap->rectWalls,
+            spawner->updateEnemyPos(*mike, dt, i, arenaMap->rectWalls,
                                     futurePos);
         }
     }
@@ -557,27 +557,30 @@ void PlayState::spawnEachTypeOfEnemies() {
     sf::Vector2i mapCenter = {35, 23};
 
     for (int i = 0; i < totEnemiesForType[ZOMBIE].numberOfEnemies; i++) {
-        tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
+        tmpSpawnTile = freeRandomSpawnTile();
         spawner->spawnZombie(tmpSpawnTile, calculateEnemyHitProbability(ZOMBIE), calculateDamageMultiplierPerRound());
+        spawner->tileAlreadySpawned.emplace_back(tmpSpawnTile);
     }
 
     for (int i = 0; i < totEnemiesForType[WARRIOR].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnWarrior(tmpSpawnTile, calculateEnemyHitProbability(WARRIOR), calculateDamageMultiplierPerRound());
+        spawner->tileAlreadySpawned.emplace_back(tmpSpawnTile);
     }
 
     for (int i = 0; i < totEnemiesForType[KAMIKAZE].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnKamikaze(tmpSpawnTile, calculateDamageMultiplierPerRound());
+        spawner->tileAlreadySpawned.emplace_back(tmpSpawnTile);
     }
 
     for (int i = 0; i < totEnemiesForType[ARCHER].numberOfEnemies; i++) {
         tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnArcher(tmpSpawnTile, calculateDamageMultiplierPerRound());
+        spawner->tileAlreadySpawned.emplace_back(tmpSpawnTile);
     }
 
     for (int i = 0; i < totEnemiesForType[BOSS].numberOfEnemies; i++) {
-        //tmpSpawnTile = arenaMap->differentRandomPassableTileFromPreviousOne(tmpSpawnTile);
         spawner->spawnBoss(mapCenter, calculateDamageMultiplierPerRound());
     }
 
@@ -592,12 +595,16 @@ void PlayState::checkAndUpdateRound() {
         //initialize first round (with enemies, etc..)
         initRound();
         firstSpawnDone = true;
+        //clear tile already spawned vector
+        spawner->tileAlreadySpawned.clear();
     }
 
     if (endRoundCountStarted && (roundSleepClock.getElapsedTime() >= afterRoundSleepTime)) {
         endRoundCountStarted = false;
         mike->gui.setCountdownVisible(false);
         initRound();
+        //clear tile already spawned vector
+        spawner->tileAlreadySpawned.clear();
 
     } else if (isRoundEnded() && (!endRoundCountStarted)) {
         endRoundCountStarted = true;
@@ -872,5 +879,15 @@ unsigned int PlayState::getRemainBosses() const {
 
 void PlayState::setRemainBosses(unsigned int remainBosses) {
     PlayState::remainBosses = remainBosses;
+}
+
+sf::Vector2i PlayState::freeRandomSpawnTile() {
+    sf::Vector2i randomTile;
+
+    do {
+        randomTile = arenaMap->randomPassableTile();
+    } while (std::count(spawner->tileAlreadySpawned.begin(), spawner->tileAlreadySpawned.end(), randomTile));
+
+    return randomTile;
 }
 

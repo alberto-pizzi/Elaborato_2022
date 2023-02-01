@@ -23,7 +23,7 @@ protected:
     std::unique_ptr<Mike> mike;
     //std::unique_ptr<Spawner> spawner;
     sf::Vector2i spawnTile = {40, 24};
-    TextureManager fakeTexManager;
+    TextureManager textureManager;
 public:
     GameCharacterFixture();
 

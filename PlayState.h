@@ -157,6 +157,8 @@ public:
 
     void setRemainBosses(unsigned int remainBosses);
 
+    sf::Vector2i freeRandomSpawnTile();
+
 
 };
 

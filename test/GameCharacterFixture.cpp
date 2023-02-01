@@ -12,7 +12,7 @@ GameCharacterFixture::GameCharacterFixture() {
         (!bulletTex.loadFromFile("../res/textures/bullet.png")))
         std::cerr << "Error opening mike texture" << std::endl;
     else {
-        mike = std::unique_ptr<Mike>(new Mike(mikeTex, weaponTex, bulletTex, spawnTile, fakeTexManager, {32, 32},
+        mike = std::unique_ptr<Mike>(new Mike(mikeTex, weaponTex, bulletTex, spawnTile, textureManager, {32, 32},
                                               {32, 32}, 5,
                                               20, 250));
     }
