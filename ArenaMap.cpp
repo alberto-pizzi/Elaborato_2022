@@ -252,81 +252,6 @@ void ArenaMap::loadMapTextures() {
     //other  map tile sheet files...
 }
 
-bool ArenaMap::isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character) {
-    sf::Vector2f oldPos = character.getSpriteCenter(); //centered position (from PosEntity)
-    sf::Vector2i actualTilePos = {static_cast<int>(oldPos.x / (float) tileSizeX),
-                                  static_cast<int>(oldPos.y / (float) tileSizeY)};
-    int playerSideInTileContact[4] = {
-            static_cast<int>(((character.getSprite().getGlobalBounds().left)) / (float) tileSizeX), //LEFT side
-            static_cast<int>(
-                    (character.getSprite().getGlobalBounds().left + character.getSprite().getGlobalBounds().width) /
-                    (float) tileSizeX), //RIGHT side
-            static_cast<int>(character.getSprite().getGlobalBounds().top / (float) tileSizeX), //UP side
-            static_cast<int>(
-                    (character.getSprite().getGlobalBounds().top + character.getSprite().getGlobalBounds().height) /
-                    (float) tileSizeY), //DOWN side
-    };
-    sf::FloatRect tolerance;
-
-    //left tile collides
-    if ((offset.x > 0) && ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) ||
-                             (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable)) &&
-                            (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
-                                    tolerance))) ||
-                           ((!tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[RIGHT]]->passable) &&
-                            (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[RIGHT]]->tileSprite.getGlobalBounds(),
-                                    tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
-        offset.x = 0;
-    }
-
-        //right tile collides
-    else if ((offset.x < 0) &&
-             ((((!tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) ||
-                (!tileMap[design_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->passable)) &&
-               (character.getSprite().getGlobalBounds().intersects(
-                       tileMap[solid_elements][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
-                       tolerance))) ||
-              ((!tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->passable) &&
-               (character.getSprite().getGlobalBounds().intersects(
-                       tileMap[principal_floor][actualTilePos.y][playerSideInTileContact[LEFT]]->tileSprite.getGlobalBounds(),
-                       tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
-        offset.x = 0;
-    }
-
-    //top tile collides
-    if ((offset.y > 0) && ((((!tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) ||
-                             (!tileMap[design_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->passable)) &&
-                            (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[solid_elements][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
-                                    tolerance))) ||
-                           ((!tileMap[principal_floor][playerSideInTileContact[DOWN]][actualTilePos.x]->passable) &&
-                            (character.getSprite().getGlobalBounds().intersects(
-                                    tileMap[principal_floor][playerSideInTileContact[DOWN]][actualTilePos.x]->tileSprite.getGlobalBounds(),
-                                    tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
-        offset.y = 0;
-    }
-
-        //bottom tile collides
-    else if ((offset.y < 0) && ((((!tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable) ||
-                                  (!tileMap[design_elements][playerSideInTileContact[UP]][actualTilePos.x]->passable)) &&
-                                 (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[solid_elements][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
-                                         tolerance))) ||
-                                ((!tileMap[principal_floor][playerSideInTileContact[UP]][actualTilePos.x]->passable) &&
-                                 (character.getSprite().getGlobalBounds().intersects(
-                                         tileMap[principal_floor][playerSideInTileContact[UP]][actualTilePos.x]->tileSprite.getGlobalBounds(),
-                                         tolerance)))) && (tolerance.width >= 0) && (tolerance.height >= 0)) {
-        offset.y = 0;
-    }
-
-    if ((offset.x == 0) && (offset.y == 0))
-        return false;
-    else
-        return true;
-}
-
 sf::Vector2i ArenaMap::randomPassableTile() const {
     int tileSpawnX, tileSpawnY;
 
@@ -531,16 +456,6 @@ int ArenaMap::getTileSizeX() const {
 
 int ArenaMap::getTileSizeY() const {
     return tileSizeY;
-}
-
-sf::Vector2i ArenaMap::differentRandomPassableTileFromPreviousOne(sf::Vector2i previousTile) const {
-    sf::Vector2i returnTile;
-
-    do {
-        returnTile = randomPassableTile();
-    } while (returnTile == previousTile);
-
-    return returnTile;
 }
 
 

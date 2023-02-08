@@ -110,9 +110,6 @@ public:
 
     void drawLayer(sf::RenderWindow &window, int layer) const;
 
-    bool
-    isMovingCorrectly(sf::Vector2f &offset, const GameCharacter &character);
-
     sf::Vector2i randomPassableTile() const;
 
     sf::Vector2f
@@ -138,8 +135,6 @@ public:
     int getTileSizeX() const;
 
     int getTileSizeY() const;
-
-    sf::Vector2i differentRandomPassableTileFromPreviousOne(sf::Vector2i previousTile) const;
 
 
 };
