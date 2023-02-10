@@ -37,13 +37,6 @@ Mike::Mike(const sf::Texture &mikeTexture, const sf::Texture &handgunTexture, co
     initAchievements(guiTexManager);
 }
 
-/*
-void Mike::drawEntity(sf::RenderWindow &window) {
-    sprite.setTextureRect(currentAnimation.getCurrentRect());
-    window.draw(sprite);
-}
-*/
-
 
 void Mike::addToOwnBonuses(int bonusType, sf::Time duration) {
     sf::Clock timer;
