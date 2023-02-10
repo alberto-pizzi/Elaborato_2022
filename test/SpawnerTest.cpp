@@ -76,3 +76,50 @@ TEST_F(SpawnerFixture, TestBonuesDespawning) {
     spawner->despawnBonus(0);
     EXPECT_EQ(spawner->getBonuses().size(), 1);
 }
+
+TEST_F(SpawnerFixture, TestBonuses) {
+    sf::Texture tex;
+    std::unique_ptr<Mike> mike = std::unique_ptr<Mike>(new Mike(tex, tex, tex, spawnTile, texManager, {32, 32},
+                                                                {32, 32}, 5,
+                                                                20, 250));
+    unsigned int mikePoints = mike->getPoints();
+
+    ASSERT_EQ(spawner->getBonuses().size(), 0);
+
+    //nuke
+    spawner->spawnNuke(spawnTile);
+    spawner->getBonuses()[0]->doSpecialAction(*mike);
+    EXPECT_GT(mike->getPoints(), mikePoints);
+    mikePoints = mike->getPoints();
+
+    //hp
+    spawner->spawnLifePoints(spawnTile);
+    spawner->getBonuses()[1]->doSpecialAction(*mike);
+    EXPECT_GE(mike->getHp(), 20);
+    EXPECT_GT(mike->getPoints(), mikePoints);
+    mikePoints = mike->getPoints();
+
+    //bubble
+    spawner->spawnBubble(spawnTile);
+    spawner->getBonuses()[2]->doSpecialAction(*mike);
+    EXPECT_EQ(mike->isBubble(), true);
+    EXPECT_GT(mike->getPoints(), mikePoints);
+    mikePoints = mike->getPoints();
+
+    //armor
+    unsigned int mikeArmor = mike->getArmor();
+    spawner->spawnArmor(spawnTile);
+    spawner->getBonuses()[3]->doSpecialAction(*mike);
+    EXPECT_GE(mike->getArmor(), mikeArmor);
+    EXPECT_GT(mike->getPoints(), mikePoints);
+    mikePoints = mike->getPoints();
+
+    //coins
+    unsigned int mikeCoins = mike->getCoins();
+    spawner->spawnCoin({static_cast<float>(spawnTile.x * 32), static_cast<float>(spawnTile.y * 32)}, 1);
+    spawner->getBonuses()[4]->doSpecialAction(*mike);
+    EXPECT_GE(mike->getCoins(), mikeCoins);
+    EXPECT_GT(mike->getPoints(), mikePoints);
+    mikePoints = mike->getPoints();
+
+}
