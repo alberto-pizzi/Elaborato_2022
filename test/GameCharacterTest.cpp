@@ -43,22 +43,22 @@ TEST_F(GameCharacterFixture, TestDirectionMouseInputAnimation) {
     mike->characterSkinDirection({1487, 750});
     EXPECT_EQ(mike->currentAnimation.frames, mike->getGoRight());
 }
-/*
-TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikeHP) { //FIXME
+
+TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikeHP) {
 
     //Mike HP must be equal to Gui HP
     ASSERT_EQ(20, mike->getHp());
-    mike->gui.updateHealthBar(20);
-    EXPECT_EQ(5 * 32, mike->gui.getHealthBar().getLocalBounds().width);
+    mike->gui.updateHealthBar(20, mike->getDefaultHp());
+    EXPECT_EQ(5 * 32, mike->gui.getHealthBar().getGlobalBounds().width);
     mike->setHp(19);
-    mike->gui.updateHealthBar(19);
-    unsigned int previousValue = mike->gui.getHealthBar().getLocalBounds().width;
-    EXPECT_LT(mike->gui.getHealthBar().getLocalBounds().width, 5 * 32);
+    mike->gui.updateHealthBar(19, mike->getDefaultHp());
+    float previousValue = mike->gui.getHealthBar().getGlobalBounds().width;
+    EXPECT_LT(mike->gui.getHealthBar().getGlobalBounds().width, 5 * 32);
     mike->setHp(18);
-    mike->gui.updateHealthBar(18);
-    EXPECT_LT(mike->gui.getHealthBar().getLocalBounds().width, previousValue);
+    mike->gui.updateHealthBar(18, mike->getDefaultHp());
+    EXPECT_LT(mike->gui.getHealthBar().getGlobalBounds().width, previousValue);
 }
- */
+
 
 TEST_F (GameCharacterFixture, TestCorrespondenceBetweenGuiAndMikePoints) {
     std::string stringPoints;

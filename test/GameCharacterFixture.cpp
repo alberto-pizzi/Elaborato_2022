@@ -12,6 +12,7 @@ GameCharacterFixture::GameCharacterFixture() {
         (!bulletTex.loadFromFile("../res/textures/bullet.png")))
         std::cerr << "Error opening mike texture" << std::endl;
     else {
+        textureManager.loadTexture("healthBar", "res/textures/progressbar.png");
         mike = std::unique_ptr<Mike>(new Mike(mikeTex, weaponTex, bulletTex, spawnTile, textureManager, {32, 32},
                                               {32, 32}, 5,
                                               20, 250));
