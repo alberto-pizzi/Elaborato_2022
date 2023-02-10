@@ -173,3 +173,7 @@ void AchievementState::loadTextures() {
     achievementsTextures.loadTexture("box", "res/textures/message_box.png");
     achievementsTextures.loadTexture("trophy", "res/textures/trophy.png");
 }
+
+const std::map<int, std::unique_ptr<AchievementType>> &AchievementState::getAchievements() const {
+    return achievements;
+}

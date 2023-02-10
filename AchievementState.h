@@ -47,6 +47,8 @@ public:
     void update(float dt) override;
 
     void handleInput() override;
+
+    const std::map<int, std::unique_ptr<AchievementType>> &getAchievements() const;
 };
 
 

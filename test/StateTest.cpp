@@ -49,3 +49,16 @@ TEST_F (StateFixture, BossSpawning) {
     EXPECT_EQ(play->getRemainBosses(), 1);
 
 }
+
+TEST_F(StateFixture, TestAchivementLoadingFromFile) {
+    AchievementState *achievementState;
+    achievementState = new AchievementState(&game);
+    //checks correct map filling
+    if (AchievementManager::getInstance())
+        ASSERT_EQ(achievementState->getAchievements().size(), 0);
+    achievementState->loadAchievements();
+    ASSERT_GT(achievementState->getAchievements().size(), 0);
+    EXPECT_GT(achievementState->getAchievements().begin()->second->getAchievements().size(), 0);
+
+
+}
