@@ -136,6 +136,7 @@ void Spawner::updateEnemyPos(const GameCharacter &target, float dt, int enemyInd
 }
 
 void Spawner::spawnAmmunition(sf::Vector2i spawnTile) {
+    //these values are unique, so if you want change them you can do it without problems
     //casual ammo quantity (change follow line is you want to change min e max values)
     int quantity = chanceDice.casualNumber(5, 40);
 
@@ -146,6 +147,7 @@ void Spawner::spawnAmmunition(sf::Vector2i spawnTile) {
 }
 
 void Spawner::spawnLifePoints(sf::Vector2i spawnTile) {
+    //these values are unique, so if you want change them you can do it without problems
     //casual life points quantity (change follow line is you want to change min e max values)
     float quantity = static_cast<float>(chanceDice.casualNumber(1, 8));
 
@@ -163,6 +165,7 @@ void Spawner::spawnBubble(sf::Vector2i spawnTile) {
 }
 
 void Spawner::spawnArmor(sf::Vector2i spawnTile) {
+    //these values are unique, so if you want change them you can do it without problems
     //casual armor quantity (change follow line is you want to change min e max values)
     float quantity = static_cast<float>(chanceDice.casualNumber(3, 15));
 
@@ -173,6 +176,7 @@ void Spawner::spawnArmor(sf::Vector2i spawnTile) {
 }
 
 void Spawner::spawnIncreasedDamage(sf::Vector2i spawnTile) {
+    //these values are unique, so if you want change them you can do it without problems
     //casual multiplier (change follow line is you want to change min e max values)
     float multiplier = static_cast<float>(chanceDice.casualNumber(12, 25));
     multiplier /= 10; //from 1.2 to 2.5
@@ -184,6 +188,7 @@ void Spawner::spawnIncreasedDamage(sf::Vector2i spawnTile) {
 }
 
 void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier) {
+    //these values are unique, so if you want change them you can do it without problems
     sf::Vector2f damage = {3, 5};
     damage *= damageMultiplier;
 
@@ -200,6 +205,7 @@ void Spawner::spawnWarrior(sf::Vector2i spawnTile, float hitProbability, float d
 }
 
 void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
+    //these values are unique, so if you want change them you can do it without problems
     sf::Vector2f damage = {7, 10};
     damage *= damageMultiplier;
 
@@ -210,6 +216,7 @@ void Spawner::spawnKamikaze(sf::Vector2i spawnTile, float damageMultiplier) {
 }
 
 void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {
+    //these values are unique, so if you want change them you can do it without problems
     sf::Vector2f damage = {1, 3};
     damage *= damageMultiplier;
 
@@ -221,6 +228,7 @@ void Spawner::spawnArcher(sf::Vector2i spawnTile, float damageMultiplier) {
 }
 
 void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float damageMultiplier) {
+    //these values are unique, so if you want change them you can do it without problems
     sf::Vector2f damage = {1, 3};
     damage *= damageMultiplier;
 
@@ -231,6 +239,7 @@ void Spawner::spawnZombie(sf::Vector2i spawnTile, float hitProbability, float da
 }
 
 void Spawner::spawnBoss(sf::Vector2i spawnTile, float damageMultiplier) {
+    //these values are unique, so if you want change them you can do it without problems
     sf::Vector2f damage = {8, 13};
     damage *= damageMultiplier;
 
